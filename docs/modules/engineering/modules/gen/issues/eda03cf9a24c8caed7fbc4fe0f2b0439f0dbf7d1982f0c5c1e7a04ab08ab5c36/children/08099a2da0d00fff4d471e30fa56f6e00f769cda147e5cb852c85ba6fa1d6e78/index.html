@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cerulean/bootstrap.min.css" id="nsd-bootstrap-theme-stylesheet"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script><title>Sample child</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.11/themes/default/style.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.11/jstree.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/default.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+	$(document).ready( function() {
+	    $('.nsd-app-header').addClass('bg-dark');
+	    $('.nsd-app-header .nav-link').addClass('text-light');
+	    $('.nsd-root-action').addClass(['display-4', 'text-light']);
+	
+	    $('.nsd-app-navbar').addClass(['bg-light', 'p-0']);
+	
+	    $('.nsd-app-navigation-panel').addClass(['col-auto', 'border-right', 'border-light', 'pb-1']); 
+	    $('.nsd-app-content-panel').addClass(['col', 'p-1']);
+	    $('.nsd-app-footer').addClass(['bg-dark', 'text-light', 'text-center']);
+	    $('.nsd-app-footer .nsd-footer-action').addClass(['font-italic', 'text-light']);
+	});
+</script>
+
+<style>
+	.nsd-label-icon {
+	    height:0.8em;
+	    margin-bottom:0.2em;
+	    margin-right:0.3em;
+	}
+	.nsd-app-content-row {
+	    min-height: 25rem;
+	}
+	.nsd-root-action {
+	    text-decoration: none;
+	}
+	@media print {
+	  div.nsd-app-navigation-panel {
+	    display: none;
+	  }
+	}
+</style></head>
+  <body>
+    <div class="container-fluid nsd-app-container border mt-1">
+      <div class="row">
+        <div class="nsd-app-header col bg-primary">
+          <a class="nsd-action nsd-root-action"></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="nsd-app-navbar bg-light text-dark col">
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a data-nsd-action="488861c04918ab140f4dc4633f28336222f399d361b4c93118f9dfcc608612ed" href="../../../../../../../../index.html" class="nsd-action navbar-brand">
+              <img src="https://docs.nasdanika.org/images/nasdanika-logo.png" class="nsd-label-icon"/>Nasdanika</a>
+            <button type="button" data-toggle="collapse" data-target="#nsd-42" class="navbar-toggler">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="nsd-42" class="collapse navbar-collapse">
+              <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                  <a href="#" role="button" data-toggle="dropdown" class="nav-link dropdown-toggle">Issue categories</a>
+                  <div class="dropdown-menu">
+                    <a data-nsd-action="dd37e2f62187d24f8af682cf9c66876dd1c0f7dcdb1571110566ac5a233036e6" href="../../../../../../../../issue-categories/good-first-issue/index.html" class="nsd-action dropdown-item">
+                      <span title="Easy pickings to make your fist contribution to Nasdanika projects.">Good First Issue</span>
+                    </a>
+                  </div>
+                </li>
+                <li class="nav-item dropdown">
+                  <a href="#" role="button" data-toggle="dropdown" class="nav-link dropdown-toggle">Issue statuses</a>
+                  <div class="dropdown-menu">
+                    <a data-nsd-action="a503980dc753bfdac73786fb0c9fb82196c0125e12c697a60e98b56fe1ae6476" href="../../../../../../../../issue-statuses/open/index.html" class="nsd-action dropdown-item">Open</a>
+                    <a data-nsd-action="77f6d182373c582dcf92684e649942032a2d656790c6b6342c02bf64f99711f7" href="../../../../../../../../issue-statuses/in-progress/index.html" class="nsd-action dropdown-item">In Progress</a>
+                    <a data-nsd-action="b9111dcf1bffdc287ed3ff4bb72be230300e8221de656708de95fd48b7633ce5" href="../../../../../../../../issue-statuses/done/index.html" class="nsd-action dropdown-item">Done</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div style="min-height:30em" class="row nsd-app-content-row">
+        <div class="nsd-app-navigation-panel col-auto">
+          <div class="card mt-1">
+            <div class="card-header">
+              <span class="far fa-calendar-alt nsd-label-icon"></span>Increments</div>
+            <div class="card-body p-1">
+              <div id="nsd-navigation-tree-488861c04918ab140f4dc4633f28336222f399d361b4c93118f9dfcc608612ed--488861c04918ab140f4dc4633f28336222f399d361b4c93118f9dfcc608612ed-feature-category-increments"></div>
+              <script>$('#nsd-navigation-tree-488861c04918ab140f4dc4633f28336222f399d361b4c93118f9dfcc608612ed--488861c04918ab140f4dc4633f28336222f399d361b4c93118f9dfcc608612ed-feature-category-increments').jstree(function(tree) { tree.state.filter = function(state) { delete state.core.selected; return state; }; return tree; }({"core":{"data":[{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/children/q2/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/children/q2/children/apr/index.html';"},"icon":"far fa-calendar-alt","id":"3edc7909345e9b46b9faf40d3e8d7b5099ca854561c9d7063c1363a22b0aaef8","text":"Apr","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/children/q2/children/may/index.html';"},"icon":"far fa-calendar-alt","id":"6c8b33f6194d12862f4a568280f8ee36f265145cb3ae0e300d5a661a4c155175","text":"May","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/children/q2/children/jun/index.html';"},"icon":"far fa-calendar-alt","id":"944c1ff4e47b847b04d8c4e52d1905c424f3ca9ade378fad879df4de004cf342","text":"Jun","type":"leaf"}],"icon":"far fa-calendar-alt","id":"e7f9e6cae9efb75d21bc11456e7c0da4ba124c7e75783bd3874232e891c463e3","text":"Q2"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/children/q3/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/children/q3/children/jul/index.html';"},"icon":"far fa-calendar-alt","id":"e0244de62c5fcf038a299f60f0115ad9beb5fd0f05687c5193e8085f6f929132","text":"Jul","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/children/q3/children/aug/index.html';"},"icon":"far fa-calendar-alt","id":"7bf09d7a55b76c73f708ee95412dedef86885e585820022f919b32c62551d8b0","text":"Aug","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/children/q3/children/sep/index.html';"},"icon":"far fa-calendar-alt","id":"0c66bd8a219704a616b0713743a2f8794a89291c759125c9dbba8d6431a1f890","text":"Sep","type":"leaf"}],"icon":"far fa-calendar-alt","id":"32c5a75a4cbc9eeb13b76632e721551a969db44099d8e5b6466eabe9acabb157","text":"Q3"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/children/q4/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/children/q4/children/oct/index.html';"},"icon":"far fa-calendar-alt","id":"e82f91bf68feef7ee6986c1c9a5fed5ba849a75a4b2484ed23c848793dbb321d","text":"Oct","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/children/q4/children/nov/index.html';"},"icon":"far fa-calendar-alt","id":"f584d1e23fd114c455e300b704169a1526848430cb0c17eb2ff46a3ebb6dbc26","text":"Nov","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/children/q4/children/dec/index.html';"},"icon":"far fa-calendar-alt","id":"a122c2b58a263a7607ba5cbd2fd8625aafbed75572f409fb8a06f5594106f4ab","text":"Dec","type":"leaf"}],"icon":"far fa-calendar-alt","id":"0d3e29f56643479cb9ae8d3ab377a14526a76316748e71caf7769204ade55692","text":"Q4"}],"icon":"far fa-calendar-alt","id":"bb6c8effb2971ab34c3cc21eda2be94fb5c6ebe21dedf5fb052458b1ff766c56","text":"2021"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/index.html';"},"icon":"far fa-calendar-alt","id":"285753a99c53781e045908a6fadee69e095314389ecaf223f7f940783b84a0f2","text":"2022","type":"leaf"}]},"types":{"leaf":{"icon":"jstree-file"}},"plugins":["state","types"],"state":{"key":"nsd-navigation-tree-488861c04918ab140f4dc4633f28336222f399d361b4c93118f9dfcc608612ed--488861c04918ab140f4dc4633f28336222f399d361b4c93118f9dfcc608612ed-feature-category-increments"}}));</script>
+            </div>
+          </div>
+          <div class="card mt-1">
+            <div class="card-header">
+              <span class="fas fa-cubes nsd-label-icon"></span>Modules</div>
+            <div class="card-body p-1">
+              <div id="nsd-navigation-tree-488861c04918ab140f4dc4633f28336222f399d361b4c93118f9dfcc608612ed--488861c04918ab140f4dc4633f28336222f399d361b4c93118f9dfcc608612ed-feature-category-modules"></div>
+              <script>$('#nsd-navigation-tree-488861c04918ab140f4dc4633f28336222f399d361b4c93118f9dfcc608612ed--488861c04918ab140f4dc4633f28336222f399d361b4c93118f9dfcc608612ed-feature-category-modules').jstree(function(tree) { tree.state.filter = function(state) { delete state.core.selected; return state; }; return tree; }({"core":{"data":[{"a_attr":{"onclick":"window.location='../../../../../../../core/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/cli/index.html';"},"icon":"fas fa-cube","id":"37d2a1c7278d90b36766ea184810e0835392b11301fad9af8dbbffec2b2a57a5","text":"CLI","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/common/index.html';"},"children":[{"a_attr":{"onclick":"window.location='javadoc/index.html';"},"text":"JavaDoc","type":"leaf"}],"icon":"fas fa-cube","id":"43377bc286241230ddcb47d25cd0439349bcc09aa797ac2938347526b570f1ce","text":"Common"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/emf/index.html';"},"icon":"fas fa-cube","id":"cc45bc3f258f39af2038c4e155ec14b215863cc4d38acc1a54a6183e4d67f208","text":"EMF","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/exec/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../../doc/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../../doc/content/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../../doc/content/base64.html';"},"text":"Base64","type":"leaf"}],"text":"Content"}],"text":"General"}],"icon":"fas fa-cube","id":"48480bb0ecc8ec74a746e3eb2ab729f151a5ef8370576568641e4eec35e8c870","text":"Exec"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/index.html';"},"icon":"fas fa-cube","id":"7a0d32c3d6bc05df9cf531473718d37f47a1401777edd1a431bba63e554ec3d1","text":"Ncore","type":"leaf"}],"icon":"fas fa-box","id":"e77fac060b18d289c44bab2f59492b3fea4ce2791de35e6d33646b4323b4c098","text":"Core"},{"a_attr":{"onclick":"window.location='../../../../../../index.html';"},"children":[{"children":[{"a_attr":{"onclick":"window.location='../../../../../../features/test/index.html';"},"icon":"fas fa-cog","id":"62a2f702c563875030270a47d2e82160b2171c5d247310ec0be6b45aadc146de","text":"Test feature","type":"leaf"}],"icon":"fa fa-cogs","id":"2694d90d53ab5c18a4944422339953e69610099758d4b44ec516a1da56949817-feature-category-features","text":"Features"},{"children":[{"a_attr":{"onclick":"window.location='../../../../index.html';"},"icon":"fas fa-cube","state":{"selected":true},"id":"4054c858eef25caba1056e9506e42e6f46696cc31cceac0179d4343c3a6e644c","text":"Gen","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../model/index.html';"},"icon":"fas fa-cube","id":"9ce35ee416260eea74071f1df4e3fb6b5ec952abec7d18aafc1c387ddf035c22","text":"Model","type":"leaf"}],"icon":"fas fa-cubes","id":"2694d90d53ab5c18a4944422339953e69610099758d4b44ec516a1da56949817-feature-category-modules","text":"Modules"},{"children":[{"a_attr":{"onclick":"window.location='../../../../../../releases/2021/4/4/index.html';"},"icon":"fas fa-truck","id":"180bff4fa6ecce5f57e071ad0e57f19ec58ae8de4fecf6f4887601c593423220","text":"2021.4.4","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../releases/2021/5/0/index.html';"},"icon":"fas fa-truck","id":"3fe641e80eef77027c86eff2dce2aeaa2b1af6d1f14cb567d6b05c3e2eac1e54","text":"2021.5.0","type":"leaf"}],"icon":"fas fa-shipping-fast","id":"2694d90d53ab5c18a4944422339953e69610099758d4b44ec516a1da56949817-feature-category-releases","text":"Releases"}],"icon":"fas fa-box","id":"2694d90d53ab5c18a4944422339953e69610099758d4b44ec516a1da56949817","text":"Engineering"},{"a_attr":{"onclick":"window.location='../../../../../../../html/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../html/modules/App/index.html';"},"icon":"fas fa-cube","id":"58b49138cddbb43b832f055676b8d2ae0505936114e36b044c885c78d49bea4e","text":"App","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../html/modules/models/app/index.html';"},"icon":"fas fa-cube","id":"e38d32a851e95b0e94582028f8dec02fa2b64740fc1d88cbc78dd29e5d0e18f8","text":"App Model","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../html/modules/bootstrap/index.html';"},"icon":"fas fa-cube","id":"f80883d8b5da630bb6303fd69e549dcb55c36926f36669ac8cd881966e84e856","text":"Bootstrap","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../html/modules/models/bootstrap/index.html';"},"icon":"fas fa-cube","id":"80a828a3d3bba8569b9fba85a8bf1d8699e4136f751e09d54f328810f07bda4f","text":"Bootstrap Model","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../html/modules/models/components/index.html';"},"icon":"fas fa-cube","id":"1eabdca89d8fbb01a44a48ab68ede3b26c89e899bcd49aa07201bf1333840218","text":"Components Model","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../html/modules/echarts/index.html';"},"icon":"fas fa-cube","id":"235d39a72320d51f6f517d28eb022e742887043dcd6c43f47a34dbb83b14c963","text":"ECharts","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../html/modules/emf/index.html';"},"icon":"fas fa-cube","id":"0bf6aefd34b36210a530c179e2ed9e880e65138351a52ae2541ad3708df842c3","text":"EMF","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../html/modules/ecore/index.html';"},"icon":"fas fa-cube","id":"202246640de96703922bafd0e59281f6541c04da18b66f067100768c0a22264b","text":"Ecore","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../html/modules/fontawesome/index.html';"},"icon":"fas fa-cube","id":"812e0af69c092748ce2ab404f9c4666ad17acef6363365dfd899074d67c9218d","text":"FontAwesome","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../html/modules/html/index.html';"},"icon":"fas fa-cube","id":"cddfeb4239e3cb8876930095f2e27c9f6c42b409211ffb2e3a241562cadc6039","text":"HTML","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../html/modules/models/html/index.html';"},"icon":"fas fa-cube","id":"f3dc041b8eb32cadb3b0384f68a21143c996fbf2446f3c4b446a26cc4b4eddba","text":"HTML Model","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../html/modules/knockout/index.html';"},"icon":"fas fa-cube","id":"ef2b40663aa83e23502e61a892e1006033d421f5afdd79a3395ccfa912839baa","text":"Knockout","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../html/modules/jstree/index.html';"},"icon":"fas fa-cube","id":"9fdf2ca1bfc61228783a7056ef972badbeb78c219f23e636af31198dfd0ea392","text":"jsTree","type":"leaf"}],"icon":"fas fa-box","id":"948e35866b29bef35dca451e2c4df6361d5cb5bcedd1589021cfa7b024a3cd94","text":"HTML"}]},"types":{"leaf":{"icon":"jstree-file"}},"plugins":["state","types"],"state":{"key":"nsd-navigation-tree-488861c04918ab140f4dc4633f28336222f399d361b4c93118f9dfcc608612ed--488861c04918ab140f4dc4633f28336222f399d361b4c93118f9dfcc608612ed-feature-category-modules"}}));</script>
+            </div>
+          </div>
+        </div>
+        <div class="nsd-app-content-panel border-left col">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col nsd-app-content-panel-breadcrumb">
+                <nav aria-label="breadcrumb" class="mt-1">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <span>
+                        <span class="fas fa-cubes nsd-label-icon"></span>Modules</span>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a data-nsd-action="2694d90d53ab5c18a4944422339953e69610099758d4b44ec516a1da56949817" href="../../../../../../index.html" class="nsd-action">
+                        <span class="fas fa-box nsd-label-icon"></span>Engineering</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <span>
+                        <span class="fas fa-cubes nsd-label-icon"></span>Modules</span>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a data-nsd-action="4054c858eef25caba1056e9506e42e6f46696cc31cceac0179d4343c3a6e644c" href="../../../../index.html" class="nsd-action">
+                        <span class="fas fa-cube nsd-label-icon"></span>Gen</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <span>Issues</span>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a data-nsd-action="8f127757cf4561096bda90dd609519ab1c0c1540df4017ded6d8e40bb2f14182" href="../../index.html" class="nsd-action">
+                        <span title="Effort, cost, percentage completion. Own and total - own and children. ">Increment roll-up stats</span>
+                      </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <span>Children</span>
+                    </li>
+                    <li class="breadcrumb-item active">
+                      <span data-nsd-action="cf2bb9832657fb3fa1df1d06ac7b7578925ec3f9c8b399f424e489d392afebc2" class="nsd-action">Sample child</span>
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col nsd-app-content-panel-header-col">
+                <h2 data-nsd-action="cf2bb9832657fb3fa1df1d06ac7b7578925ec3f9c8b399f424e489d392afebc2" class="nsd-action nsd-app-content-panel-header">Sample child
+                  <sup data-toggle="modal" data-target="#nsd-43" style="cursor:pointer" class="far fa-question-circle"/></h2>
+              </div>
+            </div>
+            <div class="row nsd-app-content-panel-body-row">
+              <div class="col nsd-app-content-panel-body">
+                <table style="width:auto" class="table table-bordered">
+                  <tr>
+                    <th>Location</th>
+                    <td>
+                      <a href="file:/C:/Users/Pavel/git/engineering/gen/engineering.yml">engineering/gen/engineering.yml 66:12</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>
+                        <span class="fas fa-user nsd-label-icon"></span>Assignee</span>
+                    </th>
+                    <td>
+                      <a data-nsd-action="488861c04918ab140f4dc4633f28336222f399d361b4c93118f9dfcc608612ed" href="../../../../../../../../index.html" class="nsd-action">
+                        <img src="https://docs.nasdanika.org/images/nasdanika-logo.png" class="nsd-label-icon"/>Nasdanika</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>Benefit</span>
+                    </th>
+                    <td>0.0</td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>Completion</span>
+                    </th>
+                    <td>
+                      <div class="progress">
+                        <div style="width:33%" class="progress-bar">33%</div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>Cost</span>
+                    </th>
+                    <td>0.0</td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>Effort</span>
+                    </th>
+                    <td>6.0</td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>Remaining cost</span>
+                    </th>
+                    <td>0.0</td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>Remaining effort</span>
+                    </th>
+                    <td>4.0</td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>Status</span>
+                    </th>
+                    <td>
+                      <a data-nsd-action="a503980dc753bfdac73786fb0c9fb82196c0125e12c697a60e98b56fe1ae6476" href="../../../../../../../../issue-statuses/open/index.html" class="nsd-action">Open</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>Target</span>
+                    </th>
+                    <td>
+                      <a data-nsd-action="4054c858eef25caba1056e9506e42e6f46696cc31cceac0179d4343c3a6e644c" href="../../../../index.html" class="nsd-action">
+                        <span class="fas fa-cube nsd-label-icon"></span>Gen</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>Total cost</span>
+                    </th>
+                    <td>6.0</td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>Uri</span>
+                    </th>
+                    <td>nasdanika:modules/engineering/modules/gen/issues/eda03cf9a24c8caed7fbc4fe0f2b0439f0dbf7d1982f0c5c1e7a04ab08ab5c36/children/08099a2da0d00fff4d471e30fa56f6e00f769cda147e5cb852c85ba6fa1d6e78</td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>Workable</span>
+                    </th>
+                    <td>true</td>
+                  </tr>
+                </table>
+                <div>
+                  <H3 class="nsd-action">Notes</H3>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr class="table-info">
+                        <th>
+                          <span>Description</span>
+                        </th>
+                        <th>
+                          <span>Date</span>
+                        </th>
+                        <th>
+                          <span>Author</span>
+                        </th>
+                        <th>
+                          <span>Status</span>
+                        </th>
+                        <th>
+                          <span>Effort</span>
+                        </th>
+                        <th>
+                          <span>Cost</span>
+                        </th>
+                        <th>
+                          <span>Remaining effort</span>
+                        </th>
+                        <th>
+                          <span>Remaining cost</span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td></td>
+                        <td>Thu May 13 00:00:00 EDT 2021</td>
+                        <td></td>
+                        <td></td>
+                        <td>2.0</td>
+                        <td>0.0</td>
+                        <td>0.0</td>
+                        <td>0.0</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="nsd-app-footer bg-secondary text-center col">
+          <a href="https://github.com/Nasdanika" class="nsd-action nsd-footer-action">
+            <span class="fab fa-github nsd-label-icon"></span>Sources</a>&nbsp;&bull;&nbsp;
+          <a href="../../../../../../../../contributor-guide.html" class="nsd-action nsd-footer-action">
+            <span class="fas fa-code-branch nsd-label-icon"></span>Contribute</a></div>
+      </div>
+    </div>
+    <div tabindex="-1" id="nsd-43" class="modal">
+      <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+          <div class="modal-header bg-secondary">
+            <h5>
+              <span style="margin-right:0.3em" class="far fa-question-circle"></span>Sample child</h5>
+            <button data-dismiss="modal" class="close">x</button>
+          </div>
+          <div class="modal-body"><p>Issue overview here.</p>
+</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
