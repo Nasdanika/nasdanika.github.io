@@ -40,6 +40,8 @@ import org.nasdanika.html.model.app.AppPackage;
  */
 public class TestModel {
 	
+	private static final String NASDANIKA_YAML_PATH = "nasdanika.github.io/target/test-classes/nasdanika.yml";
+
 	@Test
 	public void testGenerateDocsSite() throws Exception {
 		ObjectLoader loader = new EObjectLoader(new ComposedLoader(), null, AppPackage.eINSTANCE);
@@ -97,16 +99,31 @@ public class TestModel {
 					File locationFile = new File(new java.net.URI(marker.getLocation()));
 					URI locationURI = URI.createFileURI(locationFile.getCanonicalPath());
 					URI relativeLocationURI = locationURI.deresolve(uri, true, true, true); 
+					String relativeLocationString = relativeLocationURI.toString();
 					return new Link() {
 	
 						@Override
 						public String getLocation() {
+							if (NASDANIKA_YAML_PATH.equals(relativeLocationString)) {
+								return "https://github.com/Nasdanika/nasdanika.github.io/blob/main/src/test/resources/nasdanika.yml#L" + marker.getLine();
+							}
+							int idx = relativeLocationString.indexOf("/");
+							if (idx > 0) {
+								String repository = relativeLocationString.substring(0, idx);
+								String branch = "engineering".equals(repository) ? "main" : "develop"; // Hardcoded - bad, use jGit to figure out the branch.
+								return "https://github.com/Nasdanika/" + repository + "/blob/" + branch + relativeLocationString.substring(idx) + "#L" + marker.getLine();
+							}
 							return marker.getLocation();
 						}
 						
 						@Override
-						public String getText() {							
-							return relativeLocationURI.toString() + " " + marker.getLine() + ":" + marker.getColumn();
+						public String getText() {	
+							String path = relativeLocationString;
+							if (NASDANIKA_YAML_PATH.equals(path)) {
+								path = "src/test/resources/nasdanika.yml";
+							}
+							
+							return path + " " + marker.getLine() + ":" + marker.getColumn();
 						}
 						
 					};
