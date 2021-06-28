@@ -1,11 +1,8 @@
 package org.nasdanika.docs;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.emf.common.util.URI;
@@ -17,7 +14,6 @@ import org.nasdanika.common.DiagnosticException;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.MarkdownHelper;
 import org.nasdanika.common.MutableContext;
-import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
@@ -31,6 +27,7 @@ import org.nasdanika.engineering.gen.GenerateSiteConsumerFactory;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.factories.BootstrapContainerApplicationSupplierFactory;
 import org.nasdanika.html.app.factories.ComposedLoader;
+import org.nasdanika.html.emf.SimpleEObjectViewAction;
 import org.nasdanika.html.model.app.AppPackage;
 
 /**
@@ -90,6 +87,7 @@ public class TestModel {
 		CommandFactory commandFactory = asf.then(consumerFactory); 
 		MutableContext context = Context.EMPTY_CONTEXT.fork();
 		context.put(Context.BASE_URI_PROPERTY, "random://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
+		context.put(SimpleEObjectViewAction.DOC_URI, "https://docs.nasdanika.org/engineering/engineering/");
 		context.register(Date.class, new Date());
 
 		URI uri = URI.createFileURI(new File(".").getCanonicalPath());

@@ -1,6 +1,11 @@
 app-action:
    children:
       - app-action:
+         text: Documentation
+         location: https://docs.nasdanika.org/engineering/index.html
+         icon: fab fa-book
+         role: context
+      - app-action:
          text: Sources
          location: https://github.com/Nasdanika
          icon: fab fa-github
