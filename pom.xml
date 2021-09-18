@@ -3,22 +3,35 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nasdanika</groupId>
-	<version>2021.6.0</version>
+	<version>2021.9.0</version>
 	<artifactId>docs</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika Documentation Site</name>
 
 	<dependencies>
 		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>ecore</artifactId>
+			<version>2021.9.0</version>
+		</dependency>
+		<!-- 
+		<dependency>
 			<groupId>org.nasdanika.engineering</groupId>
 			<artifactId>gen</artifactId>
-			<version>2021.7.0</version>
+			<version>2021.7.3</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.20.2</version>
+			<scope>test</scope>
+		</dependency>		
 	</dependencies>
 
 	<build>
