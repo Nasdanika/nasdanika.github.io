@@ -45,6 +45,7 @@ import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.content.ContentPackage;
 import org.nasdanika.exec.resources.Container;
+import org.nasdanika.exec.resources.ReconcileAction;
 import org.nasdanika.exec.resources.ResourcesFactory;
 import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.html.ecore.ActionSupplier;
@@ -216,6 +217,7 @@ public class TestDoc extends TestBase {
 		
 		Container container = ResourcesFactory.eINSTANCE.createContainer();
 		container.setName("docs");
+		container.setReconcileAction(ReconcileAction.APPEND);
 		
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
