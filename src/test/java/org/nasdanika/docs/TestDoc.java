@@ -48,7 +48,7 @@ import org.nasdanika.exec.resources.Container;
 import org.nasdanika.exec.resources.ReconcileAction;
 import org.nasdanika.exec.resources.ResourcesFactory;
 import org.nasdanika.exec.resources.ResourcesPackage;
-import org.nasdanika.html.ecore.ActionSupplier;
+import org.nasdanika.html.model.app.util.ActionSupplier;
 import org.nasdanika.html.ecore.EcoreActionSupplierAdapterFactory;
 import org.nasdanika.html.ecore.GenModelResourceSet;
 import org.nasdanika.html.model.app.Action;
@@ -70,7 +70,6 @@ public class TestDoc extends TestBase {
 		return DiagramGenerator.INSTANCE.cachingDiagramGenerator(output.stateAdapter().adapt(decoder, encoder), progressMonitor);
 	}
 		
-	@Test	
 	public void generateActionModel() throws Exception {
 		GenModelResourceSet ecoreModelsResourceSet = new GenModelResourceSet();
 		
@@ -198,7 +197,6 @@ public class TestDoc extends TestBase {
 	 * Generates a resource model from an action model.
 	 * @throws Exception
 	 */
-	@Test
 	public void generateResourceModel() throws Exception {
 		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
 			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
@@ -241,7 +239,6 @@ public class TestDoc extends TestBase {
 	 * Generates files from the previously generated resource model.
 	 * @throws Exception
 	 */
-	@Test
 	public void generateContainer() throws Exception {
 		ResourceSet resourceSet = createResourceSet();
 		
