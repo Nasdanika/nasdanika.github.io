@@ -1,0 +1,51 @@
+engineering-organization:
+  uri: engineering://nasdanika
+  path: nasdanika
+  name: Nasdanika
+  description: Engineering model to test core model classes.
+  modules:
+    - ../../core/engineering.yml
+  personas:
+    - path: java-developer
+      name: Java Developer
+      goals:
+        - path: efficiency
+          name: Efficiency
+          children:
+            - path: generated-doc
+              name: Generated Documentation
+  issue-categories:
+    - path: development
+      name: Development
+      children:
+        - path: back-end
+          name: Back end
+        - path: front-end
+          name: Front end            
+  issue-priorities:
+    - path: low
+      name: Low
+    - path: medium
+      name: Medium
+    - path: high
+      name: High
+  issue-severities:
+    - path: critical
+      name: Critical
+    - path: major
+      name: Major
+    - path: medium
+      name: Medium
+    - path: low
+      name: Low
+  issue-statuses:
+    - path: open
+      name: Open
+    - path: in-progress
+      name: In Progress
+    - path: done
+      name: Done
+      done: true
+    - path: cancelled
+      name: Cancelled
+                            
