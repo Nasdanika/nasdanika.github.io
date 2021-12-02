@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="EN">
+  <head>
+    <title>End</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cerulean/bootstrap.min.css" id="nsd-bootstrap-theme-stylesheet"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Nasdanika/html@develop/model/app.gen/style/app.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.11/themes/default/style.min.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/Nasdanika/html@develop/model/app.gen/style/common.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Nasdanika/html@develop/model/app.gen/style/dark-head.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.11/jstree.min.js"></script>
+  </head>
+  <body>
+    <div class="container-fluid nsd-app-container">
+      <div class="row">
+        <div class="col nsd-app-header">
+          <a href="https://www.nasdanika.org" title="Root action" class="nsd-app-header-title">
+            <img src="https://docs.nasdanika.org/images/nasdanika-logo.png" class="nsd-app-label-icon"/>Nasdanika</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col nsd-app-navbar">
+          <ul class="navbar navbar-light navbar-expand-lg">
+            <a href="../../index.html" title="Documentation" class="navbar-brand"><span class="fa fa-book nsd-app-label-icon"></span>Documentation</a>
+            <button type="button" data-toggle="collapse" data-target="#nsd-6u7" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="nsd-6u7" class="collapse navbar-collapse"></div>
+          </ul>
+        </div>
+      </div>
+      <div class="row nsd-app-content-row">
+        <div class="col nsd-app-navigation-panel">
+          <div id="doc-navigation-panel"></div>
+          <script>$(document).ready( function() {
+$('#doc-navigation-panel').jstree(function(tree) { tree.state.filter = function(state) { delete state.core.selected; return state; }; return tree; }({"core":{"data":[{"a_attr":{"onclick":"window.location='../index.html';"},"children":[{"a_attr":{"title":"Abstraction level for help with generating diagrams for multiple targets with PlantUML being the primary target.","onclick":"window.location='../diagram/package-summary.html';"},"children":[{"a_attr":{"title":"Connection between two diagram elements.","onclick":"window.location='../diagram/Connection.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-diagram-Connection","text":"Connection","type":"leaf"},{"a_attr":{"title":"A diagram contains connected diagram elements.","onclick":"window.location='../diagram/Diagram.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-diagram-Diagram","text":"Diagram","type":"leaf"},{"a_attr":{"title":"Base class for diagram elements.","onclick":"window.location='../diagram/DiagramElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-diagram-DiagramElement","text":"DiagramElement","type":"leaf"},{"a_attr":{"title":"End pseudo-state.","onclick":"window.location='../diagram/End.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-diagram-End","text":"End","type":"leaf"},{"a_attr":{"title":"Link can have text, location (href) and a tooltip.","onclick":"window.location='../diagram/Link.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-diagram-Link","text":"Link","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.diagram\\model\\doc\\note.md (The system cannot find the file specified)","onclick":"window.location='../diagram/Note.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-diagram-Note","text":"Note","type":"leaf"},{"a_attr":{"title":"Note placement for diagram elements. ","onclick":"window.location='../diagram/NotePlacement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EEnum.gif","id":"nsd-app-nav-item-EEnum-diagram-NotePlacement","text":"NotePlacement","type":"leaf"},{"a_attr":{"title":"Start pseudo-state.","onclick":"window.location='../diagram/Start.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-diagram-Start","text":"Start","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.diagram\\model\\doc\\style.md (The system cannot find the file specified)","onclick":"window.location='../diagram/Style.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-diagram-Style","text":"Style","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-diagram","text":"Diagram"},{"a_attr":{"title":"Nasdanika Core Exec model classes can be used to create models for generation of resources such as files and their content. ","onclick":"window.location='../exec/package-summary.html';"},"children":[{"a_attr":{"title":"Content classes are adapted to SupplierFactory<InputStream> to supply content for files, HTTP Call bodies etc. in a form of input streams.","onclick":"window.location='../exec/content/package-summary.html';"},"children":[{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.exec\\model\\doc\\content\\base-64.md (The system cannot find the file specified)","onclick":"window.location='../exec/content/Base64.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec/content-Base64","text":"Base64","type":"leaf"},{"a_attr":{"onclick":"window.location='../exec/content/Filter.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec/content-Filter","text":"Filter","type":"leaf"},{"a_attr":{"onclick":"window.location='../exec/content/Interpolator.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec/content-Interpolator","text":"Interpolator","type":"leaf"},{"a_attr":{"onclick":"window.location='../exec/content/Markdown.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec/content-Markdown","text":"Markdown","type":"leaf"},{"a_attr":{"title":"Loads resource from a URL specified as resource value. ","onclick":"window.location='../exec/content/Resource.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec/content-Resource","text":"Resource","type":"leaf"},{"a_attr":{"title":"Loads resource from a URL specified as resource value. ","onclick":"window.location='../exec/content/Text.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec/content-Text","text":"Text","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-exec/content","text":"Content"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.exec\\model\\doc\\resources\\package-summary.md (The system cannot find the file specified)","onclick":"window.location='../exec/resources/package-summary.html';"},"children":[{"a_attr":{"title":"A named collection of other resources, a folder/directory. ","onclick":"window.location='../exec/resources/Container.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec/resources-Container","text":"Container","type":"leaf"},{"a_attr":{"title":"File is a named container of binary contents (bytes) which can be set and retrieved as an input stream. ","onclick":"window.location='../exec/resources/File.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec/resources-File","text":"File","type":"leaf"},{"a_attr":{"title":"Defines an action to take when a resource with the same name already exists.","onclick":"window.location='../exec/resources/ReconcileAction.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EEnum.gif","id":"nsd-app-nav-item-EEnum-exec/resources-ReconcileAction","text":"ReconcileAction","type":"leaf"},{"a_attr":{"title":"A base class of File and Container.","onclick":"window.location='../exec/resources/Resource.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec/resources-Resource","text":"Resource","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-exec/resources","text":"Resources"},{"a_attr":{"title":"Try-catch-finally block. ","onclick":"window.location='../exec/Block.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec-Block","text":"Block","type":"leaf"},{"a_attr":{"title":"Calls a Java method and returns the result. ","onclick":"window.location='../exec/Call.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec-Call","text":"Call","type":"leaf"},{"a_attr":{"title":"Configurator allows to inject additional properties to the context. ","onclick":"window.location='../exec/Configurator.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec-Configurator","text":"Configurator","type":"leaf"},{"a_attr":{"title":"Evaluates JavaScript script. ","onclick":"window.location='../exec/Eval.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec-Eval","text":"Eval","type":"leaf"},{"a_attr":{"title":"Fails execution with a supplied message. ","onclick":"window.location='../exec/Fail.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec-Fail","text":"Fail","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.exec\\model\\doc\\list.md (The system cannot find the file specified)","onclick":"window.location='../exec/List.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec-List","text":"List","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.exec\\model\\doc\\map.md (The system cannot find the file specified)","onclick":"window.location='../exec/Map.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec-Map","text":"Map","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.exec\\model\\doc\\property.md (The system cannot find the file specified)","onclick":"window.location='../exec/Property.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-exec-Property","text":"Property","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-exec","text":"Exec"},{"a_attr":{"title":"This package contains classes for defining \u201chow to do things\u201d in a non-linear visual form using journeys. ","onclick":"window.location='package-summary.html';"},"children":[{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\activity.md (The system cannot find the path specified)","onclick":"window.location='Activity.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-Activity","text":"Activity&lt;T&gt;","type":"leaf"},{"a_attr":{"title":"Mapping of activity key to an activity or a flow. ","onclick":"window.location='ActivityEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-ActivityEntry","text":"ActivityEntry","type":"leaf"},{"a_attr":{"onclick":"window.location='Artifact.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-Artifact","text":"Artifact","type":"leaf"},{"a_attr":{"title":"Mapping of artifact key to an artifact. ","onclick":"window.location='ArtifactEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-ArtifactEntry","text":"ArtifactEntry","type":"leaf"},{"a_attr":{"onclick":"window.location='ArtifactParticipantResponsibility.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-ArtifactParticipantResponsibility","text":"ArtifactParticipantResponsibility","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\call.md (The system cannot find the path specified)","onclick":"window.location='Call.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-Call","text":"Call","type":"leaf"},{"a_attr":{"title":"Mapping of call key to a call. ","onclick":"window.location='CallEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-CallEntry","text":"CallEntry","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\choice.md (The system cannot find the path specified)","onclick":"window.location='Choice.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-Choice","text":"Choice","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\end.md (The system cannot find the path specified)"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","state":{"selected":true},"id":"nsd-app-nav-item-EClass-flow-End","text":"End","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\entry-point.md (The system cannot find the path specified)","onclick":"window.location='EntryPoint.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-EntryPoint","text":"EntryPoint","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\exit-point.md (The system cannot find the path specified)","onclick":"window.location='ExitPoint.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-ExitPoint","text":"ExitPoint","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\expansion-input.md (The system cannot find the path specified)","onclick":"window.location='ExpansionInput.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-ExpansionInput","text":"ExpansionInput","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\expansion-output.md (The system cannot find the path specified)","onclick":"window.location='ExpansionOutput.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-ExpansionOutput","text":"ExpansionOutput","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\journey.md (The system cannot find the path specified)","onclick":"window.location='Flow.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-Flow","text":"Flow","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\journey-element.md (The system cannot find the path specified)","onclick":"window.location='FlowElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-FlowElement","text":"FlowElement&lt;T&gt;","type":"leaf"},{"a_attr":{"title":"Mapping of flow element key to a flow element. ","onclick":"window.location='FlowElementEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-FlowElementEntry","text":"FlowElementEntry","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\fork.md (The system cannot find the path specified)","onclick":"window.location='Fork.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-Fork","text":"Fork","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\input-pin.md (The system cannot find the path specified)","onclick":"window.location='InputPin.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-InputPin","text":"InputPin","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\join.md (The system cannot find the path specified)","onclick":"window.location='Join.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-Join","text":"Join","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\output-pin.md (The system cannot find the path specified)","onclick":"window.location='OutputPin.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-OutputPin","text":"OutputPin","type":"leaf"},{"a_attr":{"title":"Package is a container of sub-packages, flows, resources, participants, and artifacts.","onclick":"window.location='Package.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-Package","text":"Package","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\package-element.md (The system cannot find the file specified)","onclick":"window.location='PackageElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-PackageElement","text":"PackageElement&lt;T&gt;","type":"leaf"},{"a_attr":{"title":"Mapping of sub-package key to a sub-package. ","onclick":"window.location='PackageEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-PackageEntry","text":"PackageEntry","type":"leaf"},{"a_attr":{"onclick":"window.location='Participant.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-Participant","text":"Participant","type":"leaf"},{"a_attr":{"title":"Mapping of participant key to a participant. ","onclick":"window.location='ParticipantEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-ParticipantEntry","text":"ParticipantEntry","type":"leaf"},{"a_attr":{"onclick":"window.location='ParticipantResponsibility.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-ParticipantResponsibility","text":"ParticipantResponsibility&lt;T&gt;","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\pseudo-state.md (The system cannot find the path specified)","onclick":"window.location='PseudoState.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-PseudoState","text":"PseudoState","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\relationship.md (The system cannot find the path specified)","onclick":"window.location='Relationship.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-Relationship","text":"Relationship","type":"leaf"},{"a_attr":{"title":"Mapping of relationship keys (qualifiers) to a relationships. ","onclick":"window.location='RelationshipEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-RelationshipEntry","text":"RelationshipEntry","type":"leaf"},{"a_attr":{"title":"Mapping of representation key to a representation (diagram). ","onclick":"window.location='RepresentationEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-RepresentationEntry","text":"RepresentationEntry","type":"leaf"},{"a_attr":{"onclick":"window.location='Resource.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-Resource","text":"Resource","type":"leaf"},{"a_attr":{"title":"Mapping of resource key to a resource. ","onclick":"window.location='ResourceEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-ResourceEntry","text":"ResourceEntry","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\service.md (The system cannot find the path specified)","onclick":"window.location='Service.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-Service","text":"Service","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\service-provider.md (The system cannot find the file specified)","onclick":"window.location='ServiceProvider.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-ServiceProvider","text":"ServiceProvider&lt;T&gt;","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\start.md (The system cannot find the path specified)","onclick":"window.location='Start.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-Start","text":"Start","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\transition.md (The system cannot find the path specified)","onclick":"window.location='Transition.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-Transition","text":"Transition","type":"leaf"},{"a_attr":{"title":"Mapping of output key to a transition. ","onclick":"window.location='TransitionEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-flow-TransitionEntry","text":"TransitionEntry","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-flow","text":"Flow"},{"a_attr":{"title":"Nasdanika Ncore model contains foundational model elements used in other models.","onclick":"window.location='../ncore/package-summary.html';"},"children":[{"a_attr":{"onclick":"window.location='../ncore/Adaptable.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-ncore-Adaptable","text":"Adaptable","type":"leaf"},{"a_attr":{"title":"Duration is an amount of time in the ISO-8601 Duration format. ","onclick":"window.location='../ncore/Duration.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-ncore-Duration","text":"Duration","type":"leaf"},{"a_attr":{"onclick":"window.location='../ncore/IMarked.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-ncore-IMarked","text":"IMarked","type":"leaf"},{"a_attr":{"onclick":"window.location='../ncore/IMarker.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-ncore-IMarker","text":"IMarker","type":"leaf"},{"a_attr":{"title":"Instant is a single instantaneous point on the time-line. ","onclick":"window.location='../ncore/Instant.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-ncore-Instant","text":"Instant","type":"leaf"},{"a_attr":{"onclick":"window.location='../ncore/Integer.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-Integer","text":"Integer","type":"leaf"},{"a_attr":{"onclick":"window.location='../ncore/IntegerProperty.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-IntegerProperty","text":"IntegerProperty","type":"leaf"},{"a_attr":{"onclick":"window.location='../ncore/List.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-List","text":"List","type":"leaf"},{"a_attr":{"onclick":"window.location='../ncore/ListProperty.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-ListProperty","text":"ListProperty","type":"leaf"},{"a_attr":{"onclick":"window.location='../ncore/Map.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-Map","text":"Map","type":"leaf"},{"a_attr":{"onclick":"window.location='../ncore/MapProperty.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-MapProperty","text":"MapProperty","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.ncore\\model\\doc\\marked.md (The system cannot find the file specified)","onclick":"window.location='../ncore/Marked.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-ncore-Marked","text":"Marked","type":"leaf"},{"a_attr":{"onclick":"window.location='../ncore/Marker.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-Marker","text":"Marker","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.ncore\\model\\doc\\model-element.md (The system cannot find the file specified)","onclick":"window.location='../ncore/ModelElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-ModelElement","text":"ModelElement","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.ncore\\model\\doc\\named-element.md (The system cannot find the file specified)","onclick":"window.location='../ncore/NamedElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-NamedElement","text":"NamedElement","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.ncore\\model\\doc\\period.md (The system cannot find the file specified)","onclick":"window.location='../ncore/Period.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-Period","text":"Period","type":"leaf"},{"a_attr":{"onclick":"window.location='../ncore/Property.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-Property","text":"Property","type":"leaf"},{"a_attr":{"onclick":"window.location='../ncore/Reference.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-Reference","text":"Reference&lt;T&gt;","type":"leaf"},{"a_attr":{"onclick":"window.location='../ncore/String.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-String","text":"String","type":"leaf"},{"a_attr":{"onclick":"window.location='../ncore/StringProperty.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-StringProperty","text":"StringProperty","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.ncore\\model\\doc\\temporal.md (The system cannot find the file specified)","onclick":"window.location='../ncore/Temporal.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-ncore-Temporal","text":"Temporal","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-ncore","text":"Ncore"}],"id":"nsd-app-nav-item-0d4c6f44-1716-4d86-a5ce-b96fcc5a5e1d","text":"Core"},{"a_attr":{"onclick":"window.location='../../html/index.html';"},"children":[{"a_attr":{"title":"Application model.","onclick":"window.location='../../html/app/package-summary.html';"},"children":[{"a_attr":{"title":"Actions form a hierarchy. ","onclick":"window.location='../../html/app/Action.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-app-Action","text":"Action","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/app/ActionReference.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-app-ActionReference","text":"ActionReference","type":"leaf"},{"a_attr":{"title":"Content panel displays the primary page conent and can have a navigation bar and several navigation panels.","onclick":"window.location='../../html/app/ContentPanel.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-app-ContentPanel","text":"ContentPanel","type":"leaf"},{"a_attr":{"title":"Footer is displayed below the navigation and content panels.","onclick":"window.location='../../html/app/Footer.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-app-Footer","text":"Footer","type":"leaf"},{"a_attr":{"title":"Page header has a title on the left and a navigation bar on the right.","onclick":"window.location='../../html/app/Header.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-app-Header","text":"Header","type":"leaf"},{"a_attr":{"title":"Label is a text and an icon with a tooltip, notification badge, and help dialog. ","onclick":"window.location='../../html/app/Label.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-app-Label","text":"Label","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/app/Link.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-app-Link","text":"Link","type":"leaf"},{"a_attr":{"title":"Navigation bar has a brand and navigation items.","onclick":"window.location='../../html/app/NavigationBar.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-app-NavigationBar","text":"NavigationBar","type":"leaf"},{"a_attr":{"title":"Navigation panel contains navigation items. ","onclick":"window.location='../../html/app/NavigationPanel.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-app-NavigationPanel","text":"NavigationPanel","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/app/NavigationPanelStyle.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EEnum.gif","id":"nsd-app-nav-item-EEnum-app-NavigationPanelStyle","text":"NavigationPanelStyle","type":"leaf"},{"a_attr":{"title":"Application page consisting of several parts - header, navigation bar, navigation panel, content panel, and footer. ","onclick":"window.location='../../html/app/Page.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-app-Page","text":"Page","type":"leaf"},{"a_attr":{"title":"Base class for page parts.","onclick":"window.location='../../html/app/PagePart.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-app-PagePart","text":"PagePart","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/app/SectionStyle.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EEnum.gif","id":"nsd-app-nav-item-EEnum-app-SectionStyle","text":"SectionStyle","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-app","text":"App"},{"a_attr":{"title":"Model of Bootstrap elements.","onclick":"window.location='../../html/bootstrap/package-summary.html';"},"children":[{"a_attr":{"onclick":"window.location='../../html/bootstrap/Accordion.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Accordion","text":"Accordion","type":"leaf"},{"a_attr":{"title":"List group with actions (links).","onclick":"window.location='../../html/bootstrap/ActionGroup.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-ActionGroup","text":"ActionGroup","type":"leaf"},{"a_attr":{"title":"Base class for action group items","onclick":"window.location='../../html/bootstrap/ActionGroupItem.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-ActionGroupItem","text":"ActionGroupItem","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/Alert.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Alert","text":"Alert","type":"leaf"},{"a_attr":{"title":"This class is used for configuring common aspects of HTML and Bootstrap elements such as background, spacing, text, etc.","onclick":"window.location='../../html/bootstrap/Appearance.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Appearance","text":"Appearance","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.html.model.bootstrap\\model\\doc\\appearance-entry.md (The system cannot find the path specified)","onclick":"window.location='../../html/bootstrap/AppearanceEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-AppearanceEntry","text":"AppearanceEntry","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/Badge.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Badge","text":"Badge","type":"leaf"},{"a_attr":{"title":"An HTML element with Bootstrap appearance.","onclick":"window.location='../../html/bootstrap/BootstrapElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-BootstrapElement","text":"BootstrapElement","type":"leaf"},{"a_attr":{"title":"Border configuration specifies border location and color.","onclick":"window.location='../../html/bootstrap/Border.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Border","text":"Border","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/Breadcrumb.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Breadcrumb","text":"Breadcrumb","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/Breakpoint.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-bootstrap-Breakpoint","text":"Breakpoint","type":"leaf"},{"a_attr":{"title":"TODO - size - enum? Block, active, disabled.","onclick":"window.location='../../html/bootstrap/Button.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Button","text":"Button","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/ButtonGroup.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-ButtonGroup","text":"ButtonGroup","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/ButtonToolbar.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-ButtonToolbar","text":"ButtonToolbar","type":"leaf"},{"a_attr":{"title":"Bootstrap card.","onclick":"window.location='../../html/bootstrap/Card.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Card","text":"Card","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/Collapse.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Collapse","text":"Collapse","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/Color.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-bootstrap-Color","text":"Color","type":"leaf"},{"a_attr":{"title":"Container row column.","onclick":"window.location='../../html/bootstrap/Column.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Column","text":"Column","type":"leaf"},{"a_attr":{"title":"Column width for a given breakpoint.","onclick":"window.location='../../html/bootstrap/ColumnWidth.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-ColumnWidth","text":"ColumnWidth","type":"leaf"},{"a_attr":{"title":"Bootstrap layout container contains rows which in turn contain columns.","onclick":"window.location='../../html/bootstrap/Container.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Container","text":"Container","type":"leaf"},{"a_attr":{"title":"Action Group Item with content. ","onclick":"window.location='../../html/bootstrap/ContentActionGroupItem.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-ContentActionGroupItem","text":"ContentActionGroupItem","type":"leaf"},{"a_attr":{"title":"HTML DIV with bootstrap styling","onclick":"window.location='../../html/bootstrap/Div.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Div","text":"Div","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/Dropdown.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Dropdown","text":"Dropdown","type":"leaf"},{"a_attr":{"title":"Defines element floating - left or right - for a given breakpoint.","onclick":"window.location='../../html/bootstrap/Float.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Float","text":"Float","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/Form.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Form","text":"Form","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/FormGroup.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-FormGroup","text":"FormGroup","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/InputGroup.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-InputGroup","text":"InputGroup","type":"leaf"},{"a_attr":{"title":"Base class for model elements which can be active, disabled, and have color.","onclick":"window.location='../../html/bootstrap/Item.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Item","text":"Item","type":"leaf"},{"a_attr":{"title":"Click on the item navigates to the link URL.","onclick":"window.location='../../html/bootstrap/LinkActionGroupItem.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-LinkActionGroupItem","text":"LinkActionGroupItem","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/ListGroup.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-ListGroup","text":"ListGroup","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/Modal.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Modal","text":"Modal","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/Navbar.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Navbar","text":"Navbar","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/Navs.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Navs","text":"Navs","type":"leaf"},{"a_attr":{"title":"HTML page with bootstrap elements in the head - meta, stylesheets, and scripts. ","onclick":"window.location='../../html/bootstrap/Page.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Page","text":"Page","type":"leaf"},{"a_attr":{"title":"Container rows","onclick":"window.location='../../html/bootstrap/Row.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Row","text":"Row","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/Size.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-bootstrap-Size","text":"Size","type":"leaf"},{"a_attr":{"title":"Spacing - padding or margin. ","onclick":"window.location='../../html/bootstrap/Spacing.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Spacing","text":"Spacing","type":"leaf"},{"a_attr":{"title":"Bootstrap table","onclick":"window.location='../../html/bootstrap/Table.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Table","text":"Table","type":"leaf"},{"a_attr":{"title":"Table cell - regular or header.","onclick":"window.location='../../html/bootstrap/TableCell.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-TableCell","text":"TableCell","type":"leaf"},{"a_attr":{"title":"Configuration of bootstrap table","onclick":"window.location='../../html/bootstrap/TableConfiguration.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-bootstrap-TableConfiguration","text":"TableConfiguration","type":"leaf"},{"a_attr":{"title":"Table header.","onclick":"window.location='../../html/bootstrap/TableHeader.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-TableHeader","text":"TableHeader","type":"leaf"},{"a_attr":{"title":"Table row.","onclick":"window.location='../../html/bootstrap/TableRow.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-TableRow","text":"TableRow","type":"leaf"},{"a_attr":{"title":"Base class for containers of rows - table, header, body, footer.","onclick":"window.location='../../html/bootstrap/TableRowContainer.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-TableRowContainer","text":"TableRowContainer","type":"leaf"},{"a_attr":{"title":"Table section - body or footer, header has its own class.","onclick":"window.location='../../html/bootstrap/TableSection.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-TableSection","text":"TableSection","type":"leaf"},{"a_attr":{"title":"HTML tag with Bootstrap appearance","onclick":"window.location='../../html/bootstrap/Tag.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Tag","text":"Tag","type":"leaf"},{"a_attr":{"title":"Text styling.","onclick":"window.location='../../html/bootstrap/Text.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Text","text":"Text","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/TextAlignment.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-bootstrap-TextAlignment","text":"TextAlignment","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/TextTransform.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-bootstrap-TextTransform","text":"TextTransform","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/TextWeight.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-bootstrap-TextWeight","text":"TextWeight","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/Theme.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-bootstrap-Theme","text":"Theme","type":"leaf"},{"a_attr":{"onclick":"window.location='../../html/bootstrap/Tooltip.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-bootstrap-Tooltip","text":"Tooltip","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-bootstrap","text":"Bootstrap"},{"a_attr":{"title":"HTML model","onclick":"window.location='../../html/html/package-summary.html';"},"children":[{"a_attr":{"title":"Base class for other HTML and bootstrap elements.","onclick":"window.location='../../html/html/HtmlElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html-HtmlElement","text":"HtmlElement","type":"leaf"},{"a_attr":{"title":"HTML page. The name attribute is output as title tag in the head. ","onclick":"window.location='../../html/html/Page.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html-Page","text":"Page","type":"leaf"},{"a_attr":{"title":"Script with code stored in the model element code attribute.","onclick":"window.location='../../html/html/Script.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html-Script","text":"Script","type":"leaf"},{"a_attr":{"title":"References external script.","onclick":"window.location='../../html/html/ScriptReference.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html-ScriptReference","text":"ScriptReference","type":"leaf"},{"a_attr":{"title":"CSS stylesheet with code stored in the model element code attribute.","onclick":"window.location='../../html/html/Stylesheet.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html-Stylesheet","text":"Stylesheet","type":"leaf"},{"a_attr":{"title":"Reference to an external stylesheet.","onclick":"window.location='../../html/html/StylesheetReference.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html-StylesheetReference","text":"StylesheetReference","type":"leaf"},{"a_attr":{"title":"HTML Tag","onclick":"window.location='../../html/html/Tag.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html-Tag","text":"Tag","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-html","text":"Html"}],"id":"nsd-app-nav-item-5cb4d043-79ca-40be-a9c8-a52280e2dc86","text":"HTML"},{"a_attr":{"title":"One of definitions of engineering is \u201cThe action of working artfully to bring something about.\u201d Bringing something of value about is usually quite a lot of effort. ","onclick":"window.location='../../engineering/package-summary.html';"},"children":[{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.engineering\\model\\doc\\journey\\package-summary.md (The system cannot find the file specified)","onclick":"window.location='../../engineering/journey/package-summary.html';"},"children":[{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.engineering\\model\\doc\\flow\\activity.md (The system cannot find the path specified)","onclick":"window.location='../../engineering/journey/Activity.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/journey-Activity","text":"Activity","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.engineering\\model\\doc\\flow\\journey.md (The system cannot find the path specified)","onclick":"window.location='../../engineering/journey/Journey.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/journey-Journey","text":"Journey","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-engineering/journey","text":"Journey"},{"a_attr":{"title":"Aim is the base class for things to which engineered capabilities and other aims can be aligned. ","onclick":"window.location='../../engineering/Aim.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Aim","text":"Aim","type":"leaf"},{"a_attr":{"title":"Something that can be aligned to aims by alignments - aims or endeavors.","onclick":"window.location='../../engineering/Alignable.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-engineering-Alignable","text":"Alignable","type":"leaf"},{"a_attr":{"title":"An association class between aims and engineered capabilities. ","onclick":"window.location='../../engineering/Alignment.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Alignment","text":"Alignment","type":"leaf"},{"a_attr":{"title":"Allocation of engineer\u2019s capacity to spend on a particular engineered element and issue category on a particular endeavor. ","onclick":"window.location='../../engineering/Allocation.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Allocation","text":"Allocation","type":"leaf"},{"a_attr":{"title":"Capability is something that can be required by an issue to start working on it. ","onclick":"window.location='../../engineering/Capability.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Capability","text":"Capability","type":"leaf"},{"a_attr":{"title":"Capacity is contained under Engineer and defines how much total effort or funds the containing engineer has to spend on a particular endeavor. ","onclick":"window.location='../../engineering/Capacity.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Capacity","text":"Capacity","type":"leaf"},{"a_attr":{"title":"Decision is an issue, which is also an aim, i.e. endeavors, such as issues, and other aims such as other decisions may be aligned to it. ","onclick":"window.location='../../engineering/Decision.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Decision","text":"Decision","type":"leaf"},{"a_attr":{"title":"Directory is a container of named elements, e.g. documents, links, or other directories. ","onclick":"window.location='../../engineering/Directory.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Directory","text":"Directory","type":"leaf"},{"a_attr":{"title":"Document may contain content, table of contents, and other documents as sections. ","onclick":"window.location='../../engineering/Document.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Document","text":"Document","type":"leaf"},{"a_attr":{"title":"Endeavor is a base class for things which take time, effort, and money to achieve some benefit - increments, and engineered capabilities - issues, features, and releases. ","onclick":"window.location='../../engineering/Endeavor.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Endeavor","text":"Endeavor","type":"leaf"},{"a_attr":{"title":"Engineers are entities, people or organizations, owning engineered elements and working on endeavors, e.g. issues. ","onclick":"window.location='../../engineering/Engineer.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Engineer","text":"Engineer","type":"leaf"},{"a_attr":{"title":"Engineered capability extends both endeavor and capability and is a base class for issue, feature, and release. ","onclick":"window.location='../../engineering/EngineeredCapability.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-EngineeredCapability","text":"EngineeredCapability","type":"leaf"},{"a_attr":{"title":"Engineered element is something that is \u201cbrought about\u201d by engineers working on issues associated with the engineered element. ","onclick":"window.location='../../engineering/EngineeredElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-EngineeredElement","text":"EngineeredElement","type":"leaf"},{"a_attr":{"title":"Event is a named temporal. ","onclick":"window.location='../../engineering/Event.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Event","text":"Event","type":"leaf"},{"a_attr":{"title":"Feature is a unit of consumption of product functionality. ","onclick":"window.location='../../engineering/Feature.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Feature","text":"Feature","type":"leaf"},{"a_attr":{"title":"Discussion forum which can contain sub-forums and discussion topics. ","onclick":"window.location='../../engineering/Forum.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Forum","text":"Forum","type":"leaf"},{"a_attr":{"title":"Goal is an aim defined under a persona and its sub-types - engineer and organization. ","onclick":"window.location='../../engineering/Goal.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Goal","text":"Goal","type":"leaf"},{"a_attr":{"title":"Increment is a period of time to plan releases and schedule issues for. ","onclick":"window.location='../../engineering/Increment.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Increment","text":"Increment","type":"leaf"},{"a_attr":{"title":"Issue is a unit of work to accomplish to achieve a desired outcome on its containing engineered element, e.g.: New functionality in a module, New or refined persona goals, New skills acquired by an engineer, Improved organization processes. ","onclick":"window.location='../../engineering/Issue.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Issue","text":"Issue","type":"leaf"},{"a_attr":{"title":"A mechanism for grouping/tagging issues. ","onclick":"window.location='../../engineering/IssueCategory.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-IssueCategory","text":"IssueCategory","type":"leaf"},{"a_attr":{"title":"Issue priority, e.g. Low, Medium, High. ","onclick":"window.location='../../engineering/IssuePriority.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-IssuePriority","text":"IssuePriority","type":"leaf"},{"a_attr":{"title":"Issue severity, e.g. Feature, Minor, Major, Crash. ","onclick":"window.location='../../engineering/IssueSeverity.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-IssueSeverity","text":"IssueSeverity","type":"leaf"},{"a_attr":{"title":"Issue status, e.g. Open, In Progress, Done. ","onclick":"window.location='../../engineering/IssueStatus.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-IssueStatus","text":"IssueStatus","type":"leaf"},{"a_attr":{"title":"Key Results are specific measures used to track achievement of their containing objective. ","onclick":"window.location='../../engineering/KeyResult.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-KeyResult","text":"KeyResult","type":"leaf"},{"a_attr":{"title":"Link to an external URL. ","onclick":"window.location='../../engineering/Link.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Link","text":"Link","type":"leaf"},{"a_attr":{"title":"A message in a discussion topic authored by an engineer on a specific date.","onclick":"window.location='../../engineering/Message.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Message","text":"Message","type":"leaf"},{"a_attr":{"title":"Model element is the root class for all other model classes. ","onclick":"window.location='../../engineering/ModelElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-ModelElement","text":"ModelElement","type":"leaf"},{"a_attr":{"title":"Module is a part of product or another module. ","onclick":"window.location='../../engineering/Module.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Module","text":"Module","type":"leaf"},{"a_attr":{"title":"Named element, as the name suggests, is a base class for model elements with a name.","onclick":"window.location='../../engineering/NamedElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-NamedElement","text":"NamedElement","type":"leaf"},{"a_attr":{"title":"References a named element. ","onclick":"window.location='../../engineering/NamedElementReference.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-NamedElementReference","text":"NamedElementReference","type":"leaf"},{"a_attr":{"title":"Note is used to track issue progress as well as to discuss issue implementation. ","onclick":"window.location='../../engineering/Note.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Note","text":"Note","type":"leaf"},{"a_attr":{"title":"Objective is something that should be achieved as part of endeavor such as an increment or a release. ","onclick":"window.location='../../engineering/Objective.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Objective","text":"Objective","type":"leaf"},{"a_attr":{"title":"Organization is an engineer which can contain other engineers, and organizations as such. ","onclick":"window.location='../../engineering/Organization.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Organization","text":"Organization","type":"leaf"},{"a_attr":{"title":"Personas represent represent the different types of consumers of products and services. ","onclick":"window.location='../../engineering/Persona.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Persona","text":"Persona","type":"leaf"},{"a_attr":{"title":"Principles are general rules and guidelines, intended to be enduring and seldom amended, that inform and support the way in which an engineer or an organization sets about achieving its goals or addressing goals of their consumers modeled as personas...","onclick":"window.location='../../engineering/Principle.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Principle","text":"Principle","type":"leaf"},{"a_attr":{"title":"Product is an object or a system made available for consumer use. ","onclick":"window.location='../../engineering/Product.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Product","text":"Product","type":"leaf"},{"a_attr":{"title":"Release is a unit of delivering product features to its consumers. ","onclick":"window.location='../../engineering/Release.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Release","text":"Release","type":"leaf"},{"a_attr":{"title":"Table of Contents configuration - role, depth, header. ","onclick":"window.location='../../engineering/TableOfContents.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-TableOfContents","text":"TableOfContents","type":"leaf"},{"a_attr":{"title":"Topic is a group of related messages in a forum. ","onclick":"window.location='../../engineering/Topic.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering-Topic","text":"Topic","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-engineering","text":"Engineering"}]},"types":{"leaf":{"icon":"jstree-file"}},"plugins":["state","types"],"state":{"key":"doc-navigation-panel"}}));
+});</script>
+        </div>
+        <div class="col nsd-app-content-panel">
+          <div class="container-fluid">
+            <div class="row nsd-app-content-panel-breadcrumb-row">
+              <div class="col">
+                <nav aria-label="breadcrumb" class="nsd-app-content-panel-breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <a href="../index.html">Core</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="package-summary.html" title="This package contains classes for defining &ldquo;how to do things&rdquo; in a non-linear visual form using journeys. ">
+                        <img src="https://www.nasdanika.org/resources/images/ecore/EPackage.gif" class="nsd-app-label-icon"/>Flow</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                      <a title="Error loading documentation: java.io.FileNotFoundException: C:\Users\Pavel\git\nasdanika.github.io\target\models\org.nasdanika.flow\model\doc\flow\end.md (The system cannot find the path specified)">
+                        <img src="https://www.nasdanika.org/resources/images/ecore/EClass.gif" class="nsd-app-label-icon"/>End</a>
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+            <div class="row nsd-app-content-panel-title-and-items-row">
+              <div class="col-auto">
+                <H1><span title="Error loading documentation: java.io.FileNotFoundException: C:\Users\Pavel\git\nasdanika.github.io\target\models\org.nasdanika.flow\model\doc\flow\end.md (The system cannot find the path specified)" class="nsd-app-content-panel-title"><img src="https://www.nasdanika.org/resources/images/ecore/EClass.gif" class="nsd-app-label-icon"/>End</span>
+                </H1>
+              </div>
+            </div>
+            <div class="row nsd-app-content-panel-content-row">
+              <div class="col">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col"><div class="markdown-body"><p>Error loading documentation: java.io.FileNotFoundException: C:\Users\Pavel\git\nasdanika.github.io\target\models\org.nasdanika.flow\model\doc\flow\end.md (The system cannot find the path specified)</p>
+</div><img src="data:image/png;base64, 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" usemap="#plantuml_map_8b822271-fa10-4085-8dda-63ec385dbae6"/>
+<map id="plantuml_map_8b822271-fa10-4085-8dda-63ec385dbae6" name="plantuml_map_8b822271-fa10-4085-8dda-63ec385dbae6">
+<area shape="rect" id="id1" href="" title="Error loading documentation: java.io.FileNotFoundException: C:\Users\Pavel\git
+asdanika.github.io\target\models\org.nasdanika.flow\model\doc\flow\end.md (The system cannot find the path specified)" alt="" coords="89,172,143,228"/>
+<area shape="rect" id="id2" href="PseudoState.html" title="Error loading documentation: java.io.FileNotFoundException: C:\Users\Pavel\git
+asdanika.github.io\target\models\org.nasdanika.flow\model\doc\flow\pseudo-state.md (The system cannot find the path specified)" alt="" coords="64,42,167,111"/>
+</map>
+
+<a name="supertypes">
+  <h3>Supertypes</h3>
+</a>
+<ul>
+  <li><a href="PseudoState.html">PseudoState</a></li>
+</ul></div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2><span class="nsd-app-content-panel-title">Load specification</span>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr class="bg-secondary">
+      <th>Key</th>
+      <th>Type</th>
+      <th>Homogenous</th>
+      <th>Strict containment</th>
+      <th>Exclusive with</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="text-monospace">accountable-keys</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>Keys of accountable participants relative to the containing package <code>participants/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">artifact-responsibilities</td>
+      <td><a href="ArtifactParticipantResponsibility.html">ArtifactParticipantResponsibility</a></td>
+      <td class="text-center">true</td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-monospace">calls</td>
+      <td><a href="CallEntry.html">CallEntry</a></td>
+      <td class="text-center">true</td>
+      <td class="text-center">true</td>
+      <td></td>
+      <td><p>Calls to other activities.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">consulted-keys</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>Keys of consulted participants relative to the containing package <code>participants/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">description</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>Description in HTML.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">documentation</td>
+      <td>EObject</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-monospace">informed-keys</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>Keys of informed participants relative to the containing package <code>participants/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">input-artifact-keys</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>Keys of input artifacts resolved relative to the containing package <code>artifacts/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">marker</td>
+      <td><a href="../ncore/Marker.html">Marker</a></td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-monospace">modifiers</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>A collection of boolean flags:</p>
+<ul>
+<li><code>abstract</code> - Specifies that this package element is abstract. For packages and flows it means that they contain abstract elements and must be extended to become concrete. If a package or a flow contains abstract elements and does not have abstract modifier, it is diagnosed as an error. If concrete packages and flows extend abstract ones they must override (implement) all abstract elements.</li>
+<li><code>explicit-end</code> - Applies to <a href="Flow.html">flows</a>. Specifies that the <a href="End.html">end</a> <a href="PseudoState.html">pseudo-state</a> shall not be inferred by finding flow elements with no outputs. End will either be explicitly specified or the diagram will not have an end pseudo-state.</li>
+<li><code>explicit-start</code> - Applies to flows. Specifies that the <a href="Start.html">start</a> pseudo-state shall not be inferred by finding flow elements with no inputs. Start will either be explicitly specified or the diagram will not have a start pseudo-state.</li>
+<li><code>final</code> - Specifies that this journey element cannot be overriden in journeys extending this journey. Overriding a final elemen will be diagnosed as an error. For example, in an organization some processes can be defined as journeys at higher levels of the orgnization and extended at lower levels. <code>final</code> modifier allows to specify what can be extended and what cannot. Specifying a top-level journey as final indicates that it cannot have extensions.</li>
+<li><code>optional</code> - Specifies that this element is optional. Optional elements have different apperance on diagrams.</li>
+<li><code>extension</code> - Specifies that this element is an extension for an element in one of extended packages/flows. If this modifier is present and <code>extends</code> reference is empty, then it results in a diagnostic error.</li>
+<li><code>partition</code> - Applies to flows and specifies that the flow shall be rendered as a partition (e.g. a composite state) on a digarm.</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">name</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>Element name.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">output-artifact-keys</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>Keys of output artifacts resolved relative to the containing package <code>artifacts/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">outputs</td>
+      <td><a href="TransitionEntry.html">TransitionEntry</a></td>
+      <td class="text-center">true</td>
+      <td class="text-center">true</td>
+      <td></td>
+      <td><p>Activity outbound transitions to other activities.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">participant-keys</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>Keys of participants resolved relative to the containing package <code>participants/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">properties</td>
+      <td><a href="../ncore/Property.html">Property</a></td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-monospace">prototype</td>
+      <td>T</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>This reference is set by <code>create()</code> method and points to a package element which created and configured this element.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">representations</td>
+      <td><a href="RepresentationEntry.html">RepresentationEntry</a></td>
+      <td class="text-center">true</td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-monospace">resource-keys</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>Keys of resources resolved relative to the containing package <code>resources/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">responsible-keys</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>Keys of responsible participants relative to the containing package <code>participants/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">sort-group</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-monospace">uri</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>If element&rsquo;s URI is not set then its default value is derived from the container URI and containment reference. This is a logical URI and it can be used for cross-referencing of elements in a resource-independent fashion.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">uuid</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2><span class="nsd-app-content-panel-title">All attributes</span>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr class="bg-secondary">
+      <th>Name</th>
+      <th>Type</th>
+      <th>Declaring class</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>accountableKeys</td>
+      <td>EString</td>
+      <td><a href="ParticipantResponsibility.html">ParticipantResponsibility</a></td>
+      <td><p>Keys of accountable participants relative to the containing package <code>participants/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td>consultedKeys</td>
+      <td>EString</td>
+      <td><a href="ParticipantResponsibility.html">ParticipantResponsibility</a></td>
+      <td><p>Keys of consulted participants relative to the containing package <code>participants/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td>description</td>
+      <td>EString</td>
+      <td><a href="../ncore/ModelElement.html">ModelElement</a></td>
+      <td><p>Description in HTML.</p>
+</td>
+    </tr>
+    <tr>
+      <td>informedKeys</td>
+      <td>EString</td>
+      <td><a href="ParticipantResponsibility.html">ParticipantResponsibility</a></td>
+      <td><p>Keys of informed participants relative to the containing package <code>participants/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td>inputArtifactKeys</td>
+      <td>EString</td>
+      <td><a href="FlowElement.html">FlowElement</a></td>
+      <td><p>Keys of input artifacts resolved relative to the containing package <code>artifacts/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td>modifiers</td>
+      <td>EString</td>
+      <td><a href="PackageElement.html">PackageElement</a></td>
+      <td><p>A collection of boolean flags:</p>
+<ul>
+<li><code>abstract</code> - Specifies that this package element is abstract. For packages and flows it means that they contain abstract elements and must be extended to become concrete. If a package or a flow contains abstract elements and does not have abstract modifier, it is diagnosed as an error. If concrete packages and flows extend abstract ones they must override (implement) all abstract elements.</li>
+<li><code>explicit-end</code> - Applies to <a href="Flow.html">flows</a>. Specifies that the <a href="End.html">end</a> <a href="PseudoState.html">pseudo-state</a> shall not be inferred by finding flow elements with no outputs. End will either be explicitly specified or the diagram will not have an end pseudo-state.</li>
+<li><code>explicit-start</code> - Applies to flows. Specifies that the <a href="Start.html">start</a> pseudo-state shall not be inferred by finding flow elements with no inputs. Start will either be explicitly specified or the diagram will not have a start pseudo-state.</li>
+<li><code>final</code> - Specifies that this journey element cannot be overriden in journeys extending this journey. Overriding a final elemen will be diagnosed as an error. For example, in an organization some processes can be defined as journeys at higher levels of the orgnization and extended at lower levels. <code>final</code> modifier allows to specify what can be extended and what cannot. Specifying a top-level journey as final indicates that it cannot have extensions.</li>
+<li><code>optional</code> - Specifies that this element is optional. Optional elements have different apperance on diagrams.</li>
+<li><code>extension</code> - Specifies that this element is an extension for an element in one of extended packages/flows. If this modifier is present and <code>extends</code> reference is empty, then it results in a diagnostic error.</li>
+<li><code>partition</code> - Applies to flows and specifies that the flow shall be rendered as a partition (e.g. a composite state) on a digarm.</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>EString</td>
+      <td><a href="../ncore/NamedElement.html">NamedElement</a></td>
+      <td><p>Element name.</p>
+</td>
+    </tr>
+    <tr>
+      <td>outputArtifactKeys</td>
+      <td>EString</td>
+      <td><a href="FlowElement.html">FlowElement</a></td>
+      <td><p>Keys of output artifacts resolved relative to the containing package <code>artifacts/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td>participantKeys</td>
+      <td>EString</td>
+      <td><a href="FlowElement.html">FlowElement</a></td>
+      <td><p>Keys of participants resolved relative to the containing package <code>participants/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td>resourceKeys</td>
+      <td>EString</td>
+      <td><a href="FlowElement.html">FlowElement</a></td>
+      <td><p>Keys of resources resolved relative to the containing package <code>resources/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td>responsibleKeys</td>
+      <td>EString</td>
+      <td><a href="ParticipantResponsibility.html">ParticipantResponsibility</a></td>
+      <td><p>Keys of responsible participants relative to the containing package <code>participants/</code> reference.</p>
+</td>
+    </tr>
+    <tr>
+      <td>sortGroup</td>
+      <td>EString</td>
+      <td><a href="FlowElement.html">FlowElement</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>EString</td>
+      <td><a href="PseudoState.html">PseudoState</a></td>
+      <td><p>Pseudo-state type provided by concrete sub-classes.</p>
+</td>
+    </tr>
+    <tr>
+      <td>uri</td>
+      <td>EString</td>
+      <td><a href="../ncore/ModelElement.html">ModelElement</a></td>
+      <td><p>If element&rsquo;s URI is not set then its default value is derived from the container URI and containment reference. This is a logical URI and it can be used for cross-referencing of elements in a resource-independent fashion.</p>
+</td>
+    </tr>
+    <tr>
+      <td>uuid</td>
+      <td>EString</td>
+      <td><a href="../ncore/ModelElement.html">ModelElement</a></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2><span class="nsd-app-content-panel-title">All references</span>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr class="bg-secondary">
+      <th>Name</th>
+      <th>Type</th>
+      <th>Declaring class</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>accountable</td>
+      <td><a href="Participant.html">Participant</a></td>
+      <td><a href="ParticipantResponsibility.html">ParticipantResponsibility</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>artifactResponsibilities</td>
+      <td><a href="ArtifactParticipantResponsibility.html">ArtifactParticipantResponsibility</a></td>
+      <td><a href="FlowElement.html">FlowElement</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>calls</td>
+      <td><a href="CallEntry.html">CallEntry</a></td>
+      <td><a href="FlowElement.html">FlowElement</a></td>
+      <td><p>Calls to other activities.</p>
+</td>
+    </tr>
+    <tr>
+      <td>consulted</td>
+      <td><a href="Participant.html">Participant</a></td>
+      <td><a href="ParticipantResponsibility.html">ParticipantResponsibility</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>documentation</td>
+      <td>EObject</td>
+      <td><a href="PackageElement.html">PackageElement</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>extends</td>
+      <td>T</td>
+      <td><a href="PackageElement.html">PackageElement</a></td>
+      <td><p>Elements can  extend other elements and inherit their configuration - set attributes and references. For top-level packages inheritance shall be explicitly set using <code>superPackages</code> reference. For nested packages and other package elements <code>extends</code> is derived from containing packages. For nested packages super-packages derived from containment precede explicitly specified super-packages, i.e. the explicitly specified super-packages (mix-ins) can override configuration inherited via containment.</p>
+</td>
+    </tr>
+    <tr>
+      <td>extensions</td>
+      <td>T</td>
+      <td><a href="PackageElement.html">PackageElement</a></td>
+      <td><p>Derived reference - known elements extending this element. Known means elements in the same resource set.</p>
+</td>
+    </tr>
+    <tr>
+      <td>informed</td>
+      <td><a href="Participant.html">Participant</a></td>
+      <td><a href="ParticipantResponsibility.html">ParticipantResponsibility</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>inputArtifacts</td>
+      <td><a href="Artifact.html">Artifact</a></td>
+      <td><a href="FlowElement.html">FlowElement</a></td>
+      <td><p>Input artifacts required to start working on this activity.</p>
+</td>
+    </tr>
+    <tr>
+      <td>inputs</td>
+      <td><a href="Transition.html">Transition</a></td>
+      <td><a href="FlowElement.html">FlowElement</a></td>
+      <td><p>Transitions which have this flow element as a target.</p>
+</td>
+    </tr>
+    <tr>
+      <td>invocations</td>
+      <td><a href="Call.html">Call</a></td>
+      <td><a href="FlowElement.html">FlowElement</a></td>
+      <td><p>Calls which have this flow element as a target.</p>
+</td>
+    </tr>
+    <tr>
+      <td>marker</td>
+      <td><a href="../ncore/Marker.html">Marker</a></td>
+      <td><a href="../ncore/Marked.html">Marked</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>outputArtifacts</td>
+      <td><a href="Artifact.html">Artifact</a></td>
+      <td><a href="FlowElement.html">FlowElement</a></td>
+      <td><p>Output artifacts of the activity.</p>
+</td>
+    </tr>
+    <tr>
+      <td>outputs</td>
+      <td><a href="TransitionEntry.html">TransitionEntry</a></td>
+      <td><a href="FlowElement.html">FlowElement</a></td>
+      <td><p>Activity outbound transitions to other activities.</p>
+</td>
+    </tr>
+    <tr>
+      <td>participants</td>
+      <td><a href="Participant.html">Participant</a></td>
+      <td><a href="FlowElement.html">FlowElement</a></td>
+      <td><p>Personas performing this journey element if it is an activity. Applies to all journey elements in order to group them into persona partitions.</p>
+</td>
+    </tr>
+    <tr>
+      <td>properties</td>
+      <td><a href="../ncore/Property.html">Property</a></td>
+      <td><a href="PackageElement.html">PackageElement</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>prototype</td>
+      <td>T</td>
+      <td><a href="PackageElement.html">PackageElement</a></td>
+      <td><p>This reference is set by <code>create()</code> method and points to a package element which created and configured this element.</p>
+</td>
+    </tr>
+    <tr>
+      <td>representations</td>
+      <td><a href="RepresentationEntry.html">RepresentationEntry</a></td>
+      <td><a href="PackageElement.html">PackageElement</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>resources</td>
+      <td><a href="Resource.html">Resource</a></td>
+      <td><a href="FlowElement.html">FlowElement</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>responsible</td>
+      <td><a href="Participant.html">Participant</a></td>
+      <td><a href="ParticipantResponsibility.html">ParticipantResponsibility</a></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2><span class="nsd-app-content-panel-title">All operations</span>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr class="bg-secondary">
+      <th>Name</th>
+      <th>Type</th>
+      <th>Parameters</th>
+      <th>Declaring class</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>apply</td>
+      <td>void</td>
+      <td>instance : T</td>
+      <td><a href="PackageElement.html">PackageElement</a></td>
+      <td><p>Applies configuration of this element, including inherited configuration, to the argument. This method shall be called after <code>create()</code> and shall create contained elements. Cross-reference resolution shall be done in <code>resolve()</code> which is called after <code>apply()</code> and as such contained elements are already created.</p>
+</td>
+    </tr>
+    <tr>
+      <td>create</td>
+      <td>T</td>
+      <td></td>
+      <td><a href="PackageElement.html">PackageElement</a></td>
+      <td><p>Creates a new package element of the same type as this element with <code>prototype</code> reference to this package element. For top-level packages this method also calls <code>apply()</code> and then <code>resolve()</code>.</p>
+</td>
+    </tr>
+    <tr>
+      <td>resolve</td>
+      <td>void</td>
+      <td>instance : T</td>
+      <td><a href="PackageElement.html">PackageElement</a></td>
+      <td><p>Resolves cross-references.</p>
+</td>
+    </tr>
+  </tbody>
+</table></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
