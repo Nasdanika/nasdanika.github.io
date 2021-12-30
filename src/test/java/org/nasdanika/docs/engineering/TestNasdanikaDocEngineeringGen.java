@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.codegen.ecore.genmodel.GenModel;
@@ -437,13 +438,22 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 				
 		Resource containerResource = resourceSet.getResource(URI.createURI(name + ".xml").resolve(RESOURCE_MODELS_URI), true);
 	
-		BinaryEntityContainer container = new FileSystemContainer(new File("docs"));
+		File siteDir = new File("target/model-doc/site");
+		BinaryEntityContainer container = new FileSystemContainer(siteDir);
 		for (EObject eObject : containerResource.getContents()) {
 			Diagnostician diagnostician = new Diagnostician();
 			org.eclipse.emf.common.util.Diagnostic diagnostic = diagnostician.validate(eObject);
 			assertThat(diagnostic.getSeverity()).isNotEqualTo(org.eclipse.emf.common.util.Diagnostic.ERROR);
 			generate(eObject, container, Context.EMPTY_CONTEXT, progressMonitor);
-		}		
+		}
+		
+		// Cleanup docs, keep CNAME, favicon.ico, and images directory. Copy from target/model-doc/site/nasdanika
+		Predicate<String> cleanPredicate = path -> {
+			return !"CNAME".equals(path) && !"favicon.ico".equals(path) && !path.startsWith("images/");
+		};
+
+		copy(new File(siteDir, "nasdanika"), new File("docs"), true, cleanPredicate, null);
+
 	}
 	
 	protected ResourceSet createResourceSet() {
@@ -482,7 +492,7 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 		start = System.currentTimeMillis();
 		
 		generateSite("nasdanika", progressMonitor);
-
+		
 		long cacheMisses = FeatureCacheAdapter.getMisses();
 		long cacheCalls = FeatureCacheAdapter.getCalls();
 		long cacheEfficiency = 100*(cacheCalls - cacheMisses)/cacheCalls;

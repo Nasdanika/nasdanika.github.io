@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -243,7 +244,37 @@ public class TestBase {
 				file.delete();
 			}
 		}
+	}
+		
+	public static void copy(File source, File target, boolean cleanTarget, Predicate<String> cleanPredicate, BiConsumer<File,File> listener) throws IOException {
+		if (cleanTarget && target.isDirectory()) {
+			delete(null, cleanPredicate, target.listFiles());
+		}
+		if (source.isDirectory()) {
+			target.mkdirs();
+			for (File sc: source.listFiles()) {
+				copy(sc, new File(target, sc.getName()), false, listener);
+			}
+		} else if (source.isFile()) {
+			Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);			
+			if (listener != null) {
+				listener.accept(source, target);
+			}
+		}
+	}
+	
+	public static void delete(String path, Predicate<String> deletePredicate, File... files) {
+		for (File file: files) {
+			String filePath = path == null ? file.getName() : path + "/" + file.getName();
+			if (file.exists() && (deletePredicate == null || deletePredicate.test(filePath))) {
+				if (file.isDirectory()) {
+					delete(filePath, deletePredicate, file.listFiles());
+				}
+				file.delete();
+			}
+		}
 	}	
+	
 	
 	// --- From flow tests ---
 	
