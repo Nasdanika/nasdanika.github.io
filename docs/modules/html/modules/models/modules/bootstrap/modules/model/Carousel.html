@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="EN">
+  <head>
+    <title>Carousel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cerulean/bootstrap.min.css" id="nsd-bootstrap-theme-stylesheet"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/css/app.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jstree@3.3.11/dist/themes/default/style.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/styles/default.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.21.2/dist/bootstrap-vue.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/js/common.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/js/dark-head.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jstree@3.3.11/dist/jstree.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.21.2/dist/bootstrap-vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/js/components/table.js"></script><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9BRJVLK8CC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9BRJVLK8CC');
+</script>    
+</head>
+  <body>
+    <div class="container-fluid nsd-app-container">
+      <div class="row">
+        <div class="col nsd-app-header">
+          <a href="https://www.nasdanika.org" title="Root action" class="nsd-app-header-title">
+            <img src="https://docs.nasdanika.org/images/nasdanika-logo.png" class="nsd-app-label-icon"/>Nasdanika</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col nsd-app-navbar">
+          <ul class="navbar navbar-light navbar-expand-lg">
+            <a href="../../../../../../../../index.html" class="navbar-brand">Documentation</a>
+            <button type="button" data-toggle="collapse" data-target="#nsd-1my1" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="nsd-1my1" class="collapse navbar-collapse">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                  <a href="../../../../../../../../all-issues.html" class="nav-link">All Issues</a>
+                </li>
+                <li class="nav-item">
+                  <a href="../../../../../../../../principles.html" class="nav-link">Principles</a>
+                </li>
+                <li class="nav-item">
+                  <a href="../../../../../../../../personas.html" class="nav-link">Personas</a>
+                </li>
+                <li class="nav-item">
+                  <li class="dropdown">
+                    <a role="button" data-toggle="dropdown" class="nav-link dropdown-toggle">Issue</a>
+                    <div class="dropdown-menu">
+                      <a href="../../../../../../../../issue-categories.html" class="dropdown-item">Categories</a>
+                      <a href="../../../../../../../../issue-priorities.html" class="dropdown-item">Priorities</a>
+                      <a href="../../../../../../../../issue-severities.html" class="dropdown-item">Severities</a>
+                      <a href="../../../../../../../../issue-statuses.html" class="dropdown-item">Statuses</a>
+                    </div>
+                  </li>
+                </li>
+                <li class="nav-item">
+                  <a href="../../../../../../../../objectives.html" class="nav-link">Objectives</a>
+                </li>
+                <li class="nav-item">
+                  <a href="../../../../../../../../assignments.html" class="nav-link">Assignments</a>
+                </li>
+              </ul>
+            </div>
+          </ul>
+        </div>
+      </div>
+      <div class="row nsd-app-content-row">
+        <div class="col nsd-app-navigation-panel">
+          <div class="nsd-collapse-panel bg-light text-center"><span data-toggle="collapse" data-target="#nsd-nav-panel-d342630a-0394-483a-bea1-2697885fc15e-collapsible" aria-expanded="true" aria-controls="nsd-nav-panel-d342630a-0394-483a-bea1-2697885fc15e-collapsible" title="Toggle panel" id="nsd-nav-panel-d342630a-0394-483a-bea1-2697885fc15e-collapsible-trigger" class="nsd-collapsible-trigger"><i aria-hidden="true" class="fa"></i></span>
+          </div>
+          <div id="nsd-nav-panel-d342630a-0394-483a-bea1-2697885fc15e-collapsible" style="clear:right" class="nsd-collapsible collapse show">
+            <div class="card">
+              <div class="card-header"><span data-toggle="collapse" data-target="#nsd-app-nav-item-1c88e8ef-cfc3-4b69-9221-dea0469d0782-collapsible" aria-expanded="true" aria-controls="nsd-app-nav-item-1c88e8ef-cfc3-4b69-9221-dea0469d0782-collapsible" title="Toggle card" id="nsd-app-nav-item-1c88e8ef-cfc3-4b69-9221-dea0469d0782-collapsible-trigger" class="nsd-collapsible-trigger"><i aria-hidden="true" class="fa"></i></span>
+                <a><span class="fas fa-cubes nsd-app-label-icon"></span>Products</a>
+              </div>
+              <div id="nsd-app-nav-item-1c88e8ef-cfc3-4b69-9221-dea0469d0782-collapsible" class="card-body p-1 nsd-collapsible collapse show">
+                <div id="591590ff97da8282665315c6de8bb3d954e127cf85ca3b885ceed5cc7d980df4-navigation-panel-nsd-app-nav-item-1c88e8ef-cfc3-4b69-9221-dea0469d0782"></div>
+              </div>
+            </div>
+            <script>$(document).ready( function() {
+$('#591590ff97da8282665315c6de8bb3d954e127cf85ca3b885ceed5cc7d980df4-navigation-panel-nsd-app-nav-item-1c88e8ef-cfc3-4b69-9221-dea0469d0782').jstree(function(tree) { tree.state.filter = function(state) { delete state.core.selected; return state; }; return tree; }({"core":{"data":[{"a_attr":{"onclick":"window.location='../../../../../../../core/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/cli/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-d93f1e37fa934ff2d87b8ec203d9e874405223b3742cfdc3f783ce60e2919bda","text":"CLI","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/common/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-c4d46ef2ebac5b6a3cee7d66bcd04948eeec1e9fb60149e4e8a12dacb4e9c55d","text":"Common","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/diagram/index.html';"},"children":[{"a_attr":{"title":"Abstraction level for help with generating diagrams for multiple targets with PlantUML being the primary target.","onclick":"window.location='../../../../../../../core/modules/diagram/modules/model/index.html';"},"children":[{"a_attr":{"title":"Connection between two diagram elements.","onclick":"window.location='../../../../../../../core/modules/diagram/modules/model/Connection.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/diagram/modules/model-Connection","text":"Connection","type":"leaf"},{"a_attr":{"title":"A diagram contains connected diagram elements.","onclick":"window.location='../../../../../../../core/modules/diagram/modules/model/Diagram.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/diagram/modules/model-Diagram","text":"Diagram","type":"leaf"},{"a_attr":{"title":"Base class for diagram elements.","onclick":"window.location='../../../../../../../core/modules/diagram/modules/model/DiagramElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/diagram/modules/model-DiagramElement","text":"DiagramElement","type":"leaf"},{"a_attr":{"title":"End pseudo-state.","onclick":"window.location='../../../../../../../core/modules/diagram/modules/model/End.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/diagram/modules/model-End","text":"End","type":"leaf"},{"a_attr":{"title":"Link can have text, location (href) and a tooltip.","onclick":"window.location='../../../../../../../core/modules/diagram/modules/model/Link.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/diagram/modules/model-Link","text":"Link","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.diagram\\model\\doc\\note.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../core/modules/diagram/modules/model/Note.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/diagram/modules/model-Note","text":"Note","type":"leaf"},{"a_attr":{"title":"Note placement for diagram elements. ","onclick":"window.location='../../../../../../../core/modules/diagram/modules/model/NotePlacement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EEnum.gif","id":"nsd-app-nav-item-EEnum-core/modules/diagram/modules/model-NotePlacement","text":"NotePlacement","type":"leaf"},{"a_attr":{"title":"Start pseudo-state.","onclick":"window.location='../../../../../../../core/modules/diagram/modules/model/Start.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/diagram/modules/model-Start","text":"Start","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.diagram\\model\\doc\\style.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../core/modules/diagram/modules/model/Style.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/diagram/modules/model-Style","text":"Style","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-24e6dab6f2dd99c062047cc04b341e451f22362bc3313f23e80d4d011a47e566","text":"Model"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/diagram/modules/gen/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-af3e9d5c48dd18a0887038ae054b55256568dac96acd687e0c504ac98fe41b02","text":"Generators","type":"leaf"}],"icon":"fas fa-cube","id":"nsd-app-nav-item-6b7c4b99f75011d48f40412a9bfc830be98966526cb107df9cc65b41fb737de5","text":"Diagram"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/emf/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-6ea95aad46880364e27a2e5a81e11f31a5f865a47163da9dc64db19fe78ca476","text":"EMF","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/exec/index.html';"},"children":[{"a_attr":{"title":"Nasdanika Core Exec model classes can be used to create models for generation of resources such as files and their content. ","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/index.html';"},"children":[{"a_attr":{"title":"Content classes are adapted to SupplierFactory<InputStream> to supply content for files, HTTP Call bodies etc. in a form of input streams.","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/content/package-summary.html';"},"children":[{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.exec\\model\\doc\\content\\base-64.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/content/Base64.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model/content-Base64","text":"Base64","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/exec/modules/model/content/Filter.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model/content-Filter","text":"Filter","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/exec/modules/model/content/Interpolator.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model/content-Interpolator","text":"Interpolator","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/exec/modules/model/content/Markdown.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model/content-Markdown","text":"Markdown","type":"leaf"},{"a_attr":{"title":"Loads resource from a URL specified as resource value. ","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/content/Resource.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model/content-Resource","text":"Resource","type":"leaf"},{"a_attr":{"title":"Loads resource from a URL specified as resource value. ","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/content/Text.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model/content-Text","text":"Text","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-core/modules/exec/modules/model/content","text":"Content"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.exec\\model\\doc\\resources\\package-summary.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/resources/package-summary.html';"},"children":[{"a_attr":{"title":"A named collection of other resources, a folder/directory. ","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/resources/Container.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model/resources-Container","text":"Container","type":"leaf"},{"a_attr":{"title":"File is a named container of binary contents (bytes) which can be set and retrieved as an input stream. ","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/resources/File.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model/resources-File","text":"File","type":"leaf"},{"a_attr":{"title":"Defines an action to take when a resource with the same name already exists.","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/resources/ReconcileAction.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EEnum.gif","id":"nsd-app-nav-item-EEnum-core/modules/exec/modules/model/resources-ReconcileAction","text":"ReconcileAction","type":"leaf"},{"a_attr":{"title":"A base class of File and Container.","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/resources/Resource.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model/resources-Resource","text":"Resource","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-core/modules/exec/modules/model/resources","text":"Resources"},{"a_attr":{"title":"Try-catch-finally block. ","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/Block.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model-Block","text":"Block","type":"leaf"},{"a_attr":{"title":"Calls a Java method and returns the result. ","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/Call.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model-Call","text":"Call","type":"leaf"},{"a_attr":{"title":"Configurator allows to inject additional properties to the context. ","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/Configurator.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model-Configurator","text":"Configurator","type":"leaf"},{"a_attr":{"title":"Evaluates JavaScript script. ","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/Eval.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model-Eval","text":"Eval","type":"leaf"},{"a_attr":{"title":"Fails execution with a supplied message. ","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/Fail.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model-Fail","text":"Fail","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.exec\\model\\doc\\list.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/List.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model-List","text":"List","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.exec\\model\\doc\\map.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/Map.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model-Map","text":"Map","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.exec\\model\\doc\\property.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../core/modules/exec/modules/model/Property.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/exec/modules/model-Property","text":"Property","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-314915eef6333c76bab729a95f87d1b2c932e98c9f0f8399df5804e5a0ff5ef3","text":"Model"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/exec/modules/gen/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-9fec02d7cf2abb6047a899cf298536506b971863c41d09b20b2a69019979fe02","text":"Generation Adapters","type":"leaf"}],"icon":"fas fa-cube","id":"nsd-app-nav-item-50836aad7aa479d139c38d1d96d40b7e279a838d9761a136bf7e9cb3c45c1c71","text":"Exec"},{"a_attr":{"title":"This package contains classes for defining \u201chow to do things\u201d in a non-linear visual form using journeys. ","onclick":"window.location='../../../../../../../core/modules/flow/index.html';"},"children":[{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\activity.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/Activity.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-Activity","text":"Activity&lt;T&gt;","type":"leaf"},{"a_attr":{"title":"Mapping of activity key to an activity or a flow. ","onclick":"window.location='../../../../../../../core/modules/flow/ActivityEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-ActivityEntry","text":"ActivityEntry","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/flow/Artifact.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-Artifact","text":"Artifact","type":"leaf"},{"a_attr":{"title":"Mapping of artifact key to an artifact. ","onclick":"window.location='../../../../../../../core/modules/flow/ArtifactEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-ArtifactEntry","text":"ArtifactEntry","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/flow/ArtifactParticipantResponsibility.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-ArtifactParticipantResponsibility","text":"ArtifactParticipantResponsibility","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\call.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/Call.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-Call","text":"Call","type":"leaf"},{"a_attr":{"title":"Mapping of call key to a call. ","onclick":"window.location='../../../../../../../core/modules/flow/CallEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-CallEntry","text":"CallEntry","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\choice.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/Choice.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-Choice","text":"Choice","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\end.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/End.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-End","text":"End","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\entry-point.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/EntryPoint.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-EntryPoint","text":"EntryPoint","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\exit-point.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/ExitPoint.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-ExitPoint","text":"ExitPoint","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\expansion-input.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/ExpansionInput.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-ExpansionInput","text":"ExpansionInput","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\expansion-output.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/ExpansionOutput.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-ExpansionOutput","text":"ExpansionOutput","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\journey.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/Flow.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-Flow","text":"Flow","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\journey-element.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/FlowElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-FlowElement","text":"FlowElement&lt;T&gt;","type":"leaf"},{"a_attr":{"title":"Mapping of flow element key to a flow element. ","onclick":"window.location='../../../../../../../core/modules/flow/FlowElementEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-FlowElementEntry","text":"FlowElementEntry","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\fork.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/Fork.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-Fork","text":"Fork","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\input-pin.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/InputPin.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-InputPin","text":"InputPin","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\join.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/Join.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-Join","text":"Join","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\output-pin.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/OutputPin.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-OutputPin","text":"OutputPin","type":"leaf"},{"a_attr":{"title":"Package is a container of sub-packages, flows, resources, participants, and artifacts.","onclick":"window.location='../../../../../../../core/modules/flow/Package.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-Package","text":"Package","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\package-element.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../core/modules/flow/PackageElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-PackageElement","text":"PackageElement&lt;T&gt;","type":"leaf"},{"a_attr":{"title":"Mapping of sub-package key to a sub-package. ","onclick":"window.location='../../../../../../../core/modules/flow/PackageEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-PackageEntry","text":"PackageEntry","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/flow/Participant.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-Participant","text":"Participant","type":"leaf"},{"a_attr":{"title":"Mapping of participant key to a participant. ","onclick":"window.location='../../../../../../../core/modules/flow/ParticipantEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-ParticipantEntry","text":"ParticipantEntry","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/flow/ParticipantResponsibility.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-ParticipantResponsibility","text":"ParticipantResponsibility&lt;T&gt;","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\pseudo-state.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/PseudoState.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-PseudoState","text":"PseudoState","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\relationship.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/Relationship.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-Relationship","text":"Relationship","type":"leaf"},{"a_attr":{"title":"Mapping of relationship keys (qualifiers) to a relationships. ","onclick":"window.location='../../../../../../../core/modules/flow/RelationshipEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-RelationshipEntry","text":"RelationshipEntry","type":"leaf"},{"a_attr":{"title":"Mapping of representation key to a representation (diagram). ","onclick":"window.location='../../../../../../../core/modules/flow/RepresentationEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-RepresentationEntry","text":"RepresentationEntry","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/flow/Resource.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-Resource","text":"Resource","type":"leaf"},{"a_attr":{"title":"Mapping of resource key to a resource. ","onclick":"window.location='../../../../../../../core/modules/flow/ResourceEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-ResourceEntry","text":"ResourceEntry","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\service.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/Service.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-Service","text":"Service","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\service-provider.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../core/modules/flow/ServiceProvider.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-ServiceProvider","text":"ServiceProvider&lt;T&gt;","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\start.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/Start.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-Start","text":"Start","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.flow\\model\\doc\\flow\\transition.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../core/modules/flow/Transition.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-Transition","text":"Transition","type":"leaf"},{"a_attr":{"title":"Mapping of output key to a transition. ","onclick":"window.location='../../../../../../../core/modules/flow/TransitionEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/flow-TransitionEntry","text":"TransitionEntry","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-b4e773d8b380c297ca4e1a9e41c6ec8b87161df088b3f9a35080d46e9d557330","text":"Flow"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/mxgraph/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-9463ee8d9fbcba60d4fb83617810ebccf18dad798050299df04a6823b6fbe2b3","text":"mxgraph","type":"leaf"},{"a_attr":{"title":"Nasdanika Ncore model contains foundational model elements used in other models.","onclick":"window.location='../../../../../../../core/modules/ncore/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/Adaptable.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-Adaptable","text":"Adaptable","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/Boolean.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-Boolean","text":"Boolean","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/BooleanProperty.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-BooleanProperty","text":"BooleanProperty","type":"leaf"},{"a_attr":{"title":"Duration is an amount of time in the ISO-8601 Duration format. ","onclick":"window.location='../../../../../../../core/modules/ncore/Duration.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-core/modules/ncore-Duration","text":"Duration","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/EObjectProperty.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-EObjectProperty","text":"EObjectProperty","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/IMarked.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-IMarked","text":"IMarked","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/IMarker.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-IMarker","text":"IMarker","type":"leaf"},{"a_attr":{"title":"Instant is a single instantaneous point on the time-line. ","onclick":"window.location='../../../../../../../core/modules/ncore/Instant.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-core/modules/ncore-Instant","text":"Instant","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/Integer.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-Integer","text":"Integer","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/IntegerProperty.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-IntegerProperty","text":"IntegerProperty","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/List.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-List","text":"List","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/ListProperty.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-ListProperty","text":"ListProperty","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/Map.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-Map","text":"Map","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/MapProperty.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-MapProperty","text":"MapProperty","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.ncore\\model\\doc\\marked.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../core/modules/ncore/Marked.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-Marked","text":"Marked","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/Marker.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-Marker","text":"Marker","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.ncore\\model\\doc\\model-element.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../core/modules/ncore/ModelElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-ModelElement","text":"ModelElement","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.ncore\\model\\doc\\named-element.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../core/modules/ncore/NamedElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-NamedElement","text":"NamedElement","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.ncore\\model\\doc\\period.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../core/modules/ncore/Period.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-Period","text":"Period","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/Property.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-Property","text":"Property","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/Reference.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-Reference","text":"Reference&lt;T&gt;","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/String.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-String","text":"String","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../core/modules/ncore/StringProperty.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-StringProperty","text":"StringProperty","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.ncore\\model\\doc\\temporal.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../core/modules/ncore/Temporal.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/modules/ncore-Temporal","text":"Temporal","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-c774c9d935fc2f67f5291ca9d4f49a97b6730856a5fb8fd28b8dcbacbeed4676","text":"Ncore"}],"icon":"fas fa-box","id":"nsd-app-nav-item-43ebffef179af09b0ca8c0dd1c0599d4582241e0aa2f689c027071321744bdf1","text":"Core"},{"a_attr":{"onclick":"window.location='../../../../../../index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../bootstrap/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-f0e5f339675eaa663b6faa5dd4f4ec1527fbf53d7e8bb6e376cb94b2ba0796d1","text":"Bootstrap","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../echarts/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-a8ea65bdee7f24b2f49d99c0f7abeb96c5902dab49ad64266e387cae49c3db7a","text":"ECharts","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../ecore/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-9ec822c00bde876587519ff5e59adfbf3437cd514a6312674216c0922b8b6030","text":"Ecore","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../emf/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-0b3b93ec68c5d8f344d1d716456e7ef5f579b1cd48bc15aecde17aec19c2ec12","text":"EMF","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../flow/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-95c8c45a22673efd0746215c670ba883f29a6bb249588bda5763edbd520972c1","text":"Flow","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../fontawesome/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-1a22c2384c5c048679ae68df95f043cbc890a9cc1555fe4257a3cfb4c0bdd920","text":"FontAwesome","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-54651e6204d737e4535009215057b7f8a4eab760da4e339c334552fd7934a031","text":"HTML","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../jstree/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-4a86e1743b9bb5a6dc73b6a291a5dbb3afbc1a4cab40167c2010870948704baa","text":"jsTree","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../knockout/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-c853e7b9da0c3a44326a72cb14a240b12b66e7ed34dff5a72f283a6278e5912d","text":"Knockout","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../html/index.html';"},"children":[{"a_attr":{"title":"HTML model","onclick":"window.location='../../../html/modules/model/index.html';"},"children":[{"a_attr":{"title":"Base class for other HTML and bootstrap elements.","onclick":"window.location='../../../html/modules/model/HtmlElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/html/modules/model-HtmlElement","text":"HtmlElement","type":"leaf"},{"a_attr":{"title":"HTML page. The name attribute is output as title tag in the head. ","onclick":"window.location='../../../html/modules/model/Page.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/html/modules/model-Page","text":"Page","type":"leaf"},{"a_attr":{"title":"Script with code stored in the model element source reference.","onclick":"window.location='../../../html/modules/model/Script.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/html/modules/model-Script","text":"Script","type":"leaf"},{"a_attr":{"title":"References external script.","onclick":"window.location='../../../html/modules/model/ScriptReference.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/html/modules/model-ScriptReference","text":"ScriptReference","type":"leaf"},{"a_attr":{"title":"CSS stylesheet with code stored in the model element code attribute.","onclick":"window.location='../../../html/modules/model/Stylesheet.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/html/modules/model-Stylesheet","text":"Stylesheet","type":"leaf"},{"a_attr":{"title":"Reference to an external stylesheet.","onclick":"window.location='../../../html/modules/model/StylesheetReference.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/html/modules/model-StylesheetReference","text":"StylesheetReference","type":"leaf"},{"a_attr":{"title":"HTML Tag","onclick":"window.location='../../../html/modules/model/Tag.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/html/modules/model-Tag","text":"Tag","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-16ecd03456c2fc19d066da4cec9bd8b2f28c5bbad78e14deeb8eafe0b1af35d5","text":"Model"},{"a_attr":{"onclick":"window.location='../../../html/modules/gen/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-e85134ac19e92f50915fc7bcd15b6ce0ab22e49870fe94539226bd252f8c6ca8","text":"Generation Adapters","type":"leaf"}],"icon":"fas fa-cube","id":"nsd-app-nav-item-d89746462012acec1bc5bee8bb67c328465524a617a33d8d7bc830413dc19f3f","text":"HTML"},{"a_attr":{"onclick":"window.location='../../index.html';"},"children":[{"a_attr":{"title":"Model of Bootstrap elements.","onclick":"window.location='index.html';"},"children":[{"a_attr":{"onclick":"window.location='Accordion.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Accordion","text":"Accordion","type":"leaf"},{"a_attr":{"title":"List group with actions (links).","onclick":"window.location='ActionGroup.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-ActionGroup","text":"ActionGroup","type":"leaf"},{"a_attr":{"title":"Base class for action group items","onclick":"window.location='ActionGroupItem.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-ActionGroupItem","text":"ActionGroupItem","type":"leaf"},{"a_attr":{"onclick":"window.location='Alert.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Alert","text":"Alert","type":"leaf"},{"a_attr":{"title":"This class is used for configuring common aspects of HTML and Bootstrap elements such as background, spacing, text, etc.","onclick":"window.location='Appearance.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Appearance","text":"Appearance","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.html.model.bootstrap\\model\\doc\\appearance-entry.md (The system cannot find the path specified)","onclick":"window.location='AppearanceEntry.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-AppearanceEntry","text":"AppearanceEntry","type":"leaf"},{"a_attr":{"onclick":"window.location='Badge.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Badge","text":"Badge","type":"leaf"},{"a_attr":{"title":"An HTML element with Bootstrap appearance.","onclick":"window.location='BootstrapElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-BootstrapElement","text":"BootstrapElement","type":"leaf"},{"a_attr":{"title":"Border configuration specifies border location and color.","onclick":"window.location='Border.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Border","text":"Border","type":"leaf"},{"a_attr":{"onclick":"window.location='Breadcrumb.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Breadcrumb","text":"Breadcrumb","type":"leaf"},{"a_attr":{"onclick":"window.location='Breakpoint.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-html/modules/models/modules/bootstrap/modules/model-Breakpoint","text":"Breakpoint","type":"leaf"},{"a_attr":{"title":"TODO - size - enum? Block, active, disabled.","onclick":"window.location='Button.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Button","text":"Button","type":"leaf"},{"a_attr":{"onclick":"window.location='ButtonGroup.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-ButtonGroup","text":"ButtonGroup","type":"leaf"},{"a_attr":{"onclick":"window.location='ButtonToolbar.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-ButtonToolbar","text":"ButtonToolbar","type":"leaf"},{"a_attr":{"title":"Bootstrap card.","onclick":"window.location='Card.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Card","text":"Card","type":"leaf"},{"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","state":{"selected":true},"id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Carousel","text":"Carousel","type":"leaf"},{"a_attr":{"onclick":"window.location='Collapse.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Collapse","text":"Collapse","type":"leaf"},{"a_attr":{"onclick":"window.location='Color.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-html/modules/models/modules/bootstrap/modules/model-Color","text":"Color","type":"leaf"},{"a_attr":{"title":"Container row column.","onclick":"window.location='Column.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Column","text":"Column","type":"leaf"},{"a_attr":{"title":"Column width for a given breakpoint.","onclick":"window.location='ColumnWidth.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-ColumnWidth","text":"ColumnWidth","type":"leaf"},{"a_attr":{"title":"Bootstrap layout container contains rows which in turn contain columns.","onclick":"window.location='Container.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Container","text":"Container","type":"leaf"},{"a_attr":{"title":"Action Group Item with content. ","onclick":"window.location='ContentActionGroupItem.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-ContentActionGroupItem","text":"ContentActionGroupItem","type":"leaf"},{"a_attr":{"title":"HTML DIV with bootstrap styling","onclick":"window.location='Div.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Div","text":"Div","type":"leaf"},{"a_attr":{"onclick":"window.location='Dropdown.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Dropdown","text":"Dropdown","type":"leaf"},{"a_attr":{"title":"Defines element floating - left or right - for a given breakpoint.","onclick":"window.location='Float.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Float","text":"Float","type":"leaf"},{"a_attr":{"onclick":"window.location='Form.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Form","text":"Form","type":"leaf"},{"a_attr":{"onclick":"window.location='FormGroup.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-FormGroup","text":"FormGroup","type":"leaf"},{"a_attr":{"onclick":"window.location='InputGroup.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-InputGroup","text":"InputGroup","type":"leaf"},{"a_attr":{"title":"Base class for model elements which can be active, disabled, and have color.","onclick":"window.location='Item.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Item","text":"Item","type":"leaf"},{"a_attr":{"title":"Click on the item navigates to the link URL.","onclick":"window.location='LinkActionGroupItem.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-LinkActionGroupItem","text":"LinkActionGroupItem","type":"leaf"},{"a_attr":{"onclick":"window.location='ListGroup.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-ListGroup","text":"ListGroup","type":"leaf"},{"a_attr":{"onclick":"window.location='Modal.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Modal","text":"Modal","type":"leaf"},{"a_attr":{"onclick":"window.location='Navbar.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Navbar","text":"Navbar","type":"leaf"},{"a_attr":{"onclick":"window.location='Navs.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Navs","text":"Navs","type":"leaf"},{"a_attr":{"title":"HTML page with bootstrap elements in the head - meta, stylesheets, and scripts. ","onclick":"window.location='Page.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Page","text":"Page","type":"leaf"},{"a_attr":{"title":"Container rows","onclick":"window.location='Row.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Row","text":"Row","type":"leaf"},{"a_attr":{"onclick":"window.location='Size.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-html/modules/models/modules/bootstrap/modules/model-Size","text":"Size","type":"leaf"},{"a_attr":{"onclick":"window.location='Slide.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Slide","text":"Slide","type":"leaf"},{"a_attr":{"title":"Spacing - padding or margin. ","onclick":"window.location='Spacing.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Spacing","text":"Spacing","type":"leaf"},{"a_attr":{"title":"Bootstrap table","onclick":"window.location='Table.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Table","text":"Table","type":"leaf"},{"a_attr":{"title":"Table cell - regular or header.","onclick":"window.location='TableCell.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-TableCell","text":"TableCell","type":"leaf"},{"a_attr":{"title":"Configuration of bootstrap table","onclick":"window.location='TableConfiguration.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-TableConfiguration","text":"TableConfiguration","type":"leaf"},{"a_attr":{"title":"Table header.","onclick":"window.location='TableHeader.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-TableHeader","text":"TableHeader","type":"leaf"},{"a_attr":{"title":"Table row.","onclick":"window.location='TableRow.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-TableRow","text":"TableRow","type":"leaf"},{"a_attr":{"title":"Base class for containers of rows - table, header, body, footer.","onclick":"window.location='TableRowContainer.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-TableRowContainer","text":"TableRowContainer","type":"leaf"},{"a_attr":{"title":"Table section - body or footer, header has its own class.","onclick":"window.location='TableSection.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-TableSection","text":"TableSection","type":"leaf"},{"a_attr":{"title":"HTML tag with Bootstrap appearance","onclick":"window.location='Tag.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Tag","text":"Tag","type":"leaf"},{"a_attr":{"title":"Text styling.","onclick":"window.location='Text.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Text","text":"Text","type":"leaf"},{"a_attr":{"onclick":"window.location='TextAlignment.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-html/modules/models/modules/bootstrap/modules/model-TextAlignment","text":"TextAlignment","type":"leaf"},{"a_attr":{"onclick":"window.location='TextTransform.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-html/modules/models/modules/bootstrap/modules/model-TextTransform","text":"TextTransform","type":"leaf"},{"a_attr":{"onclick":"window.location='TextWeight.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-html/modules/models/modules/bootstrap/modules/model-TextWeight","text":"TextWeight","type":"leaf"},{"a_attr":{"onclick":"window.location='Theme.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-html/modules/models/modules/bootstrap/modules/model-Theme","text":"Theme","type":"leaf"},{"a_attr":{"onclick":"window.location='Tooltip.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/bootstrap/modules/model-Tooltip","text":"Tooltip","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-5041f1b9728b40f56df5ecf40bc76a8eeb1ee6d29d3d8fd5744c41ad15d0a505","text":"Model"},{"a_attr":{"onclick":"window.location='../gen/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-4f99f6e0b3193adef7e396c04a5cfa22583bff3d92100b43659ac780a1741daa","text":"Generation Adapters","type":"leaf"}],"icon":"fas fa-cube","id":"nsd-app-nav-item-e16a3e7d5e4d44ff723d3a218c64a08f4c5f9dbb8ec3ecbcc65d344cb040b8ab","text":"Bootstrap"},{"a_attr":{"onclick":"window.location='../../../app/index.html';"},"children":[{"a_attr":{"title":"Application model.","onclick":"window.location='../../../app/modules/model/index.html';"},"children":[{"a_attr":{"title":"Actions form a hierarchy. ","onclick":"window.location='../../../app/modules/model/Action.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/app/modules/model-Action","text":"Action","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../app/modules/model/ActionReference.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/app/modules/model-ActionReference","text":"ActionReference","type":"leaf"},{"a_attr":{"title":"Content panel displays the primary page conent and can have a navigation bar and several navigation panels.","onclick":"window.location='../../../app/modules/model/ContentPanel.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/app/modules/model-ContentPanel","text":"ContentPanel","type":"leaf"},{"a_attr":{"title":"Footer is displayed below the navigation and content panels.","onclick":"window.location='../../../app/modules/model/Footer.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/app/modules/model-Footer","text":"Footer","type":"leaf"},{"a_attr":{"title":"Page header has a title on the left and a navigation bar on the right.","onclick":"window.location='../../../app/modules/model/Header.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/app/modules/model-Header","text":"Header","type":"leaf"},{"a_attr":{"title":"Label is a text and an icon with a tooltip, notification badge, and help dialog. ","onclick":"window.location='../../../app/modules/model/Label.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/app/modules/model-Label","text":"Label","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../app/modules/model/Link.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/app/modules/model-Link","text":"Link","type":"leaf"},{"a_attr":{"title":"Navigation bar has a brand and navigation items.","onclick":"window.location='../../../app/modules/model/NavigationBar.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/app/modules/model-NavigationBar","text":"NavigationBar","type":"leaf"},{"a_attr":{"title":"Navigation panel contains navigation items. ","onclick":"window.location='../../../app/modules/model/NavigationPanel.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/app/modules/model-NavigationPanel","text":"NavigationPanel","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../app/modules/model/NavigationPanelStyle.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EEnum.gif","id":"nsd-app-nav-item-EEnum-html/modules/models/modules/app/modules/model-NavigationPanelStyle","text":"NavigationPanelStyle","type":"leaf"},{"a_attr":{"title":"Application page consisting of several parts - header, navigation bar, navigation panel, content panel, and footer. ","onclick":"window.location='../../../app/modules/model/Page.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/app/modules/model-Page","text":"Page","type":"leaf"},{"a_attr":{"title":"Base class for page parts.","onclick":"window.location='../../../app/modules/model/PagePart.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/modules/models/modules/app/modules/model-PagePart","text":"PagePart","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../app/modules/model/SectionStyle.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EEnum.gif","id":"nsd-app-nav-item-EEnum-html/modules/models/modules/app/modules/model-SectionStyle","text":"SectionStyle","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-6fddd7f35181c69854df2fe2fdf7d45471aac5c3b566ff405e5c9b322d3e2ddc","text":"Model"},{"a_attr":{"onclick":"window.location='../../../app/modules/gen/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-4e978b2c1968f0348364863dd95141a40d2a15f9b787f14ba2db33fedfccf225","text":"Generation Adapters","type":"leaf"}],"icon":"fas fa-cube","id":"nsd-app-nav-item-4c298263d603df3000c0ca18bced4cbde138851b6a75d731d1eb4f0789c62c4c","text":"Application"}],"icon":"fas fa-cube","id":"nsd-app-nav-item-7774697b7ca2ca6cd388e59ffc203e9f39d91770c6597e777f0781cf64b2551e","text":"Models"}],"icon":"fas fa-box","id":"nsd-app-nav-item-fffea1245080302b98ef50632274353c97ae73436029c2f945ab009c9f53b35e","text":"HTML"},{"a_attr":{"onclick":"window.location='../../../../../../../engineering/index.html';"},"children":[{"a_attr":{"title":"One of definitions of engineering is \u201cThe action of working artfully to bring something about.\u201d Bringing something of value about is usually quite a lot of effort. ","onclick":"window.location='../../../../../../../engineering/modules/model/index.html';"},"children":[{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.engineering\\model\\doc\\journey\\package-summary.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../engineering/modules/model/journey/package-summary.html';"},"children":[{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.engineering\\model\\doc\\flow\\activity.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../engineering/modules/model/journey/Activity.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model/journey-Activity","text":"Activity","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.engineering\\model\\doc\\flow\\journey.md (The system cannot find the path specified)","onclick":"window.location='../../../../../../../engineering/modules/model/journey/Journey.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model/journey-Journey","text":"Journey","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-engineering/modules/model/journey","text":"Journey"},{"a_attr":{"title":"Aim is the base class for things to which engineered capabilities and other aims can be aligned. ","onclick":"window.location='../../../../../../../engineering/modules/model/Aim.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Aim","text":"Aim","type":"leaf"},{"a_attr":{"title":"Something that can be aligned to aims by alignments - aims or endeavors.","onclick":"window.location='../../../../../../../engineering/modules/model/Alignable.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Alignable","text":"Alignable","type":"leaf"},{"a_attr":{"title":"An association class between aims and engineered capabilities. ","onclick":"window.location='../../../../../../../engineering/modules/model/Alignment.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Alignment","text":"Alignment","type":"leaf"},{"a_attr":{"title":"Allocation of engineer\u2019s capacity to spend on a particular engineered element and issue category on a particular endeavor. ","onclick":"window.location='../../../../../../../engineering/modules/model/Allocation.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Allocation","text":"Allocation","type":"leaf"},{"a_attr":{"title":"Capability is something that can be required by an issue to start working on it. ","onclick":"window.location='../../../../../../../engineering/modules/model/Capability.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Capability","text":"Capability","type":"leaf"},{"a_attr":{"title":"Capacity is contained under Engineer and defines how much total effort or funds the containing engineer has to spend on a particular endeavor. ","onclick":"window.location='../../../../../../../engineering/modules/model/Capacity.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Capacity","text":"Capacity","type":"leaf"},{"a_attr":{"title":"Decision is an issue, which is also an aim, i.e. endeavors, such as issues, and other aims such as other decisions may be aligned to it. ","onclick":"window.location='../../../../../../../engineering/modules/model/Decision.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Decision","text":"Decision","type":"leaf"},{"a_attr":{"title":"Directory is a container of named elements, e.g. documents, links, or other directories. ","onclick":"window.location='../../../../../../../engineering/modules/model/Directory.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Directory","text":"Directory","type":"leaf"},{"a_attr":{"title":"Document may contain content, table of contents, and other documents as sections. ","onclick":"window.location='../../../../../../../engineering/modules/model/Document.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Document","text":"Document","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.engineering\\model\\doc\\domain.md (The system cannot find the file specified)","onclick":"window.location='../../../../../../../engineering/modules/model/Domain.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Domain","text":"Domain","type":"leaf"},{"a_attr":{"title":"Endeavor is a base class for things which take time, effort, and money to achieve some benefit - increments, and engineered capabilities - issues, features, and releases. ","onclick":"window.location='../../../../../../../engineering/modules/model/Endeavor.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Endeavor","text":"Endeavor","type":"leaf"},{"a_attr":{"title":"Engineers are entities, people or organizations, owning engineered elements and working on endeavors, e.g. issues. ","onclick":"window.location='../../../../../../../engineering/modules/model/Engineer.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Engineer","text":"Engineer","type":"leaf"},{"a_attr":{"title":"Engineered capability extends both endeavor and capability and is a base class for issue, feature, and release. ","onclick":"window.location='../../../../../../../engineering/modules/model/EngineeredCapability.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-EngineeredCapability","text":"EngineeredCapability","type":"leaf"},{"a_attr":{"title":"Engineered element is something that is \u201cbrought about\u201d by engineers working on issues associated with the engineered element. ","onclick":"window.location='../../../../../../../engineering/modules/model/EngineeredElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-EngineeredElement","text":"EngineeredElement","type":"leaf"},{"a_attr":{"title":"Event is a named temporal. ","onclick":"window.location='../../../../../../../engineering/modules/model/Event.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Event","text":"Event","type":"leaf"},{"a_attr":{"title":"Feature is a unit of consumption of product functionality. ","onclick":"window.location='../../../../../../../engineering/modules/model/Feature.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Feature","text":"Feature","type":"leaf"},{"a_attr":{"title":"Discussion forum which can contain sub-forums and discussion topics. ","onclick":"window.location='../../../../../../../engineering/modules/model/Forum.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Forum","text":"Forum","type":"leaf"},{"a_attr":{"title":"Goal is an aim defined under a persona and its sub-types - engineer and organization. ","onclick":"window.location='../../../../../../../engineering/modules/model/Goal.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Goal","text":"Goal","type":"leaf"},{"a_attr":{"title":"Increment is a period of time to plan releases and schedule issues for. ","onclick":"window.location='../../../../../../../engineering/modules/model/Increment.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Increment","text":"Increment","type":"leaf"},{"a_attr":{"title":"Issue is a unit of work to accomplish to achieve a desired outcome on its containing engineered element, e.g.: New functionality in a module, New or refined persona goals, New skills acquired by an engineer, Improved organization processes. ","onclick":"window.location='../../../../../../../engineering/modules/model/Issue.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Issue","text":"Issue","type":"leaf"},{"a_attr":{"title":"A mechanism for grouping/tagging issues. ","onclick":"window.location='../../../../../../../engineering/modules/model/IssueCategory.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-IssueCategory","text":"IssueCategory","type":"leaf"},{"a_attr":{"title":"Issue priority, e.g. Low, Medium, High. ","onclick":"window.location='../../../../../../../engineering/modules/model/IssuePriority.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-IssuePriority","text":"IssuePriority","type":"leaf"},{"a_attr":{"title":"Issue severity, e.g. Feature, Minor, Major, Crash. ","onclick":"window.location='../../../../../../../engineering/modules/model/IssueSeverity.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-IssueSeverity","text":"IssueSeverity","type":"leaf"},{"a_attr":{"title":"Issue status, e.g. Open, In Progress, Done. ","onclick":"window.location='../../../../../../../engineering/modules/model/IssueStatus.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-IssueStatus","text":"IssueStatus","type":"leaf"},{"a_attr":{"title":"Key Results are specific measures used to track achievement of their containing objective. ","onclick":"window.location='../../../../../../../engineering/modules/model/KeyResult.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-KeyResult","text":"KeyResult","type":"leaf"},{"a_attr":{"title":"Link to an external URL. ","onclick":"window.location='../../../../../../../engineering/modules/model/Link.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Link","text":"Link","type":"leaf"},{"a_attr":{"title":"A message in a discussion topic authored by an engineer on a specific date.","onclick":"window.location='../../../../../../../engineering/modules/model/Message.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Message","text":"Message","type":"leaf"},{"a_attr":{"title":"Model element is the root class for all other model classes. ","onclick":"window.location='../../../../../../../engineering/modules/model/ModelElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-ModelElement","text":"ModelElement","type":"leaf"},{"a_attr":{"title":"Module is a part of product or another module. ","onclick":"window.location='../../../../../../../engineering/modules/model/Module.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Module","text":"Module","type":"leaf"},{"a_attr":{"title":"Named element, as the name suggests, is a base class for model elements with a name.","onclick":"window.location='../../../../../../../engineering/modules/model/NamedElement.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-NamedElement","text":"NamedElement","type":"leaf"},{"a_attr":{"title":"References a named element. ","onclick":"window.location='../../../../../../../engineering/modules/model/NamedElementReference.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-NamedElementReference","text":"NamedElementReference","type":"leaf"},{"a_attr":{"title":"Note is used to track issue progress as well as to discuss issue implementation. ","onclick":"window.location='../../../../../../../engineering/modules/model/Note.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Note","text":"Note","type":"leaf"},{"a_attr":{"title":"Objective is something that should be achieved as part of endeavor such as an increment or a release. ","onclick":"window.location='../../../../../../../engineering/modules/model/Objective.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Objective","text":"Objective","type":"leaf"},{"a_attr":{"title":"Organization is an engineer which can contain other engineers, and organizations as such. ","onclick":"window.location='../../../../../../../engineering/modules/model/Organization.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Organization","text":"Organization","type":"leaf"},{"a_attr":{"title":"Personas represent represent the different types of consumers of products and services. ","onclick":"window.location='../../../../../../../engineering/modules/model/Persona.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Persona","text":"Persona","type":"leaf"},{"a_attr":{"title":"Principles are general rules and guidelines, intended to be enduring and seldom amended, that inform and support the way in which an engineer or an organization sets about achieving its goals or addressing goals of their consumers modeled as personas...","onclick":"window.location='../../../../../../../engineering/modules/model/Principle.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Principle","text":"Principle","type":"leaf"},{"a_attr":{"title":"Product is an object or a system made available for consumer use. ","onclick":"window.location='../../../../../../../engineering/modules/model/Product.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Product","text":"Product","type":"leaf"},{"a_attr":{"title":"Release is a unit of delivering product features to its consumers. ","onclick":"window.location='../../../../../../../engineering/modules/model/Release.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Release","text":"Release","type":"leaf"},{"a_attr":{"title":"Table of Contents configuration - role, depth, header. ","onclick":"window.location='../../../../../../../engineering/modules/model/TableOfContents.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-TableOfContents","text":"TableOfContents","type":"leaf"},{"a_attr":{"title":"Topic is a group of related messages in a forum. ","onclick":"window.location='../../../../../../../engineering/modules/model/Topic.html';"},"icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-engineering/modules/model-Topic","text":"Topic","type":"leaf"}],"icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-8f0de758a87b2a3a3464cdf6fc5371da6509c83631e403a9261803f74befe5bc","text":"Model"},{"a_attr":{"onclick":"window.location='../../../../../../../engineering/modules/gen/index.html';"},"icon":"fas fa-cube","id":"nsd-app-nav-item-05dba2f2b47ec303c81fd4ef5a2c3363c091f1ca659a58098def25400646939d","text":"Generation Adapters","type":"leaf"}],"icon":"fas fa-box","id":"nsd-app-nav-item-c891db50290c078f3dfc7b9f34f88842423c40e55c394d8349fb85a5fb41f8f4","text":"Engineering"},{"a_attr":{"onclick":"window.location='../../../../../../../togaf/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../togaf/modules/adm/index.html';"},"icon":"fas fa-box","id":"nsd-app-nav-item-b1b48b72ff3982a7f14b47316d86ccbfa18b90a84de6bba84e54f1b863efdb28","text":"ADM","type":"leaf"}],"icon":"fas fa-box","id":"nsd-app-nav-item-81d933e53b6ba9fb575db9b162b0fc52830c3dfb12ed930399b3131359ce634e","text":"TOGAF"}]},"types":{"leaf":{"icon":"jstree-file"}},"plugins":["state","types"],"state":{"key":"591590ff97da8282665315c6de8bb3d954e127cf85ca3b885ceed5cc7d980df4-navigation-panel"}}));
+});</script>
+            <div class="card">
+              <div class="card-header"><span data-toggle="collapse" data-target="#nsd-app-nav-item-47dd9272-cb06-4c42-97ee-132b036b9e16-collapsible" aria-expanded="true" aria-controls="nsd-app-nav-item-47dd9272-cb06-4c42-97ee-132b036b9e16-collapsible" title="Toggle card" id="nsd-app-nav-item-47dd9272-cb06-4c42-97ee-132b036b9e16-collapsible-trigger" class="nsd-collapsible-trigger"><i aria-hidden="true" class="fa"></i></span>
+                <a><span class="far fa-calendar-alt nsd-app-label-icon"></span>Increments</a>
+              </div>
+              <div id="nsd-app-nav-item-47dd9272-cb06-4c42-97ee-132b036b9e16-collapsible" class="card-body p-1 nsd-collapsible collapse show">
+                <div id="591590ff97da8282665315c6de8bb3d954e127cf85ca3b885ceed5cc7d980df4-navigation-panel-nsd-app-nav-item-47dd9272-cb06-4c42-97ee-132b036b9e16"></div>
+              </div>
+            </div>
+            <script>$(document).ready( function() {
+$('#591590ff97da8282665315c6de8bb3d954e127cf85ca3b885ceed5cc7d980df4-navigation-panel-nsd-app-nav-item-47dd9272-cb06-4c42-97ee-132b036b9e16').jstree(function(tree) { tree.state.filter = function(state) { delete state.core.selected; return state; }; return tree; }({"core":{"data":[{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/children/Q4/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2021/children/Q4/children/dec/index.html';"},"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-959f1eb896310c752e1eb3d02ef7238143cadbe9674d934b61cc98cb97399dde","text":"December","type":"leaf"}],"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-72629b49e91409d5c56538cbec14a1e2db5cca89e8b52d7c4e5d0afdc3511414","text":"Q4"}],"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-8ec6e0be902265df29f5e88800c59d3e573324d12a478982d0389d09eb15efd4","text":"2021"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q1/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q1/children/jan/index.html';"},"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-ed435fc3cef21127af6ebcf0601ffd21e576001a432b05a9ae2256798ff183a7","text":"January","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q1/children/feb/index.html';"},"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-9537f7093f69df592960e9bdfae49d158dac726a1308afcb1fda9431647aa163","text":"February","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q1/children/mar/index.html';"},"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-a284b2f591049cae4d23adf6946c28cf37eb8e120f419065055b56fa67de4ef3","text":"March","type":"leaf"}],"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-6600031fbc6307fe18e21f3a41558c2a6ac41844e4f8183cc2cd70a3039192af","text":"Q1"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q2/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q2/children/apr/index.html';"},"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-fc648379f1482fe14ad6bb5edfdf50149d620adbce2f030a0acb33fa2e5319a1","text":"April","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q2/children/may/index.html';"},"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-2f783b61f967f07fab07ea145c69d4672d207bb1e9a376b87e79a82e89d25bb5","text":"May","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q2/children/jun/index.html';"},"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-da7ceeb8a90fd48e6fbce05cdde5ee6b60ddbc4cfc8f829c04d4ea1e68764e1d","text":"June","type":"leaf"}],"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-187a2655732dcccd5e1e3f37ea276c4bb26b2ab52ee8c7aea1a1198a6cae5ebb","text":"Q2"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q3/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q3/children/jul/index.html';"},"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-114d94f2ec902222eaebbbb9a68e68df4f1fc63483b85568cab1090f730dfbdf","text":"July","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q3/children/aug/index.html';"},"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-b497b3fdd8d5322938c63454f1e36983b35af1ff185c144882e4af186974f980","text":"August","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q3/children/sep/index.html';"},"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-65d4bb71061366c83c57af0ab50658ea85bd582e29fb991d647cf0d3f6440090","text":"September","type":"leaf"}],"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-1309030f24a82ea66100c987de337d1f84fe0652b1e717bcb88213dee8266bdd","text":"Q3"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q4/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q4/children/oct/index.html';"},"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-ce31910f8f1d50410d68a3ccb1864b47c58d2e41e0bb47871189fba589293511","text":"October","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q4/children/nov/index.html';"},"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-6d6928c1e159368df46d118d91646a0c9345a570684ae049bb8df76b5d5f4dc9","text":"November","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../../../increments/2022/children/Q4/children/dec/index.html';"},"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-7b7ad3daa47cfdce2df5a8abbe5327e10adcfd87b82f37ca0ad4a2c26fb405d5","text":"December","type":"leaf"}],"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-9a116d28822547ff0790df8891e087b603cb643d3466703c15251a403471d258","text":"Q4"}],"icon":"far fa-calendar-alt","id":"nsd-app-nav-item-c9f597090602e4886dc965582a3bbba6a7bed0c887e7a1c4cb202f1b2445cc84","text":"2022"}]},"types":{"leaf":{"icon":"jstree-file"}},"plugins":["state","types"],"state":{"key":"591590ff97da8282665315c6de8bb3d954e127cf85ca3b885ceed5cc7d980df4-navigation-panel"}}));
+});</script>
+          </div>
+        </div>
+        <div class="col nsd-app-content-panel">
+          <div class="container-fluid">
+            <div class="row nsd-app-content-panel-breadcrumb-row">
+              <div class="col">
+                <nav aria-label="breadcrumb" class="nsd-app-content-panel-breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><span><span class="fas fa-cubes nsd-app-label-icon"></span>Products</span>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="../../../../../../index.html"><span class="fas fa-box nsd-app-label-icon"></span>HTML</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="../../../../index.html"><span class="fas fa-cube nsd-app-label-icon"></span>Models</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="../../index.html"><span class="fas fa-cube nsd-app-label-icon"></span>Bootstrap</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="index.html" title="Model of Bootstrap elements.">
+                        <img src="https://www.nasdanika.org/resources/images/ecore/EPackage.gif" class="nsd-app-label-icon"/>Model</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                      <a>
+                        <img src="https://www.nasdanika.org/resources/images/ecore/EClass.gif" class="nsd-app-label-icon"/>Carousel</a>
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+            <div class="row nsd-app-content-panel-title-and-items-row">
+              <div class="col-auto">
+                <H1><span class="nsd-app-content-panel-title"><img src="https://www.nasdanika.org/resources/images/ecore/EClass.gif" class="nsd-app-label-icon"/>Carousel</span>
+                </H1>
+              </div>
+            </div>
+            <div class="row nsd-app-content-panel-content-row">
+              <div class="col">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col"><img src="data:image/png;base64, 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" usemap="#plantuml_map_da845361-201c-4302-8303-aa3bbd887829"/>
+<map id="plantuml_map_da845361-201c-4302-8303-aa3bbd887829" name="plantuml_map_da845361-201c-4302-8303-aa3bbd887829">
+<area shape="rect" id="id1" href="Div.html" title="HTML DIV with bootstrap styling" alt="" coords="195,42,244,98"/>
+<area shape="rect" id="id2" href="Slide.html" title="Slide.html" alt="" coords="144,362,264,445"/>
+</map>
+
+<a name="supertypes">
+  <h3>Supertypes</h3>
+</a>
+<ul>
+  <li><a href="Div.html">Div</a></li>
+</ul></div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2><span class="nsd-app-content-panel-title">Load specification</span>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr class="bg-secondary">
+      <th>Key</th>
+      <th>Type</th>
+      <th>Homogenous</th>
+      <th>Strict containment</th>
+      <th>Exclusive with</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="text-monospace">action-prototype</td>
+      <td>EObject</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>If this reference is not set then EObjectActionProvider creates a new Action using AppFactory in newAction() method. If this reference is set and is Action then a copy of the action is created and returned. Otherwise the reference value it is adapted to ActionProvider which is used to create an action. This allows to merge actions and chain action generation. E.g. generate Ecore model documentation and merge it into the Engineering documentation.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">appearance</td>
+      <td><a href="Appearance.html">Appearance</a></td>
+      <td class="text-center">true</td>
+      <td class="text-center">true</td>
+      <td></td>
+      <td><p>Customizes appearance of Bootstrap element.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">attributes</td>
+      <td><a href="../../../../../../../core/modules/exec/modules/model/Property.html">Property</a></td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>Tag attributes.</p>
+<h2><a href="#interpolation" id="interpolation">Interpolation</a></h2>
+<p>Attribute values are interpolated, i.e. tokens in the form of <code>default value]</code> are replaced with the contextual values or default values, if any. Examples:</p>
+<ul>
+<li><code>${my-style}</code> - Token without a default value.</li>
+<li><code>bold</code> - Token with a default value.</li>
+</ul>
+<h2><a href="#regular-attributes" id="regular-attributes">Regular attributes</a></h2>
+<p>For all top-level entries except <code>class</code>, <code>style</code>, and <code>data</code> attribute value is produced by converting the value to string for scalars and to JSON string for lists and maps. For attributes which do not start with <code>data-</code> a warning is issued if the value is not a scalar, i.e. a list or a map.</p>
+<h2><a href="#class" id="class">Class</a></h2>
+<p>For class attribute its value is formed by concantenating elements using space as a separator. If elements are hierarchical then class name is formed by concatenation with a dash (<code>-</code>) as a separator.</p>
+<h2><a href="#data" id="data">Data</a></h2>
+<p>If value of <code>data</code> attbibute is a map then keys of that map get concatenated with <code>data</code> using dash (<code>-</code>) as a separator, them same applies to nested maps. Non-map values become attribute values - scalars are converted to string, lists are converted to JSON string.</p>
+<h2><a href="#style" id="style">Style</a></h2>
+<p>Style can be defined as a string, list or map. If style is defined as a list, all list values are concatenated with a space as a separator - it is a convent way for long unstructured definitions.</p>
+<p>If style value is a map then the value and its contained map values are processed in the following fashion:</p>
+<ul>
+<li>Keys are concatenated with dash as a separator.</li>
+<li>List values are contcatenated wtih space as a separator.</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">content</td>
+      <td>EObject</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>Container content.</p>
+<p>Content elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">controls</td>
+      <td>EBoolean</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-monospace">cross-fade</td>
+      <td>EBoolean</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-monospace">description</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>Description in HTML.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">indicator</td>
+      <td>EBoolean</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-monospace">interval</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-monospace">marker</td>
+      <td><a href="../../../../../../../core/modules/ncore/Marker.html">Marker</a></td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-monospace">name</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>Tag name.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">ride</td>
+      <td>EBoolean</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-monospace">slides</td>
+      <td><a href="Slide.html">Slide</a></td>
+      <td class="text-center">true</td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-monospace">uri</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td><p>If element&rsquo;s URI is not set then its default value is derived from the container URI and containment reference. This is a logical URI and it can be used for cross-referencing of elements in a resource-independent fashion.</p>
+</td>
+    </tr>
+    <tr>
+      <td class="text-monospace">uuid</td>
+      <td>EString</td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2><span class="nsd-app-content-panel-title">All attributes</span>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr class="bg-secondary">
+      <th>Name</th>
+      <th>Type</th>
+      <th>Declaring class</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>controls</td>
+      <td>EBoolean</td>
+      <td>Carousel</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>crossFade</td>
+      <td>EBoolean</td>
+      <td>Carousel</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>description</td>
+      <td>EString</td>
+      <td><a href="../../../../../../../core/modules/ncore/ModelElement.html">ModelElement</a></td>
+      <td><p>Description in HTML.</p>
+</td>
+    </tr>
+    <tr>
+      <td>indicator</td>
+      <td>EBoolean</td>
+      <td>Carousel</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>interval</td>
+      <td>EString</td>
+      <td>Carousel</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>EString</td>
+      <td><a href="../../../html/modules/model/Tag.html">Tag</a></td>
+      <td><p>Tag name.</p>
+</td>
+    </tr>
+    <tr>
+      <td>ride</td>
+      <td>EBoolean</td>
+      <td>Carousel</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>uri</td>
+      <td>EString</td>
+      <td><a href="../../../../../../../core/modules/ncore/ModelElement.html">ModelElement</a></td>
+      <td><p>If element&rsquo;s URI is not set then its default value is derived from the container URI and containment reference. This is a logical URI and it can be used for cross-referencing of elements in a resource-independent fashion.</p>
+</td>
+    </tr>
+    <tr>
+      <td>uuid</td>
+      <td>EString</td>
+      <td><a href="../../../../../../../core/modules/ncore/ModelElement.html">ModelElement</a></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2><span class="nsd-app-content-panel-title">All references</span>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr class="bg-secondary">
+      <th>Name</th>
+      <th>Type</th>
+      <th>Declaring class</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>actionPrototype</td>
+      <td>EObject</td>
+      <td><a href="../../../../../../../core/modules/ncore/ModelElement.html">ModelElement</a></td>
+      <td><p>If this reference is not set then EObjectActionProvider creates a new Action using AppFactory in newAction() method. If this reference is set and is Action then a copy of the action is created and returned. Otherwise the reference value it is adapted to ActionProvider which is used to create an action. This allows to merge actions and chain action generation. E.g. generate Ecore model documentation and merge it into the Engineering documentation.</p>
+</td>
+    </tr>
+    <tr>
+      <td>appearance</td>
+      <td><a href="Appearance.html">Appearance</a></td>
+      <td><a href="BootstrapElement.html">BootstrapElement</a></td>
+      <td><p>Customizes appearance of Bootstrap element.</p>
+</td>
+    </tr>
+    <tr>
+      <td>attributes</td>
+      <td><a href="../../../../../../../core/modules/exec/modules/model/Property.html">Property</a></td>
+      <td><a href="../../../html/modules/model/HtmlElement.html">HtmlElement</a></td>
+      <td><p>Tag attributes.</p>
+<h2><a href="#interpolation" id="interpolation">Interpolation</a></h2>
+<p>Attribute values are interpolated, i.e. tokens in the form of <code>default value]</code> are replaced with the contextual values or default values, if any. Examples:</p>
+<ul>
+<li><code>${my-style}</code> - Token without a default value.</li>
+<li><code>bold</code> - Token with a default value.</li>
+</ul>
+<h2><a href="#regular-attributes" id="regular-attributes">Regular attributes</a></h2>
+<p>For all top-level entries except <code>class</code>, <code>style</code>, and <code>data</code> attribute value is produced by converting the value to string for scalars and to JSON string for lists and maps. For attributes which do not start with <code>data-</code> a warning is issued if the value is not a scalar, i.e. a list or a map.</p>
+<h2><a href="#class" id="class">Class</a></h2>
+<p>For class attribute its value is formed by concantenating elements using space as a separator. If elements are hierarchical then class name is formed by concatenation with a dash (<code>-</code>) as a separator.</p>
+<h2><a href="#data" id="data">Data</a></h2>
+<p>If value of <code>data</code> attbibute is a map then keys of that map get concatenated with <code>data</code> using dash (<code>-</code>) as a separator, them same applies to nested maps. Non-map values become attribute values - scalars are converted to string, lists are converted to JSON string.</p>
+<h2><a href="#style" id="style">Style</a></h2>
+<p>Style can be defined as a string, list or map. If style is defined as a list, all list values are concatenated with a space as a separator - it is a convent way for long unstructured definitions.</p>
+<p>If style value is a map then the value and its contained map values are processed in the following fashion:</p>
+<ul>
+<li>Keys are concatenated with dash as a separator.</li>
+<li>List values are contcatenated wtih space as a separator.</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td>content</td>
+      <td>EObject</td>
+      <td><a href="../../../html/modules/model/HtmlElement.html">HtmlElement</a></td>
+      <td><p>Container content.</p>
+<p>Content elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content.</p>
+</td>
+    </tr>
+    <tr>
+      <td>marker</td>
+      <td><a href="../../../../../../../core/modules/ncore/Marker.html">Marker</a></td>
+      <td><a href="../../../../../../../core/modules/ncore/Marked.html">Marked</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>slides</td>
+      <td><a href="Slide.html">Slide</a></td>
+      <td>Carousel</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2><span class="nsd-app-content-panel-title">Attributes</span>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+                                  <div class="container-fluid">
+                                    <div class="row nsd-app-content-panel-title-and-items-row">
+                                      <div class="col-auto">
+                                        <H3><span class="nsd-app-content-panel-title"><img src="https://www.nasdanika.org/resources/images/ecore/EAttribute.gif" class="nsd-app-label-icon"/>controls : EBoolean</span>
+                                        </H3>
+                                      </div>
+                                    </div>
+                                    <div class="row nsd-app-content-panel-content-row">
+                                      <div class="col">
+                                        <div class="container-fluid">
+                                          <div class="row">
+                                            <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td>EBoolean</td>
+  </tr>
+  <tr>
+    <th>Cardinality</th>
+    <td>0..1</td>
+  </tr>
+  <tr>
+    <th>Changeable</th>
+    <td>true</td>
+  </tr>
+  <tr>
+    <th>Derived</th>
+    <td>false</td>
+  </tr>
+</table></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col">
+                                  <div class="container-fluid">
+                                    <div class="row nsd-app-content-panel-title-and-items-row">
+                                      <div class="col-auto">
+                                        <H3><span class="nsd-app-content-panel-title"><img src="https://www.nasdanika.org/resources/images/ecore/EAttribute.gif" class="nsd-app-label-icon"/>crossFade : EBoolean</span>
+                                        </H3>
+                                      </div>
+                                    </div>
+                                    <div class="row nsd-app-content-panel-content-row">
+                                      <div class="col">
+                                        <div class="container-fluid">
+                                          <div class="row">
+                                            <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td>EBoolean</td>
+  </tr>
+  <tr>
+    <th>Cardinality</th>
+    <td>0..1</td>
+  </tr>
+  <tr>
+    <th>Changeable</th>
+    <td>true</td>
+  </tr>
+  <tr>
+    <th>Derived</th>
+    <td>false</td>
+  </tr>
+</table></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col">
+                                  <div class="container-fluid">
+                                    <div class="row nsd-app-content-panel-title-and-items-row">
+                                      <div class="col-auto">
+                                        <H3><span class="nsd-app-content-panel-title"><img src="https://www.nasdanika.org/resources/images/ecore/EAttribute.gif" class="nsd-app-label-icon"/>indicator : EBoolean</span>
+                                        </H3>
+                                      </div>
+                                    </div>
+                                    <div class="row nsd-app-content-panel-content-row">
+                                      <div class="col">
+                                        <div class="container-fluid">
+                                          <div class="row">
+                                            <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td>EBoolean</td>
+  </tr>
+  <tr>
+    <th>Cardinality</th>
+    <td>0..1</td>
+  </tr>
+  <tr>
+    <th>Changeable</th>
+    <td>true</td>
+  </tr>
+  <tr>
+    <th>Derived</th>
+    <td>false</td>
+  </tr>
+</table></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col">
+                                  <div class="container-fluid">
+                                    <div class="row nsd-app-content-panel-title-and-items-row">
+                                      <div class="col-auto">
+                                        <H3><span class="nsd-app-content-panel-title"><img src="https://www.nasdanika.org/resources/images/ecore/EAttribute.gif" class="nsd-app-label-icon"/>interval : EString</span>
+                                        </H3>
+                                      </div>
+                                    </div>
+                                    <div class="row nsd-app-content-panel-content-row">
+                                      <div class="col">
+                                        <div class="container-fluid">
+                                          <div class="row">
+                                            <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td>EString</td>
+  </tr>
+  <tr>
+    <th>Cardinality</th>
+    <td>0..1</td>
+  </tr>
+  <tr>
+    <th>Changeable</th>
+    <td>true</td>
+  </tr>
+  <tr>
+    <th>Derived</th>
+    <td>false</td>
+  </tr>
+</table></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col">
+                                  <div class="container-fluid">
+                                    <div class="row nsd-app-content-panel-title-and-items-row">
+                                      <div class="col-auto">
+                                        <H3><span class="nsd-app-content-panel-title"><img src="https://www.nasdanika.org/resources/images/ecore/EAttribute.gif" class="nsd-app-label-icon"/>ride : EBoolean</span>
+                                        </H3>
+                                      </div>
+                                    </div>
+                                    <div class="row nsd-app-content-panel-content-row">
+                                      <div class="col">
+                                        <div class="container-fluid">
+                                          <div class="row">
+                                            <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td>EBoolean</td>
+  </tr>
+  <tr>
+    <th>Cardinality</th>
+    <td>0..1</td>
+  </tr>
+  <tr>
+    <th>Changeable</th>
+    <td>true</td>
+  </tr>
+  <tr>
+    <th>Derived</th>
+    <td>false</td>
+  </tr>
+</table></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2><span class="nsd-app-content-panel-title">References</span>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+                                  <div class="container-fluid">
+                                    <div class="row nsd-app-content-panel-title-and-items-row">
+                                      <div class="col-auto">
+                                        <H3><span class="nsd-app-content-panel-title"><img src="https://www.nasdanika.org/resources/images/ecore/EReference.gif" class="nsd-app-label-icon"/>slides : Slide*</span>
+                                        </H3>
+                                      </div>
+                                    </div>
+                                    <div class="row nsd-app-content-panel-content-row">
+                                      <div class="col">
+                                        <div class="container-fluid">
+                                          <div class="row">
+                                            <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="Slide.html">Slide</a></td>
+  </tr>
+  <tr>
+    <th>Cardinality</th>
+    <td><B>0..*</B></td>
+  </tr>
+  <tr>
+    <th>Changeable</th>
+    <td>true</td>
+  </tr>
+  <tr>
+    <th>Derived</th>
+    <td>false</td>
+  </tr>
+</table></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col nsd-app-footer">
+          <ul class="nav nsd-app-footer-navs">
+            <li class="nav-item">
+              <a href="https://github.com/Nasdanika/nasdanika.github.io/" class="nav-link"><span class="fab fa-github nsd-app-label-icon"></span>Source</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
