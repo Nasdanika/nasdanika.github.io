@@ -275,6 +275,25 @@ public class TestBase {
 		}
 	}	
 	
+	/**
+	 * Walks the directory passing files to the listener.
+	 * @param source
+	 * @param target
+	 * @param cleanTarget
+	 * @param cleanPredicate
+	 * @param listener
+	 * @throws IOException
+	 */
+	public static void walk(String path, BiConsumer<File,String> listener, File... files) throws IOException {
+		for (File file: files) {
+			String filePath = path == null ? file.getName() : path + "/" + file.getName();
+			if (file.isDirectory()) {
+				walk(filePath, listener, file.listFiles());
+			} else if (file.isFile() && listener != null) {
+				listener.accept(file, filePath);
+			}
+		}
+	}
 	
 	// --- From flow tests ---
 	

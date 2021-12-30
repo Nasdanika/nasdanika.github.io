@@ -5,9 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -77,6 +80,10 @@ import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.ncore.Marker;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NcoreResourceSet;
+
+import com.redfin.sitemapgenerator.ChangeFreq;
+import com.redfin.sitemapgenerator.WebSitemapGenerator;
+import com.redfin.sitemapgenerator.WebSitemapUrl;
 
 /**
  * Tests of agile flows.
@@ -453,7 +460,27 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 		};
 
 		copy(new File(siteDir, "nasdanika"), new File("docs"), true, cleanPredicate, null);
-
+		
+		// Site map
+		String domain = "https://docs.nasdanika.org";
+		WebSitemapGenerator wsg = new WebSitemapGenerator(domain, siteDir);
+		BiConsumer<File, String> listener = new BiConsumer<File, String>() {
+			
+			@Override
+			public void accept(File file, String path) {
+				if (path.endsWith(".html")) {
+					try {
+						WebSitemapUrl url = new WebSitemapUrl.Options(domain + "/" + path)
+							    .lastMod(new Date(file.lastModified())).changeFreq(ChangeFreq.WEEKLY).build();
+						wsg.addUrl(url); 
+					} catch (MalformedURLException e) {
+						throw new NasdanikaException(e);
+					}
+				}
+			}
+		};
+		walk(null, listener, siteDir.listFiles());
+		wsg.write();		
 	}
 	
 	protected ResourceSet createResourceSet() {
