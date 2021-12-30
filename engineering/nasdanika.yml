@@ -1,12 +1,21 @@
 engineering-organization:
   uri: engineering://nasdanika
-  path: nasdanika
-  name: Nasdanika
-  description: Engineering model to test core model classes.
+  path: docs
+  name: Documentation
+  description: Engineering model to test core model classes. # TODO - landing page.
   modules:
     - ../../core/engineering.yml
+    - ../../html/engineering.yml
+    - ../../engineering/engineering.yml
+    - ../../togaf/engineering.yml
+  objectives:
+    test-objective:
+      name: Test Objective
+      key-results:
+        do-something:
+          name: Do something       
   personas:
-    - path: java-developer
+    java-developer:
       name: Java Developer
       goals:
         - path: efficiency
@@ -15,37 +24,132 @@ engineering-organization:
             - path: generated-doc
               name: Generated Documentation
   issue-categories:
-    - path: development
+    development:
       name: Development
-      children:
-        - path: back-end
-          name: Back end
-        - path: front-end
-          name: Front end            
+    good-first-issue:
+      name: Good First Issue
   issue-priorities:
-    - path: low
+    low:
       name: Low
-    - path: medium
+    medium:
       name: Medium
-    - path: high
+    high:
       name: High
   issue-severities:
-    - path: critical
+    critical:
       name: Critical
-    - path: major
+    major:
       name: Major
-    - path: medium
+    medium:
       name: Medium
-    - path: low
+    low:
       name: Low
   issue-statuses:
-    - path: open
+    open:
       name: Open
-    - path: in-progress
+    in-progress:
       name: In Progress
-    - path: done
+    done:
       name: Done
       done: true
-    - path: cancelled
+    cancelled:
       name: Cancelled
-                            
+  principles:
+    ecore-data:
+      name: Stateful objects shall be modeled in ECore
+      description: Generation of documentation, validation, multiple source formats, multiple editors - tree, form, diagram, web-based. TODO - to Markdown, links to resources. Name/statement/rationale/implications.       
+  increments:
+    "2021":
+      name: 2021
+      start: 2021/01/01
+      end: 2022/01/01
+      children:
+        Q4:
+          name: Q4
+          start: 2021/10/01
+          end: 2022/01/01
+          children: 
+            dec:
+              name: December
+              start: 2021/12/01
+              end: 2022/01/01
+              objectives:
+                test-objective:
+                  name: Test Objective
+                  key-results:
+                    do-something:
+                      name: Do something
+    "2022":
+      name: 2022
+      start: 2022/01/01
+      end: 2023/01/01
+      children:
+        Q1:
+          name: Q1
+          start: 2022/01/01
+          end: 2022/04/01
+          children: 
+            jan:
+              name: January
+              start: 2022/01/01
+              end: 2022/02/01
+            feb:
+              name: February
+              start: 2022/02/01
+              end: 2022/03/01
+            mar:
+              name: March
+              start: 2022/03/01
+              end: 2022/04/01
+        Q2:
+          name: Q2
+          start: 2022/04/01
+          end: 2022/07/01
+          children: 
+            apr:
+              name: April
+              start: 2022/04/01
+              end: 2022/05/01
+            may:
+              name: May
+              start: 2022/05/01
+              end: 2022/06/01
+            jun:
+              name: June
+              start: 2022/06/01
+              end: 2022/07/01
+        Q3:
+          name: Q3
+          start: 2022/07/01
+          end: 2022/10/01
+          children: 
+            jul:
+              name: July
+              start: 2022/07/01
+              end: 2022/08/01
+            aug:
+              name: August
+              start: 2022/08/01
+              end: 2022/09/01
+            sep:
+              name: September
+              start: 2022/09/01
+              end: 2022/10/01
+        Q4:
+          name: Q4
+          start: 2022/10/01
+          end: 2023/01/01
+          children: 
+            oct:
+              name: October
+              start: 2022/10/01
+              end: 2022/11/01
+            nov:
+              name: November
+              start: 2022/11/01
+              end: 2022/12/01
+            dec:
+              name: December
+              start: 2022/12/01
+              end: 2023/01/01
+                                    
