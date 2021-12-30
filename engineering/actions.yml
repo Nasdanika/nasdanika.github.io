@@ -6,4 +6,9 @@ app-action:
   tooltip: Root action
   children:
     - app-action-reference: "../target/model-doc/actions/${model-name}.xml#/"
+  navigation:
+    - app-action:
+        text: Source
+        icon: fab fa-github
+        location: https://github.com/Nasdanika/nasdanika.github.io/  
           
