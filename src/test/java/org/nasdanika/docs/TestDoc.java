@@ -58,6 +58,11 @@ import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
 
+/**
+ * Generates ECore model documentation.
+ * @author Pavel
+ *
+ */
 public class TestDoc extends TestBase {
 		
 	private static final URI CONTAINER_MODEL_URI = URI.createFileURI(new File("target/model-doc/container.xml").getAbsolutePath());				
