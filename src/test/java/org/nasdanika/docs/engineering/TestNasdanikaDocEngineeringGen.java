@@ -459,11 +459,12 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 			return !"CNAME".equals(path) && !"favicon.ico".equals(path) && !path.startsWith("images/");
 		};
 
-		copy(new File(siteDir, "nasdanika"), new File("docs"), true, cleanPredicate, null);
+		File docsDir = new File("docs");
+		copy(new File(siteDir, "nasdanika"), docsDir, true, cleanPredicate, null);
 		
 		// Site map
 		String domain = "https://docs.nasdanika.org";
-		WebSitemapGenerator wsg = new WebSitemapGenerator(domain, siteDir);
+		WebSitemapGenerator wsg = new WebSitemapGenerator(domain, docsDir);
 		BiConsumer<File, String> listener = new BiConsumer<File, String>() {
 			
 			@Override
@@ -479,7 +480,7 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 				}
 			}
 		};
-		walk(null, listener, siteDir.listFiles());
+		walk(null, listener, docsDir.listFiles());
 		wsg.write();		
 	}
 	
