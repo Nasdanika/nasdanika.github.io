@@ -56,7 +56,9 @@ import org.nasdanika.common.resources.FileSystemContainer;
 import org.nasdanika.diagram.DiagramPackage;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
+import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.emf.persistence.FeatureCacheAdapter;
+import org.nasdanika.emf.persistence.YamlResourceFactory;
 import org.nasdanika.engineering.EngineeringPackage;
 import org.nasdanika.engineering.gen.EngineeringActionProviderAdapterFactory;
 import org.nasdanika.exec.ExecPackage;
@@ -306,7 +308,7 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 	 * @throws Exception
 	 */
 	public void generateActionModel(String name, ProgressMonitor progressMonitor) throws Exception {
-		ResourceSet instanceModelsResourceSet = createResourceSet();
+		ResourceSet instanceModelsResourceSet = createResourceSet(Context.EMPTY_CONTEXT, progressMonitor);
 		Resource instanceModelResource = instanceModelsResourceSet.getResource(URI.createURI(name + ".xml").resolve(ENGINEERING_MODELS_URI), true);
 
 		org.eclipse.emf.common.util.Diagnostic instanceDiagnostic = org.nasdanika.emf.EmfUtil.resolveClearCacheAndDiagnose(instanceModelsResourceSet, Context.EMPTY_CONTEXT);
@@ -361,7 +363,7 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 			
 		});
 		
-		ResourceSet actionModelsResourceSet = createResourceSet();
+		ResourceSet actionModelsResourceSet = createResourceSet(Context.EMPTY_CONTEXT, progressMonitor);
 		actionModelsResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		
 		org.eclipse.emf.ecore.resource.Resource actionModelResource = actionModelsResourceSet.createResource(URI.createURI(name + ".xml").resolve(ACTION_MODELS_URI));
@@ -434,12 +436,47 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 		modelResource.save(null);
 	}
 	
+	private void copyJavaDoc() throws Exception {
+		copy(new File("../core/common/target/apidocs"), new File("docs/modules/core/modules/common/apidocs"), false, null, null);
+		copy(new File("../core/ncore/target/apidocs"), new File("docs/modules/core/modules/ncore/apidocs"), false, null, null);
+		copy(new File("../core/diagram/target/apidocs"), new File("docs/modules/core/modules/diagram/modules/model/apidocs"), false, null, null);
+		copy(new File("../core/diagram.gen/target/apidocs"), new File("docs/modules/core/modules/diagram/modules/gen/apidocs"), false, null, null);
+		copy(new File("../core/flow/target/apidocs"), new File("docs/modules/core/modules/flow/apidocs"), false, null, null);
+		copy(new File("../core/exec/target/apidocs"), new File("docs/modules/core/modules/exec/modules/model/apidocs"), false, null, null);
+		copy(new File("../core/exec.gen/target/apidocs"), new File("docs/modules/core/modules/exec/modules/gen/apidocs"), false, null, null);
+		copy(new File("../core/cli/target/apidocs"), new File("docs/modules/core/modules/cli/apidocs"), false, null, null);
+		copy(new File("../core/emf/target/apidocs"), new File("docs/modules/core/modules/emf/apidocs"), false, null, null);	
+		
+		copy(new File("../html/html/target/apidocs"), new File("docs/modules/html/modules/html/apidocs"), false, null, null);	
+		copy(new File("../html/bootstrap/target/apidocs"), new File("docs/modules/html/modules/bootstrap/apidocs"), false, null, null);	
+		copy(new File("../html/jstree/target/apidocs"), new File("docs/modules/html/modules/jstree/apidocs"), false, null, null);	
+		copy(new File("../html/knockout/target/apidocs"), new File("docs/modules/html/modules/knockout/apidocs"), false, null, null);	
+		copy(new File("../html/fontawesome/target/apidocs"), new File("docs/modules/html/modules/fontawesome/apidocs"), false, null, null);	
+		copy(new File("../html/echarts/target/apidocs"), new File("docs/modules/html/modules/echarts/apidocs"), false, null, null);	
+		copy(new File("../html/emf/target/apidocs"), new File("docs/modules/html/modules/emf/apidocs"), false, null, null);	
+		copy(new File("../html/ecore/target/apidocs"), new File("docs/modules/html/modules/ecore/apidocs"), false, null, null);	
+		copy(new File("../html/flow/target/apidocs"), new File("docs/modules/html/modules/flow/apidocs"), false, null, null);	
+
+		copy(new File("../html/model/html/target/apidocs"), new File("docs/modules/html/modules/models/modules/html/modules/model/apidocs"), false, null, null);	
+		copy(new File("../html/model/html.gen/target/apidocs"), new File("docs/modules/html/modules/models/modules/html/modules/gen/apidocs"), false, null, null);	
+
+		copy(new File("../html/model/bootstrap/target/apidocs"), new File("docs/modules/html/modules/models/modules/bootstrap/modules/model/apidocs"), false, null, null);	
+		copy(new File("../html/model/bootstrap.gen/target/apidocs"), new File("docs/modules/html/modules/models/modules/bootstrap/modules/gen/apidocs"), false, null, null);	
+
+		copy(new File("../html/model/app/target/apidocs"), new File("docs/modules/html/modules/models/modules/app/modules/model/apidocs"), false, null, null);	
+		copy(new File("../html/model/app.gen/target/apidocs"), new File("docs/modules/html/modules/models/modules/app/modules/gen/apidocs"), false, null, null);	
+
+		copy(new File("../engineering/model/target/apidocs"), new File("docs/modules/engineering/modules/model/apidocs"), false, null, null);	
+		copy(new File("../engineering/gen/target/apidocs"), new File("docs/modules/engineering/modules/gen/apidocs"), false, null, null);	
+		
+	}
+	
 	/**
 	 * Generates files from the previously generated resource model.
 	 * @throws Exception
 	 */
 	public void generateContainer(String name, ProgressMonitor progressMonitor) throws Exception {
-		ResourceSet resourceSet = createResourceSet();
+		ResourceSet resourceSet = createResourceSet(Context.EMPTY_CONTEXT, progressMonitor);
 		
 		resourceSet.getAdapterFactories().add(new AppAdapterFactory());
 				
@@ -461,6 +498,8 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 
 		File docsDir = new File("docs");
 		copy(new File(siteDir, "nasdanika"), docsDir, true, cleanPredicate, null);
+		
+		copyJavaDoc();
 		
 		// Site map
 		String domain = "https://docs.nasdanika.org";
@@ -484,10 +523,14 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 		wsg.write();		
 	}
 	
-	protected ResourceSet createResourceSet() {
+	protected ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
 		// Load model from XMI
 		ResourceSet resourceSet = new NcoreResourceSet();
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+		Map<String, Object> extensionToFactoryMap = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap();
+		extensionToFactoryMap.put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+		
+		YamlResourceFactory yamlResourceFactory = new YamlResourceFactory(new EObjectLoader(null, null, resourceSet), context, progressMonitor);
+		extensionToFactoryMap.put("yml", yamlResourceFactory);
 	
 		resourceSet.getPackageRegistry().put(NcorePackage.eNS_URI, NcorePackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(DiagramPackage.eNS_URI, DiagramPackage.eINSTANCE);
