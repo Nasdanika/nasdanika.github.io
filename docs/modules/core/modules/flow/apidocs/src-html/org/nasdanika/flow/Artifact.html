@@ -1,0 +1,391 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/**<a name="line.1"></a>
+<span class="sourceLineNo">002</span> */<a name="line.2"></a>
+<span class="sourceLineNo">003</span>package org.nasdanika.flow;<a name="line.3"></a>
+<span class="sourceLineNo">004</span><a name="line.4"></a>
+<span class="sourceLineNo">005</span>import org.eclipse.emf.common.util.EList;<a name="line.5"></a>
+<span class="sourceLineNo">006</span>import org.eclipse.emf.common.util.EMap;<a name="line.6"></a>
+<span class="sourceLineNo">007</span>import org.nasdanika.diagram.DiagramElement;<a name="line.7"></a>
+<span class="sourceLineNo">008</span><a name="line.8"></a>
+<span class="sourceLineNo">009</span>/**<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * &lt;!-- begin-user-doc --&gt;<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * A representation of the model object '&lt;em&gt;&lt;b&gt;Artifact&lt;/b&gt;&lt;/em&gt;'.<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * &lt;!-- end-user-doc --&gt;<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * &lt;p&gt;<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * The following features are supported:<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * &lt;/p&gt;<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * &lt;ul&gt;<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getRepositories &lt;em&gt;Repositories&lt;/em&gt;}&lt;/li&gt;<a name="line.18"></a>
+<span class="sourceLineNo">019</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getRepositoryKeys &lt;em&gt;Repository Keys&lt;/em&gt;}&lt;/li&gt;<a name="line.19"></a>
+<span class="sourceLineNo">020</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getInputFor &lt;em&gt;Input For&lt;/em&gt;}&lt;/li&gt;<a name="line.20"></a>
+<span class="sourceLineNo">021</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getOutputFor &lt;em&gt;Output For&lt;/em&gt;}&lt;/li&gt;<a name="line.21"></a>
+<span class="sourceLineNo">022</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getPayloadFor &lt;em&gt;Payload For&lt;/em&gt;}&lt;/li&gt;<a name="line.22"></a>
+<span class="sourceLineNo">023</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getResponseFor &lt;em&gt;Response For&lt;/em&gt;}&lt;/li&gt;<a name="line.23"></a>
+<span class="sourceLineNo">024</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getUsedBy &lt;em&gt;Used By&lt;/em&gt;}&lt;/li&gt;<a name="line.24"></a>
+<span class="sourceLineNo">025</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getResponsibilities &lt;em&gt;Responsibilities&lt;/em&gt;}&lt;/li&gt;<a name="line.25"></a>
+<span class="sourceLineNo">026</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getChildren &lt;em&gt;Children&lt;/em&gt;}&lt;/li&gt;<a name="line.26"></a>
+<span class="sourceLineNo">027</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getOutboundRelationships &lt;em&gt;Outbound Relationships&lt;/em&gt;}&lt;/li&gt;<a name="line.27"></a>
+<span class="sourceLineNo">028</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getInboundRelationships &lt;em&gt;Inbound Relationships&lt;/em&gt;}&lt;/li&gt;<a name="line.28"></a>
+<span class="sourceLineNo">029</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#isPartition &lt;em&gt;Partition&lt;/em&gt;}&lt;/li&gt;<a name="line.29"></a>
+<span class="sourceLineNo">030</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getStyle &lt;em&gt;Style&lt;/em&gt;}&lt;/li&gt;<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getTemplateKeys &lt;em&gt;Template Keys&lt;/em&gt;}&lt;/li&gt;<a name="line.31"></a>
+<span class="sourceLineNo">032</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getTemplates &lt;em&gt;Templates&lt;/em&gt;}&lt;/li&gt;<a name="line.32"></a>
+<span class="sourceLineNo">033</span> *   &lt;li&gt;{@link org.nasdanika.flow.Artifact#getInstances &lt;em&gt;Instances&lt;/em&gt;}&lt;/li&gt;<a name="line.33"></a>
+<span class="sourceLineNo">034</span> * &lt;/ul&gt;<a name="line.34"></a>
+<span class="sourceLineNo">035</span> *<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * @see org.nasdanika.flow.FlowPackage#getArtifact()<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * @model<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * @generated<a name="line.38"></a>
+<span class="sourceLineNo">039</span> */<a name="line.39"></a>
+<span class="sourceLineNo">040</span>public interface Artifact extends ParticipantResponsibility&lt;Artifact&gt;, ServiceProvider&lt;Artifact&gt; {<a name="line.40"></a>
+<span class="sourceLineNo">041</span>        /**<a name="line.41"></a>
+<span class="sourceLineNo">042</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Repositories&lt;/b&gt;&lt;/em&gt;' reference list.<a name="line.42"></a>
+<span class="sourceLineNo">043</span>         * The list contents are of type {@link org.nasdanika.flow.Resource}.<a name="line.43"></a>
+<span class="sourceLineNo">044</span>         * It is bidirectional and its opposite is '{@link org.nasdanika.flow.Resource#getArtifacts &lt;em&gt;Artifacts&lt;/em&gt;}'.<a name="line.44"></a>
+<span class="sourceLineNo">045</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>         * &lt;!-- end-user-doc --&gt;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>         * @return the value of the '&lt;em&gt;Repositories&lt;/em&gt;' reference list.<a name="line.47"></a>
+<span class="sourceLineNo">048</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_Repositories()<a name="line.48"></a>
+<span class="sourceLineNo">049</span>         * @see org.nasdanika.flow.Resource#getArtifacts<a name="line.49"></a>
+<span class="sourceLineNo">050</span>         * @model opposite="artifacts" transient="true" changeable="false" derived="true"<a name="line.50"></a>
+<span class="sourceLineNo">051</span>         * @generated<a name="line.51"></a>
+<span class="sourceLineNo">052</span>         */<a name="line.52"></a>
+<span class="sourceLineNo">053</span>        EList&lt;Resource&gt; getRepositories();<a name="line.53"></a>
+<span class="sourceLineNo">054</span><a name="line.54"></a>
+<span class="sourceLineNo">055</span>        /**<a name="line.55"></a>
+<span class="sourceLineNo">056</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Repository Keys&lt;/b&gt;&lt;/em&gt;' attribute list.<a name="line.56"></a>
+<span class="sourceLineNo">057</span>         * The list contents are of type {@link java.lang.String}.<a name="line.57"></a>
+<span class="sourceLineNo">058</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.58"></a>
+<span class="sourceLineNo">059</span>         * &lt;!-- end-user-doc --&gt;<a name="line.59"></a>
+<span class="sourceLineNo">060</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.60"></a>
+<span class="sourceLineNo">061</span>         * Keys of artifact's repositories relative to the containing package ``resources/`` reference.<a name="line.61"></a>
+<span class="sourceLineNo">062</span>         * &lt;!-- end-model-doc --&gt;<a name="line.62"></a>
+<span class="sourceLineNo">063</span>         * @return the value of the '&lt;em&gt;Repository Keys&lt;/em&gt;' attribute list.<a name="line.63"></a>
+<span class="sourceLineNo">064</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_RepositoryKeys()<a name="line.64"></a>
+<span class="sourceLineNo">065</span>         * @model annotation="urn:org.nasdanika feature-key='repositories'"<a name="line.65"></a>
+<span class="sourceLineNo">066</span>         * @generated<a name="line.66"></a>
+<span class="sourceLineNo">067</span>         */<a name="line.67"></a>
+<span class="sourceLineNo">068</span>        EList&lt;String&gt; getRepositoryKeys();<a name="line.68"></a>
+<span class="sourceLineNo">069</span><a name="line.69"></a>
+<span class="sourceLineNo">070</span>        /**<a name="line.70"></a>
+<span class="sourceLineNo">071</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Input For&lt;/b&gt;&lt;/em&gt;' reference list.<a name="line.71"></a>
+<span class="sourceLineNo">072</span>         * The list contents are of type {@link org.nasdanika.flow.FlowElement}&lt;code&gt;&amp;lt;?&amp;gt;&lt;/code&gt;.<a name="line.72"></a>
+<span class="sourceLineNo">073</span>         * It is bidirectional and its opposite is '{@link org.nasdanika.flow.FlowElement#getInputArtifacts &lt;em&gt;Input Artifacts&lt;/em&gt;}'.<a name="line.73"></a>
+<span class="sourceLineNo">074</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.74"></a>
+<span class="sourceLineNo">075</span>         * &lt;!-- end-user-doc --&gt;<a name="line.75"></a>
+<span class="sourceLineNo">076</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.76"></a>
+<span class="sourceLineNo">077</span>         * Flow elements which take this artifact as an input.<a name="line.77"></a>
+<span class="sourceLineNo">078</span>         * &lt;!-- end-model-doc --&gt;<a name="line.78"></a>
+<span class="sourceLineNo">079</span>         * @return the value of the '&lt;em&gt;Input For&lt;/em&gt;' reference list.<a name="line.79"></a>
+<span class="sourceLineNo">080</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_InputFor()<a name="line.80"></a>
+<span class="sourceLineNo">081</span>         * @see org.nasdanika.flow.FlowElement#getInputArtifacts<a name="line.81"></a>
+<span class="sourceLineNo">082</span>         * @model opposite="inputArtifacts" transient="true" changeable="false" derived="true"<a name="line.82"></a>
+<span class="sourceLineNo">083</span>         * @generated<a name="line.83"></a>
+<span class="sourceLineNo">084</span>         */<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        EList&lt;FlowElement&lt;?&gt;&gt; getInputFor();<a name="line.85"></a>
+<span class="sourceLineNo">086</span><a name="line.86"></a>
+<span class="sourceLineNo">087</span>        /**<a name="line.87"></a>
+<span class="sourceLineNo">088</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Output For&lt;/b&gt;&lt;/em&gt;' reference list.<a name="line.88"></a>
+<span class="sourceLineNo">089</span>         * The list contents are of type {@link org.nasdanika.flow.FlowElement}&lt;code&gt;&amp;lt;?&amp;gt;&lt;/code&gt;.<a name="line.89"></a>
+<span class="sourceLineNo">090</span>         * It is bidirectional and its opposite is '{@link org.nasdanika.flow.FlowElement#getOutputArtifacts &lt;em&gt;Output Artifacts&lt;/em&gt;}'.<a name="line.90"></a>
+<span class="sourceLineNo">091</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.91"></a>
+<span class="sourceLineNo">092</span>         * &lt;!-- end-user-doc --&gt;<a name="line.92"></a>
+<span class="sourceLineNo">093</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.93"></a>
+<span class="sourceLineNo">094</span>         * Flow elements which output this artifact.<a name="line.94"></a>
+<span class="sourceLineNo">095</span>         * &lt;!-- end-model-doc --&gt;<a name="line.95"></a>
+<span class="sourceLineNo">096</span>         * @return the value of the '&lt;em&gt;Output For&lt;/em&gt;' reference list.<a name="line.96"></a>
+<span class="sourceLineNo">097</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_OutputFor()<a name="line.97"></a>
+<span class="sourceLineNo">098</span>         * @see org.nasdanika.flow.FlowElement#getOutputArtifacts<a name="line.98"></a>
+<span class="sourceLineNo">099</span>         * @model opposite="outputArtifacts" transient="true" changeable="false" derived="true"<a name="line.99"></a>
+<span class="sourceLineNo">100</span>         * @generated<a name="line.100"></a>
+<span class="sourceLineNo">101</span>         */<a name="line.101"></a>
+<span class="sourceLineNo">102</span>        EList&lt;FlowElement&lt;?&gt;&gt; getOutputFor();<a name="line.102"></a>
+<span class="sourceLineNo">103</span><a name="line.103"></a>
+<span class="sourceLineNo">104</span>        /**<a name="line.104"></a>
+<span class="sourceLineNo">105</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Payload For&lt;/b&gt;&lt;/em&gt;' reference list.<a name="line.105"></a>
+<span class="sourceLineNo">106</span>         * The list contents are of type {@link org.nasdanika.flow.Transition}.<a name="line.106"></a>
+<span class="sourceLineNo">107</span>         * It is bidirectional and its opposite is '{@link org.nasdanika.flow.Transition#getPayload &lt;em&gt;Payload&lt;/em&gt;}'.<a name="line.107"></a>
+<span class="sourceLineNo">108</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.108"></a>
+<span class="sourceLineNo">109</span>         * &lt;!-- end-user-doc --&gt;<a name="line.109"></a>
+<span class="sourceLineNo">110</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.110"></a>
+<span class="sourceLineNo">111</span>         * Derived opposite to Transition payload.<a name="line.111"></a>
+<span class="sourceLineNo">112</span>         * &lt;!-- end-model-doc --&gt;<a name="line.112"></a>
+<span class="sourceLineNo">113</span>         * @return the value of the '&lt;em&gt;Payload For&lt;/em&gt;' reference list.<a name="line.113"></a>
+<span class="sourceLineNo">114</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_PayloadFor()<a name="line.114"></a>
+<span class="sourceLineNo">115</span>         * @see org.nasdanika.flow.Transition#getPayload<a name="line.115"></a>
+<span class="sourceLineNo">116</span>         * @model opposite="payload" transient="true" changeable="false" derived="true"<a name="line.116"></a>
+<span class="sourceLineNo">117</span>         * @generated<a name="line.117"></a>
+<span class="sourceLineNo">118</span>         */<a name="line.118"></a>
+<span class="sourceLineNo">119</span>        EList&lt;Transition&gt; getPayloadFor();<a name="line.119"></a>
+<span class="sourceLineNo">120</span><a name="line.120"></a>
+<span class="sourceLineNo">121</span>        /**<a name="line.121"></a>
+<span class="sourceLineNo">122</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Response For&lt;/b&gt;&lt;/em&gt;' reference list.<a name="line.122"></a>
+<span class="sourceLineNo">123</span>         * The list contents are of type {@link org.nasdanika.flow.Call}.<a name="line.123"></a>
+<span class="sourceLineNo">124</span>         * It is bidirectional and its opposite is '{@link org.nasdanika.flow.Call#getResponse &lt;em&gt;Response&lt;/em&gt;}'.<a name="line.124"></a>
+<span class="sourceLineNo">125</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.125"></a>
+<span class="sourceLineNo">126</span>         * &lt;!-- end-user-doc --&gt;<a name="line.126"></a>
+<span class="sourceLineNo">127</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.127"></a>
+<span class="sourceLineNo">128</span>         * Derived opposite to Call response.<a name="line.128"></a>
+<span class="sourceLineNo">129</span>         * &lt;!-- end-model-doc --&gt;<a name="line.129"></a>
+<span class="sourceLineNo">130</span>         * @return the value of the '&lt;em&gt;Response For&lt;/em&gt;' reference list.<a name="line.130"></a>
+<span class="sourceLineNo">131</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_ResponseFor()<a name="line.131"></a>
+<span class="sourceLineNo">132</span>         * @see org.nasdanika.flow.Call#getResponse<a name="line.132"></a>
+<span class="sourceLineNo">133</span>         * @model opposite="response" transient="true" changeable="false" derived="true"<a name="line.133"></a>
+<span class="sourceLineNo">134</span>         * @generated<a name="line.134"></a>
+<span class="sourceLineNo">135</span>         */<a name="line.135"></a>
+<span class="sourceLineNo">136</span>        EList&lt;Call&gt; getResponseFor();<a name="line.136"></a>
+<span class="sourceLineNo">137</span><a name="line.137"></a>
+<span class="sourceLineNo">138</span>        /**<a name="line.138"></a>
+<span class="sourceLineNo">139</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Used By&lt;/b&gt;&lt;/em&gt;' reference list.<a name="line.139"></a>
+<span class="sourceLineNo">140</span>         * The list contents are of type {@link org.nasdanika.flow.Participant}.<a name="line.140"></a>
+<span class="sourceLineNo">141</span>         * It is bidirectional and its opposite is '{@link org.nasdanika.flow.Participant#getArtifacts &lt;em&gt;Artifacts&lt;/em&gt;}'.<a name="line.141"></a>
+<span class="sourceLineNo">142</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.142"></a>
+<span class="sourceLineNo">143</span>         * &lt;!-- end-user-doc --&gt;<a name="line.143"></a>
+<span class="sourceLineNo">144</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.144"></a>
+<span class="sourceLineNo">145</span>         * Participants use this artifact in their activities.<a name="line.145"></a>
+<span class="sourceLineNo">146</span>         * &lt;!-- end-model-doc --&gt;<a name="line.146"></a>
+<span class="sourceLineNo">147</span>         * @return the value of the '&lt;em&gt;Used By&lt;/em&gt;' reference list.<a name="line.147"></a>
+<span class="sourceLineNo">148</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_UsedBy()<a name="line.148"></a>
+<span class="sourceLineNo">149</span>         * @see org.nasdanika.flow.Participant#getArtifacts<a name="line.149"></a>
+<span class="sourceLineNo">150</span>         * @model opposite="artifacts" transient="true" changeable="false" derived="true"<a name="line.150"></a>
+<span class="sourceLineNo">151</span>         * @generated<a name="line.151"></a>
+<span class="sourceLineNo">152</span>         */<a name="line.152"></a>
+<span class="sourceLineNo">153</span>        EList&lt;Participant&gt; getUsedBy();<a name="line.153"></a>
+<span class="sourceLineNo">154</span><a name="line.154"></a>
+<span class="sourceLineNo">155</span>        /**<a name="line.155"></a>
+<span class="sourceLineNo">156</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Responsibilities&lt;/b&gt;&lt;/em&gt;' reference list.<a name="line.156"></a>
+<span class="sourceLineNo">157</span>         * The list contents are of type {@link org.nasdanika.flow.ArtifactParticipantResponsibility}.<a name="line.157"></a>
+<span class="sourceLineNo">158</span>         * It is bidirectional and its opposite is '{@link org.nasdanika.flow.ArtifactParticipantResponsibility#getArtifact &lt;em&gt;Artifact&lt;/em&gt;}'.<a name="line.158"></a>
+<span class="sourceLineNo">159</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.159"></a>
+<span class="sourceLineNo">160</span>         * &lt;!-- end-user-doc --&gt;<a name="line.160"></a>
+<span class="sourceLineNo">161</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.161"></a>
+<span class="sourceLineNo">162</span>         * Responsibilities for this artifact at a flow element level.<a name="line.162"></a>
+<span class="sourceLineNo">163</span>         * &lt;!-- end-model-doc --&gt;<a name="line.163"></a>
+<span class="sourceLineNo">164</span>         * @return the value of the '&lt;em&gt;Responsibilities&lt;/em&gt;' reference list.<a name="line.164"></a>
+<span class="sourceLineNo">165</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_Responsibilities()<a name="line.165"></a>
+<span class="sourceLineNo">166</span>         * @see org.nasdanika.flow.ArtifactParticipantResponsibility#getArtifact<a name="line.166"></a>
+<span class="sourceLineNo">167</span>         * @model opposite="artifact" transient="true" changeable="false" derived="true"<a name="line.167"></a>
+<span class="sourceLineNo">168</span>         * @generated<a name="line.168"></a>
+<span class="sourceLineNo">169</span>         */<a name="line.169"></a>
+<span class="sourceLineNo">170</span>        EList&lt;ArtifactParticipantResponsibility&gt; getResponsibilities();<a name="line.170"></a>
+<span class="sourceLineNo">171</span><a name="line.171"></a>
+<span class="sourceLineNo">172</span>        /**<a name="line.172"></a>
+<span class="sourceLineNo">173</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Children&lt;/b&gt;&lt;/em&gt;' map.<a name="line.173"></a>
+<span class="sourceLineNo">174</span>         * The key is of type {@link java.lang.String},<a name="line.174"></a>
+<span class="sourceLineNo">175</span>         * and the value is of type {@link org.nasdanika.flow.Artifact},<a name="line.175"></a>
+<span class="sourceLineNo">176</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.176"></a>
+<span class="sourceLineNo">177</span>         * &lt;!-- end-user-doc --&gt;<a name="line.177"></a>
+<span class="sourceLineNo">178</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.178"></a>
+<span class="sourceLineNo">179</span>         * Artifacts can be organized into a hierarchy (Product Breakdown Structure).<a name="line.179"></a>
+<span class="sourceLineNo">180</span>         * &lt;!-- end-model-doc --&gt;<a name="line.180"></a>
+<span class="sourceLineNo">181</span>         * @return the value of the '&lt;em&gt;Children&lt;/em&gt;' map.<a name="line.181"></a>
+<span class="sourceLineNo">182</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_Children()<a name="line.182"></a>
+<span class="sourceLineNo">183</span>         * @model mapType="org.nasdanika.flow.ArtifactEntry&amp;lt;org.eclipse.emf.ecore.EString, org.nasdanika.flow.Artifact&amp;gt;"<a name="line.183"></a>
+<span class="sourceLineNo">184</span>         * @generated<a name="line.184"></a>
+<span class="sourceLineNo">185</span>         */<a name="line.185"></a>
+<span class="sourceLineNo">186</span>        EMap&lt;String, Artifact&gt; getChildren();<a name="line.186"></a>
+<span class="sourceLineNo">187</span><a name="line.187"></a>
+<span class="sourceLineNo">188</span>        /**<a name="line.188"></a>
+<span class="sourceLineNo">189</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Outbound Relationships&lt;/b&gt;&lt;/em&gt;' map.<a name="line.189"></a>
+<span class="sourceLineNo">190</span>         * The key is of type {@link java.lang.String},<a name="line.190"></a>
+<span class="sourceLineNo">191</span>         * and the value is of type {@link org.nasdanika.flow.Relationship},<a name="line.191"></a>
+<span class="sourceLineNo">192</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.192"></a>
+<span class="sourceLineNo">193</span>         * &lt;!-- end-user-doc --&gt;<a name="line.193"></a>
+<span class="sourceLineNo">194</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.194"></a>
+<span class="sourceLineNo">195</span>         * Outbound relationships to other artifacts.<a name="line.195"></a>
+<span class="sourceLineNo">196</span>         * &lt;!-- end-model-doc --&gt;<a name="line.196"></a>
+<span class="sourceLineNo">197</span>         * @return the value of the '&lt;em&gt;Outbound Relationships&lt;/em&gt;' map.<a name="line.197"></a>
+<span class="sourceLineNo">198</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_OutboundRelationships()<a name="line.198"></a>
+<span class="sourceLineNo">199</span>         * @model mapType="org.nasdanika.flow.RelationshipEntry&amp;lt;org.eclipse.emf.ecore.EString, org.nasdanika.flow.Relationship&amp;gt;"<a name="line.199"></a>
+<span class="sourceLineNo">200</span>         *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true' feature-key='relationships'"<a name="line.200"></a>
+<span class="sourceLineNo">201</span>         * @generated<a name="line.201"></a>
+<span class="sourceLineNo">202</span>         */<a name="line.202"></a>
+<span class="sourceLineNo">203</span>        EMap&lt;String, Relationship&gt; getOutboundRelationships();<a name="line.203"></a>
+<span class="sourceLineNo">204</span><a name="line.204"></a>
+<span class="sourceLineNo">205</span>        /**<a name="line.205"></a>
+<span class="sourceLineNo">206</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Inbound Relationships&lt;/b&gt;&lt;/em&gt;' reference list.<a name="line.206"></a>
+<span class="sourceLineNo">207</span>         * The list contents are of type {@link org.nasdanika.flow.Relationship}.<a name="line.207"></a>
+<span class="sourceLineNo">208</span>         * It is bidirectional and its opposite is '{@link org.nasdanika.flow.Relationship#getTarget &lt;em&gt;Target&lt;/em&gt;}'.<a name="line.208"></a>
+<span class="sourceLineNo">209</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.209"></a>
+<span class="sourceLineNo">210</span>         * &lt;!-- end-user-doc --&gt;<a name="line.210"></a>
+<span class="sourceLineNo">211</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.211"></a>
+<span class="sourceLineNo">212</span>         * Relationships which have this artifact as a target.<a name="line.212"></a>
+<span class="sourceLineNo">213</span>         * &lt;!-- end-model-doc --&gt;<a name="line.213"></a>
+<span class="sourceLineNo">214</span>         * @return the value of the '&lt;em&gt;Inbound Relationships&lt;/em&gt;' reference list.<a name="line.214"></a>
+<span class="sourceLineNo">215</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_InboundRelationships()<a name="line.215"></a>
+<span class="sourceLineNo">216</span>         * @see org.nasdanika.flow.Relationship#getTarget<a name="line.216"></a>
+<span class="sourceLineNo">217</span>         * @model opposite="target" transient="true" changeable="false" derived="true"<a name="line.217"></a>
+<span class="sourceLineNo">218</span>         * @generated<a name="line.218"></a>
+<span class="sourceLineNo">219</span>         */<a name="line.219"></a>
+<span class="sourceLineNo">220</span>        EList&lt;Relationship&gt; getInboundRelationships();<a name="line.220"></a>
+<span class="sourceLineNo">221</span><a name="line.221"></a>
+<span class="sourceLineNo">222</span>        /**<a name="line.222"></a>
+<span class="sourceLineNo">223</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Partition&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.223"></a>
+<span class="sourceLineNo">224</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.224"></a>
+<span class="sourceLineNo">225</span>         * &lt;!-- end-user-doc --&gt;<a name="line.225"></a>
+<span class="sourceLineNo">226</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.226"></a>
+<span class="sourceLineNo">227</span>         * If true, this composite artifact shall be displayed as a partition on the parent component diagram.<a name="line.227"></a>
+<span class="sourceLineNo">228</span>         * &lt;!-- end-model-doc --&gt;<a name="line.228"></a>
+<span class="sourceLineNo">229</span>         * @return the value of the '&lt;em&gt;Partition&lt;/em&gt;' attribute.<a name="line.229"></a>
+<span class="sourceLineNo">230</span>         * @see #setPartition(boolean)<a name="line.230"></a>
+<span class="sourceLineNo">231</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_Partition()<a name="line.231"></a>
+<span class="sourceLineNo">232</span>         * @model<a name="line.232"></a>
+<span class="sourceLineNo">233</span>         * @generated<a name="line.233"></a>
+<span class="sourceLineNo">234</span>         */<a name="line.234"></a>
+<span class="sourceLineNo">235</span>        boolean isPartition();<a name="line.235"></a>
+<span class="sourceLineNo">236</span><a name="line.236"></a>
+<span class="sourceLineNo">237</span>        /**<a name="line.237"></a>
+<span class="sourceLineNo">238</span>         * Sets the value of the '{@link org.nasdanika.flow.Artifact#isPartition &lt;em&gt;Partition&lt;/em&gt;}' attribute.<a name="line.238"></a>
+<span class="sourceLineNo">239</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.239"></a>
+<span class="sourceLineNo">240</span>         * &lt;!-- end-user-doc --&gt;<a name="line.240"></a>
+<span class="sourceLineNo">241</span>         * @param value the new value of the '&lt;em&gt;Partition&lt;/em&gt;' attribute.<a name="line.241"></a>
+<span class="sourceLineNo">242</span>         * @see #isPartition()<a name="line.242"></a>
+<span class="sourceLineNo">243</span>         * @generated<a name="line.243"></a>
+<span class="sourceLineNo">244</span>         */<a name="line.244"></a>
+<span class="sourceLineNo">245</span>        void setPartition(boolean value);<a name="line.245"></a>
+<span class="sourceLineNo">246</span><a name="line.246"></a>
+<span class="sourceLineNo">247</span>        /**<a name="line.247"></a>
+<span class="sourceLineNo">248</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Style&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.248"></a>
+<span class="sourceLineNo">249</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.249"></a>
+<span class="sourceLineNo">250</span>         * &lt;!-- end-user-doc --&gt;<a name="line.250"></a>
+<span class="sourceLineNo">251</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.251"></a>
+<span class="sourceLineNo">252</span>         * Diagram element style for component diagrams.<a name="line.252"></a>
+<span class="sourceLineNo">253</span>         * &lt;!-- end-model-doc --&gt;<a name="line.253"></a>
+<span class="sourceLineNo">254</span>         * @return the value of the '&lt;em&gt;Style&lt;/em&gt;' containment reference.<a name="line.254"></a>
+<span class="sourceLineNo">255</span>         * @see #setStyle(DiagramElement)<a name="line.255"></a>
+<span class="sourceLineNo">256</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_Style()<a name="line.256"></a>
+<span class="sourceLineNo">257</span>         * @model containment="true"<a name="line.257"></a>
+<span class="sourceLineNo">258</span>         *        annotation="urn:org.nasdanika homogenous='true'"<a name="line.258"></a>
+<span class="sourceLineNo">259</span>         * @generated<a name="line.259"></a>
+<span class="sourceLineNo">260</span>         */<a name="line.260"></a>
+<span class="sourceLineNo">261</span>        DiagramElement getStyle();<a name="line.261"></a>
+<span class="sourceLineNo">262</span><a name="line.262"></a>
+<span class="sourceLineNo">263</span>        /**<a name="line.263"></a>
+<span class="sourceLineNo">264</span>         * Sets the value of the '{@link org.nasdanika.flow.Artifact#getStyle &lt;em&gt;Style&lt;/em&gt;}' containment reference.<a name="line.264"></a>
+<span class="sourceLineNo">265</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.265"></a>
+<span class="sourceLineNo">266</span>         * &lt;!-- end-user-doc --&gt;<a name="line.266"></a>
+<span class="sourceLineNo">267</span>         * @param value the new value of the '&lt;em&gt;Style&lt;/em&gt;' containment reference.<a name="line.267"></a>
+<span class="sourceLineNo">268</span>         * @see #getStyle()<a name="line.268"></a>
+<span class="sourceLineNo">269</span>         * @generated<a name="line.269"></a>
+<span class="sourceLineNo">270</span>         */<a name="line.270"></a>
+<span class="sourceLineNo">271</span>        void setStyle(DiagramElement value);<a name="line.271"></a>
+<span class="sourceLineNo">272</span><a name="line.272"></a>
+<span class="sourceLineNo">273</span>        /**<a name="line.273"></a>
+<span class="sourceLineNo">274</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Template Keys&lt;/b&gt;&lt;/em&gt;' attribute list.<a name="line.274"></a>
+<span class="sourceLineNo">275</span>         * The list contents are of type {@link java.lang.String}.<a name="line.275"></a>
+<span class="sourceLineNo">276</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.276"></a>
+<span class="sourceLineNo">277</span>         * &lt;!-- end-user-doc --&gt;<a name="line.277"></a>
+<span class="sourceLineNo">278</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.278"></a>
+<span class="sourceLineNo">279</span>         * Keys of artifact's templates relative to the artifact URI.<a name="line.279"></a>
+<span class="sourceLineNo">280</span>         * &lt;!-- end-model-doc --&gt;<a name="line.280"></a>
+<span class="sourceLineNo">281</span>         * @return the value of the '&lt;em&gt;Template Keys&lt;/em&gt;' attribute list.<a name="line.281"></a>
+<span class="sourceLineNo">282</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_TemplateKeys()<a name="line.282"></a>
+<span class="sourceLineNo">283</span>         * @model annotation="urn:org.nasdanika feature-key='templates'"<a name="line.283"></a>
+<span class="sourceLineNo">284</span>         * @generated<a name="line.284"></a>
+<span class="sourceLineNo">285</span>         */<a name="line.285"></a>
+<span class="sourceLineNo">286</span>        EList&lt;String&gt; getTemplateKeys();<a name="line.286"></a>
+<span class="sourceLineNo">287</span><a name="line.287"></a>
+<span class="sourceLineNo">288</span>        /**<a name="line.288"></a>
+<span class="sourceLineNo">289</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Templates&lt;/b&gt;&lt;/em&gt;' reference list.<a name="line.289"></a>
+<span class="sourceLineNo">290</span>         * The list contents are of type {@link org.nasdanika.flow.Artifact}.<a name="line.290"></a>
+<span class="sourceLineNo">291</span>         * It is bidirectional and its opposite is '{@link org.nasdanika.flow.Artifact#getInstances &lt;em&gt;Instances&lt;/em&gt;}'.<a name="line.291"></a>
+<span class="sourceLineNo">292</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.292"></a>
+<span class="sourceLineNo">293</span>         * &lt;!-- end-user-doc --&gt;<a name="line.293"></a>
+<span class="sourceLineNo">294</span>         * @return the value of the '&lt;em&gt;Templates&lt;/em&gt;' reference list.<a name="line.294"></a>
+<span class="sourceLineNo">295</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_Templates()<a name="line.295"></a>
+<span class="sourceLineNo">296</span>         * @see org.nasdanika.flow.Artifact#getInstances<a name="line.296"></a>
+<span class="sourceLineNo">297</span>         * @model opposite="instances" transient="true" changeable="false" derived="true"<a name="line.297"></a>
+<span class="sourceLineNo">298</span>         * @generated<a name="line.298"></a>
+<span class="sourceLineNo">299</span>         */<a name="line.299"></a>
+<span class="sourceLineNo">300</span>        EList&lt;Artifact&gt; getTemplates();<a name="line.300"></a>
+<span class="sourceLineNo">301</span><a name="line.301"></a>
+<span class="sourceLineNo">302</span>        /**<a name="line.302"></a>
+<span class="sourceLineNo">303</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Instances&lt;/b&gt;&lt;/em&gt;' reference list.<a name="line.303"></a>
+<span class="sourceLineNo">304</span>         * The list contents are of type {@link org.nasdanika.flow.Artifact}.<a name="line.304"></a>
+<span class="sourceLineNo">305</span>         * It is bidirectional and its opposite is '{@link org.nasdanika.flow.Artifact#getTemplates &lt;em&gt;Templates&lt;/em&gt;}'.<a name="line.305"></a>
+<span class="sourceLineNo">306</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.306"></a>
+<span class="sourceLineNo">307</span>         * &lt;!-- end-user-doc --&gt;<a name="line.307"></a>
+<span class="sourceLineNo">308</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.308"></a>
+<span class="sourceLineNo">309</span>         * Derived opposite to templates.<a name="line.309"></a>
+<span class="sourceLineNo">310</span>         * &lt;!-- end-model-doc --&gt;<a name="line.310"></a>
+<span class="sourceLineNo">311</span>         * @return the value of the '&lt;em&gt;Instances&lt;/em&gt;' reference list.<a name="line.311"></a>
+<span class="sourceLineNo">312</span>         * @see org.nasdanika.flow.FlowPackage#getArtifact_Instances()<a name="line.312"></a>
+<span class="sourceLineNo">313</span>         * @see org.nasdanika.flow.Artifact#getTemplates<a name="line.313"></a>
+<span class="sourceLineNo">314</span>         * @model opposite="templates" transient="true" changeable="false" derived="true"<a name="line.314"></a>
+<span class="sourceLineNo">315</span>         * @generated<a name="line.315"></a>
+<span class="sourceLineNo">316</span>         */<a name="line.316"></a>
+<span class="sourceLineNo">317</span>        EList&lt;Artifact&gt; getInstances();<a name="line.317"></a>
+<span class="sourceLineNo">318</span><a name="line.318"></a>
+<span class="sourceLineNo">319</span>} // Artifact<a name="line.319"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
