@@ -109,7 +109,7 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 	 * @param progressMonitor
 	 * @throws Exception
 	 */
-	protected void generateEngineeringModel(String name, ProgressMonitor progressMonitor) throws Exception {	
+	protected void generateEngineeringModel(String name, Context context, ProgressMonitor progressMonitor) throws Exception {	
 		load(
 				"engineering/" + name + ".yml", 
 				obj -> {
@@ -120,7 +120,7 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 					org.eclipse.emf.ecore.resource.Resource instanceModelResource = resourceSet.createResource(URI.createURI(name + ".xml").resolve(ENGINEERING_MODELS_URI));
 					instanceModelResource.getContents().add(copy);
 					
-					org.eclipse.emf.common.util.Diagnostic copyDiagnostic = org.nasdanika.emf.EmfUtil.resolveClearCacheAndDiagnose(resourceSet, Context.EMPTY_CONTEXT);
+					org.eclipse.emf.common.util.Diagnostic copyDiagnostic = org.nasdanika.emf.EmfUtil.resolveClearCacheAndDiagnose(resourceSet, context);
 					int severity = copyDiagnostic.getSeverity();
 					if (severity != org.eclipse.emf.common.util.Diagnostic.OK) {
 						EmfUtil.dumpDiagnostic(copyDiagnostic, 2, System.err);
@@ -182,7 +182,7 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 		return a !=  null && b != null && a.getNsURI().equals(b.getNsURI());
 	}
 		
-	public void generateEcoreActionModel(ProgressMonitor progressMonitor) throws Exception {
+	public void generateEcoreActionModel(Context context, ProgressMonitor progressMonitor) throws Exception {
 		GenModelResourceSet ecoreModelsResourceSet = new GenModelResourceSet();
 		
 		Map<String,String> pathMap = new ConcurrentHashMap<>();
@@ -231,12 +231,12 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 			return Hex.encodeHexString(ePackage.getNsURI().getBytes(StandardCharsets.UTF_8));
 		};
 		
-		MutableContext context = Context.EMPTY_CONTEXT.fork();
+		MutableContext mutableContext = context.fork();
 		
 		DiagramGenerator diagramGenerator = createDiagramGenerator(progressMonitor);
-		context.register(DiagramGenerator.class, diagramGenerator);//DiagramGenerator.createClient(new URL("http://localhost:8090/spring-exec/api/v1/exec/diagram/")));
+		mutableContext.register(DiagramGenerator.class, diagramGenerator);//DiagramGenerator.createClient(new URL("http://localhost:8090/spring-exec/api/v1/exec/diagram/")));
 		
-		ecoreModelsResourceSet.getAdapterFactories().add(new EcoreActionSupplierAdapterFactory(context, getEPackagePath));
+		ecoreModelsResourceSet.getAdapterFactories().add(new EcoreActionSupplierAdapterFactory(mutableContext, getEPackagePath, org.nasdanika.common.Util.createNasdanikaJavadocResolver(new File(".."), progressMonitor)));
 		
 		// Physical location relative to the projects (git) root folder -> logical (workspace) name 
 		Map<String,String> bundleMap = new LinkedHashMap<>();
@@ -273,6 +273,11 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 			copy(new File(sourceDir, "doc"), new File(targetDir, "doc"), true, null);
 		}		
 		
+//		// Ecore genmodel
+//		URL eCoreGenmodelURL = getClass().getResource("/model/Ecore.genmodel");
+//		URI eCoreGenmodelURI = URI.createURI(eCoreGenmodelURL.toString());
+//		ecoreModelsResourceSet.getResource(eCoreGenmodelURI, true);
+		
 		// Loading resources to the resource set.
 		for (URI uri: modelToActionModelMap.keySet()) {
 			ecoreModelsResourceSet.getResource(uri, true);
@@ -307,18 +312,18 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 	 * Loads instance model from previously generated XMI, diagnoses, generates action model.
 	 * @throws Exception
 	 */
-	public void generateActionModel(String name, ProgressMonitor progressMonitor) throws Exception {
-		ResourceSet instanceModelsResourceSet = createResourceSet(Context.EMPTY_CONTEXT, progressMonitor);
+	public void generateActionModel(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
+		ResourceSet instanceModelsResourceSet = createResourceSet(context, progressMonitor);
 		Resource instanceModelResource = instanceModelsResourceSet.getResource(URI.createURI(name + ".xml").resolve(ENGINEERING_MODELS_URI), true);
 
-		org.eclipse.emf.common.util.Diagnostic instanceDiagnostic = org.nasdanika.emf.EmfUtil.resolveClearCacheAndDiagnose(instanceModelsResourceSet, Context.EMPTY_CONTEXT);
+		org.eclipse.emf.common.util.Diagnostic instanceDiagnostic = org.nasdanika.emf.EmfUtil.resolveClearCacheAndDiagnose(instanceModelsResourceSet, context);
 		int severity = instanceDiagnostic.getSeverity();
 		if (severity != org.eclipse.emf.common.util.Diagnostic.OK) {
 			EmfUtil.dumpDiagnostic(instanceDiagnostic, 2, System.err);
 		}
 		assertThat(severity).isEqualTo(org.eclipse.emf.common.util.Diagnostic.OK);
 		
-		instanceModelsResourceSet.getAdapterFactories().add(new EngineeringActionProviderAdapterFactory(Context.EMPTY_CONTEXT) {
+		instanceModelsResourceSet.getAdapterFactories().add(new EngineeringActionProviderAdapterFactory(context) {
 			
 			private void collect(Notifier target, org.eclipse.emf.common.util.Diagnostic source, Collection<org.eclipse.emf.common.util.Diagnostic> accumulator) {
 				List<?> data = source.getData();
@@ -363,7 +368,7 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 			
 		});
 		
-		ResourceSet actionModelsResourceSet = createResourceSet(Context.EMPTY_CONTEXT, progressMonitor);
+		ResourceSet actionModelsResourceSet = createResourceSet(context, progressMonitor);
 		actionModelsResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		
 		org.eclipse.emf.ecore.resource.Resource actionModelResource = actionModelsResourceSet.createResource(URI.createURI(name + ".xml").resolve(ACTION_MODELS_URI));
@@ -399,7 +404,7 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 	 * Generates a resource model from an action model.
 	 * @throws Exception
 	 */
-	public void generateResourceModel(String name, ProgressMonitor progressMonitor) throws Exception {
+	public void generateResourceModel(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
 		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
 			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
 				System.err.println("***********************");
@@ -430,7 +435,7 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 				root, 
 				pageTemplate,
 				container,
-				Context.EMPTY_CONTEXT,
+				context,
 				progressMonitor);
 		
 		modelResource.save(null);
@@ -475,8 +480,8 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 	 * Generates files from the previously generated resource model.
 	 * @throws Exception
 	 */
-	public void generateContainer(String name, ProgressMonitor progressMonitor) throws Exception {
-		ResourceSet resourceSet = createResourceSet(Context.EMPTY_CONTEXT, progressMonitor);
+	public void generateContainer(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
+		ResourceSet resourceSet = createResourceSet(context, progressMonitor);
 		
 		resourceSet.getAdapterFactories().add(new AppAdapterFactory());
 				
@@ -488,7 +493,7 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 			Diagnostician diagnostician = new Diagnostician();
 			org.eclipse.emf.common.util.Diagnostic diagnostic = diagnostician.validate(eObject);
 			assertThat(diagnostic.getSeverity()).isNotEqualTo(org.eclipse.emf.common.util.Diagnostic.ERROR);
-			generate(eObject, container, Context.EMPTY_CONTEXT, progressMonitor);
+			generate(eObject, container, context, progressMonitor);
 		}
 		
 		// Cleanup docs, keep CNAME, favicon.ico, and images directory. Copy from target/model-doc/site/nasdanika
@@ -554,15 +559,20 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 		ENGINEERING_MODELS_DIR.mkdirs();
 		ACTION_MODELS_DIR.mkdirs();
 		RESOURCE_MODELS_DIR.mkdirs();
+
+		ProgressMonitor progressMonitor = new NullProgressMonitor(); // PrintStreamProgressMonitor();		
+
+		Function<String, String> nasdanikaResolver = org.nasdanika.common.Util.createNasdanikaJavadocResolver(new File(".."), progressMonitor);
 		
-		ProgressMonitor progressMonitor = new NullProgressMonitor(); // PrintStreamProgressMonitor();
+		MutableContext context = Context.EMPTY_CONTEXT.fork();
+		context.put("javadoc", org.nasdanika.common.Util.createJavadocPropertyComputer(nasdanikaResolver));
 		
 		long start = System.currentTimeMillis();
-		generateEcoreActionModel(progressMonitor);
+		generateEcoreActionModel(context, progressMonitor);
 		System.out.println("\tGenerated ecore action model in " + (System.currentTimeMillis() - start) + " milliseconds");
 		start = System.currentTimeMillis();
 		
-		generateSite("nasdanika", progressMonitor);
+		generateSite("nasdanika", context, progressMonitor);
 		
 		long cacheMisses = FeatureCacheAdapter.getMisses();
 		long cacheCalls = FeatureCacheAdapter.getCalls();
@@ -570,23 +580,23 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 		System.out.println("Feature cache - calls: " + cacheCalls + ", misses: " + cacheMisses + ", efficiency: " + cacheEfficiency + "%, compute time: " + TimeUnit.NANOSECONDS.toMillis(FeatureCacheAdapter.getComputeTime()) + " milliseconds.");
 	}
 	
-	private void generateSite(String name, ProgressMonitor progressMonitor) throws Exception {
+	private void generateSite(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
 		System.out.println("Generating site: " + name);
 		
 		long start = System.currentTimeMillis();
-		generateEngineeringModel(name, progressMonitor);
+		generateEngineeringModel(name, context, progressMonitor);
 		System.out.println("\tGenerated instance model in " + (System.currentTimeMillis() - start) + " milliseconds");
 		start = System.currentTimeMillis();
 		
-		generateActionModel(name, progressMonitor);
+		generateActionModel(name, context, progressMonitor);
 		System.out.println("\tGenerated action model in " + (System.currentTimeMillis() - start) + " milliseconds");
 		start = System.currentTimeMillis();
 		
-		generateResourceModel(name, progressMonitor);
+		generateResourceModel(name, context, progressMonitor);
 		System.out.println("\tGenerated resource model in " + (System.currentTimeMillis() - start) + " milliseconds");
 		start = System.currentTimeMillis();
 		
-		generateContainer(name, progressMonitor);
+		generateContainer(name, context, progressMonitor);
 		System.out.println("\tGenerated site in " + (System.currentTimeMillis() - start) + " milliseconds");
 	}
 	

@@ -409,8 +409,8 @@
 <span class="sourceLineNo">401</span>                initEReference(getFilter_Source(), ecorePackage.getEObject(), null, "source", null, 1, 1, Filter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);<a name="line.401"></a>
 <span class="sourceLineNo">402</span><a name="line.402"></a>
 <span class="sourceLineNo">403</span>                initEClass(interpolatorEClass, Interpolator.class, "Interpolator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);<a name="line.403"></a>
-<span class="sourceLineNo">404</span>                initEAttribute(getInterpolator_ProcessIncludes(), ecorePackage.getEBoolean(), "processIncludes", null, 0, 1, Interpolator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);<a name="line.404"></a>
-<span class="sourceLineNo">405</span>                initEAttribute(getInterpolator_Base(), ecorePackage.getEString(), "base", null, 0, 1, Interpolator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);<a name="line.405"></a>
+<span class="sourceLineNo">404</span>                initEAttribute(getInterpolator_ProcessIncludes(), ecorePackage.getEBoolean(), "processIncludes", "true", 0, 1, Interpolator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);<a name="line.404"></a>
+<span class="sourceLineNo">405</span>                initEAttribute(getInterpolator_Base(), ecorePackage.getEString(), "base", "", 0, 1, Interpolator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);<a name="line.405"></a>
 <span class="sourceLineNo">406</span><a name="line.406"></a>
 <span class="sourceLineNo">407</span>                initEClass(markdownEClass, Markdown.class, "Markdown", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);<a name="line.407"></a>
 <span class="sourceLineNo">408</span>                initEAttribute(getMarkdown_Style(), ecorePackage.getEBoolean(), "style", null, 0, 1, Markdown.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);<a name="line.408"></a>
@@ -468,48 +468,72 @@
 <span class="sourceLineNo">460</span>                           "default-feature", "true"<a name="line.460"></a>
 <span class="sourceLineNo">461</span>                   });<a name="line.461"></a>
 <span class="sourceLineNo">462</span>                addAnnotation<a name="line.462"></a>
-<span class="sourceLineNo">463</span>                  (markdownEClass,<a name="line.463"></a>
+<span class="sourceLineNo">463</span>                  (getInterpolator_ProcessIncludes(),<a name="line.463"></a>
 <span class="sourceLineNo">464</span>                   source,<a name="line.464"></a>
 <span class="sourceLineNo">465</span>                   new String[] {<a name="line.465"></a>
-<span class="sourceLineNo">466</span>                           "documentation-reference", "doc/content/markdown.md"<a name="line.466"></a>
+<span class="sourceLineNo">466</span>                           "documentation-reference", "doc/content/interpolator--process-includes.md"<a name="line.466"></a>
 <span class="sourceLineNo">467</span>                   });<a name="line.467"></a>
-<span class="sourceLineNo">468</span>        }<a name="line.468"></a>
-<span class="sourceLineNo">469</span><a name="line.469"></a>
-<span class="sourceLineNo">470</span>        /**<a name="line.470"></a>
-<span class="sourceLineNo">471</span>         * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/GenModel&lt;/b&gt;.<a name="line.471"></a>
-<span class="sourceLineNo">472</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.472"></a>
-<span class="sourceLineNo">473</span>         * &lt;!-- end-user-doc --&gt;<a name="line.473"></a>
-<span class="sourceLineNo">474</span>         * @generated<a name="line.474"></a>
-<span class="sourceLineNo">475</span>         */<a name="line.475"></a>
-<span class="sourceLineNo">476</span>        protected void createGenModelAnnotations() {<a name="line.476"></a>
-<span class="sourceLineNo">477</span>                String source = "http://www.eclipse.org/emf/2002/GenModel";<a name="line.477"></a>
-<span class="sourceLineNo">478</span>                addAnnotation<a name="line.478"></a>
-<span class="sourceLineNo">479</span>                  (getResource_Location(),<a name="line.479"></a>
-<span class="sourceLineNo">480</span>                   source,<a name="line.480"></a>
-<span class="sourceLineNo">481</span>                   new String[] {<a name="line.481"></a>
-<span class="sourceLineNo">482</span>                           "documentation", "Resource location resolved relative to the model resource location."<a name="line.482"></a>
-<span class="sourceLineNo">483</span>                   });<a name="line.483"></a>
-<span class="sourceLineNo">484</span>                addAnnotation<a name="line.484"></a>
-<span class="sourceLineNo">485</span>                  (getResource_Interpolate(),<a name="line.485"></a>
-<span class="sourceLineNo">486</span>                   source,<a name="line.486"></a>
-<span class="sourceLineNo">487</span>                   new String[] {<a name="line.487"></a>
-<span class="sourceLineNo">488</span>                           "documentation", "If true, location is interpolated. Default is false."<a name="line.488"></a>
-<span class="sourceLineNo">489</span>                   });<a name="line.489"></a>
+<span class="sourceLineNo">468</span>                addAnnotation<a name="line.468"></a>
+<span class="sourceLineNo">469</span>                  (getInterpolator_Base(),<a name="line.469"></a>
+<span class="sourceLineNo">470</span>                   source,<a name="line.470"></a>
+<span class="sourceLineNo">471</span>                   new String[] {<a name="line.471"></a>
+<span class="sourceLineNo">472</span>                           "resolve-uri", "true"<a name="line.472"></a>
+<span class="sourceLineNo">473</span>                   });<a name="line.473"></a>
+<span class="sourceLineNo">474</span>                addAnnotation<a name="line.474"></a>
+<span class="sourceLineNo">475</span>                  (markdownEClass,<a name="line.475"></a>
+<span class="sourceLineNo">476</span>                   source,<a name="line.476"></a>
+<span class="sourceLineNo">477</span>                   new String[] {<a name="line.477"></a>
+<span class="sourceLineNo">478</span>                           "documentation-reference", "doc/content/markdown.md"<a name="line.478"></a>
+<span class="sourceLineNo">479</span>                   });<a name="line.479"></a>
+<span class="sourceLineNo">480</span>        }<a name="line.480"></a>
+<span class="sourceLineNo">481</span><a name="line.481"></a>
+<span class="sourceLineNo">482</span>        /**<a name="line.482"></a>
+<span class="sourceLineNo">483</span>         * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/GenModel&lt;/b&gt;.<a name="line.483"></a>
+<span class="sourceLineNo">484</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.484"></a>
+<span class="sourceLineNo">485</span>         * &lt;!-- end-user-doc --&gt;<a name="line.485"></a>
+<span class="sourceLineNo">486</span>         * @generated<a name="line.486"></a>
+<span class="sourceLineNo">487</span>         */<a name="line.487"></a>
+<span class="sourceLineNo">488</span>        protected void createGenModelAnnotations() {<a name="line.488"></a>
+<span class="sourceLineNo">489</span>                String source = "http://www.eclipse.org/emf/2002/GenModel";<a name="line.489"></a>
 <span class="sourceLineNo">490</span>                addAnnotation<a name="line.490"></a>
-<span class="sourceLineNo">491</span>                  (getText_Content(),<a name="line.491"></a>
+<span class="sourceLineNo">491</span>                  (getResource_Location(),<a name="line.491"></a>
 <span class="sourceLineNo">492</span>                   source,<a name="line.492"></a>
 <span class="sourceLineNo">493</span>                   new String[] {<a name="line.493"></a>
-<span class="sourceLineNo">494</span>                           "documentation", "Text content."<a name="line.494"></a>
+<span class="sourceLineNo">494</span>                           "documentation", "Resource location resolved relative to the model resource location."<a name="line.494"></a>
 <span class="sourceLineNo">495</span>                   });<a name="line.495"></a>
 <span class="sourceLineNo">496</span>                addAnnotation<a name="line.496"></a>
-<span class="sourceLineNo">497</span>                  (getText_Interpolate(),<a name="line.497"></a>
+<span class="sourceLineNo">497</span>                  (getResource_Interpolate(),<a name="line.497"></a>
 <span class="sourceLineNo">498</span>                   source,<a name="line.498"></a>
 <span class="sourceLineNo">499</span>                   new String[] {<a name="line.499"></a>
-<span class="sourceLineNo">500</span>                           "documentation", "If ``true`` (default), content is interpolated."<a name="line.500"></a>
+<span class="sourceLineNo">500</span>                           "documentation", "If true, location is interpolated. Default is false."<a name="line.500"></a>
 <span class="sourceLineNo">501</span>                   });<a name="line.501"></a>
-<span class="sourceLineNo">502</span>        }<a name="line.502"></a>
-<span class="sourceLineNo">503</span><a name="line.503"></a>
-<span class="sourceLineNo">504</span>} //ContentPackageImpl<a name="line.504"></a>
+<span class="sourceLineNo">502</span>                addAnnotation<a name="line.502"></a>
+<span class="sourceLineNo">503</span>                  (getText_Content(),<a name="line.503"></a>
+<span class="sourceLineNo">504</span>                   source,<a name="line.504"></a>
+<span class="sourceLineNo">505</span>                   new String[] {<a name="line.505"></a>
+<span class="sourceLineNo">506</span>                           "documentation", "Text content."<a name="line.506"></a>
+<span class="sourceLineNo">507</span>                   });<a name="line.507"></a>
+<span class="sourceLineNo">508</span>                addAnnotation<a name="line.508"></a>
+<span class="sourceLineNo">509</span>                  (getText_Interpolate(),<a name="line.509"></a>
+<span class="sourceLineNo">510</span>                   source,<a name="line.510"></a>
+<span class="sourceLineNo">511</span>                   new String[] {<a name="line.511"></a>
+<span class="sourceLineNo">512</span>                           "documentation", "If ``true`` (default), content is interpolated."<a name="line.512"></a>
+<span class="sourceLineNo">513</span>                   });<a name="line.513"></a>
+<span class="sourceLineNo">514</span>                addAnnotation<a name="line.514"></a>
+<span class="sourceLineNo">515</span>                  (interpolatorEClass,<a name="line.515"></a>
+<span class="sourceLineNo">516</span>                   source,<a name="line.516"></a>
+<span class="sourceLineNo">517</span>                   new String[] {<a name="line.517"></a>
+<span class="sourceLineNo">518</span>                           "documentation", "Converts input stream to String using context charset, which defaults to ``UTF-8``, interpolates, and converts back to input stream using context charset."<a name="line.518"></a>
+<span class="sourceLineNo">519</span>                   });<a name="line.519"></a>
+<span class="sourceLineNo">520</span>                addAnnotation<a name="line.520"></a>
+<span class="sourceLineNo">521</span>                  (getInterpolator_Base(),<a name="line.521"></a>
+<span class="sourceLineNo">522</span>                   source,<a name="line.522"></a>
+<span class="sourceLineNo">523</span>                   new String[] {<a name="line.523"></a>
+<span class="sourceLineNo">524</span>                           "documentation", "Optional base URL for resolving include and image URL\'s. \nIf the base is blank then marker location is used as the base, if marker is present and location is not null. \nOtherwise, resource URL is used as the base. \nMarker location is the URL of a YAML resource from which interpolator specification was loaded. \nIt may be different from the resource URL if a model was loaded from YAML and then saved to XML.\n\nIf the base is not blank then it is resolved relative to the marker location if it starts with ``./`` and marker location is not null or the resource base otherwise.\n"<a name="line.524"></a>
+<span class="sourceLineNo">525</span>                   });<a name="line.525"></a>
+<span class="sourceLineNo">526</span>        }<a name="line.526"></a>
+<span class="sourceLineNo">527</span><a name="line.527"></a>
+<span class="sourceLineNo">528</span>} //ContentPackageImpl<a name="line.528"></a>
 
 
 
