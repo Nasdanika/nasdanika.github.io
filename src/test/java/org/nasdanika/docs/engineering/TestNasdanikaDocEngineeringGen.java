@@ -455,9 +455,6 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 		copy(new File("../html/html/target/apidocs"), new File("docs/modules/html/modules/html/apidocs"), false, null, null);	
 		copy(new File("../html/bootstrap/target/apidocs"), new File("docs/modules/html/modules/bootstrap/apidocs"), false, null, null);	
 		copy(new File("../html/jstree/target/apidocs"), new File("docs/modules/html/modules/jstree/apidocs"), false, null, null);	
-		copy(new File("../html/knockout/target/apidocs"), new File("docs/modules/html/modules/knockout/apidocs"), false, null, null);	
-		copy(new File("../html/fontawesome/target/apidocs"), new File("docs/modules/html/modules/fontawesome/apidocs"), false, null, null);	
-		copy(new File("../html/echarts/target/apidocs"), new File("docs/modules/html/modules/echarts/apidocs"), false, null, null);	
 		copy(new File("../html/emf/target/apidocs"), new File("docs/modules/html/modules/emf/apidocs"), false, null, null);	
 		copy(new File("../html/ecore/target/apidocs"), new File("docs/modules/html/modules/ecore/apidocs"), false, null, null);	
 		copy(new File("../html/flow/target/apidocs"), new File("docs/modules/html/modules/flow/apidocs"), false, null, null);	
