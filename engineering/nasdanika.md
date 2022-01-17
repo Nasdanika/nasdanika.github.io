@@ -11,6 +11,8 @@ It also means hyper-local and hyper-focused experiences because humans are notor
 Computing resources-wise - no need in server components, you can use Nasdanika products on a flash drive in a bunker or in the wilderness with no network: ``--everything-is-hyper-local``, paraphrasing the Git motto.
 Access to the Internet would be needed only to pull the required libraries from [Maven Central](https://search.maven.org/artifact/org.nasdanika.engineering/parent) or a mirror.
 
+[TOC levels=6]
+
 ## Sample scenario
 
 You've got an idea of a new "something" - not necessarily software. 
@@ -150,6 +152,32 @@ It can be done in combination with generating a static file, i.e. your site woul
 In this case JSON/JavaScript can be used by the mini-apps.
 
 ## Products overview
+
+This section provides a brief overview of Nasdanika products and their modules.
+
+* [Core](modules/core/index.html) - foundational functionality
+    * [CLI](modules/core/modules/cli/index.html) - classes which allow to call [execution model](modules/core/modules/common/features/execution-model/index.html) [Command](modules/core/modules/common/apidocs/index.html?org/nasdanika/common/Command.html) from a command line.
+    * [Common](modules/core/modules/common/index.html) - common functionality such as the execution model, resource and persistence frameworks.
+    * [Diagram](modules/core/modules/diagram/index.html) - Diagram EMF model is a level of abstraction to create diagram visualizations using Java API and then generate [PlantUML](https://plantuml.com/) and [diagrams.net](https://www.diagrams.net/) diagrams from it. 
+    * [EMF](modules/core/modules/emf/index.html) - classes for working with Ecore models, e.g. classes for loading models from YAML files.
+    * [Exec](modules/core/modules/exec/index.html) - Ecore models and adapters to execution model participants to build code generators and to load model content from different sources.
+    * [Flow](modules/core/modules/flow/index.html) - Ecore flow model to capture customer journeys/business processes. 
+    * [mxgraph](modules/core/modules/mxgraph/index.html) - Maven jar packaging of mxgraph sources. It is used to generate diagrams.net diagrams.
+    * [Ncore](modules/core/modules/ncore/index.html) - Ecore model containing common classes used/extended in other models.
+* [HTML](modules/html/index.html) - Java API's and models for generating HTML
+    * [Bootstrap](modules/html/modules/bootstrap/index.html) - Fluent Java API to generate [Bootstrap 4](https://getbootstrap.com/docs/4.6/getting-started/introduction/) markup.
+    * [Ecore](modules/html/modules/ecore/index.html) - Classes to generate documentation of Ecore models as action models (see Models/Application below). 
+    * [EMF](modules/html/modules/emf/index.html) - Base classes for building generators of action models from Ecore model elements.
+    * [Flow](modules/html/modules/flow/index.html) - Generators of action models from the flow model elements.
+    * [HTML](modules/html/modules/html/index.html) - Fluent Java API to generate [HTML 5](https://en.wikipedia.org/wiki/HTML5) markup.
+    * [jsTree](modules/html/modules/jstree/index.html) - Java API for generating [jsTree](https://www.jstree.com/) JSON.
+    * [Models](modules/html/modules/models/index.html) - Ecore models to build HTML pages and applications.
+        * [HTML](modules/html/modules/models/modules/html/index.html) - Ecore model representing HTML elements and generation adapters.
+        * [Bootstrap](modules/html/modules/models/modules/bootstrap/index.html) - Ecore model representing Bootstrap 4 elements and generation adapters. 
+        * [Application](modules/html/modules/models/modules/app/index.html) - Ecore model representing a web site/application as a hierarchy of actions. Adapters to generate HTML sites (resource models) from action models.
+* [Engineering](modules/engineering/index.html) - Ecore model representing (software) engineering concepts such as an organization, engineer, product, release, feature, issue, ... Adapters for generating HTML sites from engineering models.
+* [TOGAF](modules/togaf/index.html) - Models representing [TOGAF](https://en.wikipedia.org/wiki/The_Open_Group_Architecture_Framework) concepts.
+    * [ADM](modules/togaf/modules/adm/index.html) - flow model of TOGAF [Architecture Development Method](http://www.opengroup.org/public/arch/p2/p2_intro.htm).                  
 
 
 [^1]: Or before, or in parallel - totally up to you. Start somewhere, expand from there. 
