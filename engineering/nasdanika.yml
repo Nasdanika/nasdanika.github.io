@@ -2,7 +2,11 @@ engineering-organization:
   uri: engineering://nasdanika
   path: docs
   name: Documentation
-  description: Engineering model to test core model classes. # TODO - landing page.
+  documentation: 
+    content-markdown:
+      style: true
+      source:
+        content-resource: nasdanika.md
   modules:
     - ../../core/engineering.yml
     - ../../html/engineering.yml
