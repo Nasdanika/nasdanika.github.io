@@ -1,6 +1,8 @@
 This page provides an overview of Nasdanika products.
 
-The main _theme_ of Nasdanika product line can be expressed as "Efficient knowledge capture and dissemination" 
+The primary target audience of the Nasdanika product line are Java developers who use Maven.
+
+The main _theme_ can be expressed as "Efficient knowledge capture and dissemination" 
 using [Domain-Driven Design](https://en.wikipedia.org/wiki/Domain-driven_design), [Model-based Systems Engineering (MBSE)](https://en.wikipedia.org/wiki/Model-based_systems_engineering) and code generation being the means to efficiently
 codify knowledge and then disseminate it. 
 
@@ -8,6 +10,9 @@ Well, it's a mouthful! Let's elaborate a bit!
 
 First of all, "efficiency" above means minimal requirements of human and computing resources per "unit of knowledge". 
 It also means hyper-local and hyper-focused experiences because humans are notoriously bad at context switching. 
+One of approaches to minimize context switching is use of code generation using Java, e.g. generation of Bootstrap Web applications using fluent Java API. 
+Another one is an option to author models in YAML without having to use a specialized model editor.  
+
 Computing resources-wise - no need in server components, you can use Nasdanika products on a flash drive in a bunker or in the wilderness with no network: ``--everything-is-hyper-local``, paraphrasing the Git motto.
 Access to the Internet would be needed only to pull the required libraries from [Maven Central](https://search.maven.org/artifact/org.nasdanika.engineering/parent) or a mirror.
 
@@ -178,6 +183,12 @@ This section provides a brief overview of Nasdanika products and their modules.
 * [Engineering](modules/engineering/index.html) - Ecore model representing (software) engineering concepts such as an organization, engineer, product, release, feature, issue, ... Adapters for generating HTML sites from engineering models.
 * [TOGAF](modules/togaf/index.html) - Models representing [TOGAF](https://en.wikipedia.org/wiki/The_Open_Group_Architecture_Framework) concepts.
     * [ADM](modules/togaf/modules/adm/index.html) - flow model of TOGAF [Architecture Development Method](http://www.opengroup.org/public/arch/p2/p2_intro.htm).                  
+
+Nasdanika products are Java-based, hosted on [GitHub Nasdanika organization](https://github.com/Nasdanika) and published to [Maven Central](https://search.maven.org/):
+
+* [Core](https://search.maven.org/search?q=g:org.nasdanika.core)
+* [HTML](https://search.maven.org/search?q=g:org.nasdanika.html)
+* [Engineering](https://search.maven.org/search?q=g:org.nasdanika.engineering)
 
 
 [^1]: Or before, or in parallel - totally up to you. Start somewhere, expand from there. 
