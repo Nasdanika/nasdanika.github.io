@@ -30,7 +30,6 @@ import org.eclipse.emf.codegen.ecore.genmodel.GenModel;
 import org.eclipse.emf.codegen.ecore.genmodel.GenPackage;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -68,6 +67,7 @@ import org.nasdanika.exec.resources.ReconcileAction;
 import org.nasdanika.exec.resources.ResourcesFactory;
 import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.flow.FlowPackage;
+import org.nasdanika.html.ecore.EcoreActionSupplier;
 import org.nasdanika.html.ecore.EcoreActionSupplierAdapterFactory;
 import org.nasdanika.html.ecore.GenModelResourceSet;
 import org.nasdanika.html.emf.EObjectActionResolver;
@@ -76,10 +76,8 @@ import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
 import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.app.util.ActionProvider;
-import org.nasdanika.html.model.app.util.ActionSupplier;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
-import org.nasdanika.ncore.Marker;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NcoreResourceSet;
 
@@ -127,32 +125,7 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 					}
 					assertThat(severity).isEqualTo(org.eclipse.emf.common.util.Diagnostic.OK);
 										
-					try {
-						// Marker - TODO - use jGit because of a federated nature of the engineering model 
-						Map<String,String> originMap = new HashMap<>();
-						originMap.put(new File(".").getCanonicalFile().toURI().toString(), "https://github.com/Nasdanika/nasdanika.github.io/blob/main/");
-						originMap.put(new File("../core").getCanonicalFile().toURI().toString(), "https://github.com/Nasdanika/core/blob/master/");
-						originMap.put(new File("../html").getCanonicalFile().toURI().toString(), "https://github.com/Nasdanika/html/blob/master/");
-						originMap.put(new File("../engineering").getCanonicalFile().toURI().toString(), "https://github.com/Nasdanika/engineering/blob/main/");
-						originMap.put(new File("../togaf").getCanonicalFile().toURI().toString(), "https://github.com/Nasdanika/togaf/blob/main/");
-						TreeIterator<EObject> cit = copy.eAllContents(); 
-						while (cit.hasNext()) {
-							EObject next = cit.next(); 
-							if (next instanceof Marker) {
-								Marker marker = (Marker) next;
-								String location = marker.getLocation();
-								for (Map.Entry<String,String> originEntry: originMap.entrySet()) {
-									if (location != null && location.startsWith(originEntry.getKey())) {
-										marker.setLocation(location.substring(originEntry.getKey().length()));
-										marker.setOrigin(originEntry.getValue() + marker.getLocation());
-										if (marker.getLine() > 0) {
-											marker.setOrigin(marker.getOrigin() + "#L" + marker.getLine());
-										}
-									}
-								}
-							}
-						}
-						
+					try {						
 						instanceModelResource.save(null);
 					} catch (IOException ioe) {
 						throw new NasdanikaException(ioe);
@@ -299,7 +272,7 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 				if (contents instanceof GenModel) {
 					for (GenPackage genPackage: ((GenModel) contents).getGenPackages()) {
 						EPackage ecorePackage = genPackage.getEcorePackage();
-						actionModelResource.getContents().add(EObjectAdaptable.adaptTo(ecorePackage, ActionSupplier.class).execute(progressMonitor));
+						actionModelResource.getContents().add(EObjectAdaptable.adaptTo(ecorePackage, EcoreActionSupplier.class).execute(null, progressMonitor));
 					}
 				}
 			}
