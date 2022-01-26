@@ -87,6 +87,48 @@ When loading from YAML the loaded injects [markers](modules/core/modules/ncore/M
 If a [Git](https://git-scm.com/) repository is detected then a [GitMarker](modules/core/modules/ncore/GitMarker.html) is injected instead with information about [remotes](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes) and the commit hash.
 In a a model loaded from multiple resources residing in multiple Git repositories it allows to trace data elements to their source in "space" (repository, file, line and column) and time (commit). 
 
+You've probably heard before that "[all models are wrong, but some are useful](https://en.wikipedia.org/wiki/All_models_are_wrong)". 
+Models are wrong by definition because their purpose to reflect an aspect of interest of reality.
+
+If we define usefulness as positive [ROI](https://en.wikipedia.org/wiki/Return_on_investment) and short [time to market](https://en.wikipedia.org/wiki/Time_to_market), then with Nasdanika approach to modeling it is easier to
+create a useful model because production and publication of a model requires less effort than alternative approaches as explained below.
+
+##### Meta-Model creation
+
+Use Ecore Tools.
+
+##### Meta-Model documentation
+
+* **Nasdanika:** Generate HTML with visualizations from models, mount it to a larger site. This site is an example of this approach. 
+* **Alternatives:** Manual or Javadoc from generated model classes.
+
+##### Production of Meta-Model binaries 
+
+* **Nasdanika:** Maven Java build publishing to a Maven repository. 
+* **Alternatives:** Maven Tycho build generating a p2 site which needs to be hosted somewhere.
+
+##### Model editing
+
+* **Nasdanika:** Any text editor to author YAML or JSON - use load specification from the generation documentation to create model instances. 
+* **Alternatives:**  An editor shall be created and published to a p2 site and used from Eclipse. Or a web server is needed to host an in-browser editor.
+
+##### Consumption of Meta-Model binaries 
+
+To programmatically read or write models.
+
+* **Nasdanika:** Any Maven application - add a dependency.
+* **Alternatives:**  Eclipse product, OSGi bundle dependency.
+
+##### Consumption of model content
+
+* **Nasdanika:** Generate an HTML site from the model. 
+* **Alternatives:** Requires Eclipse IDE and an editor/viewer or a server to host a web viewer
+
+One area where Nasdanika approach to modeling may be useful is disposable/situational models - use a modeling approach to solve a problem which is small enough to justify investment into graphical editors, p2 hosting etc., but large enough to benefit from automation.
+
+Metaphorically speaking, Nasdanika uses [r-selection](https://en.wikipedia.org/wiki/R/K_selection_theory#r-selection) - create cheap models quickly, see which one is useful and then invest more if needed.
+The alternatives tend to be closer to the [K](https://en.wikipedia.org/wiki/R/K_selection_theory#K-selection) end of the spectrum requiring larger up-front investment. 
+
 ### Use of the models
 
 #### Populate the model

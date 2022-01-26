@@ -1,1 +1,1 @@
-cmd.exe /X /C "C:\Users\Pavel\Apps\zulu8.56.0.21-ca-jdk8.0.302-win_x64\jre\..\bin\javadoc.exe @options @packages @argfile"
+cmd.exe /X /C "C:\Users\Pavel\Apps\zulu8.56.0.21-ca-jdk8.0.302-win_x64\jre\..\bin\javadoc.exe @options @argfile"
