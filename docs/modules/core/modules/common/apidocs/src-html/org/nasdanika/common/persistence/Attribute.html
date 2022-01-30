@@ -8,9 +8,9 @@
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>package org.nasdanika.common.persistence;<a name="line.1"></a>
 <span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>import java.net.URL;<a name="line.3"></a>
-<span class="sourceLineNo">004</span>import java.util.Map;<a name="line.4"></a>
-<span class="sourceLineNo">005</span><a name="line.5"></a>
+<span class="sourceLineNo">003</span>import java.util.Map;<a name="line.3"></a>
+<span class="sourceLineNo">004</span><a name="line.4"></a>
+<span class="sourceLineNo">005</span>import org.eclipse.emf.common.util.URI;<a name="line.5"></a>
 <span class="sourceLineNo">006</span>import org.nasdanika.common.ProgressMonitor;<a name="line.6"></a>
 <span class="sourceLineNo">007</span>import org.nasdanika.common.Util;<a name="line.7"></a>
 <span class="sourceLineNo">008</span><a name="line.8"></a>
@@ -58,7 +58,7 @@
 <span class="sourceLineNo">050</span>        }<a name="line.50"></a>
 <span class="sourceLineNo">051</span><a name="line.51"></a>
 <span class="sourceLineNo">052</span>        @Override<a name="line.52"></a>
-<span class="sourceLineNo">053</span>        public void load(ObjectLoader loader, Map&lt;?,?&gt; source, URL base, ProgressMonitor progressMonitor, Marker marker) throws Exception {<a name="line.53"></a>
+<span class="sourceLineNo">053</span>        public void load(ObjectLoader loader, Map&lt;?,?&gt; source, URI base, ProgressMonitor progressMonitor, Marker marker) throws Exception {<a name="line.53"></a>
 <span class="sourceLineNo">054</span>                if (source.containsKey(getKey())) {<a name="line.54"></a>
 <span class="sourceLineNo">055</span>                        for (Object ek: exclusiveWith) {<a name="line.55"></a>
 <span class="sourceLineNo">056</span>                                if (source.containsKey(ek)) {<a name="line.56"></a>
@@ -85,7 +85,7 @@
 <span class="sourceLineNo">077</span>         */<a name="line.77"></a>
 <span class="sourceLineNo">078</span>        @SuppressWarnings("unchecked")<a name="line.78"></a>
 <span class="sourceLineNo">079</span>        @Override<a name="line.79"></a>
-<span class="sourceLineNo">080</span>        public T create(ObjectLoader loader, Object config, URL base, ProgressMonitor progressMonitor, Marker marker) throws Exception {<a name="line.80"></a>
+<span class="sourceLineNo">080</span>        public T create(ObjectLoader loader, Object config, URI base, ProgressMonitor progressMonitor, Marker marker) throws Exception {<a name="line.80"></a>
 <span class="sourceLineNo">081</span>                return (T) config;<a name="line.81"></a>
 <span class="sourceLineNo">082</span>        }<a name="line.82"></a>
 <span class="sourceLineNo">083</span><a name="line.83"></a>

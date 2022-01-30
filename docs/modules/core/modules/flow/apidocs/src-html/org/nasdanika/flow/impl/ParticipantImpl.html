@@ -235,205 +235,197 @@
 <span class="sourceLineNo">227</span>                                return ((InternalEList&lt;InternalEObject&gt;)(InternalEList&lt;?&gt;)getResources()).basicAdd(otherEnd, msgs);<a name="line.227"></a>
 <span class="sourceLineNo">228</span>                        case FlowPackage.PARTICIPANT__ARTIFACTS:<a name="line.228"></a>
 <span class="sourceLineNo">229</span>                                return ((InternalEList&lt;InternalEObject&gt;)(InternalEList&lt;?&gt;)getArtifacts()).basicAdd(otherEnd, msgs);<a name="line.229"></a>
-<span class="sourceLineNo">230</span>                        case FlowPackage.PARTICIPANT__SPECIALIZATIONS:<a name="line.230"></a>
-<span class="sourceLineNo">231</span>                                return ((InternalEList&lt;InternalEObject&gt;)(InternalEList&lt;?&gt;)getSpecializations()).basicAdd(otherEnd, msgs);<a name="line.231"></a>
-<span class="sourceLineNo">232</span>                        case FlowPackage.PARTICIPANT__BASES:<a name="line.232"></a>
-<span class="sourceLineNo">233</span>                                return ((InternalEList&lt;InternalEObject&gt;)(InternalEList&lt;?&gt;)getBases()).basicAdd(otherEnd, msgs);<a name="line.233"></a>
-<span class="sourceLineNo">234</span>                        case FlowPackage.PARTICIPANT__RESPONSIBLE:<a name="line.234"></a>
-<span class="sourceLineNo">235</span>                                return ((InternalEList&lt;InternalEObject&gt;)(InternalEList&lt;?&gt;)getResponsible()).basicAdd(otherEnd, msgs);<a name="line.235"></a>
-<span class="sourceLineNo">236</span>                        case FlowPackage.PARTICIPANT__ACCOUNTABLE:<a name="line.236"></a>
-<span class="sourceLineNo">237</span>                                return ((InternalEList&lt;InternalEObject&gt;)(InternalEList&lt;?&gt;)getAccountable()).basicAdd(otherEnd, msgs);<a name="line.237"></a>
-<span class="sourceLineNo">238</span>                        case FlowPackage.PARTICIPANT__CONSULTED:<a name="line.238"></a>
-<span class="sourceLineNo">239</span>                                return ((InternalEList&lt;InternalEObject&gt;)(InternalEList&lt;?&gt;)getConsulted()).basicAdd(otherEnd, msgs);<a name="line.239"></a>
-<span class="sourceLineNo">240</span>                        case FlowPackage.PARTICIPANT__INFORMED:<a name="line.240"></a>
-<span class="sourceLineNo">241</span>                                return ((InternalEList&lt;InternalEObject&gt;)(InternalEList&lt;?&gt;)getInformed()).basicAdd(otherEnd, msgs);<a name="line.241"></a>
-<span class="sourceLineNo">242</span>                }<a name="line.242"></a>
-<span class="sourceLineNo">243</span>                return super.eInverseAdd(otherEnd, featureID, msgs);<a name="line.243"></a>
-<span class="sourceLineNo">244</span>        }<a name="line.244"></a>
-<span class="sourceLineNo">245</span><a name="line.245"></a>
-<span class="sourceLineNo">246</span>        /**<a name="line.246"></a>
-<span class="sourceLineNo">247</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.247"></a>
-<span class="sourceLineNo">248</span>         * &lt;!-- end-user-doc --&gt;<a name="line.248"></a>
-<span class="sourceLineNo">249</span>         * @generated<a name="line.249"></a>
-<span class="sourceLineNo">250</span>         */<a name="line.250"></a>
-<span class="sourceLineNo">251</span>        @Override<a name="line.251"></a>
-<span class="sourceLineNo">252</span>        public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {<a name="line.252"></a>
-<span class="sourceLineNo">253</span>                switch (featureID) {<a name="line.253"></a>
-<span class="sourceLineNo">254</span>                        case FlowPackage.PARTICIPANT__PARTICIPATES:<a name="line.254"></a>
-<span class="sourceLineNo">255</span>                                return ((InternalEList&lt;?&gt;)getParticipates()).basicRemove(otherEnd, msgs);<a name="line.255"></a>
-<span class="sourceLineNo">256</span>                        case FlowPackage.PARTICIPANT__RESOURCES:<a name="line.256"></a>
-<span class="sourceLineNo">257</span>                                return ((InternalEList&lt;?&gt;)getResources()).basicRemove(otherEnd, msgs);<a name="line.257"></a>
-<span class="sourceLineNo">258</span>                        case FlowPackage.PARTICIPANT__ARTIFACTS:<a name="line.258"></a>
-<span class="sourceLineNo">259</span>                                return ((InternalEList&lt;?&gt;)getArtifacts()).basicRemove(otherEnd, msgs);<a name="line.259"></a>
-<span class="sourceLineNo">260</span>                        case FlowPackage.PARTICIPANT__SPECIALIZATIONS:<a name="line.260"></a>
-<span class="sourceLineNo">261</span>                                return ((InternalEList&lt;?&gt;)getSpecializations()).basicRemove(otherEnd, msgs);<a name="line.261"></a>
-<span class="sourceLineNo">262</span>                        case FlowPackage.PARTICIPANT__BASES:<a name="line.262"></a>
-<span class="sourceLineNo">263</span>                                return ((InternalEList&lt;?&gt;)getBases()).basicRemove(otherEnd, msgs);<a name="line.263"></a>
-<span class="sourceLineNo">264</span>                        case FlowPackage.PARTICIPANT__RESPONSIBLE:<a name="line.264"></a>
-<span class="sourceLineNo">265</span>                                return ((InternalEList&lt;?&gt;)getResponsible()).basicRemove(otherEnd, msgs);<a name="line.265"></a>
-<span class="sourceLineNo">266</span>                        case FlowPackage.PARTICIPANT__ACCOUNTABLE:<a name="line.266"></a>
-<span class="sourceLineNo">267</span>                                return ((InternalEList&lt;?&gt;)getAccountable()).basicRemove(otherEnd, msgs);<a name="line.267"></a>
-<span class="sourceLineNo">268</span>                        case FlowPackage.PARTICIPANT__CONSULTED:<a name="line.268"></a>
-<span class="sourceLineNo">269</span>                                return ((InternalEList&lt;?&gt;)getConsulted()).basicRemove(otherEnd, msgs);<a name="line.269"></a>
-<span class="sourceLineNo">270</span>                        case FlowPackage.PARTICIPANT__INFORMED:<a name="line.270"></a>
-<span class="sourceLineNo">271</span>                                return ((InternalEList&lt;?&gt;)getInformed()).basicRemove(otherEnd, msgs);<a name="line.271"></a>
-<span class="sourceLineNo">272</span>                        case FlowPackage.PARTICIPANT__CHILDREN:<a name="line.272"></a>
-<span class="sourceLineNo">273</span>                                return ((InternalEList&lt;?&gt;)getChildren()).basicRemove(otherEnd, msgs);<a name="line.273"></a>
-<span class="sourceLineNo">274</span>                }<a name="line.274"></a>
-<span class="sourceLineNo">275</span>                return super.eInverseRemove(otherEnd, featureID, msgs);<a name="line.275"></a>
-<span class="sourceLineNo">276</span>        }<a name="line.276"></a>
-<span class="sourceLineNo">277</span><a name="line.277"></a>
-<span class="sourceLineNo">278</span>        /**<a name="line.278"></a>
-<span class="sourceLineNo">279</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.279"></a>
-<span class="sourceLineNo">280</span>         * &lt;!-- end-user-doc --&gt;<a name="line.280"></a>
-<span class="sourceLineNo">281</span>         * @generated<a name="line.281"></a>
-<span class="sourceLineNo">282</span>         */<a name="line.282"></a>
-<span class="sourceLineNo">283</span>        @Override<a name="line.283"></a>
-<span class="sourceLineNo">284</span>        public Object eGet(int featureID, boolean resolve, boolean coreType) {<a name="line.284"></a>
-<span class="sourceLineNo">285</span>                switch (featureID) {<a name="line.285"></a>
-<span class="sourceLineNo">286</span>                        case FlowPackage.PARTICIPANT__PARTICIPATES:<a name="line.286"></a>
-<span class="sourceLineNo">287</span>                                return getParticipates();<a name="line.287"></a>
-<span class="sourceLineNo">288</span>                        case FlowPackage.PARTICIPANT__RESOURCES:<a name="line.288"></a>
-<span class="sourceLineNo">289</span>                                return getResources();<a name="line.289"></a>
-<span class="sourceLineNo">290</span>                        case FlowPackage.PARTICIPANT__ARTIFACTS:<a name="line.290"></a>
-<span class="sourceLineNo">291</span>                                return getArtifacts();<a name="line.291"></a>
-<span class="sourceLineNo">292</span>                        case FlowPackage.PARTICIPANT__SPECIALIZATIONS:<a name="line.292"></a>
-<span class="sourceLineNo">293</span>                                return getSpecializations();<a name="line.293"></a>
-<span class="sourceLineNo">294</span>                        case FlowPackage.PARTICIPANT__BASE_KEYS:<a name="line.294"></a>
-<span class="sourceLineNo">295</span>                                return getBaseKeys();<a name="line.295"></a>
-<span class="sourceLineNo">296</span>                        case FlowPackage.PARTICIPANT__BASES:<a name="line.296"></a>
-<span class="sourceLineNo">297</span>                                return getBases();<a name="line.297"></a>
-<span class="sourceLineNo">298</span>                        case FlowPackage.PARTICIPANT__RESPONSIBLE:<a name="line.298"></a>
-<span class="sourceLineNo">299</span>                                return getResponsible();<a name="line.299"></a>
-<span class="sourceLineNo">300</span>                        case FlowPackage.PARTICIPANT__ACCOUNTABLE:<a name="line.300"></a>
-<span class="sourceLineNo">301</span>                                return getAccountable();<a name="line.301"></a>
-<span class="sourceLineNo">302</span>                        case FlowPackage.PARTICIPANT__CONSULTED:<a name="line.302"></a>
-<span class="sourceLineNo">303</span>                                return getConsulted();<a name="line.303"></a>
-<span class="sourceLineNo">304</span>                        case FlowPackage.PARTICIPANT__INFORMED:<a name="line.304"></a>
-<span class="sourceLineNo">305</span>                                return getInformed();<a name="line.305"></a>
-<span class="sourceLineNo">306</span>                        case FlowPackage.PARTICIPANT__CHILDREN:<a name="line.306"></a>
-<span class="sourceLineNo">307</span>                                if (coreType) return getChildren();<a name="line.307"></a>
-<span class="sourceLineNo">308</span>                                else return getChildren().map();<a name="line.308"></a>
-<span class="sourceLineNo">309</span>                }<a name="line.309"></a>
-<span class="sourceLineNo">310</span>                return super.eGet(featureID, resolve, coreType);<a name="line.310"></a>
-<span class="sourceLineNo">311</span>        }<a name="line.311"></a>
-<span class="sourceLineNo">312</span><a name="line.312"></a>
-<span class="sourceLineNo">313</span>        /**<a name="line.313"></a>
-<span class="sourceLineNo">314</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.314"></a>
-<span class="sourceLineNo">315</span>         * &lt;!-- end-user-doc --&gt;<a name="line.315"></a>
-<span class="sourceLineNo">316</span>         * @generated<a name="line.316"></a>
-<span class="sourceLineNo">317</span>         */<a name="line.317"></a>
-<span class="sourceLineNo">318</span>        @SuppressWarnings("unchecked")<a name="line.318"></a>
-<span class="sourceLineNo">319</span>        @Override<a name="line.319"></a>
-<span class="sourceLineNo">320</span>        public void eSet(int featureID, Object newValue) {<a name="line.320"></a>
-<span class="sourceLineNo">321</span>                switch (featureID) {<a name="line.321"></a>
-<span class="sourceLineNo">322</span>                        case FlowPackage.PARTICIPANT__BASE_KEYS:<a name="line.322"></a>
-<span class="sourceLineNo">323</span>                                getBaseKeys().clear();<a name="line.323"></a>
-<span class="sourceLineNo">324</span>                                getBaseKeys().addAll((Collection&lt;? extends String&gt;)newValue);<a name="line.324"></a>
-<span class="sourceLineNo">325</span>                                return;<a name="line.325"></a>
-<span class="sourceLineNo">326</span>                        case FlowPackage.PARTICIPANT__CHILDREN:<a name="line.326"></a>
-<span class="sourceLineNo">327</span>                                ((EStructuralFeature.Setting)getChildren()).set(newValue);<a name="line.327"></a>
-<span class="sourceLineNo">328</span>                                return;<a name="line.328"></a>
-<span class="sourceLineNo">329</span>                }<a name="line.329"></a>
-<span class="sourceLineNo">330</span>                super.eSet(featureID, newValue);<a name="line.330"></a>
-<span class="sourceLineNo">331</span>        }<a name="line.331"></a>
-<span class="sourceLineNo">332</span><a name="line.332"></a>
-<span class="sourceLineNo">333</span>        /**<a name="line.333"></a>
-<span class="sourceLineNo">334</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.334"></a>
-<span class="sourceLineNo">335</span>         * &lt;!-- end-user-doc --&gt;<a name="line.335"></a>
-<span class="sourceLineNo">336</span>         * @generated<a name="line.336"></a>
-<span class="sourceLineNo">337</span>         */<a name="line.337"></a>
-<span class="sourceLineNo">338</span>        @Override<a name="line.338"></a>
-<span class="sourceLineNo">339</span>        public void eUnset(int featureID) {<a name="line.339"></a>
-<span class="sourceLineNo">340</span>                switch (featureID) {<a name="line.340"></a>
-<span class="sourceLineNo">341</span>                        case FlowPackage.PARTICIPANT__BASE_KEYS:<a name="line.341"></a>
-<span class="sourceLineNo">342</span>                                getBaseKeys().clear();<a name="line.342"></a>
-<span class="sourceLineNo">343</span>                                return;<a name="line.343"></a>
-<span class="sourceLineNo">344</span>                        case FlowPackage.PARTICIPANT__CHILDREN:<a name="line.344"></a>
-<span class="sourceLineNo">345</span>                                getChildren().clear();<a name="line.345"></a>
-<span class="sourceLineNo">346</span>                                return;<a name="line.346"></a>
-<span class="sourceLineNo">347</span>                }<a name="line.347"></a>
-<span class="sourceLineNo">348</span>                super.eUnset(featureID);<a name="line.348"></a>
-<span class="sourceLineNo">349</span>        }<a name="line.349"></a>
-<span class="sourceLineNo">350</span><a name="line.350"></a>
-<span class="sourceLineNo">351</span>        /**<a name="line.351"></a>
-<span class="sourceLineNo">352</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.352"></a>
-<span class="sourceLineNo">353</span>         * &lt;!-- end-user-doc --&gt;<a name="line.353"></a>
-<span class="sourceLineNo">354</span>         * @generated<a name="line.354"></a>
-<span class="sourceLineNo">355</span>         */<a name="line.355"></a>
-<span class="sourceLineNo">356</span>        @Override<a name="line.356"></a>
-<span class="sourceLineNo">357</span>        public boolean eIsSet(int featureID) {<a name="line.357"></a>
-<span class="sourceLineNo">358</span>                switch (featureID) {<a name="line.358"></a>
-<span class="sourceLineNo">359</span>                        case FlowPackage.PARTICIPANT__PARTICIPATES:<a name="line.359"></a>
-<span class="sourceLineNo">360</span>                                return !getParticipates().isEmpty();<a name="line.360"></a>
-<span class="sourceLineNo">361</span>                        case FlowPackage.PARTICIPANT__RESOURCES:<a name="line.361"></a>
-<span class="sourceLineNo">362</span>                                return !getResources().isEmpty();<a name="line.362"></a>
-<span class="sourceLineNo">363</span>                        case FlowPackage.PARTICIPANT__ARTIFACTS:<a name="line.363"></a>
-<span class="sourceLineNo">364</span>                                return !getArtifacts().isEmpty();<a name="line.364"></a>
-<span class="sourceLineNo">365</span>                        case FlowPackage.PARTICIPANT__SPECIALIZATIONS:<a name="line.365"></a>
-<span class="sourceLineNo">366</span>                                return !getSpecializations().isEmpty();<a name="line.366"></a>
-<span class="sourceLineNo">367</span>                        case FlowPackage.PARTICIPANT__BASE_KEYS:<a name="line.367"></a>
-<span class="sourceLineNo">368</span>                                return !getBaseKeys().isEmpty();<a name="line.368"></a>
-<span class="sourceLineNo">369</span>                        case FlowPackage.PARTICIPANT__BASES:<a name="line.369"></a>
-<span class="sourceLineNo">370</span>                                return !getBases().isEmpty();<a name="line.370"></a>
-<span class="sourceLineNo">371</span>                        case FlowPackage.PARTICIPANT__RESPONSIBLE:<a name="line.371"></a>
-<span class="sourceLineNo">372</span>                                return !getResponsible().isEmpty();<a name="line.372"></a>
-<span class="sourceLineNo">373</span>                        case FlowPackage.PARTICIPANT__ACCOUNTABLE:<a name="line.373"></a>
-<span class="sourceLineNo">374</span>                                return !getAccountable().isEmpty();<a name="line.374"></a>
-<span class="sourceLineNo">375</span>                        case FlowPackage.PARTICIPANT__CONSULTED:<a name="line.375"></a>
-<span class="sourceLineNo">376</span>                                return !getConsulted().isEmpty();<a name="line.376"></a>
-<span class="sourceLineNo">377</span>                        case FlowPackage.PARTICIPANT__INFORMED:<a name="line.377"></a>
-<span class="sourceLineNo">378</span>                                return !getInformed().isEmpty();<a name="line.378"></a>
-<span class="sourceLineNo">379</span>                        case FlowPackage.PARTICIPANT__CHILDREN:<a name="line.379"></a>
-<span class="sourceLineNo">380</span>                                return !getChildren().isEmpty();<a name="line.380"></a>
-<span class="sourceLineNo">381</span>                }<a name="line.381"></a>
-<span class="sourceLineNo">382</span>                return super.eIsSet(featureID);<a name="line.382"></a>
-<span class="sourceLineNo">383</span>        }<a name="line.383"></a>
-<span class="sourceLineNo">384</span>        <a name="line.384"></a>
-<span class="sourceLineNo">385</span>        @SuppressWarnings({ "rawtypes", "unchecked" })<a name="line.385"></a>
-<span class="sourceLineNo">386</span>        @Override<a name="line.386"></a>
-<span class="sourceLineNo">387</span>        public void apply(Participant instance) {<a name="line.387"></a>
-<span class="sourceLineNo">388</span>                super.apply(instance);<a name="line.388"></a>
-<span class="sourceLineNo">389</span>                <a name="line.389"></a>
-<span class="sourceLineNo">390</span>                // Services<a name="line.390"></a>
-<span class="sourceLineNo">391</span>                for (Entry&lt;String, Activity&lt;?&gt;&gt; se: getServices().entrySet()) {<a name="line.391"></a>
-<span class="sourceLineNo">392</span>                        Activity service = se.getValue();<a name="line.392"></a>
-<span class="sourceLineNo">393</span>                        EMap&lt;String, Activity&lt;?&gt;&gt; instanceServices = instance.getServices();<a name="line.393"></a>
-<span class="sourceLineNo">394</span>                        String serviceKey = se.getKey();<a name="line.394"></a>
-<span class="sourceLineNo">395</span>                        if (service == null) {<a name="line.395"></a>
-<span class="sourceLineNo">396</span>                                instanceServices.removeKey(serviceKey);<a name="line.396"></a>
-<span class="sourceLineNo">397</span>                        } else {<a name="line.397"></a>
-<span class="sourceLineNo">398</span>                                Activity instanceService = (Activity) service.create();<a name="line.398"></a>
-<span class="sourceLineNo">399</span>                                instanceServices.put(serviceKey, instanceService);<a name="line.399"></a>
-<span class="sourceLineNo">400</span>                                service.apply(instanceService);<a name="line.400"></a>
-<span class="sourceLineNo">401</span>                        }<a name="line.401"></a>
-<span class="sourceLineNo">402</span>                }<a name="line.402"></a>
-<span class="sourceLineNo">403</span>        }<a name="line.403"></a>
-<span class="sourceLineNo">404</span>        <a name="line.404"></a>
-<span class="sourceLineNo">405</span>        @Override<a name="line.405"></a>
-<span class="sourceLineNo">406</span>        public void resolve(Participant instance) {<a name="line.406"></a>
-<span class="sourceLineNo">407</span>                // NOP<a name="line.407"></a>
-<span class="sourceLineNo">408</span>        }<a name="line.408"></a>
-<span class="sourceLineNo">409</span>        <a name="line.409"></a>
-<span class="sourceLineNo">410</span>        @SuppressWarnings("unchecked")<a name="line.410"></a>
-<span class="sourceLineNo">411</span>        @Override<a name="line.411"></a>
-<span class="sourceLineNo">412</span>        public EList&lt;Participant&gt; getExtends() {<a name="line.412"></a>
-<span class="sourceLineNo">413</span>                EList&lt;Participant&gt; ret = ECollections.newBasicEList();<a name="line.413"></a>
-<span class="sourceLineNo">414</span>                if (eContainmentFeature() == FlowPackage.Literals.PARTICIPANT_ENTRY__VALUE) {<a name="line.414"></a>
-<span class="sourceLineNo">415</span>                        String key = ((Map.Entry&lt;String, ?&gt;) eContainer()).getKey();<a name="line.415"></a>
-<span class="sourceLineNo">416</span>                        Package container = (Package) eContainer().eContainer();<a name="line.416"></a>
-<span class="sourceLineNo">417</span>                        for (Package cExtends: container.getExtends()) {<a name="line.417"></a>
-<span class="sourceLineNo">418</span>                                Participant ext = cExtends.getParticipants().get(key);<a name="line.418"></a>
-<span class="sourceLineNo">419</span>                                if (ext != null) {<a name="line.419"></a>
-<span class="sourceLineNo">420</span>                                        ret.add(ext);<a name="line.420"></a>
-<span class="sourceLineNo">421</span>                                }<a name="line.421"></a>
-<span class="sourceLineNo">422</span>                        }<a name="line.422"></a>
-<span class="sourceLineNo">423</span>                }<a name="line.423"></a>
-<span class="sourceLineNo">424</span>                <a name="line.424"></a>
-<span class="sourceLineNo">425</span>                return ret;<a name="line.425"></a>
-<span class="sourceLineNo">426</span>        }       <a name="line.426"></a>
-<span class="sourceLineNo">427</span><a name="line.427"></a>
-<span class="sourceLineNo">428</span>} //ParticipantImpl<a name="line.428"></a>
+<span class="sourceLineNo">230</span>                        case FlowPackage.PARTICIPANT__RESPONSIBLE:<a name="line.230"></a>
+<span class="sourceLineNo">231</span>                                return ((InternalEList&lt;InternalEObject&gt;)(InternalEList&lt;?&gt;)getResponsible()).basicAdd(otherEnd, msgs);<a name="line.231"></a>
+<span class="sourceLineNo">232</span>                        case FlowPackage.PARTICIPANT__ACCOUNTABLE:<a name="line.232"></a>
+<span class="sourceLineNo">233</span>                                return ((InternalEList&lt;InternalEObject&gt;)(InternalEList&lt;?&gt;)getAccountable()).basicAdd(otherEnd, msgs);<a name="line.233"></a>
+<span class="sourceLineNo">234</span>                        case FlowPackage.PARTICIPANT__CONSULTED:<a name="line.234"></a>
+<span class="sourceLineNo">235</span>                                return ((InternalEList&lt;InternalEObject&gt;)(InternalEList&lt;?&gt;)getConsulted()).basicAdd(otherEnd, msgs);<a name="line.235"></a>
+<span class="sourceLineNo">236</span>                        case FlowPackage.PARTICIPANT__INFORMED:<a name="line.236"></a>
+<span class="sourceLineNo">237</span>                                return ((InternalEList&lt;InternalEObject&gt;)(InternalEList&lt;?&gt;)getInformed()).basicAdd(otherEnd, msgs);<a name="line.237"></a>
+<span class="sourceLineNo">238</span>                }<a name="line.238"></a>
+<span class="sourceLineNo">239</span>                return super.eInverseAdd(otherEnd, featureID, msgs);<a name="line.239"></a>
+<span class="sourceLineNo">240</span>        }<a name="line.240"></a>
+<span class="sourceLineNo">241</span><a name="line.241"></a>
+<span class="sourceLineNo">242</span>        /**<a name="line.242"></a>
+<span class="sourceLineNo">243</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.243"></a>
+<span class="sourceLineNo">244</span>         * &lt;!-- end-user-doc --&gt;<a name="line.244"></a>
+<span class="sourceLineNo">245</span>         * @generated<a name="line.245"></a>
+<span class="sourceLineNo">246</span>         */<a name="line.246"></a>
+<span class="sourceLineNo">247</span>        @Override<a name="line.247"></a>
+<span class="sourceLineNo">248</span>        public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {<a name="line.248"></a>
+<span class="sourceLineNo">249</span>                switch (featureID) {<a name="line.249"></a>
+<span class="sourceLineNo">250</span>                        case FlowPackage.PARTICIPANT__PARTICIPATES:<a name="line.250"></a>
+<span class="sourceLineNo">251</span>                                return ((InternalEList&lt;?&gt;)getParticipates()).basicRemove(otherEnd, msgs);<a name="line.251"></a>
+<span class="sourceLineNo">252</span>                        case FlowPackage.PARTICIPANT__RESOURCES:<a name="line.252"></a>
+<span class="sourceLineNo">253</span>                                return ((InternalEList&lt;?&gt;)getResources()).basicRemove(otherEnd, msgs);<a name="line.253"></a>
+<span class="sourceLineNo">254</span>                        case FlowPackage.PARTICIPANT__ARTIFACTS:<a name="line.254"></a>
+<span class="sourceLineNo">255</span>                                return ((InternalEList&lt;?&gt;)getArtifacts()).basicRemove(otherEnd, msgs);<a name="line.255"></a>
+<span class="sourceLineNo">256</span>                        case FlowPackage.PARTICIPANT__RESPONSIBLE:<a name="line.256"></a>
+<span class="sourceLineNo">257</span>                                return ((InternalEList&lt;?&gt;)getResponsible()).basicRemove(otherEnd, msgs);<a name="line.257"></a>
+<span class="sourceLineNo">258</span>                        case FlowPackage.PARTICIPANT__ACCOUNTABLE:<a name="line.258"></a>
+<span class="sourceLineNo">259</span>                                return ((InternalEList&lt;?&gt;)getAccountable()).basicRemove(otherEnd, msgs);<a name="line.259"></a>
+<span class="sourceLineNo">260</span>                        case FlowPackage.PARTICIPANT__CONSULTED:<a name="line.260"></a>
+<span class="sourceLineNo">261</span>                                return ((InternalEList&lt;?&gt;)getConsulted()).basicRemove(otherEnd, msgs);<a name="line.261"></a>
+<span class="sourceLineNo">262</span>                        case FlowPackage.PARTICIPANT__INFORMED:<a name="line.262"></a>
+<span class="sourceLineNo">263</span>                                return ((InternalEList&lt;?&gt;)getInformed()).basicRemove(otherEnd, msgs);<a name="line.263"></a>
+<span class="sourceLineNo">264</span>                        case FlowPackage.PARTICIPANT__CHILDREN:<a name="line.264"></a>
+<span class="sourceLineNo">265</span>                                return ((InternalEList&lt;?&gt;)getChildren()).basicRemove(otherEnd, msgs);<a name="line.265"></a>
+<span class="sourceLineNo">266</span>                }<a name="line.266"></a>
+<span class="sourceLineNo">267</span>                return super.eInverseRemove(otherEnd, featureID, msgs);<a name="line.267"></a>
+<span class="sourceLineNo">268</span>        }<a name="line.268"></a>
+<span class="sourceLineNo">269</span><a name="line.269"></a>
+<span class="sourceLineNo">270</span>        /**<a name="line.270"></a>
+<span class="sourceLineNo">271</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.271"></a>
+<span class="sourceLineNo">272</span>         * &lt;!-- end-user-doc --&gt;<a name="line.272"></a>
+<span class="sourceLineNo">273</span>         * @generated<a name="line.273"></a>
+<span class="sourceLineNo">274</span>         */<a name="line.274"></a>
+<span class="sourceLineNo">275</span>        @Override<a name="line.275"></a>
+<span class="sourceLineNo">276</span>        public Object eGet(int featureID, boolean resolve, boolean coreType) {<a name="line.276"></a>
+<span class="sourceLineNo">277</span>                switch (featureID) {<a name="line.277"></a>
+<span class="sourceLineNo">278</span>                        case FlowPackage.PARTICIPANT__PARTICIPATES:<a name="line.278"></a>
+<span class="sourceLineNo">279</span>                                return getParticipates();<a name="line.279"></a>
+<span class="sourceLineNo">280</span>                        case FlowPackage.PARTICIPANT__RESOURCES:<a name="line.280"></a>
+<span class="sourceLineNo">281</span>                                return getResources();<a name="line.281"></a>
+<span class="sourceLineNo">282</span>                        case FlowPackage.PARTICIPANT__ARTIFACTS:<a name="line.282"></a>
+<span class="sourceLineNo">283</span>                                return getArtifacts();<a name="line.283"></a>
+<span class="sourceLineNo">284</span>                        case FlowPackage.PARTICIPANT__SPECIALIZATIONS:<a name="line.284"></a>
+<span class="sourceLineNo">285</span>                                return getSpecializations();<a name="line.285"></a>
+<span class="sourceLineNo">286</span>                        case FlowPackage.PARTICIPANT__BASE_KEYS:<a name="line.286"></a>
+<span class="sourceLineNo">287</span>                                return getBaseKeys();<a name="line.287"></a>
+<span class="sourceLineNo">288</span>                        case FlowPackage.PARTICIPANT__BASES:<a name="line.288"></a>
+<span class="sourceLineNo">289</span>                                return getBases();<a name="line.289"></a>
+<span class="sourceLineNo">290</span>                        case FlowPackage.PARTICIPANT__RESPONSIBLE:<a name="line.290"></a>
+<span class="sourceLineNo">291</span>                                return getResponsible();<a name="line.291"></a>
+<span class="sourceLineNo">292</span>                        case FlowPackage.PARTICIPANT__ACCOUNTABLE:<a name="line.292"></a>
+<span class="sourceLineNo">293</span>                                return getAccountable();<a name="line.293"></a>
+<span class="sourceLineNo">294</span>                        case FlowPackage.PARTICIPANT__CONSULTED:<a name="line.294"></a>
+<span class="sourceLineNo">295</span>                                return getConsulted();<a name="line.295"></a>
+<span class="sourceLineNo">296</span>                        case FlowPackage.PARTICIPANT__INFORMED:<a name="line.296"></a>
+<span class="sourceLineNo">297</span>                                return getInformed();<a name="line.297"></a>
+<span class="sourceLineNo">298</span>                        case FlowPackage.PARTICIPANT__CHILDREN:<a name="line.298"></a>
+<span class="sourceLineNo">299</span>                                if (coreType) return getChildren();<a name="line.299"></a>
+<span class="sourceLineNo">300</span>                                else return getChildren().map();<a name="line.300"></a>
+<span class="sourceLineNo">301</span>                }<a name="line.301"></a>
+<span class="sourceLineNo">302</span>                return super.eGet(featureID, resolve, coreType);<a name="line.302"></a>
+<span class="sourceLineNo">303</span>        }<a name="line.303"></a>
+<span class="sourceLineNo">304</span><a name="line.304"></a>
+<span class="sourceLineNo">305</span>        /**<a name="line.305"></a>
+<span class="sourceLineNo">306</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.306"></a>
+<span class="sourceLineNo">307</span>         * &lt;!-- end-user-doc --&gt;<a name="line.307"></a>
+<span class="sourceLineNo">308</span>         * @generated<a name="line.308"></a>
+<span class="sourceLineNo">309</span>         */<a name="line.309"></a>
+<span class="sourceLineNo">310</span>        @SuppressWarnings("unchecked")<a name="line.310"></a>
+<span class="sourceLineNo">311</span>        @Override<a name="line.311"></a>
+<span class="sourceLineNo">312</span>        public void eSet(int featureID, Object newValue) {<a name="line.312"></a>
+<span class="sourceLineNo">313</span>                switch (featureID) {<a name="line.313"></a>
+<span class="sourceLineNo">314</span>                        case FlowPackage.PARTICIPANT__BASE_KEYS:<a name="line.314"></a>
+<span class="sourceLineNo">315</span>                                getBaseKeys().clear();<a name="line.315"></a>
+<span class="sourceLineNo">316</span>                                getBaseKeys().addAll((Collection&lt;? extends String&gt;)newValue);<a name="line.316"></a>
+<span class="sourceLineNo">317</span>                                return;<a name="line.317"></a>
+<span class="sourceLineNo">318</span>                        case FlowPackage.PARTICIPANT__CHILDREN:<a name="line.318"></a>
+<span class="sourceLineNo">319</span>                                ((EStructuralFeature.Setting)getChildren()).set(newValue);<a name="line.319"></a>
+<span class="sourceLineNo">320</span>                                return;<a name="line.320"></a>
+<span class="sourceLineNo">321</span>                }<a name="line.321"></a>
+<span class="sourceLineNo">322</span>                super.eSet(featureID, newValue);<a name="line.322"></a>
+<span class="sourceLineNo">323</span>        }<a name="line.323"></a>
+<span class="sourceLineNo">324</span><a name="line.324"></a>
+<span class="sourceLineNo">325</span>        /**<a name="line.325"></a>
+<span class="sourceLineNo">326</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.326"></a>
+<span class="sourceLineNo">327</span>         * &lt;!-- end-user-doc --&gt;<a name="line.327"></a>
+<span class="sourceLineNo">328</span>         * @generated<a name="line.328"></a>
+<span class="sourceLineNo">329</span>         */<a name="line.329"></a>
+<span class="sourceLineNo">330</span>        @Override<a name="line.330"></a>
+<span class="sourceLineNo">331</span>        public void eUnset(int featureID) {<a name="line.331"></a>
+<span class="sourceLineNo">332</span>                switch (featureID) {<a name="line.332"></a>
+<span class="sourceLineNo">333</span>                        case FlowPackage.PARTICIPANT__BASE_KEYS:<a name="line.333"></a>
+<span class="sourceLineNo">334</span>                                getBaseKeys().clear();<a name="line.334"></a>
+<span class="sourceLineNo">335</span>                                return;<a name="line.335"></a>
+<span class="sourceLineNo">336</span>                        case FlowPackage.PARTICIPANT__CHILDREN:<a name="line.336"></a>
+<span class="sourceLineNo">337</span>                                getChildren().clear();<a name="line.337"></a>
+<span class="sourceLineNo">338</span>                                return;<a name="line.338"></a>
+<span class="sourceLineNo">339</span>                }<a name="line.339"></a>
+<span class="sourceLineNo">340</span>                super.eUnset(featureID);<a name="line.340"></a>
+<span class="sourceLineNo">341</span>        }<a name="line.341"></a>
+<span class="sourceLineNo">342</span><a name="line.342"></a>
+<span class="sourceLineNo">343</span>        /**<a name="line.343"></a>
+<span class="sourceLineNo">344</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.344"></a>
+<span class="sourceLineNo">345</span>         * &lt;!-- end-user-doc --&gt;<a name="line.345"></a>
+<span class="sourceLineNo">346</span>         * @generated<a name="line.346"></a>
+<span class="sourceLineNo">347</span>         */<a name="line.347"></a>
+<span class="sourceLineNo">348</span>        @Override<a name="line.348"></a>
+<span class="sourceLineNo">349</span>        public boolean eIsSet(int featureID) {<a name="line.349"></a>
+<span class="sourceLineNo">350</span>                switch (featureID) {<a name="line.350"></a>
+<span class="sourceLineNo">351</span>                        case FlowPackage.PARTICIPANT__PARTICIPATES:<a name="line.351"></a>
+<span class="sourceLineNo">352</span>                                return !getParticipates().isEmpty();<a name="line.352"></a>
+<span class="sourceLineNo">353</span>                        case FlowPackage.PARTICIPANT__RESOURCES:<a name="line.353"></a>
+<span class="sourceLineNo">354</span>                                return !getResources().isEmpty();<a name="line.354"></a>
+<span class="sourceLineNo">355</span>                        case FlowPackage.PARTICIPANT__ARTIFACTS:<a name="line.355"></a>
+<span class="sourceLineNo">356</span>                                return !getArtifacts().isEmpty();<a name="line.356"></a>
+<span class="sourceLineNo">357</span>                        case FlowPackage.PARTICIPANT__SPECIALIZATIONS:<a name="line.357"></a>
+<span class="sourceLineNo">358</span>                                return !getSpecializations().isEmpty();<a name="line.358"></a>
+<span class="sourceLineNo">359</span>                        case FlowPackage.PARTICIPANT__BASE_KEYS:<a name="line.359"></a>
+<span class="sourceLineNo">360</span>                                return !getBaseKeys().isEmpty();<a name="line.360"></a>
+<span class="sourceLineNo">361</span>                        case FlowPackage.PARTICIPANT__BASES:<a name="line.361"></a>
+<span class="sourceLineNo">362</span>                                return !getBases().isEmpty();<a name="line.362"></a>
+<span class="sourceLineNo">363</span>                        case FlowPackage.PARTICIPANT__RESPONSIBLE:<a name="line.363"></a>
+<span class="sourceLineNo">364</span>                                return !getResponsible().isEmpty();<a name="line.364"></a>
+<span class="sourceLineNo">365</span>                        case FlowPackage.PARTICIPANT__ACCOUNTABLE:<a name="line.365"></a>
+<span class="sourceLineNo">366</span>                                return !getAccountable().isEmpty();<a name="line.366"></a>
+<span class="sourceLineNo">367</span>                        case FlowPackage.PARTICIPANT__CONSULTED:<a name="line.367"></a>
+<span class="sourceLineNo">368</span>                                return !getConsulted().isEmpty();<a name="line.368"></a>
+<span class="sourceLineNo">369</span>                        case FlowPackage.PARTICIPANT__INFORMED:<a name="line.369"></a>
+<span class="sourceLineNo">370</span>                                return !getInformed().isEmpty();<a name="line.370"></a>
+<span class="sourceLineNo">371</span>                        case FlowPackage.PARTICIPANT__CHILDREN:<a name="line.371"></a>
+<span class="sourceLineNo">372</span>                                return !getChildren().isEmpty();<a name="line.372"></a>
+<span class="sourceLineNo">373</span>                }<a name="line.373"></a>
+<span class="sourceLineNo">374</span>                return super.eIsSet(featureID);<a name="line.374"></a>
+<span class="sourceLineNo">375</span>        }<a name="line.375"></a>
+<span class="sourceLineNo">376</span>        <a name="line.376"></a>
+<span class="sourceLineNo">377</span>        @SuppressWarnings({ "rawtypes", "unchecked" })<a name="line.377"></a>
+<span class="sourceLineNo">378</span>        @Override<a name="line.378"></a>
+<span class="sourceLineNo">379</span>        public void apply(Participant instance) {<a name="line.379"></a>
+<span class="sourceLineNo">380</span>                super.apply(instance);<a name="line.380"></a>
+<span class="sourceLineNo">381</span>                <a name="line.381"></a>
+<span class="sourceLineNo">382</span>                // Services<a name="line.382"></a>
+<span class="sourceLineNo">383</span>                for (Entry&lt;String, Activity&lt;?&gt;&gt; se: getServices().entrySet()) {<a name="line.383"></a>
+<span class="sourceLineNo">384</span>                        Activity service = se.getValue();<a name="line.384"></a>
+<span class="sourceLineNo">385</span>                        EMap&lt;String, Activity&lt;?&gt;&gt; instanceServices = instance.getServices();<a name="line.385"></a>
+<span class="sourceLineNo">386</span>                        String serviceKey = se.getKey();<a name="line.386"></a>
+<span class="sourceLineNo">387</span>                        if (service == null) {<a name="line.387"></a>
+<span class="sourceLineNo">388</span>                                instanceServices.removeKey(serviceKey);<a name="line.388"></a>
+<span class="sourceLineNo">389</span>                        } else {<a name="line.389"></a>
+<span class="sourceLineNo">390</span>                                Activity instanceService = (Activity) service.create();<a name="line.390"></a>
+<span class="sourceLineNo">391</span>                                instanceServices.put(serviceKey, instanceService);<a name="line.391"></a>
+<span class="sourceLineNo">392</span>                                service.apply(instanceService);<a name="line.392"></a>
+<span class="sourceLineNo">393</span>                        }<a name="line.393"></a>
+<span class="sourceLineNo">394</span>                }<a name="line.394"></a>
+<span class="sourceLineNo">395</span>        }<a name="line.395"></a>
+<span class="sourceLineNo">396</span>        <a name="line.396"></a>
+<span class="sourceLineNo">397</span>        @Override<a name="line.397"></a>
+<span class="sourceLineNo">398</span>        public void resolve(Participant instance) {<a name="line.398"></a>
+<span class="sourceLineNo">399</span>                // NOP<a name="line.399"></a>
+<span class="sourceLineNo">400</span>        }<a name="line.400"></a>
+<span class="sourceLineNo">401</span>        <a name="line.401"></a>
+<span class="sourceLineNo">402</span>        @SuppressWarnings("unchecked")<a name="line.402"></a>
+<span class="sourceLineNo">403</span>        @Override<a name="line.403"></a>
+<span class="sourceLineNo">404</span>        public EList&lt;Participant&gt; getExtends() {<a name="line.404"></a>
+<span class="sourceLineNo">405</span>                EList&lt;Participant&gt; ret = ECollections.newBasicEList();<a name="line.405"></a>
+<span class="sourceLineNo">406</span>                if (eContainmentFeature() == FlowPackage.Literals.PARTICIPANT_ENTRY__VALUE) {<a name="line.406"></a>
+<span class="sourceLineNo">407</span>                        String key = ((Map.Entry&lt;String, ?&gt;) eContainer()).getKey();<a name="line.407"></a>
+<span class="sourceLineNo">408</span>                        Package container = (Package) eContainer().eContainer();<a name="line.408"></a>
+<span class="sourceLineNo">409</span>                        for (Package cExtends: container.getExtends()) {<a name="line.409"></a>
+<span class="sourceLineNo">410</span>                                Participant ext = cExtends.getParticipants().get(key);<a name="line.410"></a>
+<span class="sourceLineNo">411</span>                                if (ext != null) {<a name="line.411"></a>
+<span class="sourceLineNo">412</span>                                        ret.add(ext);<a name="line.412"></a>
+<span class="sourceLineNo">413</span>                                }<a name="line.413"></a>
+<span class="sourceLineNo">414</span>                        }<a name="line.414"></a>
+<span class="sourceLineNo">415</span>                }<a name="line.415"></a>
+<span class="sourceLineNo">416</span>                <a name="line.416"></a>
+<span class="sourceLineNo">417</span>                return ret;<a name="line.417"></a>
+<span class="sourceLineNo">418</span>        }       <a name="line.418"></a>
+<span class="sourceLineNo">419</span><a name="line.419"></a>
+<span class="sourceLineNo">420</span>} //ParticipantImpl<a name="line.420"></a>
 
 
 

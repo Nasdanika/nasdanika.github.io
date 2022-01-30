@@ -12,124 +12,141 @@
 <span class="sourceLineNo">004</span><a name="line.4"></a>
 <span class="sourceLineNo">005</span>import java.lang.String;<a name="line.5"></a>
 <span class="sourceLineNo">006</span><a name="line.6"></a>
-<span class="sourceLineNo">007</span>import org.eclipse.emf.common.util.EMap;<a name="line.7"></a>
-<span class="sourceLineNo">008</span><a name="line.8"></a>
-<span class="sourceLineNo">009</span>/**<a name="line.9"></a>
-<span class="sourceLineNo">010</span> * &lt;!-- begin-user-doc --&gt;<a name="line.10"></a>
-<span class="sourceLineNo">011</span> * A representation of the model object '&lt;em&gt;&lt;b&gt;Git Marker&lt;/b&gt;&lt;/em&gt;'.<a name="line.11"></a>
-<span class="sourceLineNo">012</span> * &lt;!-- end-user-doc --&gt;<a name="line.12"></a>
-<span class="sourceLineNo">013</span> *<a name="line.13"></a>
-<span class="sourceLineNo">014</span> * &lt;!-- begin-model-doc --&gt;<a name="line.14"></a>
-<span class="sourceLineNo">015</span> * Marker with Git information such as a map of remotes.<a name="line.15"></a>
-<span class="sourceLineNo">016</span> * &lt;!-- end-model-doc --&gt;<a name="line.16"></a>
-<span class="sourceLineNo">017</span> *<a name="line.17"></a>
-<span class="sourceLineNo">018</span> * &lt;p&gt;<a name="line.18"></a>
-<span class="sourceLineNo">019</span> * The following features are supported:<a name="line.19"></a>
-<span class="sourceLineNo">020</span> * &lt;/p&gt;<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * &lt;ul&gt;<a name="line.21"></a>
-<span class="sourceLineNo">022</span> *   &lt;li&gt;{@link org.nasdanika.ncore.GitMarker#getPath &lt;em&gt;Path&lt;/em&gt;}&lt;/li&gt;<a name="line.22"></a>
-<span class="sourceLineNo">023</span> *   &lt;li&gt;{@link org.nasdanika.ncore.GitMarker#getRemotes &lt;em&gt;Remotes&lt;/em&gt;}&lt;/li&gt;<a name="line.23"></a>
-<span class="sourceLineNo">024</span> *   &lt;li&gt;{@link org.nasdanika.ncore.GitMarker#getBranch &lt;em&gt;Branch&lt;/em&gt;}&lt;/li&gt;<a name="line.24"></a>
-<span class="sourceLineNo">025</span> *   &lt;li&gt;{@link org.nasdanika.ncore.GitMarker#getHead &lt;em&gt;Head&lt;/em&gt;}&lt;/li&gt;<a name="line.25"></a>
-<span class="sourceLineNo">026</span> * &lt;/ul&gt;<a name="line.26"></a>
-<span class="sourceLineNo">027</span> *<a name="line.27"></a>
-<span class="sourceLineNo">028</span> * @see org.nasdanika.ncore.NcorePackage#getGitMarker()<a name="line.28"></a>
-<span class="sourceLineNo">029</span> * @model<a name="line.29"></a>
-<span class="sourceLineNo">030</span> * @generated<a name="line.30"></a>
-<span class="sourceLineNo">031</span> */<a name="line.31"></a>
-<span class="sourceLineNo">032</span>public interface GitMarker extends Marker {<a name="line.32"></a>
-<span class="sourceLineNo">033</span>        /**<a name="line.33"></a>
-<span class="sourceLineNo">034</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Path&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.34"></a>
-<span class="sourceLineNo">035</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>         * &lt;!-- end-user-doc --&gt;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>         * Path in the repository<a name="line.38"></a>
-<span class="sourceLineNo">039</span>         * &lt;!-- end-model-doc --&gt;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>         * @return the value of the '&lt;em&gt;Path&lt;/em&gt;' attribute.<a name="line.40"></a>
-<span class="sourceLineNo">041</span>         * @see #setPath(String)<a name="line.41"></a>
-<span class="sourceLineNo">042</span>         * @see org.nasdanika.ncore.NcorePackage#getGitMarker_Path()<a name="line.42"></a>
-<span class="sourceLineNo">043</span>         * @model<a name="line.43"></a>
-<span class="sourceLineNo">044</span>         * @generated<a name="line.44"></a>
-<span class="sourceLineNo">045</span>         */<a name="line.45"></a>
-<span class="sourceLineNo">046</span>        String getPath();<a name="line.46"></a>
-<span class="sourceLineNo">047</span><a name="line.47"></a>
-<span class="sourceLineNo">048</span>        /**<a name="line.48"></a>
-<span class="sourceLineNo">049</span>         * Sets the value of the '{@link org.nasdanika.ncore.GitMarker#getPath &lt;em&gt;Path&lt;/em&gt;}' attribute.<a name="line.49"></a>
-<span class="sourceLineNo">050</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.50"></a>
-<span class="sourceLineNo">051</span>         * &lt;!-- end-user-doc --&gt;<a name="line.51"></a>
-<span class="sourceLineNo">052</span>         * @param value the new value of the '&lt;em&gt;Path&lt;/em&gt;' attribute.<a name="line.52"></a>
-<span class="sourceLineNo">053</span>         * @see #getPath()<a name="line.53"></a>
-<span class="sourceLineNo">054</span>         * @generated<a name="line.54"></a>
-<span class="sourceLineNo">055</span>         */<a name="line.55"></a>
-<span class="sourceLineNo">056</span>        void setPath(String value);<a name="line.56"></a>
-<span class="sourceLineNo">057</span><a name="line.57"></a>
-<span class="sourceLineNo">058</span>        /**<a name="line.58"></a>
-<span class="sourceLineNo">059</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Remotes&lt;/b&gt;&lt;/em&gt;' map.<a name="line.59"></a>
-<span class="sourceLineNo">060</span>         * The key is of type {@link java.lang.String},<a name="line.60"></a>
-<span class="sourceLineNo">061</span>         * and the value is of type {@link java.lang.String},<a name="line.61"></a>
-<span class="sourceLineNo">062</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.62"></a>
-<span class="sourceLineNo">063</span>         * &lt;!-- end-user-doc --&gt;<a name="line.63"></a>
-<span class="sourceLineNo">064</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.64"></a>
-<span class="sourceLineNo">065</span>         * A map of remote names to url's.<a name="line.65"></a>
-<span class="sourceLineNo">066</span>         * &lt;!-- end-model-doc --&gt;<a name="line.66"></a>
-<span class="sourceLineNo">067</span>         * @return the value of the '&lt;em&gt;Remotes&lt;/em&gt;' map.<a name="line.67"></a>
-<span class="sourceLineNo">068</span>         * @see org.nasdanika.ncore.NcorePackage#getGitMarker_Remotes()<a name="line.68"></a>
-<span class="sourceLineNo">069</span>         * @model mapType="org.nasdanika.ncore.StringEntry&amp;lt;org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString&amp;gt;"<a name="line.69"></a>
-<span class="sourceLineNo">070</span>         * @generated<a name="line.70"></a>
-<span class="sourceLineNo">071</span>         */<a name="line.71"></a>
-<span class="sourceLineNo">072</span>        EMap&lt;String, String&gt; getRemotes();<a name="line.72"></a>
-<span class="sourceLineNo">073</span><a name="line.73"></a>
-<span class="sourceLineNo">074</span>        /**<a name="line.74"></a>
-<span class="sourceLineNo">075</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Branch&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.75"></a>
-<span class="sourceLineNo">076</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.76"></a>
-<span class="sourceLineNo">077</span>         * &lt;!-- end-user-doc --&gt;<a name="line.77"></a>
-<span class="sourceLineNo">078</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.78"></a>
-<span class="sourceLineNo">079</span>         * Short branch name<a name="line.79"></a>
-<span class="sourceLineNo">080</span>         * &lt;!-- end-model-doc --&gt;<a name="line.80"></a>
-<span class="sourceLineNo">081</span>         * @return the value of the '&lt;em&gt;Branch&lt;/em&gt;' attribute.<a name="line.81"></a>
-<span class="sourceLineNo">082</span>         * @see #setBranch(String)<a name="line.82"></a>
-<span class="sourceLineNo">083</span>         * @see org.nasdanika.ncore.NcorePackage#getGitMarker_Branch()<a name="line.83"></a>
-<span class="sourceLineNo">084</span>         * @model<a name="line.84"></a>
-<span class="sourceLineNo">085</span>         * @generated<a name="line.85"></a>
-<span class="sourceLineNo">086</span>         */<a name="line.86"></a>
-<span class="sourceLineNo">087</span>        String getBranch();<a name="line.87"></a>
-<span class="sourceLineNo">088</span><a name="line.88"></a>
-<span class="sourceLineNo">089</span>        /**<a name="line.89"></a>
-<span class="sourceLineNo">090</span>         * Sets the value of the '{@link org.nasdanika.ncore.GitMarker#getBranch &lt;em&gt;Branch&lt;/em&gt;}' attribute.<a name="line.90"></a>
-<span class="sourceLineNo">091</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.91"></a>
-<span class="sourceLineNo">092</span>         * &lt;!-- end-user-doc --&gt;<a name="line.92"></a>
-<span class="sourceLineNo">093</span>         * @param value the new value of the '&lt;em&gt;Branch&lt;/em&gt;' attribute.<a name="line.93"></a>
-<span class="sourceLineNo">094</span>         * @see #getBranch()<a name="line.94"></a>
-<span class="sourceLineNo">095</span>         * @generated<a name="line.95"></a>
-<span class="sourceLineNo">096</span>         */<a name="line.96"></a>
-<span class="sourceLineNo">097</span>        void setBranch(String value);<a name="line.97"></a>
-<span class="sourceLineNo">098</span><a name="line.98"></a>
-<span class="sourceLineNo">099</span>        /**<a name="line.99"></a>
-<span class="sourceLineNo">100</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Head&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.100"></a>
-<span class="sourceLineNo">101</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.101"></a>
-<span class="sourceLineNo">102</span>         * &lt;!-- end-user-doc --&gt;<a name="line.102"></a>
-<span class="sourceLineNo">103</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.103"></a>
-<span class="sourceLineNo">104</span>         * Commit ID of the head<a name="line.104"></a>
-<span class="sourceLineNo">105</span>         * &lt;!-- end-model-doc --&gt;<a name="line.105"></a>
-<span class="sourceLineNo">106</span>         * @return the value of the '&lt;em&gt;Head&lt;/em&gt;' attribute.<a name="line.106"></a>
-<span class="sourceLineNo">107</span>         * @see #setHead(String)<a name="line.107"></a>
-<span class="sourceLineNo">108</span>         * @see org.nasdanika.ncore.NcorePackage#getGitMarker_Head()<a name="line.108"></a>
-<span class="sourceLineNo">109</span>         * @model<a name="line.109"></a>
-<span class="sourceLineNo">110</span>         * @generated<a name="line.110"></a>
-<span class="sourceLineNo">111</span>         */<a name="line.111"></a>
-<span class="sourceLineNo">112</span>        String getHead();<a name="line.112"></a>
-<span class="sourceLineNo">113</span><a name="line.113"></a>
-<span class="sourceLineNo">114</span>        /**<a name="line.114"></a>
-<span class="sourceLineNo">115</span>         * Sets the value of the '{@link org.nasdanika.ncore.GitMarker#getHead &lt;em&gt;Head&lt;/em&gt;}' attribute.<a name="line.115"></a>
-<span class="sourceLineNo">116</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.116"></a>
-<span class="sourceLineNo">117</span>         * &lt;!-- end-user-doc --&gt;<a name="line.117"></a>
-<span class="sourceLineNo">118</span>         * @param value the new value of the '&lt;em&gt;Head&lt;/em&gt;' attribute.<a name="line.118"></a>
-<span class="sourceLineNo">119</span>         * @see #getHead()<a name="line.119"></a>
-<span class="sourceLineNo">120</span>         * @generated<a name="line.120"></a>
-<span class="sourceLineNo">121</span>         */<a name="line.121"></a>
-<span class="sourceLineNo">122</span>        void setHead(String value);<a name="line.122"></a>
-<span class="sourceLineNo">123</span><a name="line.123"></a>
-<span class="sourceLineNo">124</span>} // GitMarker<a name="line.124"></a>
+<span class="sourceLineNo">007</span>import org.eclipse.emf.common.util.EList;<a name="line.7"></a>
+<span class="sourceLineNo">008</span>import org.eclipse.emf.common.util.EMap;<a name="line.8"></a>
+<span class="sourceLineNo">009</span><a name="line.9"></a>
+<span class="sourceLineNo">010</span>/**<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * &lt;!-- begin-user-doc --&gt;<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * A representation of the model object '&lt;em&gt;&lt;b&gt;Git Marker&lt;/b&gt;&lt;/em&gt;'.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * &lt;!-- end-user-doc --&gt;<a name="line.13"></a>
+<span class="sourceLineNo">014</span> *<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * &lt;!-- begin-model-doc --&gt;<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * Marker with Git information such as a map of remotes.<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * &lt;!-- end-model-doc --&gt;<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * &lt;p&gt;<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * The following features are supported:<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * &lt;/p&gt;<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * &lt;ul&gt;<a name="line.22"></a>
+<span class="sourceLineNo">023</span> *   &lt;li&gt;{@link org.nasdanika.ncore.GitMarker#getPath &lt;em&gt;Path&lt;/em&gt;}&lt;/li&gt;<a name="line.23"></a>
+<span class="sourceLineNo">024</span> *   &lt;li&gt;{@link org.nasdanika.ncore.GitMarker#getRemotes &lt;em&gt;Remotes&lt;/em&gt;}&lt;/li&gt;<a name="line.24"></a>
+<span class="sourceLineNo">025</span> *   &lt;li&gt;{@link org.nasdanika.ncore.GitMarker#getBranch &lt;em&gt;Branch&lt;/em&gt;}&lt;/li&gt;<a name="line.25"></a>
+<span class="sourceLineNo">026</span> *   &lt;li&gt;{@link org.nasdanika.ncore.GitMarker#getHead &lt;em&gt;Head&lt;/em&gt;}&lt;/li&gt;<a name="line.26"></a>
+<span class="sourceLineNo">027</span> *   &lt;li&gt;{@link org.nasdanika.ncore.GitMarker#getHeadRefs &lt;em&gt;Head Refs&lt;/em&gt;}&lt;/li&gt;<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * &lt;/ul&gt;<a name="line.28"></a>
+<span class="sourceLineNo">029</span> *<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * @see org.nasdanika.ncore.NcorePackage#getGitMarker()<a name="line.30"></a>
+<span class="sourceLineNo">031</span> * @model<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * @generated<a name="line.32"></a>
+<span class="sourceLineNo">033</span> */<a name="line.33"></a>
+<span class="sourceLineNo">034</span>public interface GitMarker extends Marker {<a name="line.34"></a>
+<span class="sourceLineNo">035</span>        /**<a name="line.35"></a>
+<span class="sourceLineNo">036</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Path&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.36"></a>
+<span class="sourceLineNo">037</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>         * &lt;!-- end-user-doc --&gt;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>         * Path in the repository<a name="line.40"></a>
+<span class="sourceLineNo">041</span>         * &lt;!-- end-model-doc --&gt;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>         * @return the value of the '&lt;em&gt;Path&lt;/em&gt;' attribute.<a name="line.42"></a>
+<span class="sourceLineNo">043</span>         * @see #setPath(String)<a name="line.43"></a>
+<span class="sourceLineNo">044</span>         * @see org.nasdanika.ncore.NcorePackage#getGitMarker_Path()<a name="line.44"></a>
+<span class="sourceLineNo">045</span>         * @model<a name="line.45"></a>
+<span class="sourceLineNo">046</span>         * @generated<a name="line.46"></a>
+<span class="sourceLineNo">047</span>         */<a name="line.47"></a>
+<span class="sourceLineNo">048</span>        String getPath();<a name="line.48"></a>
+<span class="sourceLineNo">049</span><a name="line.49"></a>
+<span class="sourceLineNo">050</span>        /**<a name="line.50"></a>
+<span class="sourceLineNo">051</span>         * Sets the value of the '{@link org.nasdanika.ncore.GitMarker#getPath &lt;em&gt;Path&lt;/em&gt;}' attribute.<a name="line.51"></a>
+<span class="sourceLineNo">052</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>         * &lt;!-- end-user-doc --&gt;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>         * @param value the new value of the '&lt;em&gt;Path&lt;/em&gt;' attribute.<a name="line.54"></a>
+<span class="sourceLineNo">055</span>         * @see #getPath()<a name="line.55"></a>
+<span class="sourceLineNo">056</span>         * @generated<a name="line.56"></a>
+<span class="sourceLineNo">057</span>         */<a name="line.57"></a>
+<span class="sourceLineNo">058</span>        void setPath(String value);<a name="line.58"></a>
+<span class="sourceLineNo">059</span><a name="line.59"></a>
+<span class="sourceLineNo">060</span>        /**<a name="line.60"></a>
+<span class="sourceLineNo">061</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Remotes&lt;/b&gt;&lt;/em&gt;' map.<a name="line.61"></a>
+<span class="sourceLineNo">062</span>         * The key is of type {@link java.lang.String},<a name="line.62"></a>
+<span class="sourceLineNo">063</span>         * and the value is of type {@link java.lang.String},<a name="line.63"></a>
+<span class="sourceLineNo">064</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.64"></a>
+<span class="sourceLineNo">065</span>         * &lt;!-- end-user-doc --&gt;<a name="line.65"></a>
+<span class="sourceLineNo">066</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.66"></a>
+<span class="sourceLineNo">067</span>         * A map of remote names to url's.<a name="line.67"></a>
+<span class="sourceLineNo">068</span>         * &lt;!-- end-model-doc --&gt;<a name="line.68"></a>
+<span class="sourceLineNo">069</span>         * @return the value of the '&lt;em&gt;Remotes&lt;/em&gt;' map.<a name="line.69"></a>
+<span class="sourceLineNo">070</span>         * @see org.nasdanika.ncore.NcorePackage#getGitMarker_Remotes()<a name="line.70"></a>
+<span class="sourceLineNo">071</span>         * @model mapType="org.nasdanika.ncore.StringEntry&amp;lt;org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString&amp;gt;"<a name="line.71"></a>
+<span class="sourceLineNo">072</span>         * @generated<a name="line.72"></a>
+<span class="sourceLineNo">073</span>         */<a name="line.73"></a>
+<span class="sourceLineNo">074</span>        EMap&lt;String, String&gt; getRemotes();<a name="line.74"></a>
+<span class="sourceLineNo">075</span><a name="line.75"></a>
+<span class="sourceLineNo">076</span>        /**<a name="line.76"></a>
+<span class="sourceLineNo">077</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Branch&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.77"></a>
+<span class="sourceLineNo">078</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.78"></a>
+<span class="sourceLineNo">079</span>         * &lt;!-- end-user-doc --&gt;<a name="line.79"></a>
+<span class="sourceLineNo">080</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.80"></a>
+<span class="sourceLineNo">081</span>         * Short branch name<a name="line.81"></a>
+<span class="sourceLineNo">082</span>         * &lt;!-- end-model-doc --&gt;<a name="line.82"></a>
+<span class="sourceLineNo">083</span>         * @return the value of the '&lt;em&gt;Branch&lt;/em&gt;' attribute.<a name="line.83"></a>
+<span class="sourceLineNo">084</span>         * @see #setBranch(String)<a name="line.84"></a>
+<span class="sourceLineNo">085</span>         * @see org.nasdanika.ncore.NcorePackage#getGitMarker_Branch()<a name="line.85"></a>
+<span class="sourceLineNo">086</span>         * @model<a name="line.86"></a>
+<span class="sourceLineNo">087</span>         * @generated<a name="line.87"></a>
+<span class="sourceLineNo">088</span>         */<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        String getBranch();<a name="line.89"></a>
+<span class="sourceLineNo">090</span><a name="line.90"></a>
+<span class="sourceLineNo">091</span>        /**<a name="line.91"></a>
+<span class="sourceLineNo">092</span>         * Sets the value of the '{@link org.nasdanika.ncore.GitMarker#getBranch &lt;em&gt;Branch&lt;/em&gt;}' attribute.<a name="line.92"></a>
+<span class="sourceLineNo">093</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.93"></a>
+<span class="sourceLineNo">094</span>         * &lt;!-- end-user-doc --&gt;<a name="line.94"></a>
+<span class="sourceLineNo">095</span>         * @param value the new value of the '&lt;em&gt;Branch&lt;/em&gt;' attribute.<a name="line.95"></a>
+<span class="sourceLineNo">096</span>         * @see #getBranch()<a name="line.96"></a>
+<span class="sourceLineNo">097</span>         * @generated<a name="line.97"></a>
+<span class="sourceLineNo">098</span>         */<a name="line.98"></a>
+<span class="sourceLineNo">099</span>        void setBranch(String value);<a name="line.99"></a>
+<span class="sourceLineNo">100</span><a name="line.100"></a>
+<span class="sourceLineNo">101</span>        /**<a name="line.101"></a>
+<span class="sourceLineNo">102</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Head&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.102"></a>
+<span class="sourceLineNo">103</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.103"></a>
+<span class="sourceLineNo">104</span>         * &lt;!-- end-user-doc --&gt;<a name="line.104"></a>
+<span class="sourceLineNo">105</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.105"></a>
+<span class="sourceLineNo">106</span>         * Commit ID of the head<a name="line.106"></a>
+<span class="sourceLineNo">107</span>         * &lt;!-- end-model-doc --&gt;<a name="line.107"></a>
+<span class="sourceLineNo">108</span>         * @return the value of the '&lt;em&gt;Head&lt;/em&gt;' attribute.<a name="line.108"></a>
+<span class="sourceLineNo">109</span>         * @see #setHead(String)<a name="line.109"></a>
+<span class="sourceLineNo">110</span>         * @see org.nasdanika.ncore.NcorePackage#getGitMarker_Head()<a name="line.110"></a>
+<span class="sourceLineNo">111</span>         * @model<a name="line.111"></a>
+<span class="sourceLineNo">112</span>         * @generated<a name="line.112"></a>
+<span class="sourceLineNo">113</span>         */<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        String getHead();<a name="line.114"></a>
+<span class="sourceLineNo">115</span><a name="line.115"></a>
+<span class="sourceLineNo">116</span>        /**<a name="line.116"></a>
+<span class="sourceLineNo">117</span>         * Sets the value of the '{@link org.nasdanika.ncore.GitMarker#getHead &lt;em&gt;Head&lt;/em&gt;}' attribute.<a name="line.117"></a>
+<span class="sourceLineNo">118</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.118"></a>
+<span class="sourceLineNo">119</span>         * &lt;!-- end-user-doc --&gt;<a name="line.119"></a>
+<span class="sourceLineNo">120</span>         * @param value the new value of the '&lt;em&gt;Head&lt;/em&gt;' attribute.<a name="line.120"></a>
+<span class="sourceLineNo">121</span>         * @see #getHead()<a name="line.121"></a>
+<span class="sourceLineNo">122</span>         * @generated<a name="line.122"></a>
+<span class="sourceLineNo">123</span>         */<a name="line.123"></a>
+<span class="sourceLineNo">124</span>        void setHead(String value);<a name="line.124"></a>
+<span class="sourceLineNo">125</span><a name="line.125"></a>
+<span class="sourceLineNo">126</span>        /**<a name="line.126"></a>
+<span class="sourceLineNo">127</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Head Refs&lt;/b&gt;&lt;/em&gt;' attribute list.<a name="line.127"></a>
+<span class="sourceLineNo">128</span>         * The list contents are of type {@link java.lang.String}.<a name="line.128"></a>
+<span class="sourceLineNo">129</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.129"></a>
+<span class="sourceLineNo">130</span>         * &lt;!-- end-user-doc --&gt;<a name="line.130"></a>
+<span class="sourceLineNo">131</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.131"></a>
+<span class="sourceLineNo">132</span>         * Refs on the head commit excluding the head itself. E.g. branch, tags.<a name="line.132"></a>
+<span class="sourceLineNo">133</span>         * &lt;!-- end-model-doc --&gt;<a name="line.133"></a>
+<span class="sourceLineNo">134</span>         * @return the value of the '&lt;em&gt;Head Refs&lt;/em&gt;' attribute list.<a name="line.134"></a>
+<span class="sourceLineNo">135</span>         * @see org.nasdanika.ncore.NcorePackage#getGitMarker_HeadRefs()<a name="line.135"></a>
+<span class="sourceLineNo">136</span>         * @model<a name="line.136"></a>
+<span class="sourceLineNo">137</span>         * @generated<a name="line.137"></a>
+<span class="sourceLineNo">138</span>         */<a name="line.138"></a>
+<span class="sourceLineNo">139</span>        EList&lt;String&gt; getHeadRefs();<a name="line.139"></a>
+<span class="sourceLineNo">140</span><a name="line.140"></a>
+<span class="sourceLineNo">141</span>} // GitMarker<a name="line.141"></a>
 
 
 

@@ -8,10 +8,10 @@
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>package org.nasdanika.common.persistence;<a name="line.1"></a>
 <span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>import java.net.URL;<a name="line.3"></a>
-<span class="sourceLineNo">004</span>import java.util.Map;<a name="line.4"></a>
-<span class="sourceLineNo">005</span>import java.util.function.Function;<a name="line.5"></a>
-<span class="sourceLineNo">006</span><a name="line.6"></a>
+<span class="sourceLineNo">003</span>import java.util.Map;<a name="line.3"></a>
+<span class="sourceLineNo">004</span>import java.util.function.Function;<a name="line.4"></a>
+<span class="sourceLineNo">005</span><a name="line.5"></a>
+<span class="sourceLineNo">006</span>import org.eclipse.emf.common.util.URI;<a name="line.6"></a>
 <span class="sourceLineNo">007</span>import org.nasdanika.common.ProgressMonitor;<a name="line.7"></a>
 <span class="sourceLineNo">008</span><a name="line.8"></a>
 <span class="sourceLineNo">009</span>/**<a name="line.9"></a>
@@ -58,7 +58,7 @@
 <span class="sourceLineNo">050</span>         * @throws Exception<a name="line.50"></a>
 <span class="sourceLineNo">051</span>         */<a name="line.51"></a>
 <span class="sourceLineNo">052</span>        @Override<a name="line.52"></a>
-<span class="sourceLineNo">053</span>        protected V createValue(ObjectLoader loader, K key, Object value, URL base, ProgressMonitor progressMonitor, Marker marker) throws Exception { <a name="line.53"></a>
+<span class="sourceLineNo">053</span>        protected V createValue(ObjectLoader loader, K key, Object value, URI base, ProgressMonitor progressMonitor, Marker marker) throws Exception { <a name="line.53"></a>
 <span class="sourceLineNo">054</span>                V ret = valueFactory.apply(key);<a name="line.54"></a>
 <span class="sourceLineNo">055</span>                ret.load(loader, value, base, progressMonitor, marker);<a name="line.55"></a>
 <span class="sourceLineNo">056</span>                return ret;<a name="line.56"></a>
