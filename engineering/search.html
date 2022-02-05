@@ -1,36 +1,76 @@
-<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js" integrity="sha256-EXPXz4W6pQgfYY3yTpnDa3OH8/EPn16ciVsPQ/ypsjk=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue-instantsearch@3.4.2/dist/vue-instantsearch.js" integrity="sha256-n2IafdANKRLjFjtPQVSQZ6QlxBrYqPDZfi3IkZjDT84=" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.4.5/themes/satellite-min.css" integrity="sha256-TehzF/2QvNKhGQrrNpoOb2Ck4iGZ1J/DI4pkd2oUsBc=" crossorigin="anonymous">
-     
-     	<div id="search-app">        
-     <ais-instant-search :search-client="searchClient" index-name="docs">
-       <div class="search-panel">
-         <div class="search-panel__filters">
-           <ais-search-box/>
-         </div>
-
-         <div class="search-panel__results">
-           <ais-search-box placeholder="Search here…" class="searchbox" />
-           <ais-hits>
-             <template slot="item" slot-scope="{ item }">
-               <h5><a :href="item.objectID"><ais-highlight :hit="item" attribute="title"/></a></h5>
-               <span v-if="item.path">&nbsp;<i>({{item.path}})</i></span>
-               &nbsp;-&nbsp;
-               <div><ais-snippet :hit="item" attribute="content" /></div>
-             </template>
-           </ais-hits>
-
-           <div class="pagination"><ais-pagination /></div>
-         </div>
-       </div>
-     </ais-instant-search>
+		<script src="https://unpkg.com/lunr/lunr.js"></script>     
+		<script src="search-documents.js"></script>     
+     	<div id="search-app">
+			<b-form-group
+	          label="Filter"
+	          label-for="filter-input"
+	          label-cols-sm="3"
+	          label-align-sm="right"
+	          label-size="sm"
+	          class="mb-0"
+	        >
+	          <b-input-group size="sm">
+	            <b-form-input
+	              id="filter-input"
+	              v-model="filter"
+	              type="search"
+	              placeholder="Type to Search"
+	            ></b-form-input>
+	
+	            <b-input-group-append>
+	              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+	            </b-input-group-append>
+	          </b-input-group>
+	        </b-form-group>		
+	        <b-card 
+	        	v-for="searchResult in searchResults" 
+	        	:header-html="searchResult.title" 
+	        	:footer="searchResult.path"
+	        	class="mt-2"
+	        	>
+	        	
+	        	<b-card-text>{{ searchResult.content }}</b-card-text>
+	        
+	        </b-card>
      	</div>
      
-<script>
-	new Vue({
-		  el: '#search-app',
-		  data: {
-		      searchClient: algoliasearch('IUVLCO61HU', '5ed7eb5d6323c8beeb18466dc666722a')
-		  }
-	});        	        	
-</script>
+		<script>		      
+			new Vue({
+				  el: '#search-app',
+				  data: {
+			        	filter: null,
+				      searchIndex : lunr(function () {
+						  this.ref('url');
+						  this.field('title');
+						  this.field('content');
+						
+						  for (const key in searchDocuments) {
+							  let doc = searchDocuments[key];
+							this.add({
+								url: key,
+								title: doc.title,
+								path: doc.path,
+								content: doc.content
+							});  
+						  }
+						})
+				  },
+				  computed: {
+					searchResults: function() {
+						if (this.filter) {
+							let searchResult = this.searchIndex.search(this.filter);
+							return searchResult.map(function(e) {
+								let doc = searchDocuments[e.ref];
+								return {
+									url: "x.html",
+									title: `<h5><a href="${e.ref}">${doc.title}</a></h5>`,
+									path: doc.path,
+									content: doc.content && doc.content.length > 250 ? doc.content.substring(0, 250) + "..." : doc.content
+								};									
+							});
+						} 
+						return [];
+					}  
+				  }
+			});        	        	
+		</script>
