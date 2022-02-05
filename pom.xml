@@ -34,7 +34,20 @@
 		  <groupId>com.github.dfabulich</groupId>
 		  <artifactId>sitemapgen4j</artifactId>
 		  <version>1.1.2</version>
-		</dependency>		
+		</dependency>	
+		
+		<!-- Algolia library with Apache HTTP requester (compatible with Java 8 and above) -->
+		<dependency>
+		  <groupId>com.algolia</groupId>
+		  <artifactId>algoliasearch-core</artifactId>
+		  <version>3.16.3</version>
+		</dependency>
+		<dependency>
+		  <groupId>com.algolia</groupId>
+		  <artifactId>algoliasearch-apache</artifactId>
+		  <version>3.16.3</version>
+		</dependency>
+			
 	</dependencies>
 
 	<build>
