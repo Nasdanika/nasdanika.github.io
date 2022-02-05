@@ -3,12 +3,16 @@ package org.nasdanika.docs.engineering;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -24,6 +28,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.codegen.ecore.genmodel.GenModel;
@@ -40,16 +45,25 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.Test;
+import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.Diagnostic;
+import org.nasdanika.common.DiagnosticException;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.NullProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
+import org.nasdanika.common.Supplier;
 import org.nasdanika.common.resources.BinaryEntityContainer;
 import org.nasdanika.common.resources.FileSystemContainer;
 import org.nasdanika.diagram.DiagramPackage;
@@ -60,6 +74,7 @@ import org.nasdanika.emf.persistence.FeatureCacheAdapter;
 import org.nasdanika.emf.persistence.YamlResourceFactory;
 import org.nasdanika.engineering.EngineeringPackage;
 import org.nasdanika.engineering.gen.EngineeringActionProviderAdapterFactory;
+import org.nasdanika.engineering.util.EngineeringYamlSupplier;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.content.ContentPackage;
 import org.nasdanika.exec.resources.Container;
@@ -74,6 +89,7 @@ import org.nasdanika.html.emf.EObjectActionResolver;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
+import org.nasdanika.html.model.app.gen.AppGenYamlLoadingExecutionParticipant;
 import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.app.util.ActionProvider;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
@@ -81,6 +97,9 @@ import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NcoreResourceSet;
 
+import com.algolia.search.DefaultSearchClient;
+import com.algolia.search.SearchClient;
+import com.algolia.search.SearchIndex;
 import com.redfin.sitemapgenerator.ChangeFreq;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
 import com.redfin.sitemapgenerator.WebSitemapUrl;
@@ -90,7 +109,7 @@ import com.redfin.sitemapgenerator.WebSitemapUrl;
  * @author Pavel
  *
  */
-public class TestNasdanikaDocEngineeringGen extends TestBase {
+public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 	
 	private static final File GENERATED_MODELS_BASE_DIR = new File("target/model-doc");
 	private static final File ENGINEERING_MODELS_DIR = new File(GENERATED_MODELS_BASE_DIR, "models");
@@ -107,40 +126,65 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 	 * @param progressMonitor
 	 * @throws Exception
 	 */
-	protected void generateEngineeringModel(String name, Context context, ProgressMonitor progressMonitor) throws Exception {	
-		load(
-				"engineering/" + name + ".yml", 
-				obj -> {
-					EObject copy = EcoreUtil.copy(obj);
-					ResourceSet resourceSet = new NcoreResourceSet();
-					resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-					
-					org.eclipse.emf.ecore.resource.Resource instanceModelResource = resourceSet.createResource(URI.createURI(name + ".xml").resolve(ENGINEERING_MODELS_URI));
-					instanceModelResource.getContents().add(copy);
-					
-					org.eclipse.emf.common.util.Diagnostic copyDiagnostic = org.nasdanika.emf.EmfUtil.resolveClearCacheAndDiagnose(resourceSet, context);
-					int severity = copyDiagnostic.getSeverity();
-					if (severity != org.eclipse.emf.common.util.Diagnostic.OK) {
-						EmfUtil.dumpDiagnostic(copyDiagnostic, 2, System.err);
-					}
-					assertThat(severity).isEqualTo(org.eclipse.emf.common.util.Diagnostic.OK);
-										
-					try {						
-						instanceModelResource.save(null);
-					} catch (IOException ioe) {
-						throw new NasdanikaException(ioe);
-					}
-				},
-				diagnostic -> {
-					if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
-						System.err.println("***********************");
-						System.err.println("*      Diagnostic     *");
-						System.err.println("***********************");
-						diagnostic.dump(System.err, 4, Status.FAIL, Status.ERROR);
-					}
-					assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
-				},
-				progressMonitor);		
+	protected void generateEngineeringModel(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
+		URI resourceURI = URI.createFileURI(new File("engineering/" + name + ".yml").getAbsolutePath());
+		@SuppressWarnings("resource")
+		Supplier<EObject> engineeringSupplier = new EngineeringYamlSupplier(resourceURI, context);
+		org.nasdanika.common.Consumer<EObject> engineeringConsumer = new org.nasdanika.common.Consumer<EObject>() {
+
+			@Override
+			public double size() {
+				return 1;
+			}
+
+			@Override
+			public String name() {
+				return "Saving loaded engineering model";
+			}
+
+			@Override
+			public void execute(EObject obj, ProgressMonitor progressMonitor) throws Exception {
+				EObject copy = EcoreUtil.copy(obj);
+				ResourceSet resourceSet = new NcoreResourceSet();
+				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+				
+				org.eclipse.emf.ecore.resource.Resource instanceModelResource = resourceSet.createResource(URI.createURI(name + ".xml").resolve(ENGINEERING_MODELS_URI));
+				instanceModelResource.getContents().add(copy);
+				
+				org.eclipse.emf.common.util.Diagnostic copyDiagnostic = org.nasdanika.emf.EmfUtil.resolveClearCacheAndDiagnose(resourceSet, context);
+				int severity = copyDiagnostic.getSeverity();
+				if (severity != org.eclipse.emf.common.util.Diagnostic.OK) {
+					EmfUtil.dumpDiagnostic(copyDiagnostic, 2, System.err);
+				}
+				assertThat(severity).isEqualTo(org.eclipse.emf.common.util.Diagnostic.OK);
+				instanceModelResource.save(null);
+			}
+			
+		};
+		
+		try {
+			org.nasdanika.common.Diagnostic diagnostic = org.nasdanika.common.Util.call(engineeringSupplier.then(engineeringConsumer), progressMonitor);
+			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
+				System.err.println("***********************");
+				System.err.println("*      Diagnostic     *");
+				System.err.println("***********************");
+				diagnostic.dump(System.err, 4, Status.FAIL, Status.ERROR);
+			}
+			assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
+			
+			if (diagnostic.getStatus() == Status.WARNING || diagnostic.getStatus() == Status.ERROR) {
+				System.err.println("***********************");
+				System.err.println("*      Diagnostic     *");
+				System.err.println("***********************");
+				diagnostic.dump(System.err, 4, Status.ERROR, Status.WARNING);
+			}
+		} catch (DiagnosticException e) {
+			System.err.println("******************************");
+			System.err.println("*      Diagnostic failed     *");
+			System.err.println("******************************");
+			e.getDiagnostic().dump(System.err, 4, Status.FAIL);
+			throw e;
+		}
 	}
 	
 	private DiagramGenerator createDiagramGenerator(ProgressMonitor progressMonitor) {
@@ -281,6 +325,84 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 		}		
 	}
 		
+	public static void copy(File source, File target, boolean cleanTarget, BiConsumer<File,File> listener) throws IOException {
+		if (cleanTarget && target.isDirectory()) {
+			delete(target.listFiles());
+		}
+		if (source.isDirectory()) {
+			target.mkdirs();
+			for (File sc: source.listFiles()) {
+				copy(sc, new File(target, sc.getName()), false, listener);
+			}
+		} else if (source.isFile()) {
+			Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);			
+			if (listener != null) {
+				listener.accept(source, target);
+			}
+		}
+	}
+	
+	public static void delete(File... files) {
+		for (File file: files) {
+			if (file.exists()) {
+				if (file.isDirectory()) {
+					delete(file.listFiles());
+				}
+				file.delete();
+			}
+		}
+	}
+		
+	public static void copy(File source, File target, boolean cleanTarget, Predicate<String> cleanPredicate, BiConsumer<File,File> listener) throws IOException {
+		if (cleanTarget && target.isDirectory()) {
+			delete(null, cleanPredicate, target.listFiles());
+		}
+		if (source.isDirectory()) {
+			target.mkdirs();
+			for (File sc: source.listFiles()) {
+				copy(sc, new File(target, sc.getName()), false, listener);
+			}
+		} else if (source.isFile()) {
+			Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);			
+			if (listener != null) {
+				listener.accept(source, target);
+			}
+		}
+	}
+	
+	public static void delete(String path, Predicate<String> deletePredicate, File... files) {
+		for (File file: files) {
+			String filePath = path == null ? file.getName() : path + "/" + file.getName();
+			if (file.exists() && (deletePredicate == null || deletePredicate.test(filePath))) {
+				if (file.isDirectory()) {
+					delete(filePath, deletePredicate, file.listFiles());
+				}
+				file.delete();
+			}
+		}
+	}	
+	
+	/**
+	 * Walks the directory passing files to the listener.
+	 * @param source
+	 * @param target
+	 * @param cleanTarget
+	 * @param cleanPredicate
+	 * @param listener
+	 * @throws IOException
+	 */
+	public static void walk(String path, BiConsumer<File,String> listener, File... files) throws IOException {
+		for (File file: files) {
+			String filePath = path == null ? file.getName() : path + "/" + file.getName();
+			if (file.isDirectory()) {
+				walk(filePath, listener, file.listFiles());
+			} else if (file.isFile() && listener != null) {
+				listener.accept(file, filePath);
+			}
+		}
+	}
+	
+		
 	/**
 	 * Loads instance model from previously generated XMI, diagnoses, generates action model.
 	 * @throws Exception
@@ -373,12 +495,50 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 		actionModelResource.save(null);
 	}
 	
+	protected EObject loadObject(
+			String resource, 
+			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer,
+			Context context,
+			ProgressMonitor progressMonitor) throws Exception {
+		
+		URI resourceURI = URI.createFileURI(new File(resource).getAbsolutePath());
+
+		class ObjectSupplier extends AppGenYamlLoadingExecutionParticipant implements Supplier<EObject> {
+
+			public ObjectSupplier(Context context) {
+				super(context);
+			}
+
+			@Override
+			protected Collection<URI> getResources() {
+				return Collections.singleton(resourceURI);
+			}
+
+			@Override
+			public EObject execute(ProgressMonitor progressMonitor) throws Exception {				
+				return resourceSet.getResource(resourceURI, false).getContents().iterator().next();
+			}
+			
+		};
+		
+		// Diagnosing loaded resources. 
+		try {
+			return Objects.requireNonNull(org.nasdanika.common.Util.call(new ObjectSupplier(context), progressMonitor, diagnosticConsumer), "Loaded null from " + resource);
+		} catch (DiagnosticException e) {
+			System.err.println("******************************");
+			System.err.println("*      Diagnostic failed     *");
+			System.err.println("******************************");
+			e.getDiagnostic().dump(System.err, 4, Status.FAIL);
+			throw e;
+		}		
+	}
+	
 	/**
 	 * Generates a resource model from an action model.
 	 * @throws Exception
 	 */
 	public void generateResourceModel(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
-		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
+		java.util.function.Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
 			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
 				System.err.println("***********************");
 				System.err.println("*      Diagnostic     *");
@@ -463,7 +623,24 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 			Diagnostician diagnostician = new Diagnostician();
 			org.eclipse.emf.common.util.Diagnostic diagnostic = diagnostician.validate(eObject);
 			assertThat(diagnostic.getSeverity()).isNotEqualTo(org.eclipse.emf.common.util.Diagnostic.ERROR);
-			generate(eObject, container, context, progressMonitor);
+			// Diagnosing loaded resources. 
+			try {
+				ConsumerFactory<BinaryEntityContainer> consumerFactory = Objects.requireNonNull(EObjectAdaptable.adaptToConsumerFactory(eObject, BinaryEntityContainer.class), "Cannot adapt to ConsumerFactory");
+				Diagnostic callDiagnostic = org.nasdanika.common.Util.call(consumerFactory.create(context), container, progressMonitor);
+				if (callDiagnostic.getStatus() == Status.FAIL || callDiagnostic.getStatus() == Status.ERROR) {
+					System.err.println("***********************");
+					System.err.println("*      Diagnostic     *");
+					System.err.println("***********************");
+					callDiagnostic.dump(System.err, 4, Status.FAIL, Status.ERROR);
+				}
+				assertThat(callDiagnostic.getStatus()).isEqualTo(Status.SUCCESS);
+			} catch (DiagnosticException e) {
+				System.err.println("******************************");
+				System.err.println("*      Diagnostic failed     *");
+				System.err.println("******************************");
+				e.getDiagnostic().dump(System.err, 4, Status.FAIL);
+				throw e;
+			}
 		}
 		
 		// Cleanup docs, keep CNAME, favicon.ico, and images directory. Copy from target/model-doc/site/nasdanika
@@ -568,6 +745,155 @@ public class TestNasdanikaDocEngineeringGen extends TestBase {
 		
 		generateContainer(name, context, progressMonitor);
 		System.out.println("\tGenerated site in " + (System.currentTimeMillis() - start) + " milliseconds");
+	}
+	
+	public static class Page {
+		
+		private String title;
+		private String content;
+		private String path;
+		private String objectID;
+		
+		public String getTitle() {
+			return title;
+		}
+		public void setTitle(String title) {
+			this.title = title;
+		}
+		public String getContent() {
+			return content;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public String getPath() {
+			return path;
+		}
+		public void setPath(String path) {
+			this.path = path;
+		}
+		public String getObjectID() {
+			return objectID;
+		}
+		public void setObjectID(String objectID) {
+			this.objectID = objectID;
+		}		
+		@Override
+		public String toString() {
+			return "Page [objectID=" + objectID + ", title=" + title + ", path=" + path + ", content=" + content + "]";
+		}
+		
+	}
+	
+	@Test
+	public void testAlgolia() throws Exception {
+		SearchClient client = DefaultSearchClient.create(System.getenv("ALGOLIA_APP_ID"), System.getenv("ALGOLIA_API_KEY"));
+		SearchIndex<Page> index = client.initIndex(System.getenv("ALGOLIA_INDEX"), Page.class);
+		Page page = new Page();
+		page.setContent("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris at sapien congue, ornare velit non, sollicitudin eros. Suspendisse pharetra elit quis orci sollicitudin rhoncus in varius lectus. Curabitur sed nibh finibus, dapibus odio tempor, accumsan augue. Vestibulum nec nisl ultricies, bibendum nisl ut, condimentum est. Curabitur luctus congue tellus, ut interdum quam accumsan eu. Curabitur commodo aliquet est, feugiat vestibulum elit scelerisque a. Etiam purus turpis, sagittis quis ullamcorper ut, pulvinar eu enim.\r\n"
+				+ "\r\n"
+				+ "Curabitur tincidunt velit lorem, consequat venenatis justo molestie id. Maecenas consectetur, mi vel facilisis feugiat, tortor lorem lobortis neque, condimentum fermentum ex erat dapibus justo. Nam pulvinar pharetra lacus, nec interdum nisi porta ut. Curabitur vitae nunc ut elit congue tincidunt. In venenatis, neque non vulputate pellentesque, lorem orci dignissim ex, scelerisque tempor urna libero a tortor. Nulla vel diam ante. Vivamus laoreet risus nec velit varius, a vestibulum turpis finibus. Integer lacus risus, lobortis id dui sit amet, volutpat eleifend mi. Proin faucibus aliquet orci vitae elementum. In tellus enim, venenatis nec lectus sit amet, posuere tempor mauris. Vivamus vulputate cursus odio a volutpat. Fusce placerat eros vel elit condimentum, non aliquet nisi auctor.\r\n"
+				+ "\r\n"
+				+ "Phasellus ullamcorper vestibulum nisi non efficitur. Donec tristique lorem vitae mi venenatis placerat. Ut cursus lacus vel nisl placerat interdum. Etiam ornare eros libero, id hendrerit sem fringilla non. Vestibulum nec odio egestas, aliquam velit a, congue sem. Vestibulum eu arcu id lorem rhoncus tempus ut ac metus. Donec fringilla pretium orci, nec efficitur nibh semper vitae. Aenean erat diam, consequat et convallis vel, lobortis id velit. Cras lacus justo, ullamcorper ac malesuada non, laoreet vel orci.\r\n"
+				+ "\r\n"
+				+ "Maecenas tincidunt nulla et odio lobortis, sed tempus mi porta. Mauris dapibus, tortor vel auctor sollicitudin, justo odio pretium ipsum, ac porta arcu nisi non leo. Etiam ultrices quam vestibulum eleifend facilisis. Quisque enim sapien, pharetra sed dolor et, efficitur finibus ante. Aliquam ultricies vel mi vel venenatis. Nulla vitae blandit dui. Vestibulum vitae arcu eget erat feugiat tempor dictum in metus.\r\n"
+				+ "\r\n"
+				+ "Curabitur mollis metus vel metus egestas sagittis. Morbi vel lectus finibus, sollicitudin sem vel, ornare massa. Integer placerat tincidunt lacinia. Nunc ante lacus, ornare quis semper non, laoreet quis mi. Ut dapibus sodales tellus eu vestibulum. Aenean volutpat a felis sodales fermentum. Praesent semper tempor mollis. Vestibulum pulvinar est ut velit facilisis, ut rutrum nulla semper. Suspendisse ut mauris sit amet dui porttitor finibus in sit amet justo. Suspendisse potenti. Morbi massa arcu, egestas sit amet gravida eu, congue eleifend quam.");
+		page.setTitle("Lorem Ipsum");
+		page.setPath("https://nasdanika.org/test.html");
+		page.setObjectID("lorem-ipsum");
+		index.saveObject(page);
+	}
+	
+	@Test
+	public void testPageParsing() throws Exception {
+		File docsDir = new File("docs");
+		
+		Collection<Page> searchPages = new ArrayList<>();
+		
+		// Site map & search
+		String domain = "https://docs.nasdanika.org";
+		WebSitemapGenerator wsg = new WebSitemapGenerator(domain, docsDir);
+		BiConsumer<File, String> listener = new BiConsumer<File, String>() {
+			
+			@Override
+			public void accept(File file, String path) {
+				if (path.endsWith(".html") 
+						&& !"search.html".equals(path)
+						&& !"all-issues.html".equals(path)
+						&& !"issues.html".equals(path)
+						&& !path.endsWith("/all-issues.html")
+						&& !path.endsWith("/issues.html")
+						&& !path.endsWith("-load-specification.html")
+						&& !path.endsWith("-all-operations.html")
+						&& !path.endsWith("-all-attributes.html")
+						&& !path.endsWith("-all-references.html")
+						&& !path.endsWith("-all-supertypes.html")) {
+					try {
+						WebSitemapUrl url = new WebSitemapUrl.Options(domain + "/" + path)
+							    .lastMod(new Date(file.lastModified())).changeFreq(ChangeFreq.WEEKLY).build();
+						wsg.addUrl(url); 
+					} catch (MalformedURLException e) {
+						throw new NasdanikaException(e);
+					}
+
+					try {
+						Document document = Jsoup.parse(file, "UTF-8");
+						Elements contentPanelQuery = document.select("body > div > div.row.nsd-app-content-row > div.col.nsd-app-content-panel"); 
+						if (contentPanelQuery.size() == 1) {
+							Element contentPanel = contentPanelQuery.get(0);
+							Elements breadcrumbQuery = contentPanel.select("div > div.row.nsd-app-content-panel-breadcrumb-row > div > nav > ol > li");
+							Elements titleQuery = contentPanel.select("div > div.row.nsd-app-content-panel-title-and-items-row > div.col-auto > h1");
+							Elements contentQuery = contentPanel.select("div > div.row.nsd-app-content-panel-content-row");
+							if (contentQuery.size() == 1) {
+								String contentText = contentQuery.get(0).text();
+								if (!org.nasdanika.common.Util.isBlank(contentText)) {
+									Page page = new Page();
+									page.setObjectID(path);
+									page.setContent(contentText);
+									if (titleQuery.size() == 1) {
+										page.setTitle(titleQuery.get(0).text());
+									} else {
+										page.setTitle(document.title());
+									}
+									if (breadcrumbQuery.size() > 0) {
+										page.setPath(String.join("/", breadcrumbQuery.stream().map(e -> e.text()).collect(Collectors.toList())));
+									}
+									searchPages.add(page);
+								}								
+							}
+						}
+					} catch (IOException e) {
+						throw new NasdanikaException(e);
+					}
+				}
+			}
+		};
+		walk(null, listener, docsDir.listFiles());
+		
+		JSONObject documents = new JSONObject();
+		for (Page page: searchPages) {
+			JSONObject document = new JSONObject();
+			document.put("content", page.getContent());
+			document.put("path", page.getPath());
+			document.put("title", page.getTitle());
+			documents.put(page.getObjectID(), document); 
+		}
+		
+		try (FileWriter writer = new FileWriter(new File(docsDir, "search-documents.js"))) {
+			writer.write("var searchDocuments = " + documents.toString(4));
+		}
+		
+//		SearchClient client = DefaultSearchClient.create(System.getenv("ALGOLIA_APP_ID"), System.getenv("ALGOLIA_API_KEY"));
+//		SearchIndex<Page> index = client.initIndex(System.getenv("ALGOLIA_INDEX"), Page.class);
+//		System.out.println("Search pages: " + searchPages.size());
+//		System.out.println("Total size: " + searchPages.stream().mapToInt(p -> p.getContent().length()).sum());
+//		System.out.println("Average: " + searchPages.stream().mapToInt(p -> p.getContent().length()).average());
+//		System.out.println("Min: " + searchPages.stream().mapToInt(p -> p.getContent().length()).min());
+//		System.out.println("Max: " + searchPages.stream().mapToInt(p -> p.getContent().length()).max());
+//		
+//		index.clearObjects();
+//		index.saveObjects(searchPages);
 	}
 	
 }
