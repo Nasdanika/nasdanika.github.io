@@ -91,7 +91,7 @@
 										titleElements.push(doc.title.substring(idx, match[0]));
 									}
 									idx =  match[0] + match[1];
-									titleElements.push(`<span class='nsd-mark' style="background-color:yellow">${doc.title.substring(match[0], idx)}</span>`);
+									titleElements.push(`<span class='nsd-mark'>${doc.title.substring(match[0], idx)}</span>`);
 								}
 								if (idx < doc.title.length - 1) {
 									titleElements.push(doc.title.substring(idx, doc.title.length));
@@ -127,7 +127,7 @@
 										contentElements.push(snippetedWords.join(' '));
 									}
 									idx =  match[0] + match[1];
-									contentElements.push(`<span class='nsd-mark' style="background-color:yellow">${doc.content.substring(match[0], idx)}</span>`);
+									contentElements.push(`<span class='nsd-mark'>${doc.content.substring(match[0], idx)}</span>`);
 								}
 								if (idx < doc.content.length - 1) {
 									let words = doc.content.substring(idx, doc.content.length).split(' ');
