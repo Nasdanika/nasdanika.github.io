@@ -48,7 +48,6 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 import org.nasdanika.common.ConsumerFactory;
@@ -724,7 +723,7 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 		wsg.write();	
 
 		try (FileWriter writer = new FileWriter(new File(docsDir, "search-documents.js"))) {
-			writer.write("var searchDocuments = " + searchDocuments.toString(4));
+			writer.write("var searchDocuments = " + searchDocuments);
 		}
 	}
 	
