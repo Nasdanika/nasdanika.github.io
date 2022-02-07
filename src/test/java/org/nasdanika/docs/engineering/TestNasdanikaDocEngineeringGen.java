@@ -649,6 +649,15 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 		
 		copyJavaDoc();
 		
+		generateSitemapAndSearch(docsDir);
+	}
+	
+	@Test
+	public void testGenerateSitemapAndSearch() throws Exception {
+		generateSitemapAndSearch(new File("docs"));
+	}
+
+	private void generateSitemapAndSearch(File docsDir) throws IOException {
 		// Site map and search index
 		JSONObject searchDocuments = new JSONObject();		
 		String domain = "https://docs.nasdanika.org";
@@ -670,8 +679,10 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 					if (!"search.html".equals(path)
 							&& !"all-issues.html".equals(path)
 							&& !"issues.html".equals(path)
+							&& !"assignments.html".equals(path)
 							&& !path.endsWith("/all-issues.html")
 							&& !path.endsWith("/issues.html")
+							&& !path.endsWith("/assignments.html")
 							&& !path.endsWith("-load-specification.html")
 							&& !path.endsWith("-all-operations.html")
 							&& !path.endsWith("-all-attributes.html")
@@ -680,14 +691,13 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 
 						try {
 							Document document = Jsoup.parse(file, "UTF-8");
-							Elements contentPanelQuery = document.select("body > div > div.row.nsd-app-content-row > div.col.nsd-app-content-panel"); 
-							if (contentPanelQuery.size() == 1) {
-								Element contentPanel = contentPanelQuery.get(0);
-								Elements breadcrumbQuery = contentPanel.select("div > div.row.nsd-app-content-panel-breadcrumb-row > div > nav > ol > li");
-								Elements titleQuery = contentPanel.select("div > div.row.nsd-app-content-panel-title-and-items-row > div.col-auto > h1");
-								Elements contentQuery = contentPanel.select("div > div.row.nsd-app-content-panel-content-row");
-								if (contentQuery.size() == 1) {
-									String contentText = contentQuery.get(0).text();
+							Elements contentPanelQuery = document.select("body > div > div.row.nsd-app-content-row > div.col.nsd-app-content-panel");							                                              
+							if (!contentPanelQuery.isEmpty()) {
+								Elements breadcrumbQuery = contentPanelQuery.select("div > div.row.nsd-app-content-panel-breadcrumb-row > div > nav > ol > li");
+								Elements titleQuery = contentPanelQuery.select("div > div.row.nsd-app-content-panel-title-and-items-row > div.col-auto > h1");
+								Elements contentQuery = contentPanelQuery.select("div > div.row.nsd-app-content-panel-content-row");
+								if (!contentQuery.isEmpty()) {
+									String contentText = contentQuery.text();
 									if (!org.nasdanika.common.Util.isBlank(contentText)) {
 										JSONObject searchDocument = new JSONObject();
 										searchDocument.put("content", contentText);
@@ -701,7 +711,7 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 										}
 										searchDocuments.put(path, searchDocument);
 									}								
-								}
+								} 
 							}
 						} catch (IOException e) {
 							throw new NasdanikaException(e);
