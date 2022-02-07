@@ -31,6 +31,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.text.StringEscapeUtils;
+import org.codehaus.commons.compiler.util.StringUtil;
 import org.eclipse.emf.codegen.ecore.genmodel.GenModel;
 import org.eclipse.emf.codegen.ecore.genmodel.GenPackage;
 import org.eclipse.emf.common.notify.Adapter;
@@ -699,14 +701,14 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 									String contentText = contentQuery.text();
 									if (!org.nasdanika.common.Util.isBlank(contentText)) {
 										JSONObject searchDocument = new JSONObject();
-										searchDocument.put("content", contentText);
+										searchDocument.put("content", StringEscapeUtils.escapeHtml4(contentText));
 										if (titleQuery.size() == 1) {
-											searchDocument.put("title", titleQuery.get(0).text());
+											searchDocument.put("title", StringEscapeUtils.escapeHtml4(titleQuery.get(0).text()));
 										} else {
 											searchDocument.put("title", document.title());
 										}
 										if (breadcrumbQuery.size() > 0) {
-											searchDocument.put("path", String.join("/", breadcrumbQuery.stream().map(e -> e.text()).collect(Collectors.toList())));
+											searchDocument.put("path", String.join("/", breadcrumbQuery.stream().map(e -> StringEscapeUtils.escapeHtml4(e.text())).collect(Collectors.toList())));
 										}
 										searchDocuments.put(path, searchDocument);
 									}								
