@@ -28,11 +28,8 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.text.StringEscapeUtils;
-import org.codehaus.commons.compiler.util.StringUtil;
 import org.eclipse.emf.codegen.ecore.genmodel.GenModel;
 import org.eclipse.emf.codegen.ecore.genmodel.GenPackage;
 import org.eclipse.emf.common.notify.Adapter;
@@ -48,9 +45,6 @@ import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.junit.Test;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
@@ -652,11 +646,11 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 		
 		generateSitemapAndSearch(docsDir);
 	}
-	
-	@Test
-	public void testGenerateSitemapAndSearch() throws Exception {
-		generateSitemapAndSearch(new File("docs"));
-	}
+//	
+//	@Test
+//	public void testGenerateSitemapAndSearch() throws Exception {
+//		generateSitemapAndSearch(new File("docs"));
+//	}
 
 	private void generateSitemapAndSearch(File docsDir) throws IOException {
 		// Site map and search index
@@ -691,28 +685,9 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 							&& !path.endsWith("-all-supertypes.html")) {
 
 						try {
-							Document document = Jsoup.parse(file, "UTF-8");
-							Elements contentPanelQuery = document.select("body > div > div.row.nsd-app-content-row > div.col.nsd-app-content-panel");							                                              
-							if (!contentPanelQuery.isEmpty()) {
-								Elements breadcrumbQuery = contentPanelQuery.select("div > div.row.nsd-app-content-panel-breadcrumb-row > div > nav > ol > li");
-								Elements titleQuery = contentPanelQuery.select("div > div.row.nsd-app-content-panel-title-and-items-row > div.col-auto > h1");
-								Elements contentQuery = contentPanelQuery.select("div > div.row.nsd-app-content-panel-content-row");
-								if (!contentQuery.isEmpty()) {
-									String contentText = contentQuery.text();
-									if (!org.nasdanika.common.Util.isBlank(contentText)) {
-										JSONObject searchDocument = new JSONObject();
-										searchDocument.put("content", StringEscapeUtils.escapeHtml4(contentText));
-										if (titleQuery.size() == 1) {
-											searchDocument.put("title", StringEscapeUtils.escapeHtml4(titleQuery.get(0).text()));
-										} else {
-											searchDocument.put("title", document.title());
-										}
-										if (breadcrumbQuery.size() > 0) {
-											searchDocument.put("path", String.join("/", breadcrumbQuery.stream().map(e -> StringEscapeUtils.escapeHtml4(e.text())).collect(Collectors.toList())));
-										}
-										searchDocuments.put(path, searchDocument);
-									}								
-								} 
+							JSONObject searchDocument = org.nasdanika.html.model.app.gen.Util.createSearchDocument(path, file);
+							if (searchDocument != null) {
+								searchDocuments.put(path, searchDocument);
 							}
 						} catch (IOException e) {
 							throw new NasdanikaException(e);

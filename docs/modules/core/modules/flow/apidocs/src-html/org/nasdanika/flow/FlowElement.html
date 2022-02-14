@@ -39,7 +39,7 @@
 <span class="sourceLineNo">031</span> * &lt;/ul&gt;<a name="line.31"></a>
 <span class="sourceLineNo">032</span> *<a name="line.32"></a>
 <span class="sourceLineNo">033</span> * @see org.nasdanika.flow.FlowPackage#getFlowElement()<a name="line.33"></a>
-<span class="sourceLineNo">034</span> * @model annotation="urn:org.nasdanika documentation-reference='doc/flow/journey-element.md'"<a name="line.34"></a>
+<span class="sourceLineNo">034</span> * @model annotation="urn:org.nasdanika documentation-reference='doc/flow/flow-element.md'"<a name="line.34"></a>
 <span class="sourceLineNo">035</span> * @generated<a name="line.35"></a>
 <span class="sourceLineNo">036</span> */<a name="line.36"></a>
 <span class="sourceLineNo">037</span>public interface FlowElement&lt;T extends FlowElement&lt;T&gt;&gt; extends ParticipantResponsibility&lt;T&gt; {<a name="line.37"></a>
@@ -50,7 +50,7 @@
 <span class="sourceLineNo">042</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.42"></a>
 <span class="sourceLineNo">043</span>         * &lt;!-- end-user-doc --&gt;<a name="line.43"></a>
 <span class="sourceLineNo">044</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>         * Activity outbound transitions to other activities.<a name="line.45"></a>
+<span class="sourceLineNo">045</span>         * Outbound transitions to other flow elements.<a name="line.45"></a>
 <span class="sourceLineNo">046</span>         * &lt;!-- end-model-doc --&gt;<a name="line.46"></a>
 <span class="sourceLineNo">047</span>         * @return the value of the '&lt;em&gt;Outputs&lt;/em&gt;' map.<a name="line.47"></a>
 <span class="sourceLineNo">048</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_Outputs()<a name="line.48"></a>
@@ -66,7 +66,7 @@
 <span class="sourceLineNo">058</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.58"></a>
 <span class="sourceLineNo">059</span>         * &lt;!-- end-user-doc --&gt;<a name="line.59"></a>
 <span class="sourceLineNo">060</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.60"></a>
-<span class="sourceLineNo">061</span>         * Transitions which have this flow element as a target.<a name="line.61"></a>
+<span class="sourceLineNo">061</span>         * Transitions which have this flow element as their target.<a name="line.61"></a>
 <span class="sourceLineNo">062</span>         * &lt;!-- end-model-doc --&gt;<a name="line.62"></a>
 <span class="sourceLineNo">063</span>         * @return the value of the '&lt;em&gt;Inputs&lt;/em&gt;' reference list.<a name="line.63"></a>
 <span class="sourceLineNo">064</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_Inputs()<a name="line.64"></a>
@@ -82,7 +82,7 @@
 <span class="sourceLineNo">074</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.74"></a>
 <span class="sourceLineNo">075</span>         * &lt;!-- end-user-doc --&gt;<a name="line.75"></a>
 <span class="sourceLineNo">076</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.76"></a>
-<span class="sourceLineNo">077</span>         * Calls to other activities.<a name="line.77"></a>
+<span class="sourceLineNo">077</span>         * Calls to other flow elements.<a name="line.77"></a>
 <span class="sourceLineNo">078</span>         * &lt;!-- end-model-doc --&gt;<a name="line.78"></a>
 <span class="sourceLineNo">079</span>         * @return the value of the '&lt;em&gt;Calls&lt;/em&gt;' map.<a name="line.79"></a>
 <span class="sourceLineNo">080</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_Calls()<a name="line.80"></a>
@@ -98,7 +98,7 @@
 <span class="sourceLineNo">090</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.90"></a>
 <span class="sourceLineNo">091</span>         * &lt;!-- end-user-doc --&gt;<a name="line.91"></a>
 <span class="sourceLineNo">092</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.92"></a>
-<span class="sourceLineNo">093</span>         * Calls which have this flow element as a target.<a name="line.93"></a>
+<span class="sourceLineNo">093</span>         * Calls which have this flow element as their target.<a name="line.93"></a>
 <span class="sourceLineNo">094</span>         * &lt;!-- end-model-doc --&gt;<a name="line.94"></a>
 <span class="sourceLineNo">095</span>         * @return the value of the '&lt;em&gt;Invocations&lt;/em&gt;' reference list.<a name="line.95"></a>
 <span class="sourceLineNo">096</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_Invocations()<a name="line.96"></a>
@@ -129,7 +129,7 @@
 <span class="sourceLineNo">121</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.121"></a>
 <span class="sourceLineNo">122</span>         * &lt;!-- end-user-doc --&gt;<a name="line.122"></a>
 <span class="sourceLineNo">123</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.123"></a>
-<span class="sourceLineNo">124</span>         * Input artifacts required to start working on this activity.<a name="line.124"></a>
+<span class="sourceLineNo">124</span>         * Input artifacts for this flow element. E.g. artifacts required to start working on an activity.<a name="line.124"></a>
 <span class="sourceLineNo">125</span>         * &lt;!-- end-model-doc --&gt;<a name="line.125"></a>
 <span class="sourceLineNo">126</span>         * @return the value of the '&lt;em&gt;Input Artifacts&lt;/em&gt;' reference list.<a name="line.126"></a>
 <span class="sourceLineNo">127</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_InputArtifacts()<a name="line.127"></a>
@@ -146,7 +146,7 @@
 <span class="sourceLineNo">138</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.138"></a>
 <span class="sourceLineNo">139</span>         * &lt;!-- end-user-doc --&gt;<a name="line.139"></a>
 <span class="sourceLineNo">140</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.140"></a>
-<span class="sourceLineNo">141</span>         * Output artifacts of the activity.<a name="line.141"></a>
+<span class="sourceLineNo">141</span>         * Output artifacts of this flow element.<a name="line.141"></a>
 <span class="sourceLineNo">142</span>         * &lt;!-- end-model-doc --&gt;<a name="line.142"></a>
 <span class="sourceLineNo">143</span>         * @return the value of the '&lt;em&gt;Output Artifacts&lt;/em&gt;' reference list.<a name="line.143"></a>
 <span class="sourceLineNo">144</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_OutputArtifacts()<a name="line.144"></a>
@@ -178,7 +178,7 @@
 <span class="sourceLineNo">170</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.170"></a>
 <span class="sourceLineNo">171</span>         * &lt;!-- end-user-doc --&gt;<a name="line.171"></a>
 <span class="sourceLineNo">172</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.172"></a>
-<span class="sourceLineNo">173</span>         * Personas performing this journey element if it is an activity. Applies to all journey elements in order to group them into persona partitions.<a name="line.173"></a>
+<span class="sourceLineNo">173</span>         * Participants of this flow element, e.g. people working on an activity. <a name="line.173"></a>
 <span class="sourceLineNo">174</span>         * &lt;!-- end-model-doc --&gt;<a name="line.174"></a>
 <span class="sourceLineNo">175</span>         * @return the value of the '&lt;em&gt;Participants&lt;/em&gt;' reference list.<a name="line.175"></a>
 <span class="sourceLineNo">176</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_Participants()<a name="line.176"></a>
@@ -208,64 +208,77 @@
 <span class="sourceLineNo">200</span>         * The list contents are of type {@link org.nasdanika.flow.Resource}.<a name="line.200"></a>
 <span class="sourceLineNo">201</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.201"></a>
 <span class="sourceLineNo">202</span>         * &lt;!-- end-user-doc --&gt;<a name="line.202"></a>
-<span class="sourceLineNo">203</span>         * @return the value of the '&lt;em&gt;Resources&lt;/em&gt;' reference list.<a name="line.203"></a>
-<span class="sourceLineNo">204</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_Resources()<a name="line.204"></a>
-<span class="sourceLineNo">205</span>         * @model transient="true" changeable="false" derived="true"<a name="line.205"></a>
-<span class="sourceLineNo">206</span>         * @generated<a name="line.206"></a>
-<span class="sourceLineNo">207</span>         */<a name="line.207"></a>
-<span class="sourceLineNo">208</span>        EList&lt;Resource&gt; getResources();<a name="line.208"></a>
-<span class="sourceLineNo">209</span><a name="line.209"></a>
-<span class="sourceLineNo">210</span>        /**<a name="line.210"></a>
-<span class="sourceLineNo">211</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Resource Keys&lt;/b&gt;&lt;/em&gt;' attribute list.<a name="line.211"></a>
-<span class="sourceLineNo">212</span>         * The list contents are of type {@link java.lang.String}.<a name="line.212"></a>
-<span class="sourceLineNo">213</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.213"></a>
-<span class="sourceLineNo">214</span>         * &lt;!-- end-user-doc --&gt;<a name="line.214"></a>
-<span class="sourceLineNo">215</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.215"></a>
-<span class="sourceLineNo">216</span>         * Keys of resources resolved relative to the containing package ``resources/`` reference.<a name="line.216"></a>
-<span class="sourceLineNo">217</span>         * &lt;!-- end-model-doc --&gt;<a name="line.217"></a>
-<span class="sourceLineNo">218</span>         * @return the value of the '&lt;em&gt;Resource Keys&lt;/em&gt;' attribute list.<a name="line.218"></a>
-<span class="sourceLineNo">219</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_ResourceKeys()<a name="line.219"></a>
-<span class="sourceLineNo">220</span>         * @model annotation="urn:org.nasdanika feature-key='resources'"<a name="line.220"></a>
-<span class="sourceLineNo">221</span>         * @generated<a name="line.221"></a>
-<span class="sourceLineNo">222</span>         */<a name="line.222"></a>
-<span class="sourceLineNo">223</span>        EList&lt;String&gt; getResourceKeys();<a name="line.223"></a>
-<span class="sourceLineNo">224</span><a name="line.224"></a>
-<span class="sourceLineNo">225</span>        /**<a name="line.225"></a>
-<span class="sourceLineNo">226</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Artifact Responsibilities&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.226"></a>
-<span class="sourceLineNo">227</span>         * The list contents are of type {@link org.nasdanika.flow.ArtifactParticipantResponsibility}.<a name="line.227"></a>
-<span class="sourceLineNo">228</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.228"></a>
-<span class="sourceLineNo">229</span>         * &lt;!-- end-user-doc --&gt;<a name="line.229"></a>
-<span class="sourceLineNo">230</span>         * @return the value of the '&lt;em&gt;Artifact Responsibilities&lt;/em&gt;' containment reference list.<a name="line.230"></a>
-<span class="sourceLineNo">231</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_ArtifactResponsibilities()<a name="line.231"></a>
-<span class="sourceLineNo">232</span>         * @model containment="true" keys="artifactKey"<a name="line.232"></a>
-<span class="sourceLineNo">233</span>         *        annotation="urn:org.nasdanika homogenous='true'"<a name="line.233"></a>
-<span class="sourceLineNo">234</span>         * @generated<a name="line.234"></a>
-<span class="sourceLineNo">235</span>         */<a name="line.235"></a>
-<span class="sourceLineNo">236</span>        EList&lt;ArtifactParticipantResponsibility&gt; getArtifactResponsibilities();<a name="line.236"></a>
-<span class="sourceLineNo">237</span><a name="line.237"></a>
-<span class="sourceLineNo">238</span>        /**<a name="line.238"></a>
-<span class="sourceLineNo">239</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Sort Group&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.239"></a>
-<span class="sourceLineNo">240</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.240"></a>
-<span class="sourceLineNo">241</span>         * &lt;!-- end-user-doc --&gt;<a name="line.241"></a>
-<span class="sourceLineNo">242</span>         * @return the value of the '&lt;em&gt;Sort Group&lt;/em&gt;' attribute.<a name="line.242"></a>
-<span class="sourceLineNo">243</span>         * @see #setSortGroup(String)<a name="line.243"></a>
-<span class="sourceLineNo">244</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_SortGroup()<a name="line.244"></a>
-<span class="sourceLineNo">245</span>         * @model<a name="line.245"></a>
-<span class="sourceLineNo">246</span>         * @generated<a name="line.246"></a>
-<span class="sourceLineNo">247</span>         */<a name="line.247"></a>
-<span class="sourceLineNo">248</span>        String getSortGroup();<a name="line.248"></a>
-<span class="sourceLineNo">249</span><a name="line.249"></a>
-<span class="sourceLineNo">250</span>        /**<a name="line.250"></a>
-<span class="sourceLineNo">251</span>         * Sets the value of the '{@link org.nasdanika.flow.FlowElement#getSortGroup &lt;em&gt;Sort Group&lt;/em&gt;}' attribute.<a name="line.251"></a>
-<span class="sourceLineNo">252</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.252"></a>
-<span class="sourceLineNo">253</span>         * &lt;!-- end-user-doc --&gt;<a name="line.253"></a>
-<span class="sourceLineNo">254</span>         * @param value the new value of the '&lt;em&gt;Sort Group&lt;/em&gt;' attribute.<a name="line.254"></a>
-<span class="sourceLineNo">255</span>         * @see #getSortGroup()<a name="line.255"></a>
-<span class="sourceLineNo">256</span>         * @generated<a name="line.256"></a>
-<span class="sourceLineNo">257</span>         */<a name="line.257"></a>
-<span class="sourceLineNo">258</span>        void setSortGroup(String value);<a name="line.258"></a>
-<span class="sourceLineNo">259</span><a name="line.259"></a>
-<span class="sourceLineNo">260</span>} // FlowElement<a name="line.260"></a>
+<span class="sourceLineNo">203</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.203"></a>
+<span class="sourceLineNo">204</span>         * Resources used by participants of this flow element. E.g. tools used to complete an activity.<a name="line.204"></a>
+<span class="sourceLineNo">205</span>         * &lt;!-- end-model-doc --&gt;<a name="line.205"></a>
+<span class="sourceLineNo">206</span>         * @return the value of the '&lt;em&gt;Resources&lt;/em&gt;' reference list.<a name="line.206"></a>
+<span class="sourceLineNo">207</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_Resources()<a name="line.207"></a>
+<span class="sourceLineNo">208</span>         * @model transient="true" changeable="false" derived="true"<a name="line.208"></a>
+<span class="sourceLineNo">209</span>         * @generated<a name="line.209"></a>
+<span class="sourceLineNo">210</span>         */<a name="line.210"></a>
+<span class="sourceLineNo">211</span>        EList&lt;Resource&gt; getResources();<a name="line.211"></a>
+<span class="sourceLineNo">212</span><a name="line.212"></a>
+<span class="sourceLineNo">213</span>        /**<a name="line.213"></a>
+<span class="sourceLineNo">214</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Resource Keys&lt;/b&gt;&lt;/em&gt;' attribute list.<a name="line.214"></a>
+<span class="sourceLineNo">215</span>         * The list contents are of type {@link java.lang.String}.<a name="line.215"></a>
+<span class="sourceLineNo">216</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.216"></a>
+<span class="sourceLineNo">217</span>         * &lt;!-- end-user-doc --&gt;<a name="line.217"></a>
+<span class="sourceLineNo">218</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.218"></a>
+<span class="sourceLineNo">219</span>         * Keys of resources resolved relative to the containing package ``resources/`` reference.<a name="line.219"></a>
+<span class="sourceLineNo">220</span>         * &lt;!-- end-model-doc --&gt;<a name="line.220"></a>
+<span class="sourceLineNo">221</span>         * @return the value of the '&lt;em&gt;Resource Keys&lt;/em&gt;' attribute list.<a name="line.221"></a>
+<span class="sourceLineNo">222</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_ResourceKeys()<a name="line.222"></a>
+<span class="sourceLineNo">223</span>         * @model annotation="urn:org.nasdanika feature-key='resources'"<a name="line.223"></a>
+<span class="sourceLineNo">224</span>         * @generated<a name="line.224"></a>
+<span class="sourceLineNo">225</span>         */<a name="line.225"></a>
+<span class="sourceLineNo">226</span>        EList&lt;String&gt; getResourceKeys();<a name="line.226"></a>
+<span class="sourceLineNo">227</span><a name="line.227"></a>
+<span class="sourceLineNo">228</span>        /**<a name="line.228"></a>
+<span class="sourceLineNo">229</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Artifact Responsibilities&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.229"></a>
+<span class="sourceLineNo">230</span>         * The list contents are of type {@link org.nasdanika.flow.ArtifactParticipantResponsibility}.<a name="line.230"></a>
+<span class="sourceLineNo">231</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.231"></a>
+<span class="sourceLineNo">232</span>         * &lt;!-- end-user-doc --&gt;<a name="line.232"></a>
+<span class="sourceLineNo">233</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.233"></a>
+<span class="sourceLineNo">234</span>         * Artifact responsibility assignments if different from the flow element responsibility assignments. E.g. a person responsible for an activity may delegate responsibility for some artifact to another participant. In this case another participant becomes responsible and the participant responsible for the activity becomes accounable for the artifact.<a name="line.234"></a>
+<span class="sourceLineNo">235</span>         * &lt;!-- end-model-doc --&gt;<a name="line.235"></a>
+<span class="sourceLineNo">236</span>         * @return the value of the '&lt;em&gt;Artifact Responsibilities&lt;/em&gt;' containment reference list.<a name="line.236"></a>
+<span class="sourceLineNo">237</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_ArtifactResponsibilities()<a name="line.237"></a>
+<span class="sourceLineNo">238</span>         * @model containment="true" keys="artifactKey"<a name="line.238"></a>
+<span class="sourceLineNo">239</span>         *        annotation="urn:org.nasdanika homogenous='true'"<a name="line.239"></a>
+<span class="sourceLineNo">240</span>         * @generated<a name="line.240"></a>
+<span class="sourceLineNo">241</span>         */<a name="line.241"></a>
+<span class="sourceLineNo">242</span>        EList&lt;ArtifactParticipantResponsibility&gt; getArtifactResponsibilities();<a name="line.242"></a>
+<span class="sourceLineNo">243</span><a name="line.243"></a>
+<span class="sourceLineNo">244</span>        /**<a name="line.244"></a>
+<span class="sourceLineNo">245</span>         * Returns the value of the '&lt;em&gt;&lt;b&gt;Sort Group&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.245"></a>
+<span class="sourceLineNo">246</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.246"></a>
+<span class="sourceLineNo">247</span>         * &lt;!-- end-user-doc --&gt;<a name="line.247"></a>
+<span class="sourceLineNo">248</span>         * &lt;!-- begin-model-doc --&gt;<a name="line.248"></a>
+<span class="sourceLineNo">249</span>         * During documentation generation flow elements in the flow are sorted in the order of dependency and then alphabetically.<a name="line.249"></a>
+<span class="sourceLineNo">250</span>         * I.e. if there is a transition from "Plan" to "Execute" then "Plan" will appear in the list of flow elements before "Execute".<a name="line.250"></a>
+<span class="sourceLineNo">251</span>         * Sort groups can be used to customize the default sorting behavior by scoping sorting to a particular group of elements.<a name="line.251"></a>
+<span class="sourceLineNo">252</span>         * Groups themselves are sorted alphabetically. Elements without sort group appear before elements with an assigned sort group.<a name="line.252"></a>
+<span class="sourceLineNo">253</span>         * For full control of sorting assign a different sort group for each flow element.<a name="line.253"></a>
+<span class="sourceLineNo">254</span>         * &lt;!-- end-model-doc --&gt;<a name="line.254"></a>
+<span class="sourceLineNo">255</span>         * @return the value of the '&lt;em&gt;Sort Group&lt;/em&gt;' attribute.<a name="line.255"></a>
+<span class="sourceLineNo">256</span>         * @see #setSortGroup(String)<a name="line.256"></a>
+<span class="sourceLineNo">257</span>         * @see org.nasdanika.flow.FlowPackage#getFlowElement_SortGroup()<a name="line.257"></a>
+<span class="sourceLineNo">258</span>         * @model<a name="line.258"></a>
+<span class="sourceLineNo">259</span>         * @generated<a name="line.259"></a>
+<span class="sourceLineNo">260</span>         */<a name="line.260"></a>
+<span class="sourceLineNo">261</span>        String getSortGroup();<a name="line.261"></a>
+<span class="sourceLineNo">262</span><a name="line.262"></a>
+<span class="sourceLineNo">263</span>        /**<a name="line.263"></a>
+<span class="sourceLineNo">264</span>         * Sets the value of the '{@link org.nasdanika.flow.FlowElement#getSortGroup &lt;em&gt;Sort Group&lt;/em&gt;}' attribute.<a name="line.264"></a>
+<span class="sourceLineNo">265</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.265"></a>
+<span class="sourceLineNo">266</span>         * &lt;!-- end-user-doc --&gt;<a name="line.266"></a>
+<span class="sourceLineNo">267</span>         * @param value the new value of the '&lt;em&gt;Sort Group&lt;/em&gt;' attribute.<a name="line.267"></a>
+<span class="sourceLineNo">268</span>         * @see #getSortGroup()<a name="line.268"></a>
+<span class="sourceLineNo">269</span>         * @generated<a name="line.269"></a>
+<span class="sourceLineNo">270</span>         */<a name="line.270"></a>
+<span class="sourceLineNo">271</span>        void setSortGroup(String value);<a name="line.271"></a>
+<span class="sourceLineNo">272</span><a name="line.272"></a>
+<span class="sourceLineNo">273</span>} // FlowElement<a name="line.273"></a>
 
 
 
