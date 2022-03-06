@@ -14,7 +14,7 @@ One of approaches to minimize context switching is use of code generation using 
 Another one is an option to author models in YAML without having to use a specialized model editor.  
 
 Computing resources-wise - no need in server components, you can use Nasdanika products on a flash drive in a bunker or in the wilderness with no network: ``--everything-is-hyper-local``, paraphrasing the Git motto.
-Access to the Internet would be needed only to pull the required libraries from [Maven Central](https://search.maven.org/artifact/org.nasdanika.engineering/parent) or a mirror.
+Access to the Internet would be needed only to pull the required libraries from [Maven Central](https://mvnrepository.org/artifact/org.nasdanika.engineering/parent) or a mirror.
 
 [TOC levels=6]
 
@@ -226,11 +226,11 @@ This section provides a brief overview of Nasdanika products and their modules.
 * [TOGAF](modules/togaf/index.html) - Models representing [TOGAF](https://en.wikipedia.org/wiki/The_Open_Group_Architecture_Framework) concepts.
     * [ADM](modules/togaf/modules/adm/index.html) - flow model of TOGAF [Architecture Development Method](http://www.opengroup.org/public/arch/p2/p2_intro.htm).                  
 
-Nasdanika products are Java-based, hosted on [GitHub Nasdanika organization](https://github.com/Nasdanika) and published to [Maven Central](https://search.maven.org/):
+Nasdanika products are Java-based, hosted on [GitHub Nasdanika organization](https://github.com/Nasdanika) and published to [Maven Central](https://mvnrepository.maven.org/):
 
-* [Core](https://search.maven.org/search?q=g:org.nasdanika.core)
-* [HTML](https://search.maven.org/search?q=g:org.nasdanika.html)
-* [Engineering](https://search.maven.org/search?q=g:org.nasdanika.engineering)
+* [Core](https://mvnrepository.maven.org/search?q=g:org.nasdanika.core)
+* [HTML](https://mvnrepository.maven.org/search?q=g:org.nasdanika.html)
+* [Engineering](https://mvnrepository.maven.org/search?q=g:org.nasdanika.engineering)
 
 
 [^1]: Or before, or in parallel - totally up to you. Start somewhere, expand from there. 
