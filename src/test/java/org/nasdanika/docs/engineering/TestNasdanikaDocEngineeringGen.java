@@ -12,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -83,9 +82,9 @@ import org.nasdanika.html.emf.EObjectActionResolver;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
-import org.nasdanika.html.model.app.gen.AppGenYamlLoadingExecutionParticipant;
 import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.app.util.ActionProvider;
+import org.nasdanika.html.model.app.util.AppYamlSupplier;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.ncore.NcorePackage;
@@ -493,28 +492,10 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 			ProgressMonitor progressMonitor) throws Exception {
 		
 		URI resourceURI = URI.createFileURI(new File(resource).getAbsolutePath());
-
-		class ObjectSupplier extends AppGenYamlLoadingExecutionParticipant implements Supplier<EObject> {
-
-			public ObjectSupplier(Context context) {
-				super(context);
-			}
-
-			@Override
-			protected Collection<URI> getResources() {
-				return Collections.singleton(resourceURI);
-			}
-
-			@Override
-			public EObject execute(ProgressMonitor progressMonitor) throws Exception {				
-				return resourceSet.getResource(resourceURI, false).getContents().iterator().next();
-			}
-			
-		};
-		
+				
 		// Diagnosing loaded resources. 
 		try {
-			return Objects.requireNonNull(org.nasdanika.common.Util.call(new ObjectSupplier(context), progressMonitor, diagnosticConsumer), "Loaded null from " + resource);
+			return Objects.requireNonNull(org.nasdanika.common.Util.call(new AppYamlSupplier(resourceURI, context), progressMonitor, diagnosticConsumer), "Loaded null from " + resource);
 		} catch (DiagnosticException e) {
 			System.err.println("******************************");
 			System.err.println("*      Diagnostic failed     *");
