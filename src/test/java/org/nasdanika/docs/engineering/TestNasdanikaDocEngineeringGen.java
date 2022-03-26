@@ -1,6 +1,7 @@
 package org.nasdanika.docs.engineering;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -44,6 +45,7 @@ import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.json.JSONObject;
+import org.jsoup.nodes.Element;
 import org.junit.Test;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
@@ -390,8 +392,7 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 				listener.accept(file, filePath);
 			}
 		}
-	}
-	
+	}	
 		
 	/**
 	 * Loads instance model from previously generated XMI, diagnoses, generates action model.
@@ -634,6 +635,8 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 //	}
 
 	private void generateSitemapAndSearch(File docsDir) throws IOException {
+		int[] problems = { 0 };
+		
 		// Site map and search index
 		JSONObject searchDocuments = new JSONObject();		
 		String domain = "https://docs.nasdanika.org";
@@ -666,7 +669,13 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 							&& !path.endsWith("-all-supertypes.html")) {
 
 						try {
-							JSONObject searchDocument = org.nasdanika.html.model.app.gen.Util.createSearchDocument(path, file);
+							Predicate<String> predicate = org.nasdanika.html.model.app.gen.Util.createRelativeLinkPredicate(file, docsDir);						
+							Consumer<? super Element> inspector = org.nasdanika.html.model.app.gen.Util.createInspector(predicate, error -> {
+								System.err.println("[" + path +"] " + error);
+								++problems[0];
+							});
+							
+							JSONObject searchDocument = org.nasdanika.html.model.app.gen.Util.createSearchDocument(path, file, inspector);
 							if (searchDocument != null) {
 								searchDocuments.put(path, searchDocument);
 							}
@@ -683,6 +692,10 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 		try (FileWriter writer = new FileWriter(new File(docsDir, "search-documents.js"))) {
 			writer.write("var searchDocuments = " + searchDocuments);
 		}
+		
+		if (problems[0] > 0) {
+			fail("There are problems with pages: " + problems[0]);
+		};
 	}
 	
 	protected ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {

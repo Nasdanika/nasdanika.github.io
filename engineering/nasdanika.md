@@ -49,9 +49,9 @@ In a team environment you can use an isolated network to collaborate.
 
 One more advantage of ``everything is local`` is that you may produce self-contained idea definitions which can be archived, copied/forked etc. 
 It allows to establish a discovery-delivery pipeline where many ideas can be brought to high enough level of detail to allow efficient selection for delivery later. 
-Having shared definitions of personas, goals, [principles](modules/engineering/modules/model/Principles.html), and [objectives](modules/engineering/modules/model/Objective.html) would simplify comparison of ideas based on their benefit and cost.
+Having shared definitions of personas, goals, [principles](modules/engineering/modules/model/Principle.html), and [objectives](modules/engineering/modules/model/Objective.html) would simplify comparison of ideas based on their benefit and cost.
 
-There is more to it, see the engineering model documentation and a list of [features](modules/engineering/modules/model/features.html) for more details. 
+There is more to it, see the engineering model documentation and a list of [features](modules/engineering/modules/model/Feature.html) for more details. 
 
 #### Flow
 

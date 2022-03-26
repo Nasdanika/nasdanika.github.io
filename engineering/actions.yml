@@ -17,4 +17,12 @@ app-action:
         text: Source
         icon: fab fa-github
         location: https://github.com/Nasdanika/nasdanika.github.io/  
+    - app-action:
+        text: Support
+        icon: far fa-life-ring
+        content:
+          content-markdown:
+            style: true
+            source:
+              content-resource: support.md
           
