@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package org.nasdanika.html;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/**<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * HTML Color codes.<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * @author Pavel<a name="line.5"></a>
+<span class="sourceLineNo">006</span> *<a name="line.6"></a>
+<span class="sourceLineNo">007</span> */<a name="line.7"></a>
+<span class="sourceLineNo">008</span>public enum Color {<a name="line.8"></a>
+<span class="sourceLineNo">009</span>        AliceBlue,<a name="line.9"></a>
+<span class="sourceLineNo">010</span>        AntiqueWhite,<a name="line.10"></a>
+<span class="sourceLineNo">011</span>        Aqua,                     <a name="line.11"></a>
+<span class="sourceLineNo">012</span>        Aquamarine,               <a name="line.12"></a>
+<span class="sourceLineNo">013</span>        Azure,                    <a name="line.13"></a>
+<span class="sourceLineNo">014</span>        Beige,                    <a name="line.14"></a>
+<span class="sourceLineNo">015</span>        Bisque,                   <a name="line.15"></a>
+<span class="sourceLineNo">016</span>        Black,                    <a name="line.16"></a>
+<span class="sourceLineNo">017</span>        BlanchedAlmond,           <a name="line.17"></a>
+<span class="sourceLineNo">018</span>        Blue,                     <a name="line.18"></a>
+<span class="sourceLineNo">019</span>        BlueViolet,               <a name="line.19"></a>
+<span class="sourceLineNo">020</span>        Brown,                    <a name="line.20"></a>
+<span class="sourceLineNo">021</span>        BurlyWood,                <a name="line.21"></a>
+<span class="sourceLineNo">022</span>        CadetBlue,                <a name="line.22"></a>
+<span class="sourceLineNo">023</span>        Chartreuse,               <a name="line.23"></a>
+<span class="sourceLineNo">024</span>        Chocolate,                <a name="line.24"></a>
+<span class="sourceLineNo">025</span>        Coral,                    <a name="line.25"></a>
+<span class="sourceLineNo">026</span>        CornflowerBlue,           <a name="line.26"></a>
+<span class="sourceLineNo">027</span>        Cornsilk,                 <a name="line.27"></a>
+<span class="sourceLineNo">028</span>        Crimson,                  <a name="line.28"></a>
+<span class="sourceLineNo">029</span>        Cyan,                     <a name="line.29"></a>
+<span class="sourceLineNo">030</span>        DarkBlue,                 <a name="line.30"></a>
+<span class="sourceLineNo">031</span>        DarkCyan,                 <a name="line.31"></a>
+<span class="sourceLineNo">032</span>        DarkGoldenRod,            <a name="line.32"></a>
+<span class="sourceLineNo">033</span>        DarkGray,                 <a name="line.33"></a>
+<span class="sourceLineNo">034</span>        DarkGreen,                <a name="line.34"></a>
+<span class="sourceLineNo">035</span>        DarkKhaki,                <a name="line.35"></a>
+<span class="sourceLineNo">036</span>        DarkMagenta,              <a name="line.36"></a>
+<span class="sourceLineNo">037</span>        DarkOliveGreen,           <a name="line.37"></a>
+<span class="sourceLineNo">038</span>        DarkOrange,               <a name="line.38"></a>
+<span class="sourceLineNo">039</span>        DarkOrchid,               <a name="line.39"></a>
+<span class="sourceLineNo">040</span>        DarkRed,                  <a name="line.40"></a>
+<span class="sourceLineNo">041</span>        DarkSalmon,               <a name="line.41"></a>
+<span class="sourceLineNo">042</span>        DarkSeaGreen,             <a name="line.42"></a>
+<span class="sourceLineNo">043</span>        DarkSlateBlue,            <a name="line.43"></a>
+<span class="sourceLineNo">044</span>        DarkSlateGray,            <a name="line.44"></a>
+<span class="sourceLineNo">045</span>        DarkTurquoise,            <a name="line.45"></a>
+<span class="sourceLineNo">046</span>        DarkViolet,               <a name="line.46"></a>
+<span class="sourceLineNo">047</span>        DeepPink,                 <a name="line.47"></a>
+<span class="sourceLineNo">048</span>        DeepSkyBlue,              <a name="line.48"></a>
+<span class="sourceLineNo">049</span>        DimGray,                  <a name="line.49"></a>
+<span class="sourceLineNo">050</span>        DodgerBlue,               <a name="line.50"></a>
+<span class="sourceLineNo">051</span>        FireBrick,                <a name="line.51"></a>
+<span class="sourceLineNo">052</span>        FloralWhite,              <a name="line.52"></a>
+<span class="sourceLineNo">053</span>        ForestGreen,              <a name="line.53"></a>
+<span class="sourceLineNo">054</span>        Fuchsia,                  <a name="line.54"></a>
+<span class="sourceLineNo">055</span>        Gainsboro,                <a name="line.55"></a>
+<span class="sourceLineNo">056</span>        GhostWhite,               <a name="line.56"></a>
+<span class="sourceLineNo">057</span>        Gold,                     <a name="line.57"></a>
+<span class="sourceLineNo">058</span>        GoldenRod,                <a name="line.58"></a>
+<span class="sourceLineNo">059</span>        Gray,                     <a name="line.59"></a>
+<span class="sourceLineNo">060</span>        Green,                    <a name="line.60"></a>
+<span class="sourceLineNo">061</span>        GreenYellow,              <a name="line.61"></a>
+<span class="sourceLineNo">062</span>        HoneyDew,                 <a name="line.62"></a>
+<span class="sourceLineNo">063</span>        HotPink,                  <a name="line.63"></a>
+<span class="sourceLineNo">064</span>        IndianRed ,               <a name="line.64"></a>
+<span class="sourceLineNo">065</span>        Indigo ,                  <a name="line.65"></a>
+<span class="sourceLineNo">066</span>        Ivory,                    <a name="line.66"></a>
+<span class="sourceLineNo">067</span>        Khaki,                    <a name="line.67"></a>
+<span class="sourceLineNo">068</span>        Lavender,                 <a name="line.68"></a>
+<span class="sourceLineNo">069</span>        LavenderBlush,            <a name="line.69"></a>
+<span class="sourceLineNo">070</span>        LawnGreen,                <a name="line.70"></a>
+<span class="sourceLineNo">071</span>        LemonChiffon,             <a name="line.71"></a>
+<span class="sourceLineNo">072</span>        LightBlue,                <a name="line.72"></a>
+<span class="sourceLineNo">073</span>        LightCoral,               <a name="line.73"></a>
+<span class="sourceLineNo">074</span>        LightCyan,                <a name="line.74"></a>
+<span class="sourceLineNo">075</span>        LightGoldenRodYellow,     <a name="line.75"></a>
+<span class="sourceLineNo">076</span>        LightGray,                <a name="line.76"></a>
+<span class="sourceLineNo">077</span>        LightGreen,               <a name="line.77"></a>
+<span class="sourceLineNo">078</span>        LightPink,                <a name="line.78"></a>
+<span class="sourceLineNo">079</span>        LightSalmon,              <a name="line.79"></a>
+<span class="sourceLineNo">080</span>        LightSeaGreen,            <a name="line.80"></a>
+<span class="sourceLineNo">081</span>        LightSkyBlue,             <a name="line.81"></a>
+<span class="sourceLineNo">082</span>        LightSlateGray,           <a name="line.82"></a>
+<span class="sourceLineNo">083</span>        LightSteelBlue,           <a name="line.83"></a>
+<span class="sourceLineNo">084</span>        LightYellow,              <a name="line.84"></a>
+<span class="sourceLineNo">085</span>        Lime,                     <a name="line.85"></a>
+<span class="sourceLineNo">086</span>        LimeGreen,                <a name="line.86"></a>
+<span class="sourceLineNo">087</span>        Linen,                    <a name="line.87"></a>
+<span class="sourceLineNo">088</span>        Magenta,                  <a name="line.88"></a>
+<span class="sourceLineNo">089</span>        Maroon,                   <a name="line.89"></a>
+<span class="sourceLineNo">090</span>        MediumAquaMarine,         <a name="line.90"></a>
+<span class="sourceLineNo">091</span>        MediumBlue,               <a name="line.91"></a>
+<span class="sourceLineNo">092</span>        MediumOrchid,             <a name="line.92"></a>
+<span class="sourceLineNo">093</span>        MediumPurple,             <a name="line.93"></a>
+<span class="sourceLineNo">094</span>        MediumSeaGreen,           <a name="line.94"></a>
+<span class="sourceLineNo">095</span>        MediumSlateBlue,          <a name="line.95"></a>
+<span class="sourceLineNo">096</span>        MediumSpringGreen,        <a name="line.96"></a>
+<span class="sourceLineNo">097</span>        MediumTurquoise,          <a name="line.97"></a>
+<span class="sourceLineNo">098</span>        MediumVioletRed,          <a name="line.98"></a>
+<span class="sourceLineNo">099</span>        MidnightBlue,             <a name="line.99"></a>
+<span class="sourceLineNo">100</span>        MintCream,                <a name="line.100"></a>
+<span class="sourceLineNo">101</span>        MistyRose,                <a name="line.101"></a>
+<span class="sourceLineNo">102</span>        Moccasin,                 <a name="line.102"></a>
+<span class="sourceLineNo">103</span>        NavajoWhite,              <a name="line.103"></a>
+<span class="sourceLineNo">104</span>        Navy,                     <a name="line.104"></a>
+<span class="sourceLineNo">105</span>        OldLace,                  <a name="line.105"></a>
+<span class="sourceLineNo">106</span>        Olive,                    <a name="line.106"></a>
+<span class="sourceLineNo">107</span>        OliveDrab,                <a name="line.107"></a>
+<span class="sourceLineNo">108</span>        Orange,                   <a name="line.108"></a>
+<span class="sourceLineNo">109</span>        OrangeRed,                <a name="line.109"></a>
+<span class="sourceLineNo">110</span>        Orchid,                   <a name="line.110"></a>
+<span class="sourceLineNo">111</span>        PaleGoldenRod,            <a name="line.111"></a>
+<span class="sourceLineNo">112</span>        PaleGreen,                <a name="line.112"></a>
+<span class="sourceLineNo">113</span>        PaleTurquoise,            <a name="line.113"></a>
+<span class="sourceLineNo">114</span>        PaleVioletRed,            <a name="line.114"></a>
+<span class="sourceLineNo">115</span>        PapayaWhip,               <a name="line.115"></a>
+<span class="sourceLineNo">116</span>        PeachPuff,                <a name="line.116"></a>
+<span class="sourceLineNo">117</span>        Peru,                     <a name="line.117"></a>
+<span class="sourceLineNo">118</span>        Pink,                     <a name="line.118"></a>
+<span class="sourceLineNo">119</span>        Plum,                     <a name="line.119"></a>
+<span class="sourceLineNo">120</span>        PowderBlue,               <a name="line.120"></a>
+<span class="sourceLineNo">121</span>        Purple,                   <a name="line.121"></a>
+<span class="sourceLineNo">122</span>        Red,                      <a name="line.122"></a>
+<span class="sourceLineNo">123</span>        RosyBrown,                <a name="line.123"></a>
+<span class="sourceLineNo">124</span>        RoyalBlue,                <a name="line.124"></a>
+<span class="sourceLineNo">125</span>        SaddleBrown,              <a name="line.125"></a>
+<span class="sourceLineNo">126</span>        Salmon,                   <a name="line.126"></a>
+<span class="sourceLineNo">127</span>        SandyBrown,               <a name="line.127"></a>
+<span class="sourceLineNo">128</span>        SeaGreen,                 <a name="line.128"></a>
+<span class="sourceLineNo">129</span>        SeaShell,                 <a name="line.129"></a>
+<span class="sourceLineNo">130</span>        Sienna,                   <a name="line.130"></a>
+<span class="sourceLineNo">131</span>        Silver,                   <a name="line.131"></a>
+<span class="sourceLineNo">132</span>        SkyBlue,                  <a name="line.132"></a>
+<span class="sourceLineNo">133</span>        SlateBlue,                <a name="line.133"></a>
+<span class="sourceLineNo">134</span>        SlateGray,                <a name="line.134"></a>
+<span class="sourceLineNo">135</span>        Snow,                     <a name="line.135"></a>
+<span class="sourceLineNo">136</span>        SpringGreen,              <a name="line.136"></a>
+<span class="sourceLineNo">137</span>        SteelBlue,                <a name="line.137"></a>
+<span class="sourceLineNo">138</span>        Tan,                      <a name="line.138"></a>
+<span class="sourceLineNo">139</span>        Teal,                     <a name="line.139"></a>
+<span class="sourceLineNo">140</span>        Thistle,                  <a name="line.140"></a>
+<span class="sourceLineNo">141</span>        Tomato,                   <a name="line.141"></a>
+<span class="sourceLineNo">142</span>        Turquoise,                <a name="line.142"></a>
+<span class="sourceLineNo">143</span>        Violet,                   <a name="line.143"></a>
+<span class="sourceLineNo">144</span>        Wheat,                    <a name="line.144"></a>
+<span class="sourceLineNo">145</span>        White,                    <a name="line.145"></a>
+<span class="sourceLineNo">146</span>        WhiteSmoke,               <a name="line.146"></a>
+<span class="sourceLineNo">147</span>        Yellow,                   <a name="line.147"></a>
+<span class="sourceLineNo">148</span>        YellowGreen             <a name="line.148"></a>
+<span class="sourceLineNo">149</span>}<a name="line.149"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

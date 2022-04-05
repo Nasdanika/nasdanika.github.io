@@ -234,15 +234,15 @@
 <span class="sourceLineNo">226</span>                }<a name="line.226"></a>
 <span class="sourceLineNo">227</span>        }<a name="line.227"></a>
 <span class="sourceLineNo">228</span>        <a name="line.228"></a>
-<span class="sourceLineNo">229</span>        public BiFunction&lt;String, ProgressMonitor, org.nasdanika.ncore.Marker&gt; getMarkerFactory() {<a name="line.229"></a>
+<span class="sourceLineNo">229</span>        public MarkerFactory getMarkerFactory() {<a name="line.229"></a>
 <span class="sourceLineNo">230</span>                return markerFactory;<a name="line.230"></a>
 <span class="sourceLineNo">231</span>        }<a name="line.231"></a>
 <span class="sourceLineNo">232</span>        <a name="line.232"></a>
-<span class="sourceLineNo">233</span>        public void setMarkerFactory(BiFunction&lt;String, ProgressMonitor, org.nasdanika.ncore.Marker&gt; markerFactory) {<a name="line.233"></a>
+<span class="sourceLineNo">233</span>        public void setMarkerFactory(MarkerFactory markerFactory) {<a name="line.233"></a>
 <span class="sourceLineNo">234</span>                this.markerFactory = markerFactory;<a name="line.234"></a>
 <span class="sourceLineNo">235</span>        }<a name="line.235"></a>
 <span class="sourceLineNo">236</span>        <a name="line.236"></a>
-<span class="sourceLineNo">237</span>        private BiFunction&lt;String, ProgressMonitor, org.nasdanika.ncore.Marker&gt; markerFactory = (location, progressMonitor) -&gt; {<a name="line.237"></a>
+<span class="sourceLineNo">237</span>        private MarkerFactory markerFactory = (location, progressMonitor) -&gt; {<a name="line.237"></a>
 <span class="sourceLineNo">238</span>                org.nasdanika.ncore.Marker marker = NcoreFactory.eINSTANCE.createMarker();<a name="line.238"></a>
 <span class="sourceLineNo">239</span>                marker.setLocation(location);<a name="line.239"></a>
 <span class="sourceLineNo">240</span>                return marker;<a name="line.240"></a>
@@ -442,7 +442,7 @@
 <span class="sourceLineNo">434</span>                if (marker != null) {<a name="line.434"></a>
 <span class="sourceLineNo">435</span>                        eObject.eAdapters().add(new MarkedAdapter(marker));<a name="line.435"></a>
 <span class="sourceLineNo">436</span>                        if (eObject instanceof Marked) {                                <a name="line.436"></a>
-<span class="sourceLineNo">437</span>                                org.nasdanika.ncore.Marker mMarker = markerFactory.apply(marker.getLocation(), progressMonitor);<a name="line.437"></a>
+<span class="sourceLineNo">437</span>                                org.nasdanika.ncore.Marker mMarker = markerFactory.createMarker(marker.getLocation(), progressMonitor);<a name="line.437"></a>
 <span class="sourceLineNo">438</span>                                mMarker.setLine(marker.getLine());<a name="line.438"></a>
 <span class="sourceLineNo">439</span>                                mMarker.setColumn(marker.getColumn());<a name="line.439"></a>
 <span class="sourceLineNo">440</span>                                ((Marked) eObject).setMarker(mMarker);<a name="line.440"></a>

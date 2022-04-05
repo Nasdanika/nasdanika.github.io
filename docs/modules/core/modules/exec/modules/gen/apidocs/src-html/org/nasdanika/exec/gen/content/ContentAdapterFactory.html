@@ -13,58 +13,66 @@
 <span class="sourceLineNo">005</span>import org.nasdanika.common.SupplierFactory;<a name="line.5"></a>
 <span class="sourceLineNo">006</span>import org.nasdanika.emf.ComposedAdapterFactory;<a name="line.6"></a>
 <span class="sourceLineNo">007</span>import org.nasdanika.emf.FunctionAdapterFactory;<a name="line.7"></a>
-<span class="sourceLineNo">008</span>import org.nasdanika.exec.content.ContentPackage;<a name="line.8"></a>
-<span class="sourceLineNo">009</span>import org.nasdanika.exec.content.Interpolator;<a name="line.9"></a>
-<span class="sourceLineNo">010</span>import org.nasdanika.exec.content.Markdown;<a name="line.10"></a>
-<span class="sourceLineNo">011</span>import org.nasdanika.exec.content.Resource;<a name="line.11"></a>
-<span class="sourceLineNo">012</span>import org.nasdanika.exec.content.Text;<a name="line.12"></a>
-<span class="sourceLineNo">013</span><a name="line.13"></a>
-<span class="sourceLineNo">014</span>/**<a name="line.14"></a>
-<span class="sourceLineNo">015</span> * Provides adapters for the Engineering model elements.<a name="line.15"></a>
-<span class="sourceLineNo">016</span> * @author Pavel<a name="line.16"></a>
-<span class="sourceLineNo">017</span> *<a name="line.17"></a>
-<span class="sourceLineNo">018</span> */<a name="line.18"></a>
-<span class="sourceLineNo">019</span>public class ContentAdapterFactory extends ComposedAdapterFactory {<a name="line.19"></a>
-<span class="sourceLineNo">020</span>        <a name="line.20"></a>
-<span class="sourceLineNo">021</span>        public ContentAdapterFactory() {<a name="line.21"></a>
-<span class="sourceLineNo">022</span>                <a name="line.22"></a>
-<span class="sourceLineNo">023</span>                // Content<a name="line.23"></a>
-<span class="sourceLineNo">024</span>                registerAdapterFactory(<a name="line.24"></a>
-<span class="sourceLineNo">025</span>                        new FunctionAdapterFactory&lt;SupplierFactory&lt;InputStream&gt;, Resource&gt;(<a name="line.25"></a>
-<span class="sourceLineNo">026</span>                                ContentPackage.Literals.RESOURCE, <a name="line.26"></a>
-<span class="sourceLineNo">027</span>                                getInputStreamSupplierFactoryClass(), <a name="line.27"></a>
-<span class="sourceLineNo">028</span>                                this.getClass().getClassLoader(), <a name="line.28"></a>
-<span class="sourceLineNo">029</span>                                ResourceSupplierFactoryAdapter::new));<a name="line.29"></a>
-<span class="sourceLineNo">030</span>                <a name="line.30"></a>
-<span class="sourceLineNo">031</span>                registerAdapterFactory(<a name="line.31"></a>
-<span class="sourceLineNo">032</span>                                new FunctionAdapterFactory&lt;SupplierFactory&lt;InputStream&gt;, Text&gt;(<a name="line.32"></a>
-<span class="sourceLineNo">033</span>                                        ContentPackage.Literals.TEXT, <a name="line.33"></a>
-<span class="sourceLineNo">034</span>                                        getInputStreamSupplierFactoryClass(), <a name="line.34"></a>
-<span class="sourceLineNo">035</span>                                        this.getClass().getClassLoader(), <a name="line.35"></a>
-<span class="sourceLineNo">036</span>                                        TextSupplierFactoryAdapter::new));<a name="line.36"></a>
-<span class="sourceLineNo">037</span>                <a name="line.37"></a>
-<span class="sourceLineNo">038</span>                registerAdapterFactory(<a name="line.38"></a>
-<span class="sourceLineNo">039</span>                                new FunctionAdapterFactory&lt;SupplierFactory&lt;InputStream&gt;, Markdown&gt;(<a name="line.39"></a>
-<span class="sourceLineNo">040</span>                                        ContentPackage.Literals.MARKDOWN, <a name="line.40"></a>
-<span class="sourceLineNo">041</span>                                        getInputStreamSupplierFactoryClass(), <a name="line.41"></a>
-<span class="sourceLineNo">042</span>                                        this.getClass().getClassLoader(), <a name="line.42"></a>
-<span class="sourceLineNo">043</span>                                        MarkdownSupplierFactoryAdapter::new));<a name="line.43"></a>
-<span class="sourceLineNo">044</span>                <a name="line.44"></a>
-<span class="sourceLineNo">045</span>                registerAdapterFactory(<a name="line.45"></a>
-<span class="sourceLineNo">046</span>                                new FunctionAdapterFactory&lt;SupplierFactory&lt;InputStream&gt;, Interpolator&gt;(<a name="line.46"></a>
-<span class="sourceLineNo">047</span>                                        ContentPackage.Literals.INTERPOLATOR, <a name="line.47"></a>
-<span class="sourceLineNo">048</span>                                        getInputStreamSupplierFactoryClass(), <a name="line.48"></a>
-<span class="sourceLineNo">049</span>                                        this.getClass().getClassLoader(), <a name="line.49"></a>
-<span class="sourceLineNo">050</span>                                        InterpolatorSupplierFactoryAdapter::new));<a name="line.50"></a>
-<span class="sourceLineNo">051</span>                                <a name="line.51"></a>
-<span class="sourceLineNo">052</span>        }<a name="line.52"></a>
-<span class="sourceLineNo">053</span>        <a name="line.53"></a>
-<span class="sourceLineNo">054</span>        @SuppressWarnings({ "unchecked", "rawtypes" })<a name="line.54"></a>
-<span class="sourceLineNo">055</span>        protected Class&lt;SupplierFactory&lt;InputStream&gt;&gt; getInputStreamSupplierFactoryClass() {<a name="line.55"></a>
-<span class="sourceLineNo">056</span>                return (Class) SupplierFactory.class;<a name="line.56"></a>
-<span class="sourceLineNo">057</span>        }<a name="line.57"></a>
-<span class="sourceLineNo">058</span>        <a name="line.58"></a>
-<span class="sourceLineNo">059</span>}<a name="line.59"></a>
+<span class="sourceLineNo">008</span>import org.nasdanika.exec.content.Base64;<a name="line.8"></a>
+<span class="sourceLineNo">009</span>import org.nasdanika.exec.content.ContentPackage;<a name="line.9"></a>
+<span class="sourceLineNo">010</span>import org.nasdanika.exec.content.Interpolator;<a name="line.10"></a>
+<span class="sourceLineNo">011</span>import org.nasdanika.exec.content.Markdown;<a name="line.11"></a>
+<span class="sourceLineNo">012</span>import org.nasdanika.exec.content.Resource;<a name="line.12"></a>
+<span class="sourceLineNo">013</span>import org.nasdanika.exec.content.Text;<a name="line.13"></a>
+<span class="sourceLineNo">014</span><a name="line.14"></a>
+<span class="sourceLineNo">015</span>/**<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * Provides adapters for the Engineering model elements.<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * @author Pavel<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *<a name="line.18"></a>
+<span class="sourceLineNo">019</span> */<a name="line.19"></a>
+<span class="sourceLineNo">020</span>public class ContentAdapterFactory extends ComposedAdapterFactory {<a name="line.20"></a>
+<span class="sourceLineNo">021</span>        <a name="line.21"></a>
+<span class="sourceLineNo">022</span>        public ContentAdapterFactory() {<a name="line.22"></a>
+<span class="sourceLineNo">023</span>                <a name="line.23"></a>
+<span class="sourceLineNo">024</span>                // Content<a name="line.24"></a>
+<span class="sourceLineNo">025</span>                registerAdapterFactory(<a name="line.25"></a>
+<span class="sourceLineNo">026</span>                        new FunctionAdapterFactory&lt;SupplierFactory&lt;InputStream&gt;, Resource&gt;(<a name="line.26"></a>
+<span class="sourceLineNo">027</span>                                ContentPackage.Literals.RESOURCE, <a name="line.27"></a>
+<span class="sourceLineNo">028</span>                                getInputStreamSupplierFactoryClass(), <a name="line.28"></a>
+<span class="sourceLineNo">029</span>                                this.getClass().getClassLoader(), <a name="line.29"></a>
+<span class="sourceLineNo">030</span>                                ResourceSupplierFactoryAdapter::new));<a name="line.30"></a>
+<span class="sourceLineNo">031</span>                <a name="line.31"></a>
+<span class="sourceLineNo">032</span>                registerAdapterFactory(<a name="line.32"></a>
+<span class="sourceLineNo">033</span>                                new FunctionAdapterFactory&lt;SupplierFactory&lt;InputStream&gt;, Text&gt;(<a name="line.33"></a>
+<span class="sourceLineNo">034</span>                                        ContentPackage.Literals.TEXT, <a name="line.34"></a>
+<span class="sourceLineNo">035</span>                                        getInputStreamSupplierFactoryClass(), <a name="line.35"></a>
+<span class="sourceLineNo">036</span>                                        this.getClass().getClassLoader(), <a name="line.36"></a>
+<span class="sourceLineNo">037</span>                                        TextSupplierFactoryAdapter::new));<a name="line.37"></a>
+<span class="sourceLineNo">038</span>                <a name="line.38"></a>
+<span class="sourceLineNo">039</span>                registerAdapterFactory(<a name="line.39"></a>
+<span class="sourceLineNo">040</span>                                new FunctionAdapterFactory&lt;SupplierFactory&lt;InputStream&gt;, Markdown&gt;(<a name="line.40"></a>
+<span class="sourceLineNo">041</span>                                        ContentPackage.Literals.MARKDOWN, <a name="line.41"></a>
+<span class="sourceLineNo">042</span>                                        getInputStreamSupplierFactoryClass(), <a name="line.42"></a>
+<span class="sourceLineNo">043</span>                                        this.getClass().getClassLoader(), <a name="line.43"></a>
+<span class="sourceLineNo">044</span>                                        MarkdownSupplierFactoryAdapter::new));<a name="line.44"></a>
+<span class="sourceLineNo">045</span>                <a name="line.45"></a>
+<span class="sourceLineNo">046</span>                registerAdapterFactory(<a name="line.46"></a>
+<span class="sourceLineNo">047</span>                                new FunctionAdapterFactory&lt;SupplierFactory&lt;InputStream&gt;, Interpolator&gt;(<a name="line.47"></a>
+<span class="sourceLineNo">048</span>                                        ContentPackage.Literals.INTERPOLATOR, <a name="line.48"></a>
+<span class="sourceLineNo">049</span>                                        getInputStreamSupplierFactoryClass(), <a name="line.49"></a>
+<span class="sourceLineNo">050</span>                                        this.getClass().getClassLoader(), <a name="line.50"></a>
+<span class="sourceLineNo">051</span>                                        InterpolatorSupplierFactoryAdapter::new));<a name="line.51"></a>
+<span class="sourceLineNo">052</span>                <a name="line.52"></a>
+<span class="sourceLineNo">053</span>                registerAdapterFactory(<a name="line.53"></a>
+<span class="sourceLineNo">054</span>                                new FunctionAdapterFactory&lt;SupplierFactory&lt;InputStream&gt;, Base64&gt;(<a name="line.54"></a>
+<span class="sourceLineNo">055</span>                                        ContentPackage.Literals.BASE64, <a name="line.55"></a>
+<span class="sourceLineNo">056</span>                                        getInputStreamSupplierFactoryClass(), <a name="line.56"></a>
+<span class="sourceLineNo">057</span>                                        this.getClass().getClassLoader(), <a name="line.57"></a>
+<span class="sourceLineNo">058</span>                                        Base64SupplierFactoryAdapter::new));<a name="line.58"></a>
+<span class="sourceLineNo">059</span>                                <a name="line.59"></a>
+<span class="sourceLineNo">060</span>        }<a name="line.60"></a>
+<span class="sourceLineNo">061</span>        <a name="line.61"></a>
+<span class="sourceLineNo">062</span>        @SuppressWarnings({ "unchecked", "rawtypes" })<a name="line.62"></a>
+<span class="sourceLineNo">063</span>        protected Class&lt;SupplierFactory&lt;InputStream&gt;&gt; getInputStreamSupplierFactoryClass() {<a name="line.63"></a>
+<span class="sourceLineNo">064</span>                return (Class) SupplierFactory.class;<a name="line.64"></a>
+<span class="sourceLineNo">065</span>        }<a name="line.65"></a>
+<span class="sourceLineNo">066</span>        <a name="line.66"></a>
+<span class="sourceLineNo">067</span>}<a name="line.67"></a>
 
 
 

@@ -1460,279 +1460,278 @@
 <span class="sourceLineNo">1452</span>                  (getList_Value(),<a name="line.1452"></a>
 <span class="sourceLineNo">1453</span>                   source,<a name="line.1453"></a>
 <span class="sourceLineNo">1454</span>                   new String[] {<a name="line.1454"></a>
-<span class="sourceLineNo">1455</span>                           "reference-type", "map: Map\nlist: List\nstring: String",<a name="line.1455"></a>
-<span class="sourceLineNo">1456</span>                           "value-feature", "true"<a name="line.1456"></a>
-<span class="sourceLineNo">1457</span>                   });<a name="line.1457"></a>
-<span class="sourceLineNo">1458</span>                addAnnotation<a name="line.1458"></a>
-<span class="sourceLineNo">1459</span>                  (getMap_Value(),<a name="line.1459"></a>
-<span class="sourceLineNo">1460</span>                   source,<a name="line.1460"></a>
-<span class="sourceLineNo">1461</span>                   new String[] {<a name="line.1461"></a>
-<span class="sourceLineNo">1462</span>                           "reference-type", "map: MapProperty\nlist: ListProperty\nstring: StringProperty\ninteger: IntegerProperty",<a name="line.1462"></a>
-<span class="sourceLineNo">1463</span>                           "value-feature", "value"<a name="line.1463"></a>
-<span class="sourceLineNo">1464</span>                   });<a name="line.1464"></a>
-<span class="sourceLineNo">1465</span>                addAnnotation<a name="line.1465"></a>
-<span class="sourceLineNo">1466</span>                  (getInteger_Value(),<a name="line.1466"></a>
-<span class="sourceLineNo">1467</span>                   source,<a name="line.1467"></a>
-<span class="sourceLineNo">1468</span>                   new String[] {<a name="line.1468"></a>
-<span class="sourceLineNo">1469</span>                           "default-feature", "true"<a name="line.1469"></a>
-<span class="sourceLineNo">1470</span>                   });<a name="line.1470"></a>
-<span class="sourceLineNo">1471</span>                addAnnotation<a name="line.1471"></a>
-<span class="sourceLineNo">1472</span>                  (getBoolean_Value(),<a name="line.1472"></a>
-<span class="sourceLineNo">1473</span>                   source,<a name="line.1473"></a>
-<span class="sourceLineNo">1474</span>                   new String[] {<a name="line.1474"></a>
-<span class="sourceLineNo">1475</span>                           "default-feature", "true"<a name="line.1475"></a>
-<span class="sourceLineNo">1476</span>                   });<a name="line.1476"></a>
-<span class="sourceLineNo">1477</span>                addAnnotation<a name="line.1477"></a>
-<span class="sourceLineNo">1478</span>                  (getEObjectProperty_Value(),<a name="line.1478"></a>
-<span class="sourceLineNo">1479</span>                   source,<a name="line.1479"></a>
-<span class="sourceLineNo">1480</span>                   new String[] {<a name="line.1480"></a>
-<span class="sourceLineNo">1481</span>                           "default-feature", "true"<a name="line.1481"></a>
-<span class="sourceLineNo">1482</span>                   });<a name="line.1482"></a>
-<span class="sourceLineNo">1483</span>        }<a name="line.1483"></a>
-<span class="sourceLineNo">1484</span><a name="line.1484"></a>
-<span class="sourceLineNo">1485</span>        /**<a name="line.1485"></a>
-<span class="sourceLineNo">1486</span>         * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/GenModel&lt;/b&gt;.<a name="line.1486"></a>
-<span class="sourceLineNo">1487</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.1487"></a>
-<span class="sourceLineNo">1488</span>         * &lt;!-- end-user-doc --&gt;<a name="line.1488"></a>
-<span class="sourceLineNo">1489</span>         * @generated<a name="line.1489"></a>
-<span class="sourceLineNo">1490</span>         */<a name="line.1490"></a>
-<span class="sourceLineNo">1491</span>        protected void createGenModelAnnotations() {<a name="line.1491"></a>
-<span class="sourceLineNo">1492</span>                String source = "http://www.eclipse.org/emf/2002/GenModel";<a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>                addAnnotation<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span>                  (instantEDataType,<a name="line.1494"></a>
-<span class="sourceLineNo">1495</span>                   source,<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span>                   new String[] {<a name="line.1496"></a>
-<span class="sourceLineNo">1497</span>                           "documentation", "[Instant](https://docs.oracle.com/javase/8/docs/api/java/time/Instant.html) is a single instantaneous point on the time-line. \nIf instant specification contains ``Z``, then it is parsed using [Instant.parse()](https://docs.oracle.com/javase/8/docs/api/java/time/Instant.html#parse-java.lang.CharSequence-) method.\nOtherwise the specification is used to construct ``java.util.Date`` which is then converted to instant.\n\nExamples:\n\n* ``2021-12-03T10:15:30.00Z`` - loaded using ``Instant.parse()``\n* ``10/1/2021`` - loaded using ``new Date()`` and then converted to instant.\n\n"<a name="line.1497"></a>
-<span class="sourceLineNo">1498</span>                   });<a name="line.1498"></a>
-<span class="sourceLineNo">1499</span>                addAnnotation<a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>                  (durationEDataType,<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span>                   source,<a name="line.1501"></a>
-<span class="sourceLineNo">1502</span>                   new String[] {<a name="line.1502"></a>
-<span class="sourceLineNo">1503</span>                           "documentation", "[Duration](https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html) is an amount of time in the [ISO-8601 Duration format](https://en.wikipedia.org/wiki/ISO_8601#Duration). Supports days and smaller units. Weeks, months and years are not supported. Example: ``P28DT10H``."<a name="line.1503"></a>
-<span class="sourceLineNo">1504</span>                   });<a name="line.1504"></a>
-<span class="sourceLineNo">1505</span>                addAnnotation<a name="line.1505"></a>
-<span class="sourceLineNo">1506</span>                  (getTemporal__After__Temporal(),<a name="line.1506"></a>
-<span class="sourceLineNo">1507</span>                   source,<a name="line.1507"></a>
-<span class="sourceLineNo">1508</span>                   new String[] {<a name="line.1508"></a>
-<span class="sourceLineNo">1509</span>                           "documentation", "Tests if this temporal is after the specified temporal. Returns null if unknown, e.g. two unrelated events."<a name="line.1509"></a>
-<span class="sourceLineNo">1510</span>                   });<a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>                addAnnotation<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>                  (getTemporal__Before__Temporal(),<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span>                   source,<a name="line.1513"></a>
-<span class="sourceLineNo">1514</span>                   new String[] {<a name="line.1514"></a>
-<span class="sourceLineNo">1515</span>                           "documentation", "Tests if this temporal is before the specified temporal. Returns null if unknown, e.g. two unrelated events."<a name="line.1515"></a>
-<span class="sourceLineNo">1516</span>                   });<a name="line.1516"></a>
-<span class="sourceLineNo">1517</span>                addAnnotation<a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>                  (getTemporal__Coincides__Temporal(),<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span>                   source,<a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>                   new String[] {<a name="line.1520"></a>
-<span class="sourceLineNo">1521</span>                           "documentation", "Tests if this temporal occurs at the same point on the time-line as the specified temporal. Returns null if unknown, e.g. two unrelated events."<a name="line.1521"></a>
-<span class="sourceLineNo">1522</span>                   });<a name="line.1522"></a>
-<span class="sourceLineNo">1523</span>                addAnnotation<a name="line.1523"></a>
-<span class="sourceLineNo">1524</span>                  (getTemporal__Normalize(),<a name="line.1524"></a>
-<span class="sourceLineNo">1525</span>                   source,<a name="line.1525"></a>
-<span class="sourceLineNo">1526</span>                   new String[] {<a name="line.1526"></a>
-<span class="sourceLineNo">1527</span>                           "documentation", "Returns a normalized instance of this temporal not contained in the model. Normalization walks through the temporal chain to the root temporal. If that root temporal is instant/absolute then the normalized instance would be instant/absolute. Otherwise the normalized instance would contain the root temporal as its base and offset would be the sum of all offsets."<a name="line.1527"></a>
-<span class="sourceLineNo">1528</span>                   });<a name="line.1528"></a>
-<span class="sourceLineNo">1529</span>                addAnnotation<a name="line.1529"></a>
-<span class="sourceLineNo">1530</span>                  (getTemporal__Minus__Temporal(),<a name="line.1530"></a>
-<span class="sourceLineNo">1531</span>                   source,<a name="line.1531"></a>
-<span class="sourceLineNo">1532</span>                   new String[] {<a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>                           "documentation", "Returns [duration](Duration.html) difference between this temporal and the argument temporal - how much this temporal is after the argument on the time-line, if difference can be computed, e.g. both this temporal and the argument temporal are instant or trace to the same base temporal. Returns null otherwise."<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span>                   });<a name="line.1534"></a>
-<span class="sourceLineNo">1535</span>                addAnnotation<a name="line.1535"></a>
-<span class="sourceLineNo">1536</span>                  (getTemporal__Minus__Duration(),<a name="line.1536"></a>
-<span class="sourceLineNo">1537</span>                   source,<a name="line.1537"></a>
-<span class="sourceLineNo">1538</span>                   new String[] {<a name="line.1538"></a>
-<span class="sourceLineNo">1539</span>                           "documentation", "Returns a temporal based on this one offset by negation of the argument [duration](Duration.html). Null duration is treated as zero and set as-is (not negated)."<a name="line.1539"></a>
-<span class="sourceLineNo">1540</span>                   });<a name="line.1540"></a>
-<span class="sourceLineNo">1541</span>                addAnnotation<a name="line.1541"></a>
-<span class="sourceLineNo">1542</span>                  (getTemporal__Plus__Duration(),<a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>                   source,<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span>                   new String[] {<a name="line.1544"></a>
-<span class="sourceLineNo">1545</span>                           "documentation", "Returns a temporal based on this one offset by the argument [duration](Duration.html). Duration can be null."<a name="line.1545"></a>
-<span class="sourceLineNo">1546</span>                   });<a name="line.1546"></a>
-<span class="sourceLineNo">1547</span>                addAnnotation<a name="line.1547"></a>
-<span class="sourceLineNo">1548</span>                  (getTemporal__Copy(),<a name="line.1548"></a>
-<span class="sourceLineNo">1549</span>                   source,<a name="line.1549"></a>
-<span class="sourceLineNo">1550</span>                   new String[] {<a name="line.1550"></a>
-<span class="sourceLineNo">1551</span>                           "documentation", "Returns a deep copy of self with bounds copied. Other containment references are not set."<a name="line.1551"></a>
-<span class="sourceLineNo">1552</span>                   });<a name="line.1552"></a>
-<span class="sourceLineNo">1553</span>                addAnnotation<a name="line.1553"></a>
-<span class="sourceLineNo">1554</span>                  (getTemporal_Instant(),<a name="line.1554"></a>
-<span class="sourceLineNo">1555</span>                   source,<a name="line.1555"></a>
-<span class="sourceLineNo">1556</span>                   new String[] {<a name="line.1556"></a>
-<span class="sourceLineNo">1557</span>                           "documentation", "An absolute point on the time-line. E.g. ``2021/07/04``."<a name="line.1557"></a>
-<span class="sourceLineNo">1558</span>                   });<a name="line.1558"></a>
-<span class="sourceLineNo">1559</span>                addAnnotation<a name="line.1559"></a>
-<span class="sourceLineNo">1560</span>                  (getTemporal_Base(),<a name="line.1560"></a>
-<span class="sourceLineNo">1561</span>                   source,<a name="line.1561"></a>
-<span class="sourceLineNo">1562</span>                   new String[] {<a name="line.1562"></a>
-<span class="sourceLineNo">1563</span>                           "documentation", "Base of this temporal."<a name="line.1563"></a>
-<span class="sourceLineNo">1564</span>                   });<a name="line.1564"></a>
-<span class="sourceLineNo">1565</span>                addAnnotation<a name="line.1565"></a>
-<span class="sourceLineNo">1566</span>                  (getTemporal_Offset(),<a name="line.1566"></a>
-<span class="sourceLineNo">1567</span>                   source,<a name="line.1567"></a>
-<span class="sourceLineNo">1568</span>                   new String[] {<a name="line.1568"></a>
-<span class="sourceLineNo">1569</span>                           "documentation", "Time offset from the base in [ISO-8601 durations](https://en.wikipedia.org/wiki/ISO_8601#Durations) format. \n\nExamples:\n\n* ``P1H`` for one hour later.\n* ``-P20D`` or ``P-20D`` for 20 days before. Can be null (zero), e.g. if one [period](Period.html) starts right after another period ends."<a name="line.1569"></a>
-<span class="sourceLineNo">1570</span>                   });<a name="line.1570"></a>
-<span class="sourceLineNo">1571</span>                addAnnotation<a name="line.1571"></a>
-<span class="sourceLineNo">1572</span>                  (getTemporal_Derivatives(),<a name="line.1572"></a>
-<span class="sourceLineNo">1573</span>                   source,<a name="line.1573"></a>
-<span class="sourceLineNo">1574</span>                   new String[] {<a name="line.1574"></a>
-<span class="sourceLineNo">1575</span>                           "documentation", "Temporals which are based on this temporal."<a name="line.1575"></a>
-<span class="sourceLineNo">1576</span>                   });<a name="line.1576"></a>
-<span class="sourceLineNo">1577</span>                addAnnotation<a name="line.1577"></a>
-<span class="sourceLineNo">1578</span>                  (getTemporal_LowerBounds(),<a name="line.1578"></a>
-<span class="sourceLineNo">1579</span>                   source,<a name="line.1579"></a>
-<span class="sourceLineNo">1580</span>                   new String[] {<a name="line.1580"></a>
-<span class="sourceLineNo">1581</span>                           "documentation", "Lower bounds of a temporal. E.g. exact time of some temporal might not be known at a moment, but it might be known that it should not be before than some other temporal - a lower bound. Lower bounds are used in validations and before/after computations. "<a name="line.1581"></a>
-<span class="sourceLineNo">1582</span>                   });<a name="line.1582"></a>
-<span class="sourceLineNo">1583</span>                addAnnotation<a name="line.1583"></a>
-<span class="sourceLineNo">1584</span>                  (getTemporal_UpperBounds(),<a name="line.1584"></a>
-<span class="sourceLineNo">1585</span>                   source,<a name="line.1585"></a>
-<span class="sourceLineNo">1586</span>                   new String[] {<a name="line.1586"></a>
-<span class="sourceLineNo">1587</span>                           "documentation", "Upper bounds of a temporal. E.g. exact time of some temporal might not be known at a moment, but it might be known that it should not be after some other temporal - an upper bound. Upper bounds are used in validations and before/after computations. "<a name="line.1587"></a>
-<span class="sourceLineNo">1588</span>                   });<a name="line.1588"></a>
-<span class="sourceLineNo">1589</span>                addAnnotation<a name="line.1589"></a>
-<span class="sourceLineNo">1590</span>                  (getPeriod_Start(),<a name="line.1590"></a>
-<span class="sourceLineNo">1591</span>                   source,<a name="line.1591"></a>
-<span class="sourceLineNo">1592</span>                   new String[] {<a name="line.1592"></a>
-<span class="sourceLineNo">1593</span>                           "documentation", "Period start."<a name="line.1593"></a>
-<span class="sourceLineNo">1594</span>                   });<a name="line.1594"></a>
-<span class="sourceLineNo">1595</span>                addAnnotation<a name="line.1595"></a>
-<span class="sourceLineNo">1596</span>                  (getPeriod_End(),<a name="line.1596"></a>
-<span class="sourceLineNo">1597</span>                   source,<a name="line.1597"></a>
-<span class="sourceLineNo">1598</span>                   new String[] {<a name="line.1598"></a>
-<span class="sourceLineNo">1599</span>                           "documentation", "Period end."<a name="line.1599"></a>
-<span class="sourceLineNo">1600</span>                   });<a name="line.1600"></a>
-<span class="sourceLineNo">1601</span>                addAnnotation<a name="line.1601"></a>
-<span class="sourceLineNo">1602</span>                  (getPeriod_Duration(),<a name="line.1602"></a>
-<span class="sourceLineNo">1603</span>                   source,<a name="line.1603"></a>
-<span class="sourceLineNo">1604</span>                   new String[] {<a name="line.1604"></a>
-<span class="sourceLineNo">1605</span>                           "documentation", "Positive period duration in [ISO-8601 durations](https://en.wikipedia.org/wiki/ISO_8601#Durations) format. E.g. ``P1M`` for one month or ``P20D`` for 20 days."<a name="line.1605"></a>
-<span class="sourceLineNo">1606</span>                   });<a name="line.1606"></a>
-<span class="sourceLineNo">1607</span>                addAnnotation<a name="line.1607"></a>
-<span class="sourceLineNo">1608</span>                  (getModelElement_Uri(),<a name="line.1608"></a>
-<span class="sourceLineNo">1609</span>                   source,<a name="line.1609"></a>
-<span class="sourceLineNo">1610</span>                   new String[] {<a name="line.1610"></a>
-<span class="sourceLineNo">1611</span>                           "documentation", "If element\'s URI is not set then its default value is derived from the container URI and containment reference. \nThis is a logical URI and it can be used for cross-referencing of elements in a resource-independent fashion.\n"<a name="line.1611"></a>
-<span class="sourceLineNo">1612</span>                   });<a name="line.1612"></a>
-<span class="sourceLineNo">1613</span>                addAnnotation<a name="line.1613"></a>
-<span class="sourceLineNo">1614</span>                  (getModelElement_Description(),<a name="line.1614"></a>
-<span class="sourceLineNo">1615</span>                   source,<a name="line.1615"></a>
-<span class="sourceLineNo">1616</span>                   new String[] {<a name="line.1616"></a>
-<span class="sourceLineNo">1617</span>                           "documentation", "Description in HTML."<a name="line.1617"></a>
-<span class="sourceLineNo">1618</span>                   });<a name="line.1618"></a>
-<span class="sourceLineNo">1619</span>                addAnnotation<a name="line.1619"></a>
-<span class="sourceLineNo">1620</span>                  (getModelElement_ActionPrototype(),<a name="line.1620"></a>
-<span class="sourceLineNo">1621</span>                   source,<a name="line.1621"></a>
-<span class="sourceLineNo">1622</span>                   new String[] {<a name="line.1622"></a>
-<span class="sourceLineNo">1623</span>                           "documentation", "If this reference is not set then EObjectActionProvider creates a new Action using AppFactory in newAction() method. \nIf this reference is set and is Action then a copy of the action is created and returned.\nOtherwise the reference value it is adapted to ActionProvider which is used to create an action. \nThis allows to merge actions and chain action generation. E.g. generate Ecore model documentation and merge it into the Engineering documentation."<a name="line.1623"></a>
-<span class="sourceLineNo">1624</span>                   });<a name="line.1624"></a>
-<span class="sourceLineNo">1625</span>                addAnnotation<a name="line.1625"></a>
-<span class="sourceLineNo">1626</span>                  (getNamedElement_Name(),<a name="line.1626"></a>
-<span class="sourceLineNo">1627</span>                   source,<a name="line.1627"></a>
-<span class="sourceLineNo">1628</span>                   new String[] {<a name="line.1628"></a>
-<span class="sourceLineNo">1629</span>                           "documentation", "Element name."<a name="line.1629"></a>
-<span class="sourceLineNo">1630</span>                   });<a name="line.1630"></a>
-<span class="sourceLineNo">1631</span>                addAnnotation<a name="line.1631"></a>
-<span class="sourceLineNo">1632</span>                  (stringEntryEClass,<a name="line.1632"></a>
-<span class="sourceLineNo">1633</span>                   source,<a name="line.1633"></a>
-<span class="sourceLineNo">1634</span>                   new String[] {<a name="line.1634"></a>
-<span class="sourceLineNo">1635</span>                           "documentation", "EMap entry with String value"<a name="line.1635"></a>
-<span class="sourceLineNo">1636</span>                   });<a name="line.1636"></a>
-<span class="sourceLineNo">1637</span>                addAnnotation<a name="line.1637"></a>
-<span class="sourceLineNo">1638</span>                  (getStringEntry_Key(),<a name="line.1638"></a>
-<span class="sourceLineNo">1639</span>                   source,<a name="line.1639"></a>
-<span class="sourceLineNo">1640</span>                   new String[] {<a name="line.1640"></a>
-<span class="sourceLineNo">1641</span>                           "documentation", "Artifact key."<a name="line.1641"></a>
-<span class="sourceLineNo">1642</span>                   });<a name="line.1642"></a>
-<span class="sourceLineNo">1643</span>                addAnnotation<a name="line.1643"></a>
-<span class="sourceLineNo">1644</span>                  (integerEntryEClass,<a name="line.1644"></a>
-<span class="sourceLineNo">1645</span>                   source,<a name="line.1645"></a>
-<span class="sourceLineNo">1646</span>                   new String[] {<a name="line.1646"></a>
-<span class="sourceLineNo">1647</span>                           "documentation", "EMap entry with int value"<a name="line.1647"></a>
-<span class="sourceLineNo">1648</span>                   });<a name="line.1648"></a>
-<span class="sourceLineNo">1649</span>                addAnnotation<a name="line.1649"></a>
-<span class="sourceLineNo">1650</span>                  (getIntegerEntry_Key(),<a name="line.1650"></a>
-<span class="sourceLineNo">1651</span>                   source,<a name="line.1651"></a>
-<span class="sourceLineNo">1652</span>                   new String[] {<a name="line.1652"></a>
-<span class="sourceLineNo">1653</span>                           "documentation", "Artifact key."<a name="line.1653"></a>
-<span class="sourceLineNo">1654</span>                   });<a name="line.1654"></a>
-<span class="sourceLineNo">1655</span>                addAnnotation<a name="line.1655"></a>
-<span class="sourceLineNo">1656</span>                  (booleanEntryEClass,<a name="line.1656"></a>
-<span class="sourceLineNo">1657</span>                   source,<a name="line.1657"></a>
-<span class="sourceLineNo">1658</span>                   new String[] {<a name="line.1658"></a>
-<span class="sourceLineNo">1659</span>                           "documentation", "EMap entry with boolean value"<a name="line.1659"></a>
-<span class="sourceLineNo">1660</span>                   });<a name="line.1660"></a>
-<span class="sourceLineNo">1661</span>                addAnnotation<a name="line.1661"></a>
-<span class="sourceLineNo">1662</span>                  (getBooleanEntry_Key(),<a name="line.1662"></a>
-<span class="sourceLineNo">1663</span>                   source,<a name="line.1663"></a>
-<span class="sourceLineNo">1664</span>                   new String[] {<a name="line.1664"></a>
-<span class="sourceLineNo">1665</span>                           "documentation", "Artifact key."<a name="line.1665"></a>
-<span class="sourceLineNo">1666</span>                   });<a name="line.1666"></a>
-<span class="sourceLineNo">1667</span>                addAnnotation<a name="line.1667"></a>
-<span class="sourceLineNo">1668</span>                  (gitMarkerEClass,<a name="line.1668"></a>
-<span class="sourceLineNo">1669</span>                   source,<a name="line.1669"></a>
-<span class="sourceLineNo">1670</span>                   new String[] {<a name="line.1670"></a>
-<span class="sourceLineNo">1671</span>                           "documentation", "Marker with Git information such as a map of remotes."<a name="line.1671"></a>
-<span class="sourceLineNo">1672</span>                   });<a name="line.1672"></a>
-<span class="sourceLineNo">1673</span>                addAnnotation<a name="line.1673"></a>
-<span class="sourceLineNo">1674</span>                  (getGitMarker_Path(),<a name="line.1674"></a>
-<span class="sourceLineNo">1675</span>                   source,<a name="line.1675"></a>
-<span class="sourceLineNo">1676</span>                   new String[] {<a name="line.1676"></a>
-<span class="sourceLineNo">1677</span>                           "documentation", "Path in the repository"<a name="line.1677"></a>
-<span class="sourceLineNo">1678</span>                   });<a name="line.1678"></a>
-<span class="sourceLineNo">1679</span>                addAnnotation<a name="line.1679"></a>
-<span class="sourceLineNo">1680</span>                  (getGitMarker_Remotes(),<a name="line.1680"></a>
-<span class="sourceLineNo">1681</span>                   source,<a name="line.1681"></a>
-<span class="sourceLineNo">1682</span>                   new String[] {<a name="line.1682"></a>
-<span class="sourceLineNo">1683</span>                           "documentation", "A map of remote names to url\'s."<a name="line.1683"></a>
-<span class="sourceLineNo">1684</span>                   });<a name="line.1684"></a>
-<span class="sourceLineNo">1685</span>                addAnnotation<a name="line.1685"></a>
-<span class="sourceLineNo">1686</span>                  (getGitMarker_Branch(),<a name="line.1686"></a>
-<span class="sourceLineNo">1687</span>                   source,<a name="line.1687"></a>
-<span class="sourceLineNo">1688</span>                   new String[] {<a name="line.1688"></a>
-<span class="sourceLineNo">1689</span>                           "documentation", "Short branch name"<a name="line.1689"></a>
-<span class="sourceLineNo">1690</span>                   });<a name="line.1690"></a>
-<span class="sourceLineNo">1691</span>                addAnnotation<a name="line.1691"></a>
-<span class="sourceLineNo">1692</span>                  (getGitMarker_Head(),<a name="line.1692"></a>
-<span class="sourceLineNo">1693</span>                   source,<a name="line.1693"></a>
-<span class="sourceLineNo">1694</span>                   new String[] {<a name="line.1694"></a>
-<span class="sourceLineNo">1695</span>                           "documentation", "Commit ID of the head"<a name="line.1695"></a>
-<span class="sourceLineNo">1696</span>                   });<a name="line.1696"></a>
-<span class="sourceLineNo">1697</span>                addAnnotation<a name="line.1697"></a>
-<span class="sourceLineNo">1698</span>                  (getGitMarker_HeadRefs(),<a name="line.1698"></a>
-<span class="sourceLineNo">1699</span>                   source,<a name="line.1699"></a>
-<span class="sourceLineNo">1700</span>                   new String[] {<a name="line.1700"></a>
-<span class="sourceLineNo">1701</span>                           "documentation", "Refs on the head commit excluding the head itself. E.g. branch, tags."<a name="line.1701"></a>
-<span class="sourceLineNo">1702</span>                   });<a name="line.1702"></a>
-<span class="sourceLineNo">1703</span>        }<a name="line.1703"></a>
-<span class="sourceLineNo">1704</span><a name="line.1704"></a>
-<span class="sourceLineNo">1705</span>        /**<a name="line.1705"></a>
-<span class="sourceLineNo">1706</span>         * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/Ecore&lt;/b&gt;.<a name="line.1706"></a>
-<span class="sourceLineNo">1707</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.1707"></a>
-<span class="sourceLineNo">1708</span>         * &lt;!-- end-user-doc --&gt;<a name="line.1708"></a>
-<span class="sourceLineNo">1709</span>         * @generated<a name="line.1709"></a>
-<span class="sourceLineNo">1710</span>         */<a name="line.1710"></a>
-<span class="sourceLineNo">1711</span>        protected void createEcoreAnnotations() {<a name="line.1711"></a>
-<span class="sourceLineNo">1712</span>                String source = "http://www.eclipse.org/emf/2002/Ecore";<a name="line.1712"></a>
-<span class="sourceLineNo">1713</span>                addAnnotation<a name="line.1713"></a>
-<span class="sourceLineNo">1714</span>                  (temporalEClass,<a name="line.1714"></a>
-<span class="sourceLineNo">1715</span>                   source,<a name="line.1715"></a>
-<span class="sourceLineNo">1716</span>                   new String[] {<a name="line.1716"></a>
-<span class="sourceLineNo">1717</span>                           "constraints", "bounds offset"<a name="line.1717"></a>
-<span class="sourceLineNo">1718</span>                   });<a name="line.1718"></a>
-<span class="sourceLineNo">1719</span>                addAnnotation<a name="line.1719"></a>
-<span class="sourceLineNo">1720</span>                  (periodEClass,<a name="line.1720"></a>
-<span class="sourceLineNo">1721</span>                   source,<a name="line.1721"></a>
-<span class="sourceLineNo">1722</span>                   new String[] {<a name="line.1722"></a>
-<span class="sourceLineNo">1723</span>                           "constraints", "start_end"<a name="line.1723"></a>
-<span class="sourceLineNo">1724</span>                   });<a name="line.1724"></a>
-<span class="sourceLineNo">1725</span>        }<a name="line.1725"></a>
-<span class="sourceLineNo">1726</span><a name="line.1726"></a>
-<span class="sourceLineNo">1727</span>} //NcorePackageImpl<a name="line.1727"></a>
+<span class="sourceLineNo">1455</span>                           "reference-type", "map: Map\nlist: List\nstring: String"<a name="line.1455"></a>
+<span class="sourceLineNo">1456</span>                   });<a name="line.1456"></a>
+<span class="sourceLineNo">1457</span>                addAnnotation<a name="line.1457"></a>
+<span class="sourceLineNo">1458</span>                  (getMap_Value(),<a name="line.1458"></a>
+<span class="sourceLineNo">1459</span>                   source,<a name="line.1459"></a>
+<span class="sourceLineNo">1460</span>                   new String[] {<a name="line.1460"></a>
+<span class="sourceLineNo">1461</span>                           "reference-type", "map: MapProperty\nlist: ListProperty\nstring: StringProperty\ninteger: IntegerProperty",<a name="line.1461"></a>
+<span class="sourceLineNo">1462</span>                           "value-feature", "value"<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span>                   });<a name="line.1463"></a>
+<span class="sourceLineNo">1464</span>                addAnnotation<a name="line.1464"></a>
+<span class="sourceLineNo">1465</span>                  (getInteger_Value(),<a name="line.1465"></a>
+<span class="sourceLineNo">1466</span>                   source,<a name="line.1466"></a>
+<span class="sourceLineNo">1467</span>                   new String[] {<a name="line.1467"></a>
+<span class="sourceLineNo">1468</span>                           "default-feature", "true"<a name="line.1468"></a>
+<span class="sourceLineNo">1469</span>                   });<a name="line.1469"></a>
+<span class="sourceLineNo">1470</span>                addAnnotation<a name="line.1470"></a>
+<span class="sourceLineNo">1471</span>                  (getBoolean_Value(),<a name="line.1471"></a>
+<span class="sourceLineNo">1472</span>                   source,<a name="line.1472"></a>
+<span class="sourceLineNo">1473</span>                   new String[] {<a name="line.1473"></a>
+<span class="sourceLineNo">1474</span>                           "default-feature", "true"<a name="line.1474"></a>
+<span class="sourceLineNo">1475</span>                   });<a name="line.1475"></a>
+<span class="sourceLineNo">1476</span>                addAnnotation<a name="line.1476"></a>
+<span class="sourceLineNo">1477</span>                  (getEObjectProperty_Value(),<a name="line.1477"></a>
+<span class="sourceLineNo">1478</span>                   source,<a name="line.1478"></a>
+<span class="sourceLineNo">1479</span>                   new String[] {<a name="line.1479"></a>
+<span class="sourceLineNo">1480</span>                           "default-feature", "true"<a name="line.1480"></a>
+<span class="sourceLineNo">1481</span>                   });<a name="line.1481"></a>
+<span class="sourceLineNo">1482</span>        }<a name="line.1482"></a>
+<span class="sourceLineNo">1483</span><a name="line.1483"></a>
+<span class="sourceLineNo">1484</span>        /**<a name="line.1484"></a>
+<span class="sourceLineNo">1485</span>         * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/GenModel&lt;/b&gt;.<a name="line.1485"></a>
+<span class="sourceLineNo">1486</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.1486"></a>
+<span class="sourceLineNo">1487</span>         * &lt;!-- end-user-doc --&gt;<a name="line.1487"></a>
+<span class="sourceLineNo">1488</span>         * @generated<a name="line.1488"></a>
+<span class="sourceLineNo">1489</span>         */<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span>        protected void createGenModelAnnotations() {<a name="line.1490"></a>
+<span class="sourceLineNo">1491</span>                String source = "http://www.eclipse.org/emf/2002/GenModel";<a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>                addAnnotation<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span>                  (instantEDataType,<a name="line.1493"></a>
+<span class="sourceLineNo">1494</span>                   source,<a name="line.1494"></a>
+<span class="sourceLineNo">1495</span>                   new String[] {<a name="line.1495"></a>
+<span class="sourceLineNo">1496</span>                           "documentation", "[Instant](https://docs.oracle.com/javase/8/docs/api/java/time/Instant.html) is a single instantaneous point on the time-line. \nIf instant specification contains ``Z``, then it is parsed using [Instant.parse()](https://docs.oracle.com/javase/8/docs/api/java/time/Instant.html#parse-java.lang.CharSequence-) method.\nOtherwise the specification is used to construct ``java.util.Date`` which is then converted to instant.\n\nExamples:\n\n* ``2021-12-03T10:15:30.00Z`` - loaded using ``Instant.parse()``\n* ``10/1/2021`` - loaded using ``new Date()`` and then converted to instant.\n\n"<a name="line.1496"></a>
+<span class="sourceLineNo">1497</span>                   });<a name="line.1497"></a>
+<span class="sourceLineNo">1498</span>                addAnnotation<a name="line.1498"></a>
+<span class="sourceLineNo">1499</span>                  (durationEDataType,<a name="line.1499"></a>
+<span class="sourceLineNo">1500</span>                   source,<a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>                   new String[] {<a name="line.1501"></a>
+<span class="sourceLineNo">1502</span>                           "documentation", "[Duration](https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html) is an amount of time in the [ISO-8601 Duration format](https://en.wikipedia.org/wiki/ISO_8601#Duration). Supports days and smaller units. Weeks, months and years are not supported. Example: ``P28DT10H``."<a name="line.1502"></a>
+<span class="sourceLineNo">1503</span>                   });<a name="line.1503"></a>
+<span class="sourceLineNo">1504</span>                addAnnotation<a name="line.1504"></a>
+<span class="sourceLineNo">1505</span>                  (getTemporal__After__Temporal(),<a name="line.1505"></a>
+<span class="sourceLineNo">1506</span>                   source,<a name="line.1506"></a>
+<span class="sourceLineNo">1507</span>                   new String[] {<a name="line.1507"></a>
+<span class="sourceLineNo">1508</span>                           "documentation", "Tests if this temporal is after the specified temporal. Returns null if unknown, e.g. two unrelated events."<a name="line.1508"></a>
+<span class="sourceLineNo">1509</span>                   });<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>                addAnnotation<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>                  (getTemporal__Before__Temporal(),<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>                   source,<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>                   new String[] {<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span>                           "documentation", "Tests if this temporal is before the specified temporal. Returns null if unknown, e.g. two unrelated events."<a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>                   });<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span>                addAnnotation<a name="line.1516"></a>
+<span class="sourceLineNo">1517</span>                  (getTemporal__Coincides__Temporal(),<a name="line.1517"></a>
+<span class="sourceLineNo">1518</span>                   source,<a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>                   new String[] {<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>                           "documentation", "Tests if this temporal occurs at the same point on the time-line as the specified temporal. Returns null if unknown, e.g. two unrelated events."<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span>                   });<a name="line.1521"></a>
+<span class="sourceLineNo">1522</span>                addAnnotation<a name="line.1522"></a>
+<span class="sourceLineNo">1523</span>                  (getTemporal__Normalize(),<a name="line.1523"></a>
+<span class="sourceLineNo">1524</span>                   source,<a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>                   new String[] {<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span>                           "documentation", "Returns a normalized instance of this temporal not contained in the model. Normalization walks through the temporal chain to the root temporal. If that root temporal is instant/absolute then the normalized instance would be instant/absolute. Otherwise the normalized instance would contain the root temporal as its base and offset would be the sum of all offsets."<a name="line.1526"></a>
+<span class="sourceLineNo">1527</span>                   });<a name="line.1527"></a>
+<span class="sourceLineNo">1528</span>                addAnnotation<a name="line.1528"></a>
+<span class="sourceLineNo">1529</span>                  (getTemporal__Minus__Temporal(),<a name="line.1529"></a>
+<span class="sourceLineNo">1530</span>                   source,<a name="line.1530"></a>
+<span class="sourceLineNo">1531</span>                   new String[] {<a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>                           "documentation", "Returns [duration](Duration.html) difference between this temporal and the argument temporal - how much this temporal is after the argument on the time-line, if difference can be computed, e.g. both this temporal and the argument temporal are instant or trace to the same base temporal. Returns null otherwise."<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span>                   });<a name="line.1533"></a>
+<span class="sourceLineNo">1534</span>                addAnnotation<a name="line.1534"></a>
+<span class="sourceLineNo">1535</span>                  (getTemporal__Minus__Duration(),<a name="line.1535"></a>
+<span class="sourceLineNo">1536</span>                   source,<a name="line.1536"></a>
+<span class="sourceLineNo">1537</span>                   new String[] {<a name="line.1537"></a>
+<span class="sourceLineNo">1538</span>                           "documentation", "Returns a temporal based on this one offset by negation of the argument [duration](Duration.html). Null duration is treated as zero and set as-is (not negated)."<a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>                   });<a name="line.1539"></a>
+<span class="sourceLineNo">1540</span>                addAnnotation<a name="line.1540"></a>
+<span class="sourceLineNo">1541</span>                  (getTemporal__Plus__Duration(),<a name="line.1541"></a>
+<span class="sourceLineNo">1542</span>                   source,<a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>                   new String[] {<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>                           "documentation", "Returns a temporal based on this one offset by the argument [duration](Duration.html). Duration can be null."<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>                   });<a name="line.1545"></a>
+<span class="sourceLineNo">1546</span>                addAnnotation<a name="line.1546"></a>
+<span class="sourceLineNo">1547</span>                  (getTemporal__Copy(),<a name="line.1547"></a>
+<span class="sourceLineNo">1548</span>                   source,<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span>                   new String[] {<a name="line.1549"></a>
+<span class="sourceLineNo">1550</span>                           "documentation", "Returns a deep copy of self with bounds copied. Other containment references are not set."<a name="line.1550"></a>
+<span class="sourceLineNo">1551</span>                   });<a name="line.1551"></a>
+<span class="sourceLineNo">1552</span>                addAnnotation<a name="line.1552"></a>
+<span class="sourceLineNo">1553</span>                  (getTemporal_Instant(),<a name="line.1553"></a>
+<span class="sourceLineNo">1554</span>                   source,<a name="line.1554"></a>
+<span class="sourceLineNo">1555</span>                   new String[] {<a name="line.1555"></a>
+<span class="sourceLineNo">1556</span>                           "documentation", "An absolute point on the time-line. E.g. ``2021/07/04``."<a name="line.1556"></a>
+<span class="sourceLineNo">1557</span>                   });<a name="line.1557"></a>
+<span class="sourceLineNo">1558</span>                addAnnotation<a name="line.1558"></a>
+<span class="sourceLineNo">1559</span>                  (getTemporal_Base(),<a name="line.1559"></a>
+<span class="sourceLineNo">1560</span>                   source,<a name="line.1560"></a>
+<span class="sourceLineNo">1561</span>                   new String[] {<a name="line.1561"></a>
+<span class="sourceLineNo">1562</span>                           "documentation", "Base of this temporal."<a name="line.1562"></a>
+<span class="sourceLineNo">1563</span>                   });<a name="line.1563"></a>
+<span class="sourceLineNo">1564</span>                addAnnotation<a name="line.1564"></a>
+<span class="sourceLineNo">1565</span>                  (getTemporal_Offset(),<a name="line.1565"></a>
+<span class="sourceLineNo">1566</span>                   source,<a name="line.1566"></a>
+<span class="sourceLineNo">1567</span>                   new String[] {<a name="line.1567"></a>
+<span class="sourceLineNo">1568</span>                           "documentation", "Time offset from the base in [ISO-8601 durations](https://en.wikipedia.org/wiki/ISO_8601#Durations) format. \n\nExamples:\n\n* ``P1H`` for one hour later.\n* ``-P20D`` or ``P-20D`` for 20 days before. Can be null (zero), e.g. if one [period](Period.html) starts right after another period ends."<a name="line.1568"></a>
+<span class="sourceLineNo">1569</span>                   });<a name="line.1569"></a>
+<span class="sourceLineNo">1570</span>                addAnnotation<a name="line.1570"></a>
+<span class="sourceLineNo">1571</span>                  (getTemporal_Derivatives(),<a name="line.1571"></a>
+<span class="sourceLineNo">1572</span>                   source,<a name="line.1572"></a>
+<span class="sourceLineNo">1573</span>                   new String[] {<a name="line.1573"></a>
+<span class="sourceLineNo">1574</span>                           "documentation", "Temporals which are based on this temporal."<a name="line.1574"></a>
+<span class="sourceLineNo">1575</span>                   });<a name="line.1575"></a>
+<span class="sourceLineNo">1576</span>                addAnnotation<a name="line.1576"></a>
+<span class="sourceLineNo">1577</span>                  (getTemporal_LowerBounds(),<a name="line.1577"></a>
+<span class="sourceLineNo">1578</span>                   source,<a name="line.1578"></a>
+<span class="sourceLineNo">1579</span>                   new String[] {<a name="line.1579"></a>
+<span class="sourceLineNo">1580</span>                           "documentation", "Lower bounds of a temporal. E.g. exact time of some temporal might not be known at a moment, but it might be known that it should not be before than some other temporal - a lower bound. Lower bounds are used in validations and before/after computations. "<a name="line.1580"></a>
+<span class="sourceLineNo">1581</span>                   });<a name="line.1581"></a>
+<span class="sourceLineNo">1582</span>                addAnnotation<a name="line.1582"></a>
+<span class="sourceLineNo">1583</span>                  (getTemporal_UpperBounds(),<a name="line.1583"></a>
+<span class="sourceLineNo">1584</span>                   source,<a name="line.1584"></a>
+<span class="sourceLineNo">1585</span>                   new String[] {<a name="line.1585"></a>
+<span class="sourceLineNo">1586</span>                           "documentation", "Upper bounds of a temporal. E.g. exact time of some temporal might not be known at a moment, but it might be known that it should not be after some other temporal - an upper bound. Upper bounds are used in validations and before/after computations. "<a name="line.1586"></a>
+<span class="sourceLineNo">1587</span>                   });<a name="line.1587"></a>
+<span class="sourceLineNo">1588</span>                addAnnotation<a name="line.1588"></a>
+<span class="sourceLineNo">1589</span>                  (getPeriod_Start(),<a name="line.1589"></a>
+<span class="sourceLineNo">1590</span>                   source,<a name="line.1590"></a>
+<span class="sourceLineNo">1591</span>                   new String[] {<a name="line.1591"></a>
+<span class="sourceLineNo">1592</span>                           "documentation", "Period start."<a name="line.1592"></a>
+<span class="sourceLineNo">1593</span>                   });<a name="line.1593"></a>
+<span class="sourceLineNo">1594</span>                addAnnotation<a name="line.1594"></a>
+<span class="sourceLineNo">1595</span>                  (getPeriod_End(),<a name="line.1595"></a>
+<span class="sourceLineNo">1596</span>                   source,<a name="line.1596"></a>
+<span class="sourceLineNo">1597</span>                   new String[] {<a name="line.1597"></a>
+<span class="sourceLineNo">1598</span>                           "documentation", "Period end."<a name="line.1598"></a>
+<span class="sourceLineNo">1599</span>                   });<a name="line.1599"></a>
+<span class="sourceLineNo">1600</span>                addAnnotation<a name="line.1600"></a>
+<span class="sourceLineNo">1601</span>                  (getPeriod_Duration(),<a name="line.1601"></a>
+<span class="sourceLineNo">1602</span>                   source,<a name="line.1602"></a>
+<span class="sourceLineNo">1603</span>                   new String[] {<a name="line.1603"></a>
+<span class="sourceLineNo">1604</span>                           "documentation", "Positive period duration in [ISO-8601 durations](https://en.wikipedia.org/wiki/ISO_8601#Durations) format. E.g. ``P1M`` for one month or ``P20D`` for 20 days."<a name="line.1604"></a>
+<span class="sourceLineNo">1605</span>                   });<a name="line.1605"></a>
+<span class="sourceLineNo">1606</span>                addAnnotation<a name="line.1606"></a>
+<span class="sourceLineNo">1607</span>                  (getModelElement_Uri(),<a name="line.1607"></a>
+<span class="sourceLineNo">1608</span>                   source,<a name="line.1608"></a>
+<span class="sourceLineNo">1609</span>                   new String[] {<a name="line.1609"></a>
+<span class="sourceLineNo">1610</span>                           "documentation", "If element\'s URI is not set then its default value is derived from the container URI and containment reference. \nThis is a logical URI and it can be used for cross-referencing of elements in a resource-independent fashion.\n"<a name="line.1610"></a>
+<span class="sourceLineNo">1611</span>                   });<a name="line.1611"></a>
+<span class="sourceLineNo">1612</span>                addAnnotation<a name="line.1612"></a>
+<span class="sourceLineNo">1613</span>                  (getModelElement_Description(),<a name="line.1613"></a>
+<span class="sourceLineNo">1614</span>                   source,<a name="line.1614"></a>
+<span class="sourceLineNo">1615</span>                   new String[] {<a name="line.1615"></a>
+<span class="sourceLineNo">1616</span>                           "documentation", "Description in HTML."<a name="line.1616"></a>
+<span class="sourceLineNo">1617</span>                   });<a name="line.1617"></a>
+<span class="sourceLineNo">1618</span>                addAnnotation<a name="line.1618"></a>
+<span class="sourceLineNo">1619</span>                  (getModelElement_ActionPrototype(),<a name="line.1619"></a>
+<span class="sourceLineNo">1620</span>                   source,<a name="line.1620"></a>
+<span class="sourceLineNo">1621</span>                   new String[] {<a name="line.1621"></a>
+<span class="sourceLineNo">1622</span>                           "documentation", "If this reference is not set then EObjectActionProvider creates a new Action using AppFactory in newAction() method. \nIf this reference is set and is Action then a copy of the action is created and returned.\nOtherwise the reference value it is adapted to ActionProvider which is used to create an action. \nThis allows to merge actions and chain action generation. E.g. generate Ecore model documentation and merge it into the Engineering documentation."<a name="line.1622"></a>
+<span class="sourceLineNo">1623</span>                   });<a name="line.1623"></a>
+<span class="sourceLineNo">1624</span>                addAnnotation<a name="line.1624"></a>
+<span class="sourceLineNo">1625</span>                  (getNamedElement_Name(),<a name="line.1625"></a>
+<span class="sourceLineNo">1626</span>                   source,<a name="line.1626"></a>
+<span class="sourceLineNo">1627</span>                   new String[] {<a name="line.1627"></a>
+<span class="sourceLineNo">1628</span>                           "documentation", "Element name."<a name="line.1628"></a>
+<span class="sourceLineNo">1629</span>                   });<a name="line.1629"></a>
+<span class="sourceLineNo">1630</span>                addAnnotation<a name="line.1630"></a>
+<span class="sourceLineNo">1631</span>                  (stringEntryEClass,<a name="line.1631"></a>
+<span class="sourceLineNo">1632</span>                   source,<a name="line.1632"></a>
+<span class="sourceLineNo">1633</span>                   new String[] {<a name="line.1633"></a>
+<span class="sourceLineNo">1634</span>                           "documentation", "EMap entry with String value"<a name="line.1634"></a>
+<span class="sourceLineNo">1635</span>                   });<a name="line.1635"></a>
+<span class="sourceLineNo">1636</span>                addAnnotation<a name="line.1636"></a>
+<span class="sourceLineNo">1637</span>                  (getStringEntry_Key(),<a name="line.1637"></a>
+<span class="sourceLineNo">1638</span>                   source,<a name="line.1638"></a>
+<span class="sourceLineNo">1639</span>                   new String[] {<a name="line.1639"></a>
+<span class="sourceLineNo">1640</span>                           "documentation", "Artifact key."<a name="line.1640"></a>
+<span class="sourceLineNo">1641</span>                   });<a name="line.1641"></a>
+<span class="sourceLineNo">1642</span>                addAnnotation<a name="line.1642"></a>
+<span class="sourceLineNo">1643</span>                  (integerEntryEClass,<a name="line.1643"></a>
+<span class="sourceLineNo">1644</span>                   source,<a name="line.1644"></a>
+<span class="sourceLineNo">1645</span>                   new String[] {<a name="line.1645"></a>
+<span class="sourceLineNo">1646</span>                           "documentation", "EMap entry with int value"<a name="line.1646"></a>
+<span class="sourceLineNo">1647</span>                   });<a name="line.1647"></a>
+<span class="sourceLineNo">1648</span>                addAnnotation<a name="line.1648"></a>
+<span class="sourceLineNo">1649</span>                  (getIntegerEntry_Key(),<a name="line.1649"></a>
+<span class="sourceLineNo">1650</span>                   source,<a name="line.1650"></a>
+<span class="sourceLineNo">1651</span>                   new String[] {<a name="line.1651"></a>
+<span class="sourceLineNo">1652</span>                           "documentation", "Artifact key."<a name="line.1652"></a>
+<span class="sourceLineNo">1653</span>                   });<a name="line.1653"></a>
+<span class="sourceLineNo">1654</span>                addAnnotation<a name="line.1654"></a>
+<span class="sourceLineNo">1655</span>                  (booleanEntryEClass,<a name="line.1655"></a>
+<span class="sourceLineNo">1656</span>                   source,<a name="line.1656"></a>
+<span class="sourceLineNo">1657</span>                   new String[] {<a name="line.1657"></a>
+<span class="sourceLineNo">1658</span>                           "documentation", "EMap entry with boolean value"<a name="line.1658"></a>
+<span class="sourceLineNo">1659</span>                   });<a name="line.1659"></a>
+<span class="sourceLineNo">1660</span>                addAnnotation<a name="line.1660"></a>
+<span class="sourceLineNo">1661</span>                  (getBooleanEntry_Key(),<a name="line.1661"></a>
+<span class="sourceLineNo">1662</span>                   source,<a name="line.1662"></a>
+<span class="sourceLineNo">1663</span>                   new String[] {<a name="line.1663"></a>
+<span class="sourceLineNo">1664</span>                           "documentation", "Artifact key."<a name="line.1664"></a>
+<span class="sourceLineNo">1665</span>                   });<a name="line.1665"></a>
+<span class="sourceLineNo">1666</span>                addAnnotation<a name="line.1666"></a>
+<span class="sourceLineNo">1667</span>                  (gitMarkerEClass,<a name="line.1667"></a>
+<span class="sourceLineNo">1668</span>                   source,<a name="line.1668"></a>
+<span class="sourceLineNo">1669</span>                   new String[] {<a name="line.1669"></a>
+<span class="sourceLineNo">1670</span>                           "documentation", "Marker with Git information such as a map of remotes."<a name="line.1670"></a>
+<span class="sourceLineNo">1671</span>                   });<a name="line.1671"></a>
+<span class="sourceLineNo">1672</span>                addAnnotation<a name="line.1672"></a>
+<span class="sourceLineNo">1673</span>                  (getGitMarker_Path(),<a name="line.1673"></a>
+<span class="sourceLineNo">1674</span>                   source,<a name="line.1674"></a>
+<span class="sourceLineNo">1675</span>                   new String[] {<a name="line.1675"></a>
+<span class="sourceLineNo">1676</span>                           "documentation", "Path in the repository"<a name="line.1676"></a>
+<span class="sourceLineNo">1677</span>                   });<a name="line.1677"></a>
+<span class="sourceLineNo">1678</span>                addAnnotation<a name="line.1678"></a>
+<span class="sourceLineNo">1679</span>                  (getGitMarker_Remotes(),<a name="line.1679"></a>
+<span class="sourceLineNo">1680</span>                   source,<a name="line.1680"></a>
+<span class="sourceLineNo">1681</span>                   new String[] {<a name="line.1681"></a>
+<span class="sourceLineNo">1682</span>                           "documentation", "A map of remote names to url\'s."<a name="line.1682"></a>
+<span class="sourceLineNo">1683</span>                   });<a name="line.1683"></a>
+<span class="sourceLineNo">1684</span>                addAnnotation<a name="line.1684"></a>
+<span class="sourceLineNo">1685</span>                  (getGitMarker_Branch(),<a name="line.1685"></a>
+<span class="sourceLineNo">1686</span>                   source,<a name="line.1686"></a>
+<span class="sourceLineNo">1687</span>                   new String[] {<a name="line.1687"></a>
+<span class="sourceLineNo">1688</span>                           "documentation", "Short branch name"<a name="line.1688"></a>
+<span class="sourceLineNo">1689</span>                   });<a name="line.1689"></a>
+<span class="sourceLineNo">1690</span>                addAnnotation<a name="line.1690"></a>
+<span class="sourceLineNo">1691</span>                  (getGitMarker_Head(),<a name="line.1691"></a>
+<span class="sourceLineNo">1692</span>                   source,<a name="line.1692"></a>
+<span class="sourceLineNo">1693</span>                   new String[] {<a name="line.1693"></a>
+<span class="sourceLineNo">1694</span>                           "documentation", "Commit ID of the head"<a name="line.1694"></a>
+<span class="sourceLineNo">1695</span>                   });<a name="line.1695"></a>
+<span class="sourceLineNo">1696</span>                addAnnotation<a name="line.1696"></a>
+<span class="sourceLineNo">1697</span>                  (getGitMarker_HeadRefs(),<a name="line.1697"></a>
+<span class="sourceLineNo">1698</span>                   source,<a name="line.1698"></a>
+<span class="sourceLineNo">1699</span>                   new String[] {<a name="line.1699"></a>
+<span class="sourceLineNo">1700</span>                           "documentation", "Refs on the head commit excluding the head itself. E.g. branch, tags."<a name="line.1700"></a>
+<span class="sourceLineNo">1701</span>                   });<a name="line.1701"></a>
+<span class="sourceLineNo">1702</span>        }<a name="line.1702"></a>
+<span class="sourceLineNo">1703</span><a name="line.1703"></a>
+<span class="sourceLineNo">1704</span>        /**<a name="line.1704"></a>
+<span class="sourceLineNo">1705</span>         * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/Ecore&lt;/b&gt;.<a name="line.1705"></a>
+<span class="sourceLineNo">1706</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.1706"></a>
+<span class="sourceLineNo">1707</span>         * &lt;!-- end-user-doc --&gt;<a name="line.1707"></a>
+<span class="sourceLineNo">1708</span>         * @generated<a name="line.1708"></a>
+<span class="sourceLineNo">1709</span>         */<a name="line.1709"></a>
+<span class="sourceLineNo">1710</span>        protected void createEcoreAnnotations() {<a name="line.1710"></a>
+<span class="sourceLineNo">1711</span>                String source = "http://www.eclipse.org/emf/2002/Ecore";<a name="line.1711"></a>
+<span class="sourceLineNo">1712</span>                addAnnotation<a name="line.1712"></a>
+<span class="sourceLineNo">1713</span>                  (temporalEClass,<a name="line.1713"></a>
+<span class="sourceLineNo">1714</span>                   source,<a name="line.1714"></a>
+<span class="sourceLineNo">1715</span>                   new String[] {<a name="line.1715"></a>
+<span class="sourceLineNo">1716</span>                           "constraints", "bounds offset"<a name="line.1716"></a>
+<span class="sourceLineNo">1717</span>                   });<a name="line.1717"></a>
+<span class="sourceLineNo">1718</span>                addAnnotation<a name="line.1718"></a>
+<span class="sourceLineNo">1719</span>                  (periodEClass,<a name="line.1719"></a>
+<span class="sourceLineNo">1720</span>                   source,<a name="line.1720"></a>
+<span class="sourceLineNo">1721</span>                   new String[] {<a name="line.1721"></a>
+<span class="sourceLineNo">1722</span>                           "constraints", "start_end"<a name="line.1722"></a>
+<span class="sourceLineNo">1723</span>                   });<a name="line.1723"></a>
+<span class="sourceLineNo">1724</span>        }<a name="line.1724"></a>
+<span class="sourceLineNo">1725</span><a name="line.1725"></a>
+<span class="sourceLineNo">1726</span>} //NcorePackageImpl<a name="line.1726"></a>
 
 
 
