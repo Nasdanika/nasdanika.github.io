@@ -9,19 +9,20 @@
 <pre><span class="sourceLineNo">001</span>package org.nasdanika.emf.persistence;<a name="line.1"></a>
 <span class="sourceLineNo">002</span><a name="line.2"></a>
 <span class="sourceLineNo">003</span>import org.eclipse.emf.common.notify.impl.AdapterImpl;<a name="line.3"></a>
-<span class="sourceLineNo">004</span><a name="line.4"></a>
-<span class="sourceLineNo">005</span>public abstract class LoadTrackerAdapter extends AdapterImpl implements LoadTracker {<a name="line.5"></a>
-<span class="sourceLineNo">006</span><a name="line.6"></a>
-<span class="sourceLineNo">007</span>        public LoadTrackerAdapter() {<a name="line.7"></a>
-<span class="sourceLineNo">008</span>                // TODO Auto-generated constructor stub<a name="line.8"></a>
-<span class="sourceLineNo">009</span>        }<a name="line.9"></a>
-<span class="sourceLineNo">010</span>        <a name="line.10"></a>
-<span class="sourceLineNo">011</span>        @Override<a name="line.11"></a>
-<span class="sourceLineNo">012</span>        public boolean isAdapterForType(Object type) {<a name="line.12"></a>
-<span class="sourceLineNo">013</span>                return LoadTracker.class == type;<a name="line.13"></a>
-<span class="sourceLineNo">014</span>        }<a name="line.14"></a>
-<span class="sourceLineNo">015</span><a name="line.15"></a>
-<span class="sourceLineNo">016</span>}<a name="line.16"></a>
+<span class="sourceLineNo">004</span>import org.nasdanika.common.persistence.LoadTracker;<a name="line.4"></a>
+<span class="sourceLineNo">005</span><a name="line.5"></a>
+<span class="sourceLineNo">006</span>public abstract class LoadTrackerAdapter extends AdapterImpl implements LoadTracker {<a name="line.6"></a>
+<span class="sourceLineNo">007</span><a name="line.7"></a>
+<span class="sourceLineNo">008</span>        public LoadTrackerAdapter() {<a name="line.8"></a>
+<span class="sourceLineNo">009</span>                // TODO Auto-generated constructor stub<a name="line.9"></a>
+<span class="sourceLineNo">010</span>        }<a name="line.10"></a>
+<span class="sourceLineNo">011</span>        <a name="line.11"></a>
+<span class="sourceLineNo">012</span>        @Override<a name="line.12"></a>
+<span class="sourceLineNo">013</span>        public boolean isAdapterForType(Object type) {<a name="line.13"></a>
+<span class="sourceLineNo">014</span>                return LoadTracker.class == type;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>        }<a name="line.15"></a>
+<span class="sourceLineNo">016</span><a name="line.16"></a>
+<span class="sourceLineNo">017</span>}<a name="line.17"></a>
 
 
 

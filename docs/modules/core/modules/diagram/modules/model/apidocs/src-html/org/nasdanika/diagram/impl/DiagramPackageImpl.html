@@ -812,228 +812,253 @@
 <span class="sourceLineNo">804</span>                   source,<a name="line.804"></a>
 <span class="sourceLineNo">805</span>                   new String[] {<a name="line.805"></a>
 <span class="sourceLineNo">806</span>                           "reference-type", "map: \n  ns-uri: urn:org.nasdanika.ncore\n  name: MapProperty\nlist:\n  ns-uri: urn:org.nasdanika.ncore\n  name: ListProperty\nstring:\n  ns-uri: urn:org.nasdanika.ncore\n  name: StringProperty\n",<a name="line.806"></a>
-<span class="sourceLineNo">807</span>                           "value-feature", "value"<a name="line.807"></a>
-<span class="sourceLineNo">808</span>                   });<a name="line.808"></a>
-<span class="sourceLineNo">809</span>                addAnnotation<a name="line.809"></a>
-<span class="sourceLineNo">810</span>                  (diagramElementEClass,<a name="line.810"></a>
-<span class="sourceLineNo">811</span>                   source,<a name="line.811"></a>
-<span class="sourceLineNo">812</span>                   new String[] {<a name="line.812"></a>
-<span class="sourceLineNo">813</span>                           "documentation-reference", "doc/diagram-element.md"<a name="line.813"></a>
-<span class="sourceLineNo">814</span>                   });<a name="line.814"></a>
-<span class="sourceLineNo">815</span>                addAnnotation<a name="line.815"></a>
-<span class="sourceLineNo">816</span>                  (diagramEClass,<a name="line.816"></a>
-<span class="sourceLineNo">817</span>                   source,<a name="line.817"></a>
-<span class="sourceLineNo">818</span>                   new String[] {<a name="line.818"></a>
-<span class="sourceLineNo">819</span>                           "documentation-reference", "doc/diagram.md"<a name="line.819"></a>
-<span class="sourceLineNo">820</span>                   });<a name="line.820"></a>
-<span class="sourceLineNo">821</span>                addAnnotation<a name="line.821"></a>
-<span class="sourceLineNo">822</span>                  (getDiagram_Type(),<a name="line.822"></a>
-<span class="sourceLineNo">823</span>                   source,<a name="line.823"></a>
-<span class="sourceLineNo">824</span>                   new String[] {<a name="line.824"></a>
-<span class="sourceLineNo">825</span>                           "documentation-reference", "doc/diagram-type.md"<a name="line.825"></a>
-<span class="sourceLineNo">826</span>                   });<a name="line.826"></a>
-<span class="sourceLineNo">827</span>                addAnnotation<a name="line.827"></a>
-<span class="sourceLineNo">828</span>                  (getDiagram_Notes(),<a name="line.828"></a>
-<span class="sourceLineNo">829</span>                   source,<a name="line.829"></a>
-<span class="sourceLineNo">830</span>                   new String[] {<a name="line.830"></a>
-<span class="sourceLineNo">831</span>                           "homogenous", "true",<a name="line.831"></a>
-<span class="sourceLineNo">832</span>                           "strict-containment", "true"<a name="line.832"></a>
-<span class="sourceLineNo">833</span>                   });<a name="line.833"></a>
-<span class="sourceLineNo">834</span>                addAnnotation<a name="line.834"></a>
-<span class="sourceLineNo">835</span>                  (getDiagram_Properties(),<a name="line.835"></a>
-<span class="sourceLineNo">836</span>                   source,<a name="line.836"></a>
-<span class="sourceLineNo">837</span>                   new String[] {<a name="line.837"></a>
-<span class="sourceLineNo">838</span>                           "documentation-reference", "doc/diagram-properties.md",<a name="line.838"></a>
-<span class="sourceLineNo">839</span>                           "reference-type", "map: \n  ns-uri: urn:org.nasdanika.ncore\n  name: MapProperty\nlist:\n  ns-uri: urn:org.nasdanika.ncore\n  name: ListProperty\nstring:\n  ns-uri: urn:org.nasdanika.ncore\n  name: StringProperty\n",<a name="line.839"></a>
-<span class="sourceLineNo">840</span>                           "value-feature", "value"<a name="line.840"></a>
-<span class="sourceLineNo">841</span>                   });<a name="line.841"></a>
-<span class="sourceLineNo">842</span>                addAnnotation<a name="line.842"></a>
-<span class="sourceLineNo">843</span>                  (connectionEClass,<a name="line.843"></a>
-<span class="sourceLineNo">844</span>                   source,<a name="line.844"></a>
-<span class="sourceLineNo">845</span>                   new String[] {<a name="line.845"></a>
-<span class="sourceLineNo">846</span>                           "documentation-reference", "doc/connection.md"<a name="line.846"></a>
-<span class="sourceLineNo">847</span>                   });<a name="line.847"></a>
-<span class="sourceLineNo">848</span>        }<a name="line.848"></a>
-<span class="sourceLineNo">849</span><a name="line.849"></a>
-<span class="sourceLineNo">850</span>        /**<a name="line.850"></a>
-<span class="sourceLineNo">851</span>         * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/GenModel&lt;/b&gt;.<a name="line.851"></a>
-<span class="sourceLineNo">852</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.852"></a>
-<span class="sourceLineNo">853</span>         * &lt;!-- end-user-doc --&gt;<a name="line.853"></a>
-<span class="sourceLineNo">854</span>         * @generated<a name="line.854"></a>
-<span class="sourceLineNo">855</span>         */<a name="line.855"></a>
-<span class="sourceLineNo">856</span>        protected void createGenModelAnnotations() {<a name="line.856"></a>
-<span class="sourceLineNo">857</span>                String source = "http://www.eclipse.org/emf/2002/GenModel";<a name="line.857"></a>
-<span class="sourceLineNo">858</span>                addAnnotation<a name="line.858"></a>
-<span class="sourceLineNo">859</span>                  (getLink_Text(),<a name="line.859"></a>
-<span class="sourceLineNo">860</span>                   source,<a name="line.860"></a>
-<span class="sourceLineNo">861</span>                   new String[] {<a name="line.861"></a>
-<span class="sourceLineNo">862</span>                           "documentation", "Link text. Can be empty for diagram elements where text is supplied by the ``name`` reference. If not empty for diagram elements - precedes the name elements."<a name="line.862"></a>
-<span class="sourceLineNo">863</span>                   });<a name="line.863"></a>
-<span class="sourceLineNo">864</span>                addAnnotation<a name="line.864"></a>
-<span class="sourceLineNo">865</span>                  (getLink_Location(),<a name="line.865"></a>
-<span class="sourceLineNo">866</span>                   source,<a name="line.866"></a>
-<span class="sourceLineNo">867</span>                   new String[] {<a name="line.867"></a>
-<span class="sourceLineNo">868</span>                           "documentation", "Link URL. If blank linik is rendered as plain text and tooltip is ignored."<a name="line.868"></a>
-<span class="sourceLineNo">869</span>                   });<a name="line.869"></a>
-<span class="sourceLineNo">870</span>                addAnnotation<a name="line.870"></a>
-<span class="sourceLineNo">871</span>                  (getLink_Tooltip(),<a name="line.871"></a>
-<span class="sourceLineNo">872</span>                   source,<a name="line.872"></a>
-<span class="sourceLineNo">873</span>                   new String[] {<a name="line.873"></a>
-<span class="sourceLineNo">874</span>                           "documentation", "Optional link tooltip."<a name="line.874"></a>
-<span class="sourceLineNo">875</span>                   });<a name="line.875"></a>
-<span class="sourceLineNo">876</span>                addAnnotation<a name="line.876"></a>
-<span class="sourceLineNo">877</span>                  (notePlacementEEnum,<a name="line.877"></a>
-<span class="sourceLineNo">878</span>                   source,<a name="line.878"></a>
-<span class="sourceLineNo">879</span>                   new String[] {<a name="line.879"></a>
-<span class="sourceLineNo">880</span>                           "documentation", "Note placement for diagram elements. Ignored for connections."<a name="line.880"></a>
-<span class="sourceLineNo">881</span>                   });<a name="line.881"></a>
-<span class="sourceLineNo">882</span>                addAnnotation<a name="line.882"></a>
-<span class="sourceLineNo">883</span>                  (getNote_Text(),<a name="line.883"></a>
-<span class="sourceLineNo">884</span>                   source,<a name="line.884"></a>
-<span class="sourceLineNo">885</span>                   new String[] {<a name="line.885"></a>
-<span class="sourceLineNo">886</span>                           "documentation", "Note text. Can be empty for notes where text is supplied by the ``content`` reference. If not empty  - precedes the content elements."<a name="line.886"></a>
-<span class="sourceLineNo">887</span>                   });<a name="line.887"></a>
-<span class="sourceLineNo">888</span>                addAnnotation<a name="line.888"></a>
-<span class="sourceLineNo">889</span>                  (getNote_Content(),<a name="line.889"></a>
-<span class="sourceLineNo">890</span>                   source,<a name="line.890"></a>
-<span class="sourceLineNo">891</span>                   new String[] {<a name="line.891"></a>
-<span class="sourceLineNo">892</span>                           "documentation", "Composite note content to support having links. Elements shall be of type Link of Exec.content.Text."<a name="line.892"></a>
-<span class="sourceLineNo">893</span>                   });<a name="line.893"></a>
-<span class="sourceLineNo">894</span>                addAnnotation<a name="line.894"></a>
-<span class="sourceLineNo">895</span>                  (getNote_Placement(),<a name="line.895"></a>
-<span class="sourceLineNo">896</span>                   source,<a name="line.896"></a>
-<span class="sourceLineNo">897</span>                   new String[] {<a name="line.897"></a>
-<span class="sourceLineNo">898</span>                           "documentation", "Note placement for diagram elements. Ignored for connections."<a name="line.898"></a>
-<span class="sourceLineNo">899</span>                   });<a name="line.899"></a>
-<span class="sourceLineNo">900</span>                addAnnotation<a name="line.900"></a>
-<span class="sourceLineNo">901</span>                  (getStyle_Type(),<a name="line.901"></a>
-<span class="sourceLineNo">902</span>                   source,<a name="line.902"></a>
-<span class="sourceLineNo">903</span>                   new String[] {<a name="line.903"></a>
-<span class="sourceLineNo">904</span>                           "documentation", "For connections - connection type. E.g. ``--&gt;`` or ``..&gt;``. To support styling connection type shall contain ``${style}`` token which will be expanded during generation. E.g. ``-${style}-&gt;``.\nFor diagram elements - element type e.g. component, join, ..."<a name="line.904"></a>
-<span class="sourceLineNo">905</span>                   });<a name="line.905"></a>
-<span class="sourceLineNo">906</span>                addAnnotation<a name="line.906"></a>
-<span class="sourceLineNo">907</span>                  (getStyle_Notes(),<a name="line.907"></a>
-<span class="sourceLineNo">908</span>                   source,<a name="line.908"></a>
-<span class="sourceLineNo">909</span>                   new String[] {<a name="line.909"></a>
-<span class="sourceLineNo">910</span>                           "documentation", "Element notes."<a name="line.910"></a>
-<span class="sourceLineNo">911</span>                   });<a name="line.911"></a>
-<span class="sourceLineNo">912</span>                addAnnotation<a name="line.912"></a>
-<span class="sourceLineNo">913</span>                  (getStyle_Description(),<a name="line.913"></a>
-<span class="sourceLineNo">914</span>                   source,<a name="line.914"></a>
-<span class="sourceLineNo">915</span>                   new String[] {<a name="line.915"></a>
-<span class="sourceLineNo">916</span>                           "documentation", "Composite connection description to support having links in the description. Elements shall be of type Link of Exec.content.Text."<a name="line.916"></a>
-<span class="sourceLineNo">917</span>                   });<a name="line.917"></a>
-<span class="sourceLineNo">918</span>                addAnnotation<a name="line.918"></a>
-<span class="sourceLineNo">919</span>                  (getStyle_Color(),<a name="line.919"></a>
-<span class="sourceLineNo">920</span>                   source,<a name="line.920"></a>
-<span class="sourceLineNo">921</span>                   new String[] {<a name="line.921"></a>
-<span class="sourceLineNo">922</span>                           "documentation", "Element color. E.g. ``lightblue`` or ``DDDDDD``."<a name="line.922"></a>
-<span class="sourceLineNo">923</span>                   });<a name="line.923"></a>
-<span class="sourceLineNo">924</span>                addAnnotation<a name="line.924"></a>
-<span class="sourceLineNo">925</span>                  (getStyle_Dashed(),<a name="line.925"></a>
-<span class="sourceLineNo">926</span>                   source,<a name="line.926"></a>
-<span class="sourceLineNo">927</span>                   new String[] {<a name="line.927"></a>
-<span class="sourceLineNo">928</span>                           "documentation", "Dashed border style."<a name="line.928"></a>
-<span class="sourceLineNo">929</span>                   });<a name="line.929"></a>
-<span class="sourceLineNo">930</span>                addAnnotation<a name="line.930"></a>
-<span class="sourceLineNo">931</span>                  (getStyle_Dotted(),<a name="line.931"></a>
-<span class="sourceLineNo">932</span>                   source,<a name="line.932"></a>
-<span class="sourceLineNo">933</span>                   new String[] {<a name="line.933"></a>
-<span class="sourceLineNo">934</span>                           "documentation", "Dotted border style."<a name="line.934"></a>
-<span class="sourceLineNo">935</span>                   });<a name="line.935"></a>
-<span class="sourceLineNo">936</span>                addAnnotation<a name="line.936"></a>
-<span class="sourceLineNo">937</span>                  (getStyle_Bold(),<a name="line.937"></a>
-<span class="sourceLineNo">938</span>                   source,<a name="line.938"></a>
-<span class="sourceLineNo">939</span>                   new String[] {<a name="line.939"></a>
-<span class="sourceLineNo">940</span>                           "documentation", "Bold border style."<a name="line.940"></a>
-<span class="sourceLineNo">941</span>                   });<a name="line.941"></a>
-<span class="sourceLineNo">942</span>                addAnnotation<a name="line.942"></a>
-<span class="sourceLineNo">943</span>                  (getDiagramElement_Name(),<a name="line.943"></a>
-<span class="sourceLineNo">944</span>                   source,<a name="line.944"></a>
-<span class="sourceLineNo">945</span>                   new String[] {<a name="line.945"></a>
-<span class="sourceLineNo">946</span>                           "documentation", "Composite element name to support having links in the name. Elements shall be of type Link of Exec.content.Text."<a name="line.946"></a>
-<span class="sourceLineNo">947</span>                   });<a name="line.947"></a>
-<span class="sourceLineNo">948</span>                addAnnotation<a name="line.948"></a>
-<span class="sourceLineNo">949</span>                  (getDiagramElement_Elements(),<a name="line.949"></a>
-<span class="sourceLineNo">950</span>                   source,<a name="line.950"></a>
-<span class="sourceLineNo">951</span>                   new String[] {<a name="line.951"></a>
-<span class="sourceLineNo">952</span>                           "documentation", "Nested diagram elements."<a name="line.952"></a>
-<span class="sourceLineNo">953</span>                   });<a name="line.953"></a>
-<span class="sourceLineNo">954</span>                addAnnotation<a name="line.954"></a>
-<span class="sourceLineNo">955</span>                  (getDiagramElement_Connections(),<a name="line.955"></a>
-<span class="sourceLineNo">956</span>                   source,<a name="line.956"></a>
-<span class="sourceLineNo">957</span>                   new String[] {<a name="line.957"></a>
-<span class="sourceLineNo">958</span>                           "documentation", "Outbound connections."<a name="line.958"></a>
-<span class="sourceLineNo">959</span>                   });<a name="line.959"></a>
-<span class="sourceLineNo">960</span>                addAnnotation<a name="line.960"></a>
-<span class="sourceLineNo">961</span>                  (getDiagramElement_Stereotype(),<a name="line.961"></a>
-<span class="sourceLineNo">962</span>                   source,<a name="line.962"></a>
-<span class="sourceLineNo">963</span>                   new String[] {<a name="line.963"></a>
-<span class="sourceLineNo">964</span>                           "documentation", "Element stereotype. E.g. ``choice`` or ``fork``."<a name="line.964"></a>
-<span class="sourceLineNo">965</span>                   });<a name="line.965"></a>
-<span class="sourceLineNo">966</span>                addAnnotation<a name="line.966"></a>
-<span class="sourceLineNo">967</span>                  (getDiagramElement_Gradient(),<a name="line.967"></a>
-<span class="sourceLineNo">968</span>                   source,<a name="line.968"></a>
-<span class="sourceLineNo">969</span>                   new String[] {<a name="line.969"></a>
-<span class="sourceLineNo">970</span>                           "documentation", "Gradient color - if set the node is displayed with a gradient from ``color`` to ``gradient``."<a name="line.970"></a>
-<span class="sourceLineNo">971</span>                   });<a name="line.971"></a>
-<span class="sourceLineNo">972</span>                addAnnotation<a name="line.972"></a>
-<span class="sourceLineNo">973</span>                  (getDiagramElement_Border(),<a name="line.973"></a>
-<span class="sourceLineNo">974</span>                   source,<a name="line.974"></a>
-<span class="sourceLineNo">975</span>                   new String[] {<a name="line.975"></a>
-<span class="sourceLineNo">976</span>                           "documentation", "Border color. E.g. ``lightblue`` or ``DDDDDD``."<a name="line.976"></a>
-<span class="sourceLineNo">977</span>                   });<a name="line.977"></a>
-<span class="sourceLineNo">978</span>                addAnnotation<a name="line.978"></a>
-<span class="sourceLineNo">979</span>                  (getDiagram_HideEmptyDescription(),<a name="line.979"></a>
-<span class="sourceLineNo">980</span>                   source,<a name="line.980"></a>
-<span class="sourceLineNo">981</span>                   new String[] {<a name="line.981"></a>
-<span class="sourceLineNo">982</span>                           "documentation", "Hides empty descriptions on state diagrams."<a name="line.982"></a>
-<span class="sourceLineNo">983</span>                   });<a name="line.983"></a>
-<span class="sourceLineNo">984</span>                addAnnotation<a name="line.984"></a>
-<span class="sourceLineNo">985</span>                  (getDiagram_HideFootbox(),<a name="line.985"></a>
-<span class="sourceLineNo">986</span>                   source,<a name="line.986"></a>
-<span class="sourceLineNo">987</span>                   new String[] {<a name="line.987"></a>
-<span class="sourceLineNo">988</span>                           "documentation", "Hides footbox on sequence diagrams."<a name="line.988"></a>
-<span class="sourceLineNo">989</span>                   });<a name="line.989"></a>
-<span class="sourceLineNo">990</span>                addAnnotation<a name="line.990"></a>
-<span class="sourceLineNo">991</span>                  (getDiagram_Notes(),<a name="line.991"></a>
-<span class="sourceLineNo">992</span>                   source,<a name="line.992"></a>
-<span class="sourceLineNo">993</span>                   new String[] {<a name="line.993"></a>
-<span class="sourceLineNo">994</span>                           "documentation", "Diagram notes (legend)."<a name="line.994"></a>
-<span class="sourceLineNo">995</span>                   });<a name="line.995"></a>
-<span class="sourceLineNo">996</span>                addAnnotation<a name="line.996"></a>
-<span class="sourceLineNo">997</span>                  (getDiagram_Context(),<a name="line.997"></a>
-<span class="sourceLineNo">998</span>                   source,<a name="line.998"></a>
-<span class="sourceLineNo">999</span>                   new String[] {<a name="line.999"></a>
-<span class="sourceLineNo">1000</span>                           "documentation", "Depth of context elements to show on the diagram. Default is 0. -1 means no limit."<a name="line.1000"></a>
-<span class="sourceLineNo">1001</span>                   });<a name="line.1001"></a>
-<span class="sourceLineNo">1002</span>                addAnnotation<a name="line.1002"></a>
-<span class="sourceLineNo">1003</span>                  (getDiagram_Depth(),<a name="line.1003"></a>
-<span class="sourceLineNo">1004</span>                   source,<a name="line.1004"></a>
-<span class="sourceLineNo">1005</span>                   new String[] {<a name="line.1005"></a>
-<span class="sourceLineNo">1006</span>                           "documentation", "Depth of the diagram partition elements. Default is -1 (no limit). Once the depth is reached content of partitions is not shown."<a name="line.1006"></a>
-<span class="sourceLineNo">1007</span>                   });<a name="line.1007"></a>
-<span class="sourceLineNo">1008</span>                addAnnotation<a name="line.1008"></a>
-<span class="sourceLineNo">1009</span>                  (getConnection_Thickness(),<a name="line.1009"></a>
-<span class="sourceLineNo">1010</span>                   source,<a name="line.1010"></a>
-<span class="sourceLineNo">1011</span>                   new String[] {<a name="line.1011"></a>
-<span class="sourceLineNo">1012</span>                           "documentation", "Connection thickness."<a name="line.1012"></a>
-<span class="sourceLineNo">1013</span>                   });<a name="line.1013"></a>
-<span class="sourceLineNo">1014</span>                addAnnotation<a name="line.1014"></a>
-<span class="sourceLineNo">1015</span>                  (startEClass,<a name="line.1015"></a>
-<span class="sourceLineNo">1016</span>                   source,<a name="line.1016"></a>
-<span class="sourceLineNo">1017</span>                   new String[] {<a name="line.1017"></a>
-<span class="sourceLineNo">1018</span>                           "documentation", "Start pseudo-state."<a name="line.1018"></a>
-<span class="sourceLineNo">1019</span>                   });<a name="line.1019"></a>
-<span class="sourceLineNo">1020</span>                addAnnotation<a name="line.1020"></a>
-<span class="sourceLineNo">1021</span>                  (endEClass,<a name="line.1021"></a>
-<span class="sourceLineNo">1022</span>                   source,<a name="line.1022"></a>
-<span class="sourceLineNo">1023</span>                   new String[] {<a name="line.1023"></a>
-<span class="sourceLineNo">1024</span>                           "documentation", "End pseudo-state."<a name="line.1024"></a>
-<span class="sourceLineNo">1025</span>                   });<a name="line.1025"></a>
-<span class="sourceLineNo">1026</span>        }<a name="line.1026"></a>
-<span class="sourceLineNo">1027</span><a name="line.1027"></a>
-<span class="sourceLineNo">1028</span>} //DiagramPackageImpl<a name="line.1028"></a>
+<span class="sourceLineNo">807</span>                           "value-feature", "value",<a name="line.807"></a>
+<span class="sourceLineNo">808</span>                           "documentation-reference", "doc/style--properties.md"<a name="line.808"></a>
+<span class="sourceLineNo">809</span>                   });<a name="line.809"></a>
+<span class="sourceLineNo">810</span>                addAnnotation<a name="line.810"></a>
+<span class="sourceLineNo">811</span>                  (diagramElementEClass,<a name="line.811"></a>
+<span class="sourceLineNo">812</span>                   source,<a name="line.812"></a>
+<span class="sourceLineNo">813</span>                   new String[] {<a name="line.813"></a>
+<span class="sourceLineNo">814</span>                           "documentation-reference", "doc/diagram-element.md"<a name="line.814"></a>
+<span class="sourceLineNo">815</span>                   });<a name="line.815"></a>
+<span class="sourceLineNo">816</span>                addAnnotation<a name="line.816"></a>
+<span class="sourceLineNo">817</span>                  (diagramEClass,<a name="line.817"></a>
+<span class="sourceLineNo">818</span>                   source,<a name="line.818"></a>
+<span class="sourceLineNo">819</span>                   new String[] {<a name="line.819"></a>
+<span class="sourceLineNo">820</span>                           "documentation-reference", "doc/diagram.md"<a name="line.820"></a>
+<span class="sourceLineNo">821</span>                   });<a name="line.821"></a>
+<span class="sourceLineNo">822</span>                addAnnotation<a name="line.822"></a>
+<span class="sourceLineNo">823</span>                  (getDiagram_Type(),<a name="line.823"></a>
+<span class="sourceLineNo">824</span>                   source,<a name="line.824"></a>
+<span class="sourceLineNo">825</span>                   new String[] {<a name="line.825"></a>
+<span class="sourceLineNo">826</span>                           "documentation-reference", "doc/diagram-type.md"<a name="line.826"></a>
+<span class="sourceLineNo">827</span>                   });<a name="line.827"></a>
+<span class="sourceLineNo">828</span>                addAnnotation<a name="line.828"></a>
+<span class="sourceLineNo">829</span>                  (getDiagram_Notes(),<a name="line.829"></a>
+<span class="sourceLineNo">830</span>                   source,<a name="line.830"></a>
+<span class="sourceLineNo">831</span>                   new String[] {<a name="line.831"></a>
+<span class="sourceLineNo">832</span>                           "homogenous", "true",<a name="line.832"></a>
+<span class="sourceLineNo">833</span>                           "strict-containment", "true"<a name="line.833"></a>
+<span class="sourceLineNo">834</span>                   });<a name="line.834"></a>
+<span class="sourceLineNo">835</span>                addAnnotation<a name="line.835"></a>
+<span class="sourceLineNo">836</span>                  (getDiagram_Properties(),<a name="line.836"></a>
+<span class="sourceLineNo">837</span>                   source,<a name="line.837"></a>
+<span class="sourceLineNo">838</span>                   new String[] {<a name="line.838"></a>
+<span class="sourceLineNo">839</span>                           "documentation-reference", "doc/diagram-properties.md",<a name="line.839"></a>
+<span class="sourceLineNo">840</span>                           "reference-type", "map: \n  ns-uri: urn:org.nasdanika.ncore\n  name: MapProperty\nlist:\n  ns-uri: urn:org.nasdanika.ncore\n  name: ListProperty\nstring:\n  ns-uri: urn:org.nasdanika.ncore\n  name: StringProperty\n",<a name="line.840"></a>
+<span class="sourceLineNo">841</span>                           "value-feature", "value"<a name="line.841"></a>
+<span class="sourceLineNo">842</span>                   });<a name="line.842"></a>
+<span class="sourceLineNo">843</span>                addAnnotation<a name="line.843"></a>
+<span class="sourceLineNo">844</span>                  (connectionEClass,<a name="line.844"></a>
+<span class="sourceLineNo">845</span>                   source,<a name="line.845"></a>
+<span class="sourceLineNo">846</span>                   new String[] {<a name="line.846"></a>
+<span class="sourceLineNo">847</span>                           "documentation-reference", "doc/connection.md"<a name="line.847"></a>
+<span class="sourceLineNo">848</span>                   });<a name="line.848"></a>
+<span class="sourceLineNo">849</span>        }<a name="line.849"></a>
+<span class="sourceLineNo">850</span><a name="line.850"></a>
+<span class="sourceLineNo">851</span>        /**<a name="line.851"></a>
+<span class="sourceLineNo">852</span>         * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/GenModel&lt;/b&gt;.<a name="line.852"></a>
+<span class="sourceLineNo">853</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.853"></a>
+<span class="sourceLineNo">854</span>         * &lt;!-- end-user-doc --&gt;<a name="line.854"></a>
+<span class="sourceLineNo">855</span>         * @generated<a name="line.855"></a>
+<span class="sourceLineNo">856</span>         */<a name="line.856"></a>
+<span class="sourceLineNo">857</span>        protected void createGenModelAnnotations() {<a name="line.857"></a>
+<span class="sourceLineNo">858</span>                String source = "http://www.eclipse.org/emf/2002/GenModel";<a name="line.858"></a>
+<span class="sourceLineNo">859</span>                addAnnotation<a name="line.859"></a>
+<span class="sourceLineNo">860</span>                  (getLink_Text(),<a name="line.860"></a>
+<span class="sourceLineNo">861</span>                   source,<a name="line.861"></a>
+<span class="sourceLineNo">862</span>                   new String[] {<a name="line.862"></a>
+<span class="sourceLineNo">863</span>                           "documentation", "Link text. Can be empty for diagram elements where text is supplied by the ``name`` reference. If not empty for diagram elements - precedes the name elements."<a name="line.863"></a>
+<span class="sourceLineNo">864</span>                   });<a name="line.864"></a>
+<span class="sourceLineNo">865</span>                addAnnotation<a name="line.865"></a>
+<span class="sourceLineNo">866</span>                  (getLink_Location(),<a name="line.866"></a>
+<span class="sourceLineNo">867</span>                   source,<a name="line.867"></a>
+<span class="sourceLineNo">868</span>                   new String[] {<a name="line.868"></a>
+<span class="sourceLineNo">869</span>                           "documentation", "Link URL. If blank linik is rendered as plain text and tooltip is ignored."<a name="line.869"></a>
+<span class="sourceLineNo">870</span>                   });<a name="line.870"></a>
+<span class="sourceLineNo">871</span>                addAnnotation<a name="line.871"></a>
+<span class="sourceLineNo">872</span>                  (getLink_Tooltip(),<a name="line.872"></a>
+<span class="sourceLineNo">873</span>                   source,<a name="line.873"></a>
+<span class="sourceLineNo">874</span>                   new String[] {<a name="line.874"></a>
+<span class="sourceLineNo">875</span>                           "documentation", "Optional link tooltip."<a name="line.875"></a>
+<span class="sourceLineNo">876</span>                   });<a name="line.876"></a>
+<span class="sourceLineNo">877</span>                addAnnotation<a name="line.877"></a>
+<span class="sourceLineNo">878</span>                  (notePlacementEEnum,<a name="line.878"></a>
+<span class="sourceLineNo">879</span>                   source,<a name="line.879"></a>
+<span class="sourceLineNo">880</span>                   new String[] {<a name="line.880"></a>
+<span class="sourceLineNo">881</span>                           "documentation", "Note placement for diagram elements. Ignored for connections."<a name="line.881"></a>
+<span class="sourceLineNo">882</span>                   });<a name="line.882"></a>
+<span class="sourceLineNo">883</span>                addAnnotation<a name="line.883"></a>
+<span class="sourceLineNo">884</span>                  (getNote_Text(),<a name="line.884"></a>
+<span class="sourceLineNo">885</span>                   source,<a name="line.885"></a>
+<span class="sourceLineNo">886</span>                   new String[] {<a name="line.886"></a>
+<span class="sourceLineNo">887</span>                           "documentation", "Note text. Can be empty for notes where text is supplied by the ``content`` reference. If not empty  - precedes the content elements."<a name="line.887"></a>
+<span class="sourceLineNo">888</span>                   });<a name="line.888"></a>
+<span class="sourceLineNo">889</span>                addAnnotation<a name="line.889"></a>
+<span class="sourceLineNo">890</span>                  (getNote_Content(),<a name="line.890"></a>
+<span class="sourceLineNo">891</span>                   source,<a name="line.891"></a>
+<span class="sourceLineNo">892</span>                   new String[] {<a name="line.892"></a>
+<span class="sourceLineNo">893</span>                           "documentation", "Composite note content to support having links. Elements shall be of type Link of Exec.content.Text."<a name="line.893"></a>
+<span class="sourceLineNo">894</span>                   });<a name="line.894"></a>
+<span class="sourceLineNo">895</span>                addAnnotation<a name="line.895"></a>
+<span class="sourceLineNo">896</span>                  (getNote_Placement(),<a name="line.896"></a>
+<span class="sourceLineNo">897</span>                   source,<a name="line.897"></a>
+<span class="sourceLineNo">898</span>                   new String[] {<a name="line.898"></a>
+<span class="sourceLineNo">899</span>                           "documentation", "Note placement for diagram elements. Ignored for connections."<a name="line.899"></a>
+<span class="sourceLineNo">900</span>                   });<a name="line.900"></a>
+<span class="sourceLineNo">901</span>                addAnnotation<a name="line.901"></a>
+<span class="sourceLineNo">902</span>                  (getStyle_Type(),<a name="line.902"></a>
+<span class="sourceLineNo">903</span>                   source,<a name="line.903"></a>
+<span class="sourceLineNo">904</span>                   new String[] {<a name="line.904"></a>
+<span class="sourceLineNo">905</span>                           "documentation", "For connections - connection type. E.g. ``--&gt;`` or ``..&gt;``. To support styling connection type shall contain ``${style}`` token which will be expanded during generation. E.g. ``-${style}-&gt;``.\nFor diagram elements - element type e.g. component, join, ..."<a name="line.905"></a>
+<span class="sourceLineNo">906</span>                   });<a name="line.906"></a>
+<span class="sourceLineNo">907</span>                addAnnotation<a name="line.907"></a>
+<span class="sourceLineNo">908</span>                  (getStyle_Notes(),<a name="line.908"></a>
+<span class="sourceLineNo">909</span>                   source,<a name="line.909"></a>
+<span class="sourceLineNo">910</span>                   new String[] {<a name="line.910"></a>
+<span class="sourceLineNo">911</span>                           "documentation", "Element notes."<a name="line.911"></a>
+<span class="sourceLineNo">912</span>                   });<a name="line.912"></a>
+<span class="sourceLineNo">913</span>                addAnnotation<a name="line.913"></a>
+<span class="sourceLineNo">914</span>                  (getStyle_Description(),<a name="line.914"></a>
+<span class="sourceLineNo">915</span>                   source,<a name="line.915"></a>
+<span class="sourceLineNo">916</span>                   new String[] {<a name="line.916"></a>
+<span class="sourceLineNo">917</span>                           "documentation", "Composite description to support having links in the description. Elements shall be of type Link or Exec.content.Text."<a name="line.917"></a>
+<span class="sourceLineNo">918</span>                   });<a name="line.918"></a>
+<span class="sourceLineNo">919</span>                addAnnotation<a name="line.919"></a>
+<span class="sourceLineNo">920</span>                  (getStyle_Color(),<a name="line.920"></a>
+<span class="sourceLineNo">921</span>                   source,<a name="line.921"></a>
+<span class="sourceLineNo">922</span>                   new String[] {<a name="line.922"></a>
+<span class="sourceLineNo">923</span>                           "documentation", "Element color. E.g. ``lightblue`` or ``DDDDDD``."<a name="line.923"></a>
+<span class="sourceLineNo">924</span>                   });<a name="line.924"></a>
+<span class="sourceLineNo">925</span>                addAnnotation<a name="line.925"></a>
+<span class="sourceLineNo">926</span>                  (getStyle_Dashed(),<a name="line.926"></a>
+<span class="sourceLineNo">927</span>                   source,<a name="line.927"></a>
+<span class="sourceLineNo">928</span>                   new String[] {<a name="line.928"></a>
+<span class="sourceLineNo">929</span>                           "documentation", "Dashed border style."<a name="line.929"></a>
+<span class="sourceLineNo">930</span>                   });<a name="line.930"></a>
+<span class="sourceLineNo">931</span>                addAnnotation<a name="line.931"></a>
+<span class="sourceLineNo">932</span>                  (getStyle_Dotted(),<a name="line.932"></a>
+<span class="sourceLineNo">933</span>                   source,<a name="line.933"></a>
+<span class="sourceLineNo">934</span>                   new String[] {<a name="line.934"></a>
+<span class="sourceLineNo">935</span>                           "documentation", "Dotted border style."<a name="line.935"></a>
+<span class="sourceLineNo">936</span>                   });<a name="line.936"></a>
+<span class="sourceLineNo">937</span>                addAnnotation<a name="line.937"></a>
+<span class="sourceLineNo">938</span>                  (getStyle_Bold(),<a name="line.938"></a>
+<span class="sourceLineNo">939</span>                   source,<a name="line.939"></a>
+<span class="sourceLineNo">940</span>                   new String[] {<a name="line.940"></a>
+<span class="sourceLineNo">941</span>                           "documentation", "Bold border style."<a name="line.941"></a>
+<span class="sourceLineNo">942</span>                   });<a name="line.942"></a>
+<span class="sourceLineNo">943</span>                addAnnotation<a name="line.943"></a>
+<span class="sourceLineNo">944</span>                  (getDiagramElement_Id(),<a name="line.944"></a>
+<span class="sourceLineNo">945</span>                   source,<a name="line.945"></a>
+<span class="sourceLineNo">946</span>                   new String[] {<a name="line.946"></a>
+<span class="sourceLineNo">947</span>                           "documentation", "Unique diagram element identifier. Randomly generated if not set explicitly."<a name="line.947"></a>
+<span class="sourceLineNo">948</span>                   });<a name="line.948"></a>
+<span class="sourceLineNo">949</span>                addAnnotation<a name="line.949"></a>
+<span class="sourceLineNo">950</span>                  (getDiagramElement_Name(),<a name="line.950"></a>
+<span class="sourceLineNo">951</span>                   source,<a name="line.951"></a>
+<span class="sourceLineNo">952</span>                   new String[] {<a name="line.952"></a>
+<span class="sourceLineNo">953</span>                           "documentation", "Composite element name to support having links in the name. Elements shall be of type Link of Exec.content.Text."<a name="line.953"></a>
+<span class="sourceLineNo">954</span>                   });<a name="line.954"></a>
+<span class="sourceLineNo">955</span>                addAnnotation<a name="line.955"></a>
+<span class="sourceLineNo">956</span>                  (getDiagramElement_Elements(),<a name="line.956"></a>
+<span class="sourceLineNo">957</span>                   source,<a name="line.957"></a>
+<span class="sourceLineNo">958</span>                   new String[] {<a name="line.958"></a>
+<span class="sourceLineNo">959</span>                           "documentation", "Nested diagram elements."<a name="line.959"></a>
+<span class="sourceLineNo">960</span>                   });<a name="line.960"></a>
+<span class="sourceLineNo">961</span>                addAnnotation<a name="line.961"></a>
+<span class="sourceLineNo">962</span>                  (getDiagramElement_Connections(),<a name="line.962"></a>
+<span class="sourceLineNo">963</span>                   source,<a name="line.963"></a>
+<span class="sourceLineNo">964</span>                   new String[] {<a name="line.964"></a>
+<span class="sourceLineNo">965</span>                           "documentation", "Outbound connections."<a name="line.965"></a>
+<span class="sourceLineNo">966</span>                   });<a name="line.966"></a>
+<span class="sourceLineNo">967</span>                addAnnotation<a name="line.967"></a>
+<span class="sourceLineNo">968</span>                  (getDiagramElement_Stereotype(),<a name="line.968"></a>
+<span class="sourceLineNo">969</span>                   source,<a name="line.969"></a>
+<span class="sourceLineNo">970</span>                   new String[] {<a name="line.970"></a>
+<span class="sourceLineNo">971</span>                           "documentation", "Element stereotype. E.g. ``choice`` or ``fork``."<a name="line.971"></a>
+<span class="sourceLineNo">972</span>                   });<a name="line.972"></a>
+<span class="sourceLineNo">973</span>                addAnnotation<a name="line.973"></a>
+<span class="sourceLineNo">974</span>                  (getDiagramElement_Gradient(),<a name="line.974"></a>
+<span class="sourceLineNo">975</span>                   source,<a name="line.975"></a>
+<span class="sourceLineNo">976</span>                   new String[] {<a name="line.976"></a>
+<span class="sourceLineNo">977</span>                           "documentation", "Gradient color - if set the node is displayed with a gradient from ``color`` to ``gradient``."<a name="line.977"></a>
+<span class="sourceLineNo">978</span>                   });<a name="line.978"></a>
+<span class="sourceLineNo">979</span>                addAnnotation<a name="line.979"></a>
+<span class="sourceLineNo">980</span>                  (getDiagramElement_Border(),<a name="line.980"></a>
+<span class="sourceLineNo">981</span>                   source,<a name="line.981"></a>
+<span class="sourceLineNo">982</span>                   new String[] {<a name="line.982"></a>
+<span class="sourceLineNo">983</span>                           "documentation", "Border color. E.g. ``lightblue`` or ``DDDDDD``."<a name="line.983"></a>
+<span class="sourceLineNo">984</span>                   });<a name="line.984"></a>
+<span class="sourceLineNo">985</span>                addAnnotation<a name="line.985"></a>
+<span class="sourceLineNo">986</span>                  (getDiagram_Elements(),<a name="line.986"></a>
+<span class="sourceLineNo">987</span>                   source,<a name="line.987"></a>
+<span class="sourceLineNo">988</span>                   new String[] {<a name="line.988"></a>
+<span class="sourceLineNo">989</span>                           "documentation", "Diagram elements."<a name="line.989"></a>
+<span class="sourceLineNo">990</span>                   });<a name="line.990"></a>
+<span class="sourceLineNo">991</span>                addAnnotation<a name="line.991"></a>
+<span class="sourceLineNo">992</span>                  (getDiagram_Vertical(),<a name="line.992"></a>
+<span class="sourceLineNo">993</span>                   source,<a name="line.993"></a>
+<span class="sourceLineNo">994</span>                   new String[] {<a name="line.994"></a>
+<span class="sourceLineNo">995</span>                           "documentation", "Diagram direction - top-down if true (default), left to right if false."<a name="line.995"></a>
+<span class="sourceLineNo">996</span>                   });<a name="line.996"></a>
+<span class="sourceLineNo">997</span>                addAnnotation<a name="line.997"></a>
+<span class="sourceLineNo">998</span>                  (getDiagram_HideEmptyDescription(),<a name="line.998"></a>
+<span class="sourceLineNo">999</span>                   source,<a name="line.999"></a>
+<span class="sourceLineNo">1000</span>                   new String[] {<a name="line.1000"></a>
+<span class="sourceLineNo">1001</span>                           "documentation", "Hides empty descriptions on state diagrams."<a name="line.1001"></a>
+<span class="sourceLineNo">1002</span>                   });<a name="line.1002"></a>
+<span class="sourceLineNo">1003</span>                addAnnotation<a name="line.1003"></a>
+<span class="sourceLineNo">1004</span>                  (getDiagram_HideFootbox(),<a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>                   source,<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span>                   new String[] {<a name="line.1006"></a>
+<span class="sourceLineNo">1007</span>                           "documentation", "Hides footbox on sequence diagrams."<a name="line.1007"></a>
+<span class="sourceLineNo">1008</span>                   });<a name="line.1008"></a>
+<span class="sourceLineNo">1009</span>                addAnnotation<a name="line.1009"></a>
+<span class="sourceLineNo">1010</span>                  (getDiagram_Notes(),<a name="line.1010"></a>
+<span class="sourceLineNo">1011</span>                   source,<a name="line.1011"></a>
+<span class="sourceLineNo">1012</span>                   new String[] {<a name="line.1012"></a>
+<span class="sourceLineNo">1013</span>                           "documentation", "Diagram notes (legend)."<a name="line.1013"></a>
+<span class="sourceLineNo">1014</span>                   });<a name="line.1014"></a>
+<span class="sourceLineNo">1015</span>                addAnnotation<a name="line.1015"></a>
+<span class="sourceLineNo">1016</span>                  (getDiagram_Context(),<a name="line.1016"></a>
+<span class="sourceLineNo">1017</span>                   source,<a name="line.1017"></a>
+<span class="sourceLineNo">1018</span>                   new String[] {<a name="line.1018"></a>
+<span class="sourceLineNo">1019</span>                           "documentation", "Depth of context elements to show on the diagram. Default is 0. -1 means no limit."<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span>                   });<a name="line.1020"></a>
+<span class="sourceLineNo">1021</span>                addAnnotation<a name="line.1021"></a>
+<span class="sourceLineNo">1022</span>                  (getDiagram_Depth(),<a name="line.1022"></a>
+<span class="sourceLineNo">1023</span>                   source,<a name="line.1023"></a>
+<span class="sourceLineNo">1024</span>                   new String[] {<a name="line.1024"></a>
+<span class="sourceLineNo">1025</span>                           "documentation", "Depth of the diagram partition elements. Default is -1 (no limit). Once the depth is reached content of partitions is not shown."<a name="line.1025"></a>
+<span class="sourceLineNo">1026</span>                   });<a name="line.1026"></a>
+<span class="sourceLineNo">1027</span>                addAnnotation<a name="line.1027"></a>
+<span class="sourceLineNo">1028</span>                  (getConnection_Target(),<a name="line.1028"></a>
+<span class="sourceLineNo">1029</span>                   source,<a name="line.1029"></a>
+<span class="sourceLineNo">1030</span>                   new String[] {<a name="line.1030"></a>
+<span class="sourceLineNo">1031</span>                           "documentation", "Connection target."<a name="line.1031"></a>
+<span class="sourceLineNo">1032</span>                   });<a name="line.1032"></a>
+<span class="sourceLineNo">1033</span>                addAnnotation<a name="line.1033"></a>
+<span class="sourceLineNo">1034</span>                  (getConnection_Thickness(),<a name="line.1034"></a>
+<span class="sourceLineNo">1035</span>                   source,<a name="line.1035"></a>
+<span class="sourceLineNo">1036</span>                   new String[] {<a name="line.1036"></a>
+<span class="sourceLineNo">1037</span>                           "documentation", "Connection thickness."<a name="line.1037"></a>
+<span class="sourceLineNo">1038</span>                   });<a name="line.1038"></a>
+<span class="sourceLineNo">1039</span>                addAnnotation<a name="line.1039"></a>
+<span class="sourceLineNo">1040</span>                  (startEClass,<a name="line.1040"></a>
+<span class="sourceLineNo">1041</span>                   source,<a name="line.1041"></a>
+<span class="sourceLineNo">1042</span>                   new String[] {<a name="line.1042"></a>
+<span class="sourceLineNo">1043</span>                           "documentation", "Start pseudo-state."<a name="line.1043"></a>
+<span class="sourceLineNo">1044</span>                   });<a name="line.1044"></a>
+<span class="sourceLineNo">1045</span>                addAnnotation<a name="line.1045"></a>
+<span class="sourceLineNo">1046</span>                  (endEClass,<a name="line.1046"></a>
+<span class="sourceLineNo">1047</span>                   source,<a name="line.1047"></a>
+<span class="sourceLineNo">1048</span>                   new String[] {<a name="line.1048"></a>
+<span class="sourceLineNo">1049</span>                           "documentation", "End pseudo-state."<a name="line.1049"></a>
+<span class="sourceLineNo">1050</span>                   });<a name="line.1050"></a>
+<span class="sourceLineNo">1051</span>        }<a name="line.1051"></a>
+<span class="sourceLineNo">1052</span><a name="line.1052"></a>
+<span class="sourceLineNo">1053</span>} //DiagramPackageImpl<a name="line.1053"></a>
 
 
 

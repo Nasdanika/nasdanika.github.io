@@ -19,10 +19,10 @@
 <span class="sourceLineNo">011</span>import org.nasdanika.engineering.Capability;<a name="line.11"></a>
 <span class="sourceLineNo">012</span>import org.nasdanika.engineering.EngineeringPackage;<a name="line.12"></a>
 <span class="sourceLineNo">013</span>import org.nasdanika.engineering.Issue;<a name="line.13"></a>
-<span class="sourceLineNo">014</span>import org.nasdanika.engineering.util.EngineeringUtil;<a name="line.14"></a>
-<span class="sourceLineNo">015</span>import org.nasdanika.ncore.NcorePackage;<a name="line.15"></a>
-<span class="sourceLineNo">016</span>import org.nasdanika.ncore.Period;<a name="line.16"></a>
-<span class="sourceLineNo">017</span>import org.nasdanika.ncore.Temporal;<a name="line.17"></a>
+<span class="sourceLineNo">014</span>import org.nasdanika.ncore.NcorePackage;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>import org.nasdanika.ncore.Period;<a name="line.15"></a>
+<span class="sourceLineNo">016</span>import org.nasdanika.ncore.Temporal;<a name="line.16"></a>
+<span class="sourceLineNo">017</span>import org.nasdanika.ncore.util.NcoreUtil;<a name="line.17"></a>
 <span class="sourceLineNo">018</span><a name="line.18"></a>
 <span class="sourceLineNo">019</span>/**<a name="line.19"></a>
 <span class="sourceLineNo">020</span> * &lt;!-- begin-user-doc --&gt;<a name="line.20"></a>
@@ -108,7 +108,7 @@
 <span class="sourceLineNo">100</span>        @Override<a name="line.100"></a>
 <span class="sourceLineNo">101</span>        public void setStart(Temporal newStart) {<a name="line.101"></a>
 <span class="sourceLineNo">102</span>                eDynamicSet(EngineeringPackage.CAPABILITY__START, NcorePackage.Literals.PERIOD__START, newStart);<a name="line.102"></a>
-<span class="sourceLineNo">103</span>                EngineeringUtil.onStart(this, newStart);<a name="line.103"></a>
+<span class="sourceLineNo">103</span>                NcoreUtil.onStart(this, newStart);<a name="line.103"></a>
 <span class="sourceLineNo">104</span>        }<a name="line.104"></a>
 <span class="sourceLineNo">105</span><a name="line.105"></a>
 <span class="sourceLineNo">106</span>        /**<a name="line.106"></a>
@@ -139,7 +139,7 @@
 <span class="sourceLineNo">131</span>        @Override<a name="line.131"></a>
 <span class="sourceLineNo">132</span>        public void setEnd(Temporal newEnd) {<a name="line.132"></a>
 <span class="sourceLineNo">133</span>                eDynamicSet(EngineeringPackage.CAPABILITY__END, NcorePackage.Literals.PERIOD__END, newEnd);<a name="line.133"></a>
-<span class="sourceLineNo">134</span>                EngineeringUtil.onEnd(this, newEnd);<a name="line.134"></a>
+<span class="sourceLineNo">134</span>                NcoreUtil.onEnd(this, newEnd);<a name="line.134"></a>
 <span class="sourceLineNo">135</span>        }<a name="line.135"></a>
 <span class="sourceLineNo">136</span><a name="line.136"></a>
 <span class="sourceLineNo">137</span>        /**<a name="line.137"></a>
@@ -160,7 +160,7 @@
 <span class="sourceLineNo">152</span>        @Override<a name="line.152"></a>
 <span class="sourceLineNo">153</span>        public void setDuration(Duration newDuration) {<a name="line.153"></a>
 <span class="sourceLineNo">154</span>                eDynamicSet(EngineeringPackage.CAPABILITY__DURATION, NcorePackage.Literals.PERIOD__DURATION, newDuration);<a name="line.154"></a>
-<span class="sourceLineNo">155</span>                EngineeringUtil.onDuration(this, newDuration);<a name="line.155"></a>
+<span class="sourceLineNo">155</span>                NcoreUtil.onDuration(this, newDuration);<a name="line.155"></a>
 <span class="sourceLineNo">156</span>        }<a name="line.156"></a>
 <span class="sourceLineNo">157</span><a name="line.157"></a>
 <span class="sourceLineNo">158</span>        /**<a name="line.158"></a>

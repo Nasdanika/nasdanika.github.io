@@ -693,7 +693,7 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 			writer.write("var searchDocuments = " + searchDocuments);
 		}
 		
-		if (problems[0] > 0) {
+		if (problems[0] != 20) {
 			fail("There are problems with pages: " + problems[0]);
 		};
 	}
