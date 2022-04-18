@@ -99,7 +99,7 @@ Use Ecore Tools.
 
 ##### Meta-Model documentation
 
-* **Nasdanika:** Generate HTML with visualizations from models, mount it to a larger site. This site is an example of this approach. 
+* **Nasdanika:** [Generate HTML with visualizations from models](modules/html/modules/ecore/index.html), mount it to a larger site. This site is an example of this approach. 
 * **Alternatives:** Manual or Javadoc from generated model classes.
 
 ##### Production of Meta-Model binaries 
@@ -144,9 +144,10 @@ There resources can cross-reference each other.
 
 ##### YAML or JSON
 
-You can create models in YAML. With this approach, unlike the others listed below, you don't need to create a specialized editor - just use a YAML or text editor and load specification pages of the generated model documentation as a reference.
+You can create models in YAML, see [EMF Persistence](modules/core/modules/emf/index.html#persistence).
+With this approach, unlike the others listed below, you don't need to create a specialized editor - just use a YAML or text editor and load specification pages of the generated model documentation as a reference. 
 
-Because models are defined in text they are easy to collaborate on without the use of specialized merge tools - use traditional diff and merge as for other textual artifacts such as Java files.
+Because models are defined in text, as-code, they are easy to collaborate on without the use of specialized merge tools - use traditional diff and merge as for other textual artifacts such as Java files.
 
 This approach also allows to relatively easily load data from external systems which have no knowledge of your models' XMI format. 
 Data can be loaded from REST endpoints or from data exports.   
