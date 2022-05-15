@@ -83,6 +83,7 @@ import org.nasdanika.html.ecore.GenModelResourceSet;
 import org.nasdanika.html.emf.EObjectActionResolver;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
 import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.app.util.ActionProvider;
@@ -373,26 +374,6 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 			}
 		}
 	}	
-	
-	/**
-	 * Walks the directory passing files to the listener.
-	 * @param source
-	 * @param target
-	 * @param cleanTarget
-	 * @param cleanPredicate
-	 * @param listener
-	 * @throws IOException
-	 */
-	public static void walk(String path, BiConsumer<File,String> listener, File... files) throws IOException {
-		for (File file: files) {
-			String filePath = path == null ? file.getName() : path + "/" + file.getName();
-			if (file.isDirectory()) {
-				walk(filePath, listener, file.listFiles());
-			} else if (file.isFile() && listener != null) {
-				listener.accept(file, filePath);
-			}
-		}
-	}	
 		
 	/**
 	 * Loads instance model from previously generated XMI, diagnoses, generates action model.
@@ -463,7 +444,7 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 		EObject instance = instanceModelResource.getContents().get(0);
 		Action rootAction = EObjectAdaptable.adaptTo(instance, ActionProvider.class).execute(registry::put, progressMonitor);
 		Context uriResolverContext = Context.singleton(Context.BASE_URI_PROPERTY, URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/"));
-		BiFunction<Action, URI, URI> uriResolver = org.nasdanika.html.model.app.gen.Util.uriResolver(rootAction, uriResolverContext);
+		BiFunction<Label, URI, URI> uriResolver = org.nasdanika.html.model.app.gen.Util.uriResolver(rootAction, uriResolverContext);
 		Adapter resolver = EcoreUtil.getExistingAdapter(rootAction, EObjectActionResolver.class);
 		if (resolver instanceof EObjectActionResolver) {														
 			org.nasdanika.html.emf.EObjectActionResolver.Context resolverContext = new org.nasdanika.html.emf.EObjectActionResolver.Context() {
@@ -686,14 +667,14 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 				}
 			}
 		};
-		walk(null, listener, docsDir.listFiles());
+		org.nasdanika.common.Util.walk(null, listener, docsDir.listFiles());
 		wsg.write();	
 
 		try (FileWriter writer = new FileWriter(new File(docsDir, "search-documents.js"))) {
 			writer.write("var searchDocuments = " + searchDocuments);
 		}
 		
-		if (problems[0] != 20) {
+		if (problems[0] != 76) {
 			fail("There are problems with pages: " + problems[0]);
 		};
 	}
