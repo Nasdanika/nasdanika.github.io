@@ -1,301 +1,335 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-<head>
-<title>Source code</title>
-<link rel="stylesheet" type="text/css" href="../../../../../../../stylesheet.css" title="Style">
-</head>
-<body>
-<div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package org.nasdanika.html.model.app.gen;<a name="line.1"></a>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <div class="sourceContainer"> 
+   <pre><span class="sourceLineNo">001</span>package org.nasdanika.html.model.app.gen;<a name="line.1"></a>
 <span class="sourceLineNo">002</span><a name="line.2"></a>
 <span class="sourceLineNo">003</span>import java.util.List;<a name="line.3"></a>
 <span class="sourceLineNo">004</span>import java.util.Map;<a name="line.4"></a>
 <span class="sourceLineNo">005</span>import java.util.Map.Entry;<a name="line.5"></a>
 <span class="sourceLineNo">006</span><a name="line.6"></a>
-<span class="sourceLineNo">007</span>import org.eclipse.emf.ecore.EObject;<a name="line.7"></a>
-<span class="sourceLineNo">008</span>import org.eclipse.emf.ecore.EStructuralFeature;<a name="line.8"></a>
-<span class="sourceLineNo">009</span>import org.nasdanika.common.Context;<a name="line.9"></a>
-<span class="sourceLineNo">010</span>import org.nasdanika.common.Function;<a name="line.10"></a>
-<span class="sourceLineNo">011</span>import org.nasdanika.common.ListCompoundSupplierFactory;<a name="line.11"></a>
-<span class="sourceLineNo">012</span>import org.nasdanika.common.MapCompoundSupplierFactory;<a name="line.12"></a>
-<span class="sourceLineNo">013</span>import org.nasdanika.common.ProgressMonitor;<a name="line.13"></a>
-<span class="sourceLineNo">014</span>import org.nasdanika.common.Supplier;<a name="line.14"></a>
-<span class="sourceLineNo">015</span>import org.nasdanika.common.SupplierFactory;<a name="line.15"></a>
-<span class="sourceLineNo">016</span>import org.nasdanika.common.Util;<a name="line.16"></a>
-<span class="sourceLineNo">017</span>import org.nasdanika.emf.EObjectAdaptable;<a name="line.17"></a>
-<span class="sourceLineNo">018</span>import org.nasdanika.html.HTMLElement;<a name="line.18"></a>
-<span class="sourceLineNo">019</span>import org.nasdanika.html.HTMLFactory;<a name="line.19"></a>
-<span class="sourceLineNo">020</span>import org.nasdanika.html.Tag;<a name="line.20"></a>
-<span class="sourceLineNo">021</span>import org.nasdanika.html.TagName;<a name="line.21"></a>
-<span class="sourceLineNo">022</span>import org.nasdanika.html.bootstrap.BootstrapElement;<a name="line.22"></a>
-<span class="sourceLineNo">023</span>import org.nasdanika.html.bootstrap.BootstrapFactory;<a name="line.23"></a>
-<span class="sourceLineNo">024</span>import org.nasdanika.html.bootstrap.Color;<a name="line.24"></a>
-<span class="sourceLineNo">025</span>import org.nasdanika.html.model.app.AppPackage;<a name="line.25"></a>
-<span class="sourceLineNo">026</span>import org.nasdanika.html.model.app.Label;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import org.nasdanika.html.model.app.NavigationPanel;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import org.nasdanika.html.model.bootstrap.gen.BootstrapElementSupplierFactoryAdapter;<a name="line.28"></a>
-<span class="sourceLineNo">029</span><a name="line.29"></a>
-<span class="sourceLineNo">030</span>public class LabelTagSupplierFactoryAdapter&lt;M extends Label&gt; extends BootstrapElementSupplierFactoryAdapter&lt;M, BootstrapElement&lt;?,?&gt;&gt; {<a name="line.30"></a>
-<span class="sourceLineNo">031</span>        <a name="line.31"></a>
-<span class="sourceLineNo">032</span>        public LabelTagSupplierFactoryAdapter(M label) {<a name="line.32"></a>
-<span class="sourceLineNo">033</span>                super(label);<a name="line.33"></a>
-<span class="sourceLineNo">034</span>        }<a name="line.34"></a>
-<span class="sourceLineNo">035</span>                <a name="line.35"></a>
-<span class="sourceLineNo">036</span>        @Override<a name="line.36"></a>
-<span class="sourceLineNo">037</span>        public Supplier&lt;HTMLElement&lt;?&gt;&gt; createHTMLElementSupplier(Context context) throws Exception {<a name="line.37"></a>
-<span class="sourceLineNo">038</span>                Function&lt;Map&lt;EStructuralFeature, Object&gt;, HTMLElement&lt;?&gt;&gt; labelFunction = new Function&lt;Map&lt;EStructuralFeature, Object&gt;, HTMLElement&lt;?&gt;&gt;() {<a name="line.38"></a>
-<span class="sourceLineNo">039</span><a name="line.39"></a>
-<span class="sourceLineNo">040</span>                        @Override<a name="line.40"></a>
-<span class="sourceLineNo">041</span>                        public double size() {<a name="line.41"></a>
-<span class="sourceLineNo">042</span>                                return 1;<a name="line.42"></a>
-<span class="sourceLineNo">043</span>                        }<a name="line.43"></a>
-<span class="sourceLineNo">044</span><a name="line.44"></a>
-<span class="sourceLineNo">045</span>                        @Override<a name="line.45"></a>
-<span class="sourceLineNo">046</span>                        public String name() {<a name="line.46"></a>
-<span class="sourceLineNo">047</span>                                return "Label";<a name="line.47"></a>
-<span class="sourceLineNo">048</span>                        }<a name="line.48"></a>
-<span class="sourceLineNo">049</span><a name="line.49"></a>
-<span class="sourceLineNo">050</span>                        @Override<a name="line.50"></a>
-<span class="sourceLineNo">051</span>                        public HTMLElement&lt;?&gt; execute(Map&lt;EStructuralFeature, Object&gt; features, ProgressMonitor progressMonitor) throws Exception {<a name="line.51"></a>
-<span class="sourceLineNo">052</span>                                BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);<a name="line.52"></a>
-<span class="sourceLineNo">053</span>                                        <a name="line.53"></a>
-<span class="sourceLineNo">054</span>                                Tag ret = (Tag) features.get(AppPackage.Literals.LABEL__TEXT);<a name="line.54"></a>
-<span class="sourceLineNo">055</span>                                <a name="line.55"></a>
-<span class="sourceLineNo">056</span>                                Label semanticElement = getTarget();<a name="line.56"></a>
-<span class="sourceLineNo">057</span>                                Color color = semanticElement.getColor();                                                               <a name="line.57"></a>
-<span class="sourceLineNo">058</span>                                String notification = semanticElement.getNotification();<a name="line.58"></a>
-<span class="sourceLineNo">059</span>                                if (!Util.isBlank(notification)) {<a name="line.59"></a>
-<span class="sourceLineNo">060</span>                                        Color notificationColor = Color.PRIMARY;<a name="line.60"></a>
-<span class="sourceLineNo">061</span>                                        if (color == Color.PRIMARY) {<a name="line.61"></a>
-<span class="sourceLineNo">062</span>                                                notificationColor = Color.SECONDARY;<a name="line.62"></a>
-<span class="sourceLineNo">063</span>                                        } else if (color == Color.DANGER) {<a name="line.63"></a>
-<span class="sourceLineNo">064</span>                                                notificationColor = Color.DANGER;                               <a name="line.64"></a>
-<span class="sourceLineNo">065</span>                                        } else if (color == Color.WARNING) {<a name="line.65"></a>
-<span class="sourceLineNo">066</span>                                                notificationColor = Color.WARNING;                              <a name="line.66"></a>
-<span class="sourceLineNo">067</span>                                        } <a name="line.67"></a>
-<span class="sourceLineNo">068</span>                                        Tag badge = bootstrapFactory.badge(true, notificationColor, notification);<a name="line.68"></a>
-<span class="sourceLineNo">069</span>                                        badge.addClass("nsd-label-notification");<a name="line.69"></a>
-<span class="sourceLineNo">070</span>                                        ret.accept(badge);<a name="line.70"></a>
-<span class="sourceLineNo">071</span>                                }<a name="line.71"></a>
-<span class="sourceLineNo">072</span>                                <a name="line.72"></a>
-<span class="sourceLineNo">073</span>                                String tooltip = semanticElement.getTooltip();<a name="line.73"></a>
-<span class="sourceLineNo">074</span>                                if (!Util.isBlank(tooltip)) {<a name="line.74"></a>
-<span class="sourceLineNo">075</span>                                        ret.attribute("title", tooltip);<a name="line.75"></a>
-<span class="sourceLineNo">076</span>                                }                               <a name="line.76"></a>
-<span class="sourceLineNo">077</span>                                <a name="line.77"></a>
-<span class="sourceLineNo">078</span>                                Tag help = (Tag) features.get(AppPackage.Literals.LABEL__HELP);<a name="line.78"></a>
-<span class="sourceLineNo">079</span>                                HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();<a name="line.79"></a>
-<span class="sourceLineNo">080</span>                                if (help != null) {<a name="line.80"></a>
-<span class="sourceLineNo">081</span>                                        @SuppressWarnings("unchecked")<a name="line.81"></a>
-<span class="sourceLineNo">082</span>                                        List&lt;Object&gt; pageBody = context.get(org.nasdanika.html.model.html.gen.PageSupplierFactoryAdapter.PAGE_BODY_PROPERTY, List.class);<a name="line.82"></a>
-<span class="sourceLineNo">083</span>                                        pageBody.add(help);<a name="line.83"></a>
-<span class="sourceLineNo">084</span>                                        <a name="line.84"></a>
-<span class="sourceLineNo">085</span>                                        Tag trigger = htmlFactory.tag(TagName.sup).addClass("far fa-question-circle", "nsd-label-help").style("cursor", "pointer");<a name="line.85"></a>
-<span class="sourceLineNo">086</span>                                        if (!Util.isBlank(tooltip)) {<a name="line.86"></a>
-<span class="sourceLineNo">087</span>                                                trigger.attribute("title", tooltip);<a name="line.87"></a>
-<span class="sourceLineNo">088</span>                                        }<a name="line.88"></a>
-<span class="sourceLineNo">089</span>                                        if (help.getId() == null) {<a name="line.89"></a>
-<span class="sourceLineNo">090</span>                                                help.id(htmlFactory.nextId());<a name="line.90"></a>
-<span class="sourceLineNo">091</span>                                        }<a name="line.91"></a>
-<span class="sourceLineNo">092</span>                                        trigger.attribute("data-toggle", "modal");<a name="line.92"></a>
-<span class="sourceLineNo">093</span>                                        trigger.attribute("data-target", "#" + help.getId());<a name="line.93"></a>
-<span class="sourceLineNo">094</span>                                        <a name="line.94"></a>
-<span class="sourceLineNo">095</span>                                        if (TagName.span.name().equalsIgnoreCase(ret.getTagName())) {<a name="line.95"></a>
-<span class="sourceLineNo">096</span>                                                ret.accept(trigger);<a name="line.96"></a>
-<span class="sourceLineNo">097</span>                                        } else {<a name="line.97"></a>
-<span class="sourceLineNo">098</span>                                                ret = htmlFactory.span(ret, trigger);<a name="line.98"></a>
-<span class="sourceLineNo">099</span>                                        }<a name="line.99"></a>
-<span class="sourceLineNo">100</span>                                }<a name="line.100"></a>
-<span class="sourceLineNo">101</span>                                                                <a name="line.101"></a>
-<span class="sourceLineNo">102</span>                                @SuppressWarnings("unchecked")<a name="line.102"></a>
-<span class="sourceLineNo">103</span>                                List&lt;Object&gt; children = (List&lt;Object&gt;) features.get(AppPackage.Literals.LABEL__CHILDREN);<a name="line.103"></a>
-<span class="sourceLineNo">104</span>                                if (children == null || semanticElement.eContainer() instanceof Label) {                                <a name="line.104"></a>
-<span class="sourceLineNo">105</span>                                        setData(ret, semanticElement, features);<a name="line.105"></a>
-<span class="sourceLineNo">106</span>                                        return ret;<a name="line.106"></a>
-<span class="sourceLineNo">107</span>                                }<a name="line.107"></a>
-<span class="sourceLineNo">108</span>                                <a name="line.108"></a>
-<span class="sourceLineNo">109</span>                                // Navigation drop-down<a name="line.109"></a>
-<span class="sourceLineNo">110</span>                                Tag dropdown = htmlFactory.tag(TagName.li).addClass("dropdown");<a name="line.110"></a>
-<span class="sourceLineNo">111</span>                                ret<a name="line.111"></a>
-<span class="sourceLineNo">112</span>                                        .addClass("nav-link", "dropdown-toggle")<a name="line.112"></a>
-<span class="sourceLineNo">113</span>                                        .attribute("role", "button")<a name="line.113"></a>
-<span class="sourceLineNo">114</span>                                        .attribute("data-toggle", "dropdown");<a name="line.114"></a>
-<span class="sourceLineNo">115</span>                                <a name="line.115"></a>
-<span class="sourceLineNo">116</span>                                dropdown.accept(ret);<a name="line.116"></a>
-<span class="sourceLineNo">117</span>                                                                <a name="line.117"></a>
-<span class="sourceLineNo">118</span>                                Tag dropdownMenu = htmlFactory.div().addClass("dropdown-menu");<a name="line.118"></a>
-<span class="sourceLineNo">119</span>                                dropdown.accept(dropdownMenu);                          <a name="line.119"></a>
-<span class="sourceLineNo">120</span>                                addDropdownItems(dropdownMenu, children);<a name="line.120"></a>
-<span class="sourceLineNo">121</span>                                <a name="line.121"></a>
-<span class="sourceLineNo">122</span>                                setData(dropdown, semanticElement, features);                           <a name="line.122"></a>
-<span class="sourceLineNo">123</span>                                return dropdown;<a name="line.123"></a>
-<span class="sourceLineNo">124</span>                        }<a name="line.124"></a>
-<span class="sourceLineNo">125</span><a name="line.125"></a>
-<span class="sourceLineNo">126</span>                        protected void setData(Tag ret, Label semanticElement, Map&lt;EStructuralFeature, Object&gt; features) {<a name="line.126"></a>
-<span class="sourceLineNo">127</span>                                ret.setData(semanticElement);<a name="line.127"></a>
-<span class="sourceLineNo">128</span>                                <a name="line.128"></a>
-<span class="sourceLineNo">129</span>                                /**<a name="line.129"></a>
-<span class="sourceLineNo">130</span>                                 * Storing feature data to use downstream.<a name="line.130"></a>
-<span class="sourceLineNo">131</span>                                 */<a name="line.131"></a>
-<span class="sourceLineNo">132</span>                                for (Entry&lt;EStructuralFeature, Object&gt; fe: features.entrySet()) {<a name="line.132"></a>
-<span class="sourceLineNo">133</span>                                        ret.setData(fe.getKey(), fe.getValue());<a name="line.133"></a>
-<span class="sourceLineNo">134</span>                                }<a name="line.134"></a>
-<span class="sourceLineNo">135</span>                        }<a name="line.135"></a>
-<span class="sourceLineNo">136</span>                        <a name="line.136"></a>
-<span class="sourceLineNo">137</span>                        @SuppressWarnings("unchecked")<a name="line.137"></a>
-<span class="sourceLineNo">138</span>                        private void addDropdownItems(Tag dropdownMenu, List&lt;Object&gt; items) {<a name="line.138"></a>
-<span class="sourceLineNo">139</span>                                for (Object item: items) {                                      <a name="line.139"></a>
-<span class="sourceLineNo">140</span>                                        dropdownMenu.accept(item);<a name="line.140"></a>
-<span class="sourceLineNo">141</span>                                        if (item instanceof Tag) {<a name="line.141"></a>
-<span class="sourceLineNo">142</span>                                                Tag itemTag = (Tag) item;<a name="line.142"></a>
-<span class="sourceLineNo">143</span>                                                switch (itemTag.getTagName().toLowerCase()) {<a name="line.143"></a>
-<span class="sourceLineNo">144</span>                                                case "a": <a name="line.144"></a>
-<span class="sourceLineNo">145</span>                                                        itemTag.addClass("dropdown-item");<a name="line.145"></a>
-<span class="sourceLineNo">146</span>                                                        break;<a name="line.146"></a>
-<span class="sourceLineNo">147</span>                                                case "div": <a name="line.147"></a>
-<span class="sourceLineNo">148</span>                                                        itemTag.addClass("dropdown-divider");<a name="line.148"></a>
-<span class="sourceLineNo">149</span>                                                        break;<a name="line.149"></a>
-<span class="sourceLineNo">150</span>                                                case "h6": <a name="line.150"></a>
-<span class="sourceLineNo">151</span>                                                        itemTag.addClass("dropdown-header");<a name="line.151"></a>
-<span class="sourceLineNo">152</span>                                                        break;<a name="line.152"></a>
-<span class="sourceLineNo">153</span>                                                }<a name="line.153"></a>
-<span class="sourceLineNo">154</span>                                                List&lt;Object&gt; children = (List&lt;Object&gt;) itemTag.getData(AppPackage.Literals.LABEL__CHILDREN);<a name="line.154"></a>
-<span class="sourceLineNo">155</span>                                                if (children != null) {<a name="line.155"></a>
-<span class="sourceLineNo">156</span>                                                        addDropdownItems(dropdownMenu, children);<a name="line.156"></a>
-<span class="sourceLineNo">157</span>                                                }                                       <a name="line.157"></a>
-<span class="sourceLineNo">158</span>                                        }<a name="line.158"></a>
-<span class="sourceLineNo">159</span>                                }<a name="line.159"></a>
-<span class="sourceLineNo">160</span>                        }<a name="line.160"></a>
-<span class="sourceLineNo">161</span>                        <a name="line.161"></a>
-<span class="sourceLineNo">162</span>                };<a name="line.162"></a>
-<span class="sourceLineNo">163</span>                <a name="line.163"></a>
-<span class="sourceLineNo">164</span>                MapCompoundSupplierFactory&lt;EStructuralFeature, Object&gt; featuresFactory = new MapCompoundSupplierFactory&lt;&gt;("Features");<a name="line.164"></a>
-<span class="sourceLineNo">165</span>                <a name="line.165"></a>
-<span class="sourceLineNo">166</span>                M semanticElement = getTarget();<a name="line.166"></a>
-<span class="sourceLineNo">167</span>                org.nasdanika.html.model.bootstrap.Modal help = semanticElement.getHelp();<a name="line.167"></a>
-<span class="sourceLineNo">168</span>                if (help != null) {<a name="line.168"></a>
-<span class="sourceLineNo">169</span>                        featuresFactory.put(AppPackage.Literals.LABEL__HELP, EObjectAdaptable.adaptToSupplierFactoryNonNull(help, Tag.class));<a name="line.169"></a>
-<span class="sourceLineNo">170</span>                }<a name="line.170"></a>
-<span class="sourceLineNo">171</span>                <a name="line.171"></a>
-<span class="sourceLineNo">172</span>                List&lt;EObject&gt; children = semanticElement.getChildren();<a name="line.172"></a>
-<span class="sourceLineNo">173</span>                if (!children.isEmpty()) {<a name="line.173"></a>
-<span class="sourceLineNo">174</span>                        featuresFactory.put(AppPackage.Literals.LABEL__CHILDREN, new ListCompoundSupplierFactory&lt;&gt;("Children", EObjectAdaptable.adaptToSupplierFactoryNonNull(children, Object.class)));                        <a name="line.174"></a>
-<span class="sourceLineNo">175</span>                }<a name="line.175"></a>
-<span class="sourceLineNo">176</span>                <a name="line.176"></a>
-<span class="sourceLineNo">177</span>                SupplierFactory&lt;Tag&gt; textSupplierFactory = this::createTextAndIconSupplier;<a name="line.177"></a>
-<span class="sourceLineNo">178</span>                featuresFactory.put(AppPackage.Literals.LABEL__TEXT, textSupplierFactory);<a name="line.178"></a>
-<span class="sourceLineNo">179</span>                <a name="line.179"></a>
-<span class="sourceLineNo">180</span>                return featuresFactory.create(context).then(labelFunction);<a name="line.180"></a>
-<span class="sourceLineNo">181</span>        }<a name="line.181"></a>
-<span class="sourceLineNo">182</span>        <a name="line.182"></a>
-<span class="sourceLineNo">183</span>        /**<a name="line.183"></a>
-<span class="sourceLineNo">184</span>         * Override in Link to create a link.<a name="line.184"></a>
-<span class="sourceLineNo">185</span>         * @param context<a name="line.185"></a>
-<span class="sourceLineNo">186</span>         * @param progressMonitor<a name="line.186"></a>
-<span class="sourceLineNo">187</span>         * @return<a name="line.187"></a>
-<span class="sourceLineNo">188</span>         * @throws Exception <a name="line.188"></a>
-<span class="sourceLineNo">189</span>         */<a name="line.189"></a>
-<span class="sourceLineNo">190</span>        protected Supplier&lt;Tag&gt; createTextAndIconSupplier(Context context) throws Exception {<a name="line.190"></a>
-<span class="sourceLineNo">191</span>                Function&lt;Tag,Tag&gt; textAndIconFunction = new Function&lt;Tag, Tag&gt;() {<a name="line.191"></a>
-<span class="sourceLineNo">192</span>                                <a name="line.192"></a>
-<span class="sourceLineNo">193</span>                        @Override<a name="line.193"></a>
-<span class="sourceLineNo">194</span>                        public double size() {<a name="line.194"></a>
-<span class="sourceLineNo">195</span>                                return 1;<a name="line.195"></a>
-<span class="sourceLineNo">196</span>                        }<a name="line.196"></a>
-<span class="sourceLineNo">197</span><a name="line.197"></a>
-<span class="sourceLineNo">198</span>                        @Override<a name="line.198"></a>
-<span class="sourceLineNo">199</span>                        public String name() {<a name="line.199"></a>
-<span class="sourceLineNo">200</span>                                return "Label text and icon";<a name="line.200"></a>
-<span class="sourceLineNo">201</span>                        }<a name="line.201"></a>
-<span class="sourceLineNo">202</span><a name="line.202"></a>
-<span class="sourceLineNo">203</span>                        @Override<a name="line.203"></a>
-<span class="sourceLineNo">204</span>                        public Tag execute(Tag modal, ProgressMonitor progressMonitor) throws Exception {<a name="line.204"></a>
-<span class="sourceLineNo">205</span>                                BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);<a name="line.205"></a>
-<span class="sourceLineNo">206</span>                                HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);<a name="line.206"></a>
-<span class="sourceLineNo">207</span>                                Label semanticElement = getTarget();<a name="line.207"></a>
-<span class="sourceLineNo">208</span>                                <a name="line.208"></a>
-<span class="sourceLineNo">209</span>                                String text = context.interpolateToString(getTarget().getText());<a name="line.209"></a>
-<span class="sourceLineNo">210</span>                                for (EObject semanticAncestor = semanticElement.eContainer(); semanticAncestor != null; semanticAncestor = semanticAncestor.eContainer()) {<a name="line.210"></a>
-<span class="sourceLineNo">211</span>                                        if (semanticAncestor instanceof NavigationPanel) {<a name="line.211"></a>
-<span class="sourceLineNo">212</span>                                                int labelTrimLength = ((NavigationPanel) semanticAncestor).getLabelTrimLength();<a name="line.212"></a>
-<span class="sourceLineNo">213</span>                                                if (labelTrimLength &gt; 0 &amp;&amp; text.length() &gt; labelTrimLength) {<a name="line.213"></a>
-<span class="sourceLineNo">214</span>                                                        text = text.substring(0, labelTrimLength - 3) + "...";<a name="line.214"></a>
-<span class="sourceLineNo">215</span>                                                }<a name="line.215"></a>
-<span class="sourceLineNo">216</span>                                                break;<a name="line.216"></a>
-<span class="sourceLineNo">217</span>                                        }                                               <a name="line.217"></a>
-<span class="sourceLineNo">218</span>                                }<a name="line.218"></a>
-<span class="sourceLineNo">219</span>                                <a name="line.219"></a>
-<span class="sourceLineNo">220</span>                                String icon = semanticElement.getIcon();<a name="line.220"></a>
-<span class="sourceLineNo">221</span>                                Tag iconTag = null;<a name="line.221"></a>
-<span class="sourceLineNo">222</span>                                if (icon != null) {<a name="line.222"></a>
-<span class="sourceLineNo">223</span>                                        if (icon.contains("/")) {<a name="line.223"></a>
-<span class="sourceLineNo">224</span>                                                // Image<a name="line.224"></a>
-<span class="sourceLineNo">225</span>                                                iconTag = htmlFactory.tag(TagName.img).attribute("src", icon); //.style().height("1em");<a name="line.225"></a>
-<span class="sourceLineNo">226</span>                                        } else {<a name="line.226"></a>
-<span class="sourceLineNo">227</span>                                                // Class<a name="line.227"></a>
-<span class="sourceLineNo">228</span>                                                iconTag = htmlFactory.span().addClass(icon);<a name="line.228"></a>
-<span class="sourceLineNo">229</span>                                        }<a name="line.229"></a>
-<span class="sourceLineNo">230</span>                                }<a name="line.230"></a>
-<span class="sourceLineNo">231</span>                                <a name="line.231"></a>
-<span class="sourceLineNo">232</span>                                Tag ret = createTextAndIconTag(iconTag, text, modal, context, progressMonitor);<a name="line.232"></a>
-<span class="sourceLineNo">233</span><a name="line.233"></a>
-<span class="sourceLineNo">234</span>                                Color color = semanticElement.getColor();                               <a name="line.234"></a>
-<span class="sourceLineNo">235</span>                                if (color != null) {<a name="line.235"></a>
-<span class="sourceLineNo">236</span>                                        bootstrapFactory.wrap(ret).text().color(color);<a name="line.236"></a>
-<span class="sourceLineNo">237</span>                                }       <a name="line.237"></a>
-<span class="sourceLineNo">238</span>                                                                                                <a name="line.238"></a>
-<span class="sourceLineNo">239</span>                                return ret;<a name="line.239"></a>
-<span class="sourceLineNo">240</span>                        }<a name="line.240"></a>
-<span class="sourceLineNo">241</span>                        <a name="line.241"></a>
-<span class="sourceLineNo">242</span>                };<a name="line.242"></a>
-<span class="sourceLineNo">243</span>                <a name="line.243"></a>
-<span class="sourceLineNo">244</span>                return getModalFactory().create(context).then(textAndIconFunction);                             <a name="line.244"></a>
-<span class="sourceLineNo">245</span>        }<a name="line.245"></a>
-<span class="sourceLineNo">246</span>        <a name="line.246"></a>
-<span class="sourceLineNo">247</span>        /**<a name="line.247"></a>
-<span class="sourceLineNo">248</span>         * @param icon Icon<a name="line.248"></a>
-<span class="sourceLineNo">249</span>         * @param text text<a name="line.249"></a>
-<span class="sourceLineNo">250</span>         * @param modal Modal for binding to links, not applicalbe to labels.<a name="line.250"></a>
-<span class="sourceLineNo">251</span>         * @param context<a name="line.251"></a>
-<span class="sourceLineNo">252</span>         * @param progressMonitor<a name="line.252"></a>
-<span class="sourceLineNo">253</span>         * @return<a name="line.253"></a>
-<span class="sourceLineNo">254</span>         */<a name="line.254"></a>
-<span class="sourceLineNo">255</span>        protected Tag createTextAndIconTag(Tag icon, String text, Tag modal, Context context, ProgressMonitor progressMonitor) {<a name="line.255"></a>
-<span class="sourceLineNo">256</span>                HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);<a name="line.256"></a>
-<span class="sourceLineNo">257</span>                TagName tagName;<a name="line.257"></a>
-<span class="sourceLineNo">258</span>                if (getTarget().getChildren().isEmpty()) {<a name="line.258"></a>
-<span class="sourceLineNo">259</span>                        tagName = TagName.span; // A regular label.<a name="line.259"></a>
-<span class="sourceLineNo">260</span>                } else {<a name="line.260"></a>
-<span class="sourceLineNo">261</span>                        // Drop-down activator or drop-down header if contained in a label<a name="line.261"></a>
-<span class="sourceLineNo">262</span>                        tagName = getTarget().eContainer() instanceof Label ? TagName.h6 : TagName.a;<a name="line.262"></a>
-<span class="sourceLineNo">263</span>                }<a name="line.263"></a>
-<span class="sourceLineNo">264</span>                <a name="line.264"></a>
-<span class="sourceLineNo">265</span>                if (Util.isBlank(text)) {<a name="line.265"></a>
-<span class="sourceLineNo">266</span>                        if (icon == null) {<a name="line.266"></a>
-<span class="sourceLineNo">267</span>                                // Drop-down divider<a name="line.267"></a>
-<span class="sourceLineNo">268</span>                                return htmlFactory.div();<a name="line.268"></a>
-<span class="sourceLineNo">269</span>                        }<a name="line.269"></a>
-<span class="sourceLineNo">270</span>                        <a name="line.270"></a>
-<span class="sourceLineNo">271</span>                        // Wrap into a header for drop-down headers<a name="line.271"></a>
-<span class="sourceLineNo">272</span>                        return tagName == TagName.h6 ? htmlFactory.tag(tagName, icon) : icon;<a name="line.272"></a>
-<span class="sourceLineNo">273</span>                }<a name="line.273"></a>
-<span class="sourceLineNo">274</span>                if (icon == null) {<a name="line.274"></a>
-<span class="sourceLineNo">275</span>                        return htmlFactory.tag(tagName, text);<a name="line.275"></a>
-<span class="sourceLineNo">276</span>                }<a name="line.276"></a>
-<span class="sourceLineNo">277</span>                <a name="line.277"></a>
-<span class="sourceLineNo">278</span>                icon.addClass("nsd-app-label-icon");<a name="line.278"></a>
-<span class="sourceLineNo">279</span>                return htmlFactory.tag(tagName, icon, text);    <a name="line.279"></a>
-<span class="sourceLineNo">280</span>        }<a name="line.280"></a>
-<span class="sourceLineNo">281</span>        <a name="line.281"></a>
-<span class="sourceLineNo">282</span>        /**<a name="line.282"></a>
-<span class="sourceLineNo">283</span>         * For links. Placing here to simplify code. This implementation returns empty supplier.<a name="line.283"></a>
-<span class="sourceLineNo">284</span>         * @return<a name="line.284"></a>
-<span class="sourceLineNo">285</span>         */<a name="line.285"></a>
-<span class="sourceLineNo">286</span>        protected SupplierFactory&lt;Tag&gt; getModalFactory() {<a name="line.286"></a>
-<span class="sourceLineNo">287</span>                return SupplierFactory.empty();<a name="line.287"></a>
-<span class="sourceLineNo">288</span>        }<a name="line.288"></a>
-<span class="sourceLineNo">289</span>                <a name="line.289"></a>
-<span class="sourceLineNo">290</span>}<a name="line.290"></a>
+<span class="sourceLineNo">007</span>import org.eclipse.emf.common.notify.AdapterFactory;<a name="line.7"></a>
+<span class="sourceLineNo">008</span>import org.eclipse.emf.ecore.EObject;<a name="line.8"></a>
+<span class="sourceLineNo">009</span>import org.eclipse.emf.ecore.EStructuralFeature;<a name="line.9"></a>
+<span class="sourceLineNo">010</span>import org.nasdanika.common.Context;<a name="line.10"></a>
+<span class="sourceLineNo">011</span>import org.nasdanika.common.Function;<a name="line.11"></a>
+<span class="sourceLineNo">012</span>import org.nasdanika.common.ListCompoundSupplierFactory;<a name="line.12"></a>
+<span class="sourceLineNo">013</span>import org.nasdanika.common.MapCompoundSupplierFactory;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>import org.nasdanika.common.ProgressMonitor;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>import org.nasdanika.common.Supplier;<a name="line.15"></a>
+<span class="sourceLineNo">016</span>import org.nasdanika.common.SupplierFactory;<a name="line.16"></a>
+<span class="sourceLineNo">017</span>import org.nasdanika.common.Util;<a name="line.17"></a>
+<span class="sourceLineNo">018</span>import org.nasdanika.emf.EObjectAdaptable;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>import org.nasdanika.html.HTMLElement;<a name="line.19"></a>
+<span class="sourceLineNo">020</span>import org.nasdanika.html.HTMLFactory;<a name="line.20"></a>
+<span class="sourceLineNo">021</span>import org.nasdanika.html.Tag;<a name="line.21"></a>
+<span class="sourceLineNo">022</span>import org.nasdanika.html.TagName;<a name="line.22"></a>
+<span class="sourceLineNo">023</span>import org.nasdanika.html.bootstrap.BootstrapElement;<a name="line.23"></a>
+<span class="sourceLineNo">024</span>import org.nasdanika.html.bootstrap.BootstrapFactory;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>import org.nasdanika.html.bootstrap.Color;<a name="line.25"></a>
+<span class="sourceLineNo">026</span>import org.nasdanika.html.model.app.AppPackage;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import org.nasdanika.html.model.app.Label;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import org.nasdanika.html.model.app.NavigationPanel;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import org.nasdanika.html.model.bootstrap.gen.BootstrapElementSupplierFactoryAdapter;<a name="line.29"></a>
+<span class="sourceLineNo">030</span><a name="line.30"></a>
+<span class="sourceLineNo">031</span>public class LabelTagSupplierFactoryAdapter&lt;M extends Label&gt; extends BootstrapElementSupplierFactoryAdapter&lt;M, BootstrapElement&lt;?,?&gt;&gt; {<a name="line.31"></a>
+<span class="sourceLineNo">032</span>        <a name="line.32"></a>
+<span class="sourceLineNo">033</span>        public LabelTagSupplierFactoryAdapter(M label, AdapterFactory adapterFactory) {<a name="line.33"></a>
+<span class="sourceLineNo">034</span>                super(label, adapterFactory);<a name="line.34"></a>
+<span class="sourceLineNo">035</span>        }<a name="line.35"></a>
+<span class="sourceLineNo">036</span>                <a name="line.36"></a>
+<span class="sourceLineNo">037</span>        @Override<a name="line.37"></a>
+<span class="sourceLineNo">038</span>        public Supplier&lt;HTMLElement&lt;?&gt;&gt; createHTMLElementSupplier(Context context) throws Exception {<a name="line.38"></a>
+<span class="sourceLineNo">039</span>                Function&lt;Map&lt;EStructuralFeature, Object&gt;, HTMLElement&lt;?&gt;&gt; labelFunction = new Function&lt;Map&lt;EStructuralFeature, Object&gt;, HTMLElement&lt;?&gt;&gt;() {<a name="line.39"></a>
+<span class="sourceLineNo">040</span><a name="line.40"></a>
+<span class="sourceLineNo">041</span>                        @Override<a name="line.41"></a>
+<span class="sourceLineNo">042</span>                        public double size() {<a name="line.42"></a>
+<span class="sourceLineNo">043</span>                                return 1;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>                        }<a name="line.44"></a>
+<span class="sourceLineNo">045</span><a name="line.45"></a>
+<span class="sourceLineNo">046</span>                        @Override<a name="line.46"></a>
+<span class="sourceLineNo">047</span>                        public String name() {<a name="line.47"></a>
+<span class="sourceLineNo">048</span>                                return "Label";<a name="line.48"></a>
+<span class="sourceLineNo">049</span>                        }<a name="line.49"></a>
+<span class="sourceLineNo">050</span><a name="line.50"></a>
+<span class="sourceLineNo">051</span>                        @Override<a name="line.51"></a>
+<span class="sourceLineNo">052</span>                        public HTMLElement&lt;?&gt; execute(Map&lt;EStructuralFeature, Object&gt; features, ProgressMonitor progressMonitor) throws Exception {<a name="line.52"></a>
+<span class="sourceLineNo">053</span>                                BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);<a name="line.53"></a>
+<span class="sourceLineNo">054</span>                                        <a name="line.54"></a>
+<span class="sourceLineNo">055</span>                                Tag ret = (Tag) features.get(AppPackage.Literals.LABEL__TEXT);<a name="line.55"></a>
+<span class="sourceLineNo">056</span>                                <a name="line.56"></a>
+<span class="sourceLineNo">057</span>                                Label semanticElement = getTarget();<a name="line.57"></a>
+<span class="sourceLineNo">058</span>                                Color color = semanticElement.getColor();                                                               <a name="line.58"></a>
+<span class="sourceLineNo">059</span>                                String notification = semanticElement.getNotification();<a name="line.59"></a>
+<span class="sourceLineNo">060</span>                                if (!Util.isBlank(notification)) {<a name="line.60"></a>
+<span class="sourceLineNo">061</span>                                        Color notificationColor = Color.PRIMARY;<a name="line.61"></a>
+<span class="sourceLineNo">062</span>                                        if (color == Color.PRIMARY) {<a name="line.62"></a>
+<span class="sourceLineNo">063</span>                                                notificationColor = Color.SECONDARY;<a name="line.63"></a>
+<span class="sourceLineNo">064</span>                                        } else if (color == Color.DANGER) {<a name="line.64"></a>
+<span class="sourceLineNo">065</span>                                                notificationColor = Color.DANGER;                               <a name="line.65"></a>
+<span class="sourceLineNo">066</span>                                        } else if (color == Color.WARNING) {<a name="line.66"></a>
+<span class="sourceLineNo">067</span>                                                notificationColor = Color.WARNING;                              <a name="line.67"></a>
+<span class="sourceLineNo">068</span>                                        } <a name="line.68"></a>
+<span class="sourceLineNo">069</span>                                        Tag badge = bootstrapFactory.badge(true, notificationColor, notification);<a name="line.69"></a>
+<span class="sourceLineNo">070</span>                                        badge.addClass("nsd-label-notification");<a name="line.70"></a>
+<span class="sourceLineNo">071</span>                                        ret.accept(badge);<a name="line.71"></a>
+<span class="sourceLineNo">072</span>                                }<a name="line.72"></a>
+<span class="sourceLineNo">073</span>                                <a name="line.73"></a>
+<span class="sourceLineNo">074</span>                                String tooltip = semanticElement.getTooltip();<a name="line.74"></a>
+<span class="sourceLineNo">075</span>                                if (!Util.isBlank(tooltip)) {<a name="line.75"></a>
+<span class="sourceLineNo">076</span>                                        ret.attribute("title", tooltip);<a name="line.76"></a>
+<span class="sourceLineNo">077</span>                                }                               <a name="line.77"></a>
+<span class="sourceLineNo">078</span>                                <a name="line.78"></a>
+<span class="sourceLineNo">079</span>                                Tag help = (Tag) features.get(AppPackage.Literals.LABEL__HELP);<a name="line.79"></a>
+<span class="sourceLineNo">080</span>                                HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();<a name="line.80"></a>
+<span class="sourceLineNo">081</span>                                if (help != null) {<a name="line.81"></a>
+<span class="sourceLineNo">082</span>                                        @SuppressWarnings("unchecked")<a name="line.82"></a>
+<span class="sourceLineNo">083</span>                                        List&lt;Object&gt; pageBody = context.get(org.nasdanika.html.model.html.gen.PageSupplierFactoryAdapter.PAGE_BODY_PROPERTY, List.class);<a name="line.83"></a>
+<span class="sourceLineNo">084</span>                                        pageBody.add(help);<a name="line.84"></a>
+<span class="sourceLineNo">085</span>                                        <a name="line.85"></a>
+<span class="sourceLineNo">086</span>                                        Tag trigger = htmlFactory.tag(TagName.sup).addClass("far fa-question-circle", "nsd-label-help").style("cursor", "pointer");<a name="line.86"></a>
+<span class="sourceLineNo">087</span>                                        if (!Util.isBlank(tooltip)) {<a name="line.87"></a>
+<span class="sourceLineNo">088</span>                                                trigger.attribute("title", tooltip);<a name="line.88"></a>
+<span class="sourceLineNo">089</span>                                        }<a name="line.89"></a>
+<span class="sourceLineNo">090</span>                                        if (help.getId() == null) {<a name="line.90"></a>
+<span class="sourceLineNo">091</span>                                                help.id(htmlFactory.nextId());<a name="line.91"></a>
+<span class="sourceLineNo">092</span>                                        }<a name="line.92"></a>
+<span class="sourceLineNo">093</span>                                        trigger.attribute("data-toggle", "modal");<a name="line.93"></a>
+<span class="sourceLineNo">094</span>                                        trigger.attribute("data-target", "#" + help.getId());<a name="line.94"></a>
+<span class="sourceLineNo">095</span>                                        <a name="line.95"></a>
+<span class="sourceLineNo">096</span>                                        if (TagName.span.name().equalsIgnoreCase(ret.getTagName())) {<a name="line.96"></a>
+<span class="sourceLineNo">097</span>                                                ret.accept(trigger);<a name="line.97"></a>
+<span class="sourceLineNo">098</span>                                        } else {<a name="line.98"></a>
+<span class="sourceLineNo">099</span>                                                ret = htmlFactory.span(ret, trigger);<a name="line.99"></a>
+<span class="sourceLineNo">100</span>                                        }<a name="line.100"></a>
+<span class="sourceLineNo">101</span>                                }<a name="line.101"></a>
+<span class="sourceLineNo">102</span>                                                                <a name="line.102"></a>
+<span class="sourceLineNo">103</span>                                @SuppressWarnings("unchecked")<a name="line.103"></a>
+<span class="sourceLineNo">104</span>                                List&lt;Object&gt; children = (List&lt;Object&gt;) features.get(AppPackage.Literals.LABEL__CHILDREN);<a name="line.104"></a>
+<span class="sourceLineNo">105</span>                                if (children == null || semanticElement.eContainer() instanceof Label) {                                <a name="line.105"></a>
+<span class="sourceLineNo">106</span>                                        setData(ret, semanticElement, features);<a name="line.106"></a>
+<span class="sourceLineNo">107</span>                                        return ret;<a name="line.107"></a>
+<span class="sourceLineNo">108</span>                                }<a name="line.108"></a>
+<span class="sourceLineNo">109</span>                                <a name="line.109"></a>
+<span class="sourceLineNo">110</span>                                // Navigation drop-down<a name="line.110"></a>
+<span class="sourceLineNo">111</span>                                Tag dropdown = htmlFactory.tag(TagName.li).addClass("dropdown");<a name="line.111"></a>
+<span class="sourceLineNo">112</span>                                ret<a name="line.112"></a>
+<span class="sourceLineNo">113</span>                                        .addClass("nav-link", "dropdown-toggle")<a name="line.113"></a>
+<span class="sourceLineNo">114</span>                                        .attribute("role", "button")<a name="line.114"></a>
+<span class="sourceLineNo">115</span>                                        .attribute("data-toggle", "dropdown");<a name="line.115"></a>
+<span class="sourceLineNo">116</span>                                <a name="line.116"></a>
+<span class="sourceLineNo">117</span>                                dropdown.accept(ret);<a name="line.117"></a>
+<span class="sourceLineNo">118</span>                                                                <a name="line.118"></a>
+<span class="sourceLineNo">119</span>                                Tag dropdownMenu = htmlFactory.div().addClass("dropdown-menu");<a name="line.119"></a>
+<span class="sourceLineNo">120</span>                                dropdown.accept(dropdownMenu);                          <a name="line.120"></a>
+<span class="sourceLineNo">121</span>                                addDropdownItems(dropdownMenu, children);<a name="line.121"></a>
+<span class="sourceLineNo">122</span>                                <a name="line.122"></a>
+<span class="sourceLineNo">123</span>                                setData(dropdown, semanticElement, features);                           <a name="line.123"></a>
+<span class="sourceLineNo">124</span>                                return dropdown;<a name="line.124"></a>
+<span class="sourceLineNo">125</span>                        }<a name="line.125"></a>
+<span class="sourceLineNo">126</span><a name="line.126"></a>
+<span class="sourceLineNo">127</span>                        protected void setData(Tag ret, Label semanticElement, Map&lt;EStructuralFeature, Object&gt; features) {<a name="line.127"></a>
+<span class="sourceLineNo">128</span>                                ret.setData(semanticElement);<a name="line.128"></a>
+<span class="sourceLineNo">129</span>                                <a name="line.129"></a>
+<span class="sourceLineNo">130</span>                                /**<a name="line.130"></a>
+<span class="sourceLineNo">131</span>                                 * Storing feature data to use downstream.<a name="line.131"></a>
+<span class="sourceLineNo">132</span>                                 */<a name="line.132"></a>
+<span class="sourceLineNo">133</span>                                for (Entry&lt;EStructuralFeature, Object&gt; fe: features.entrySet()) {<a name="line.133"></a>
+<span class="sourceLineNo">134</span>                                        ret.setData(fe.getKey(), fe.getValue());<a name="line.134"></a>
+<span class="sourceLineNo">135</span>                                }<a name="line.135"></a>
+<span class="sourceLineNo">136</span>                        }<a name="line.136"></a>
+<span class="sourceLineNo">137</span>                        <a name="line.137"></a>
+<span class="sourceLineNo">138</span>                        @SuppressWarnings("unchecked")<a name="line.138"></a>
+<span class="sourceLineNo">139</span>                        private void addDropdownItems(Tag dropdownMenu, List&lt;Object&gt; items) {<a name="line.139"></a>
+<span class="sourceLineNo">140</span>                                for (Object item: items) {                                      <a name="line.140"></a>
+<span class="sourceLineNo">141</span>                                        dropdownMenu.accept(item);<a name="line.141"></a>
+<span class="sourceLineNo">142</span>                                        if (item instanceof Tag) {<a name="line.142"></a>
+<span class="sourceLineNo">143</span>                                                Tag itemTag = (Tag) item;<a name="line.143"></a>
+<span class="sourceLineNo">144</span>                                                switch (itemTag.getTagName().toLowerCase()) {<a name="line.144"></a>
+<span class="sourceLineNo">145</span>                                                case "a": <a name="line.145"></a>
+<span class="sourceLineNo">146</span>                                                        itemTag.addClass("dropdown-item");<a name="line.146"></a>
+<span class="sourceLineNo">147</span>                                                        break;<a name="line.147"></a>
+<span class="sourceLineNo">148</span>                                                case "div": <a name="line.148"></a>
+<span class="sourceLineNo">149</span>                                                        itemTag.addClass("dropdown-divider");<a name="line.149"></a>
+<span class="sourceLineNo">150</span>                                                        break;<a name="line.150"></a>
+<span class="sourceLineNo">151</span>                                                case "h6": <a name="line.151"></a>
+<span class="sourceLineNo">152</span>                                                        itemTag.addClass("dropdown-header");<a name="line.152"></a>
+<span class="sourceLineNo">153</span>                                                        break;<a name="line.153"></a>
+<span class="sourceLineNo">154</span>                                                }<a name="line.154"></a>
+<span class="sourceLineNo">155</span>                                                List&lt;Object&gt; children = (List&lt;Object&gt;) itemTag.getData(AppPackage.Literals.LABEL__CHILDREN);<a name="line.155"></a>
+<span class="sourceLineNo">156</span>                                                if (children != null) {<a name="line.156"></a>
+<span class="sourceLineNo">157</span>                                                        addDropdownItems(dropdownMenu, children);<a name="line.157"></a>
+<span class="sourceLineNo">158</span>                                                }                                       <a name="line.158"></a>
+<span class="sourceLineNo">159</span>                                        }<a name="line.159"></a>
+<span class="sourceLineNo">160</span>                                }<a name="line.160"></a>
+<span class="sourceLineNo">161</span>                        }<a name="line.161"></a>
+<span class="sourceLineNo">162</span>                        <a name="line.162"></a>
+<span class="sourceLineNo">163</span>                };<a name="line.163"></a>
+<span class="sourceLineNo">164</span>                <a name="line.164"></a>
+<span class="sourceLineNo">165</span>                MapCompoundSupplierFactory&lt;EStructuralFeature, Object&gt; featuresFactory = new MapCompoundSupplierFactory&lt;&gt;("Features");<a name="line.165"></a>
+<span class="sourceLineNo">166</span>                <a name="line.166"></a>
+<span class="sourceLineNo">167</span>                M semanticElement = getTarget();<a name="line.167"></a>
+<span class="sourceLineNo">168</span>                org.nasdanika.html.model.bootstrap.Modal help = semanticElement.getHelp();<a name="line.168"></a>
+<span class="sourceLineNo">169</span>                if (help != null) {<a name="line.169"></a>
+<span class="sourceLineNo">170</span>                        featuresFactory.put(AppPackage.Literals.LABEL__HELP, EObjectAdaptable.adaptToSupplierFactoryNonNull(help, Tag.class));<a name="line.170"></a>
+<span class="sourceLineNo">171</span>                }<a name="line.171"></a>
+<span class="sourceLineNo">172</span>                <a name="line.172"></a>
+<span class="sourceLineNo">173</span>                List&lt;EObject&gt; children = semanticElement.getChildren();<a name="line.173"></a>
+<span class="sourceLineNo">174</span>                if (!children.isEmpty()) {<a name="line.174"></a>
+<span class="sourceLineNo">175</span>                        featuresFactory.put(AppPackage.Literals.LABEL__CHILDREN, new ListCompoundSupplierFactory&lt;&gt;("Children", EObjectAdaptable.adaptToSupplierFactoryNonNull(children, Object.class)));                        <a name="line.175"></a>
+<span class="sourceLineNo">176</span>                }<a name="line.176"></a>
+<span class="sourceLineNo">177</span>                <a name="line.177"></a>
+<span class="sourceLineNo">178</span>                SupplierFactory&lt;Tag&gt; textSupplierFactory = this::createTextAndIconSupplier;<a name="line.178"></a>
+<span class="sourceLineNo">179</span>                featuresFactory.put(AppPackage.Literals.LABEL__TEXT, textSupplierFactory);<a name="line.179"></a>
+<span class="sourceLineNo">180</span>                <a name="line.180"></a>
+<span class="sourceLineNo">181</span>                return featuresFactory.create(context).then(labelFunction);<a name="line.181"></a>
+<span class="sourceLineNo">182</span>        }<a name="line.182"></a>
+<span class="sourceLineNo">183</span>        <a name="line.183"></a>
+<span class="sourceLineNo">184</span>        /**<a name="line.184"></a>
+<span class="sourceLineNo">185</span>         * Override in Link to create a link.<a name="line.185"></a>
+<span class="sourceLineNo">186</span>         * @param context<a name="line.186"></a>
+<span class="sourceLineNo">187</span>         * @param progressMonitor<a name="line.187"></a>
+<span class="sourceLineNo">188</span>         * @return<a name="line.188"></a>
+<span class="sourceLineNo">189</span>         * @throws Exception <a name="line.189"></a>
+<span class="sourceLineNo">190</span>         */<a name="line.190"></a>
+<span class="sourceLineNo">191</span>        protected Supplier&lt;Tag&gt; createTextAndIconSupplier(Context context) throws Exception {<a name="line.191"></a>
+<span class="sourceLineNo">192</span>                Function&lt;Tag,Tag&gt; textAndIconFunction = new Function&lt;Tag, Tag&gt;() {<a name="line.192"></a>
+<span class="sourceLineNo">193</span>                                <a name="line.193"></a>
+<span class="sourceLineNo">194</span>                        @Override<a name="line.194"></a>
+<span class="sourceLineNo">195</span>                        public double size() {<a name="line.195"></a>
+<span class="sourceLineNo">196</span>                                return 1;<a name="line.196"></a>
+<span class="sourceLineNo">197</span>                        }<a name="line.197"></a>
+<span class="sourceLineNo">198</span><a name="line.198"></a>
+<span class="sourceLineNo">199</span>                        @Override<a name="line.199"></a>
+<span class="sourceLineNo">200</span>                        public String name() {<a name="line.200"></a>
+<span class="sourceLineNo">201</span>                                return "Label text and icon";<a name="line.201"></a>
+<span class="sourceLineNo">202</span>                        }<a name="line.202"></a>
+<span class="sourceLineNo">203</span><a name="line.203"></a>
+<span class="sourceLineNo">204</span>                        @Override<a name="line.204"></a>
+<span class="sourceLineNo">205</span>                        public Tag execute(Tag modal, ProgressMonitor progressMonitor) throws Exception {<a name="line.205"></a>
+<span class="sourceLineNo">206</span>                                BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);<a name="line.206"></a>
+<span class="sourceLineNo">207</span>                                HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);<a name="line.207"></a>
+<span class="sourceLineNo">208</span>                                Label semanticElement = getTarget();<a name="line.208"></a>
+<span class="sourceLineNo">209</span>                                <a name="line.209"></a>
+<span class="sourceLineNo">210</span>                                String text = context.interpolateToString(getTarget().getText());<a name="line.210"></a>
+<span class="sourceLineNo">211</span>                                for (EObject semanticAncestor = semanticElement.eContainer(); semanticAncestor != null; semanticAncestor = semanticAncestor.eContainer()) {<a name="line.211"></a>
+<span class="sourceLineNo">212</span>                                        if (semanticAncestor instanceof NavigationPanel) {<a name="line.212"></a>
+<span class="sourceLineNo">213</span>                                                int labelTrimLength = ((NavigationPanel) semanticAncestor).getLabelTrimLength();<a name="line.213"></a>
+<span class="sourceLineNo">214</span>                                                if (labelTrimLength &gt; 0 &amp;&amp; text.length() &gt; labelTrimLength) {<a name="line.214"></a>
+<span class="sourceLineNo">215</span>                                                        text = text.substring(0, labelTrimLength - 3) + "...";<a name="line.215"></a>
+<span class="sourceLineNo">216</span>                                                }<a name="line.216"></a>
+<span class="sourceLineNo">217</span>                                                break;<a name="line.217"></a>
+<span class="sourceLineNo">218</span>                                        }                                               <a name="line.218"></a>
+<span class="sourceLineNo">219</span>                                }<a name="line.219"></a>
+<span class="sourceLineNo">220</span>                                <a name="line.220"></a>
+<span class="sourceLineNo">221</span>                                String icon = semanticElement.getIcon();<a name="line.221"></a>
+<span class="sourceLineNo">222</span>                                Tag iconTag = null;<a name="line.222"></a>
+<span class="sourceLineNo">223</span>                                if (icon != null) {<a name="line.223"></a>
+<span class="sourceLineNo">224</span>                                        if (icon.contains("/")) {<a name="line.224"></a>
+<span class="sourceLineNo">225</span>                                                // Image<a name="line.225"></a>
+<span class="sourceLineNo">226</span>                                                iconTag = htmlFactory.tag(TagName.img).attribute("src", icon); //.style().height("1em");<a name="line.226"></a>
+<span class="sourceLineNo">227</span>                                        } else {<a name="line.227"></a>
+<span class="sourceLineNo">228</span>                                                // Class<a name="line.228"></a>
+<span class="sourceLineNo">229</span>                                                iconTag = htmlFactory.span().addClass(icon);<a name="line.229"></a>
+<span class="sourceLineNo">230</span>                                        }<a name="line.230"></a>
+<span class="sourceLineNo">231</span>                                }<a name="line.231"></a>
+<span class="sourceLineNo">232</span>                                <a name="line.232"></a>
+<span class="sourceLineNo">233</span>                                Tag ret = createTextAndIconTag(iconTag, text, modal, context, progressMonitor);<a name="line.233"></a>
+<span class="sourceLineNo">234</span><a name="line.234"></a>
+<span class="sourceLineNo">235</span>                                Color color = semanticElement.getColor();                               <a name="line.235"></a>
+<span class="sourceLineNo">236</span>                                if (color != null) {<a name="line.236"></a>
+<span class="sourceLineNo">237</span>                                        bootstrapFactory.wrap(ret).text().color(color);<a name="line.237"></a>
+<span class="sourceLineNo">238</span>                                }       <a name="line.238"></a>
+<span class="sourceLineNo">239</span>                                                                                                <a name="line.239"></a>
+<span class="sourceLineNo">240</span>                                return ret;<a name="line.240"></a>
+<span class="sourceLineNo">241</span>                        }<a name="line.241"></a>
+<span class="sourceLineNo">242</span>                        <a name="line.242"></a>
+<span class="sourceLineNo">243</span>                };<a name="line.243"></a>
+<span class="sourceLineNo">244</span>                <a name="line.244"></a>
+<span class="sourceLineNo">245</span>                return getModalFactory().create(context).then(textAndIconFunction);                             <a name="line.245"></a>
+<span class="sourceLineNo">246</span>        }<a name="line.246"></a>
+<span class="sourceLineNo">247</span>        <a name="line.247"></a>
+<span class="sourceLineNo">248</span>        /**<a name="line.248"></a>
+<span class="sourceLineNo">249</span>         * @param icon Icon<a name="line.249"></a>
+<span class="sourceLineNo">250</span>         * @param text text<a name="line.250"></a>
+<span class="sourceLineNo">251</span>         * @param modal Modal for binding to links, not applicalbe to labels.<a name="line.251"></a>
+<span class="sourceLineNo">252</span>         * @param context<a name="line.252"></a>
+<span class="sourceLineNo">253</span>         * @param progressMonitor<a name="line.253"></a>
+<span class="sourceLineNo">254</span>         * @return<a name="line.254"></a>
+<span class="sourceLineNo">255</span>         */<a name="line.255"></a>
+<span class="sourceLineNo">256</span>        protected Tag createTextAndIconTag(Tag icon, String text, Tag modal, Context context, ProgressMonitor progressMonitor) {<a name="line.256"></a>
+<span class="sourceLineNo">257</span>                HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);<a name="line.257"></a>
+<span class="sourceLineNo">258</span>                TagName tagName;<a name="line.258"></a>
+<span class="sourceLineNo">259</span>                if (getTarget().getChildren().isEmpty()) {<a name="line.259"></a>
+<span class="sourceLineNo">260</span>                        tagName = TagName.span; // A regular label.<a name="line.260"></a>
+<span class="sourceLineNo">261</span>                } else {<a name="line.261"></a>
+<span class="sourceLineNo">262</span>                        // Drop-down activator or drop-down header if contained in a label<a name="line.262"></a>
+<span class="sourceLineNo">263</span>                        tagName = getTarget().eContainer() instanceof Label ? TagName.h6 : TagName.a;<a name="line.263"></a>
+<span class="sourceLineNo">264</span>                }<a name="line.264"></a>
+<span class="sourceLineNo">265</span>                <a name="line.265"></a>
+<span class="sourceLineNo">266</span>                if (Util.isBlank(text)) {<a name="line.266"></a>
+<span class="sourceLineNo">267</span>                        if (icon == null) {<a name="line.267"></a>
+<span class="sourceLineNo">268</span>                                // Drop-down divider<a name="line.268"></a>
+<span class="sourceLineNo">269</span>                                return htmlFactory.div();<a name="line.269"></a>
+<span class="sourceLineNo">270</span>                        }<a name="line.270"></a>
+<span class="sourceLineNo">271</span>                        <a name="line.271"></a>
+<span class="sourceLineNo">272</span>                        // Wrap into a header for drop-down headers<a name="line.272"></a>
+<span class="sourceLineNo">273</span>                        return tagName == TagName.h6 ? htmlFactory.tag(tagName, icon) : icon;<a name="line.273"></a>
+<span class="sourceLineNo">274</span>                }<a name="line.274"></a>
+<span class="sourceLineNo">275</span>                if (icon == null) {<a name="line.275"></a>
+<span class="sourceLineNo">276</span>                        return htmlFactory.tag(tagName, text);<a name="line.276"></a>
+<span class="sourceLineNo">277</span>                }<a name="line.277"></a>
+<span class="sourceLineNo">278</span>                <a name="line.278"></a>
+<span class="sourceLineNo">279</span>                icon.addClass("nsd-app-label-icon");<a name="line.279"></a>
+<span class="sourceLineNo">280</span>                return htmlFactory.tag(tagName, icon, text);    <a name="line.280"></a>
+<span class="sourceLineNo">281</span>        }<a name="line.281"></a>
+<span class="sourceLineNo">282</span>        <a name="line.282"></a>
+<span class="sourceLineNo">283</span>        /**<a name="line.283"></a>
+<span class="sourceLineNo">284</span>         * For links. Placing here to simplify code. This implementation returns empty supplier.<a name="line.284"></a>
+<span class="sourceLineNo">285</span>         * @return<a name="line.285"></a>
+<span class="sourceLineNo">286</span>         */<a name="line.286"></a>
+<span class="sourceLineNo">287</span>        protected SupplierFactory&lt;Tag&gt; getModalFactory() {<a name="line.287"></a>
+<span class="sourceLineNo">288</span>                return SupplierFactory.empty();<a name="line.288"></a>
+<span class="sourceLineNo">289</span>        }<a name="line.289"></a>
+<span class="sourceLineNo">290</span>                <a name="line.290"></a>
+<span class="sourceLineNo">291</span>}<a name="line.291"></a>
 
 
 
@@ -356,7 +390,7 @@
 
 
 
-</pre>
-</div>
-</body>
+</pre> 
+  </div>  
+ </body>
 </html>

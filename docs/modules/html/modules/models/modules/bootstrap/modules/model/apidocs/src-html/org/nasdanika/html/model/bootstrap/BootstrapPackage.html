@@ -1,12 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-<head>
-<title>Source code</title>
-<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
-</head>
-<body>
-<div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>/**<a name="line.1"></a>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <div class="sourceContainer"> 
+   <pre><span class="sourceLineNo">001</span>/**<a name="line.1"></a>
 <span class="sourceLineNo">002</span> */<a name="line.2"></a>
 <span class="sourceLineNo">003</span>package org.nasdanika.html.model.bootstrap;<a name="line.3"></a>
 <span class="sourceLineNo">004</span><a name="line.4"></a>
@@ -82,13 +115,13 @@
 <span class="sourceLineNo">074</span>        int BOOTSTRAP_ELEMENT = 0;<a name="line.74"></a>
 <span class="sourceLineNo">075</span><a name="line.75"></a>
 <span class="sourceLineNo">076</span>        /**<a name="line.76"></a>
-<span class="sourceLineNo">077</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.77"></a>
+<span class="sourceLineNo">077</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.77"></a>
 <span class="sourceLineNo">078</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.78"></a>
 <span class="sourceLineNo">079</span>         * &lt;!-- end-user-doc --&gt;<a name="line.79"></a>
 <span class="sourceLineNo">080</span>         * @generated<a name="line.80"></a>
 <span class="sourceLineNo">081</span>         * @ordered<a name="line.81"></a>
 <span class="sourceLineNo">082</span>         */<a name="line.82"></a>
-<span class="sourceLineNo">083</span>        int BOOTSTRAP_ELEMENT__MARKER = HtmlPackage.HTML_ELEMENT__MARKER;<a name="line.83"></a>
+<span class="sourceLineNo">083</span>        int BOOTSTRAP_ELEMENT__MARKERS = HtmlPackage.HTML_ELEMENT__MARKERS;<a name="line.83"></a>
 <span class="sourceLineNo">084</span><a name="line.84"></a>
 <span class="sourceLineNo">085</span>        /**<a name="line.85"></a>
 <span class="sourceLineNo">086</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.86"></a>
@@ -182,13 +215,13 @@
 <span class="sourceLineNo">174</span>        int PAGE = 1;<a name="line.174"></a>
 <span class="sourceLineNo">175</span><a name="line.175"></a>
 <span class="sourceLineNo">176</span>        /**<a name="line.176"></a>
-<span class="sourceLineNo">177</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.177"></a>
+<span class="sourceLineNo">177</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.177"></a>
 <span class="sourceLineNo">178</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.178"></a>
 <span class="sourceLineNo">179</span>         * &lt;!-- end-user-doc --&gt;<a name="line.179"></a>
 <span class="sourceLineNo">180</span>         * @generated<a name="line.180"></a>
 <span class="sourceLineNo">181</span>         * @ordered<a name="line.181"></a>
 <span class="sourceLineNo">182</span>         */<a name="line.182"></a>
-<span class="sourceLineNo">183</span>        int PAGE__MARKER = HtmlPackage.PAGE__MARKER;<a name="line.183"></a>
+<span class="sourceLineNo">183</span>        int PAGE__MARKERS = HtmlPackage.PAGE__MARKERS;<a name="line.183"></a>
 <span class="sourceLineNo">184</span><a name="line.184"></a>
 <span class="sourceLineNo">185</span>        /**<a name="line.185"></a>
 <span class="sourceLineNo">186</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.186"></a>
@@ -810,13 +843,13 @@
 <span class="sourceLineNo">802</span>        int TAG = 8;<a name="line.802"></a>
 <span class="sourceLineNo">803</span><a name="line.803"></a>
 <span class="sourceLineNo">804</span>        /**<a name="line.804"></a>
-<span class="sourceLineNo">805</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.805"></a>
+<span class="sourceLineNo">805</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.805"></a>
 <span class="sourceLineNo">806</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.806"></a>
 <span class="sourceLineNo">807</span>         * &lt;!-- end-user-doc --&gt;<a name="line.807"></a>
 <span class="sourceLineNo">808</span>         * @generated<a name="line.808"></a>
 <span class="sourceLineNo">809</span>         * @ordered<a name="line.809"></a>
 <span class="sourceLineNo">810</span>         */<a name="line.810"></a>
-<span class="sourceLineNo">811</span>        int TAG__MARKER = HtmlPackage.TAG__MARKER;<a name="line.811"></a>
+<span class="sourceLineNo">811</span>        int TAG__MARKERS = HtmlPackage.TAG__MARKERS;<a name="line.811"></a>
 <span class="sourceLineNo">812</span><a name="line.812"></a>
 <span class="sourceLineNo">813</span>        /**<a name="line.813"></a>
 <span class="sourceLineNo">814</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.814"></a>
@@ -1249,13 +1282,13 @@
 <span class="sourceLineNo">1241</span>        int MODAL = 9;<a name="line.1241"></a>
 <span class="sourceLineNo">1242</span><a name="line.1242"></a>
 <span class="sourceLineNo">1243</span>        /**<a name="line.1243"></a>
-<span class="sourceLineNo">1244</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.1244"></a>
+<span class="sourceLineNo">1244</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.1244"></a>
 <span class="sourceLineNo">1245</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.1245"></a>
 <span class="sourceLineNo">1246</span>         * &lt;!-- end-user-doc --&gt;<a name="line.1246"></a>
 <span class="sourceLineNo">1247</span>         * @generated<a name="line.1247"></a>
 <span class="sourceLineNo">1248</span>         * @ordered<a name="line.1248"></a>
 <span class="sourceLineNo">1249</span>         */<a name="line.1249"></a>
-<span class="sourceLineNo">1250</span>        int MODAL__MARKER = BOOTSTRAP_ELEMENT__MARKER;<a name="line.1250"></a>
+<span class="sourceLineNo">1250</span>        int MODAL__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;<a name="line.1250"></a>
 <span class="sourceLineNo">1251</span><a name="line.1251"></a>
 <span class="sourceLineNo">1252</span>        /**<a name="line.1252"></a>
 <span class="sourceLineNo">1253</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.1253"></a>
@@ -1402,13 +1435,13 @@
 <span class="sourceLineNo">1394</span>        int MODAL_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;<a name="line.1394"></a>
 <span class="sourceLineNo">1395</span><a name="line.1395"></a>
 <span class="sourceLineNo">1396</span>        /**<a name="line.1396"></a>
-<span class="sourceLineNo">1397</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.1397"></a>
+<span class="sourceLineNo">1397</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.1397"></a>
 <span class="sourceLineNo">1398</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.1398"></a>
 <span class="sourceLineNo">1399</span>         * &lt;!-- end-user-doc --&gt;<a name="line.1399"></a>
 <span class="sourceLineNo">1400</span>         * @generated<a name="line.1400"></a>
 <span class="sourceLineNo">1401</span>         * @ordered<a name="line.1401"></a>
 <span class="sourceLineNo">1402</span>         */<a name="line.1402"></a>
-<span class="sourceLineNo">1403</span>        int DIV__MARKER = TAG__MARKER;<a name="line.1403"></a>
+<span class="sourceLineNo">1403</span>        int DIV__MARKERS = TAG__MARKERS;<a name="line.1403"></a>
 <span class="sourceLineNo">1404</span><a name="line.1404"></a>
 <span class="sourceLineNo">1405</span>        /**<a name="line.1405"></a>
 <span class="sourceLineNo">1406</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.1406"></a>
@@ -1501,13 +1534,13 @@
 <span class="sourceLineNo">1493</span>        int DIV_OPERATION_COUNT = TAG_OPERATION_COUNT + 0;<a name="line.1493"></a>
 <span class="sourceLineNo">1494</span><a name="line.1494"></a>
 <span class="sourceLineNo">1495</span>        /**<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.1496"></a>
+<span class="sourceLineNo">1496</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.1496"></a>
 <span class="sourceLineNo">1497</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.1497"></a>
 <span class="sourceLineNo">1498</span>         * &lt;!-- end-user-doc --&gt;<a name="line.1498"></a>
 <span class="sourceLineNo">1499</span>         * @generated<a name="line.1499"></a>
 <span class="sourceLineNo">1500</span>         * @ordered<a name="line.1500"></a>
 <span class="sourceLineNo">1501</span>         */<a name="line.1501"></a>
-<span class="sourceLineNo">1502</span>        int ITEM__MARKER = NcorePackage.MODEL_ELEMENT__MARKER;<a name="line.1502"></a>
+<span class="sourceLineNo">1502</span>        int ITEM__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;<a name="line.1502"></a>
 <span class="sourceLineNo">1503</span><a name="line.1503"></a>
 <span class="sourceLineNo">1504</span>        /**<a name="line.1504"></a>
 <span class="sourceLineNo">1505</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.1505"></a>
@@ -1591,13 +1624,13 @@
 <span class="sourceLineNo">1583</span>        int ITEM_OPERATION_COUNT = NcorePackage.MODEL_ELEMENT_OPERATION_COUNT + 0;<a name="line.1583"></a>
 <span class="sourceLineNo">1584</span><a name="line.1584"></a>
 <span class="sourceLineNo">1585</span>        /**<a name="line.1585"></a>
-<span class="sourceLineNo">1586</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.1586"></a>
+<span class="sourceLineNo">1586</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.1586"></a>
 <span class="sourceLineNo">1587</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.1587"></a>
 <span class="sourceLineNo">1588</span>         * &lt;!-- end-user-doc --&gt;<a name="line.1588"></a>
 <span class="sourceLineNo">1589</span>         * @generated<a name="line.1589"></a>
 <span class="sourceLineNo">1590</span>         * @ordered<a name="line.1590"></a>
 <span class="sourceLineNo">1591</span>         */<a name="line.1591"></a>
-<span class="sourceLineNo">1592</span>        int ACTION_GROUP_ITEM__MARKER = ITEM__MARKER;<a name="line.1592"></a>
+<span class="sourceLineNo">1592</span>        int ACTION_GROUP_ITEM__MARKERS = ITEM__MARKERS;<a name="line.1592"></a>
 <span class="sourceLineNo">1593</span><a name="line.1593"></a>
 <span class="sourceLineNo">1594</span>        /**<a name="line.1594"></a>
 <span class="sourceLineNo">1595</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.1595"></a>
@@ -1690,13 +1723,13 @@
 <span class="sourceLineNo">1682</span>        int ACTION_GROUP_ITEM_OPERATION_COUNT = ITEM_OPERATION_COUNT + 0;<a name="line.1682"></a>
 <span class="sourceLineNo">1683</span><a name="line.1683"></a>
 <span class="sourceLineNo">1684</span>        /**<a name="line.1684"></a>
-<span class="sourceLineNo">1685</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.1685"></a>
+<span class="sourceLineNo">1685</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.1685"></a>
 <span class="sourceLineNo">1686</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.1686"></a>
 <span class="sourceLineNo">1687</span>         * &lt;!-- end-user-doc --&gt;<a name="line.1687"></a>
 <span class="sourceLineNo">1688</span>         * @generated<a name="line.1688"></a>
 <span class="sourceLineNo">1689</span>         * @ordered<a name="line.1689"></a>
 <span class="sourceLineNo">1690</span>         */<a name="line.1690"></a>
-<span class="sourceLineNo">1691</span>        int LINK_ACTION_GROUP_ITEM__MARKER = ACTION_GROUP_ITEM__MARKER;<a name="line.1691"></a>
+<span class="sourceLineNo">1691</span>        int LINK_ACTION_GROUP_ITEM__MARKERS = ACTION_GROUP_ITEM__MARKERS;<a name="line.1691"></a>
 <span class="sourceLineNo">1692</span><a name="line.1692"></a>
 <span class="sourceLineNo">1693</span>        /**<a name="line.1693"></a>
 <span class="sourceLineNo">1694</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.1694"></a>
@@ -1798,13 +1831,13 @@
 <span class="sourceLineNo">1790</span>        int LINK_ACTION_GROUP_ITEM_OPERATION_COUNT = ACTION_GROUP_ITEM_OPERATION_COUNT + 0;<a name="line.1790"></a>
 <span class="sourceLineNo">1791</span><a name="line.1791"></a>
 <span class="sourceLineNo">1792</span>        /**<a name="line.1792"></a>
-<span class="sourceLineNo">1793</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.1793"></a>
+<span class="sourceLineNo">1793</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.1793"></a>
 <span class="sourceLineNo">1794</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.1794"></a>
 <span class="sourceLineNo">1795</span>         * &lt;!-- end-user-doc --&gt;<a name="line.1795"></a>
 <span class="sourceLineNo">1796</span>         * @generated<a name="line.1796"></a>
 <span class="sourceLineNo">1797</span>         * @ordered<a name="line.1797"></a>
 <span class="sourceLineNo">1798</span>         */<a name="line.1798"></a>
-<span class="sourceLineNo">1799</span>        int CONTENT_ACTION_GROUP_ITEM__MARKER = ACTION_GROUP_ITEM__MARKER;<a name="line.1799"></a>
+<span class="sourceLineNo">1799</span>        int CONTENT_ACTION_GROUP_ITEM__MARKERS = ACTION_GROUP_ITEM__MARKERS;<a name="line.1799"></a>
 <span class="sourceLineNo">1800</span><a name="line.1800"></a>
 <span class="sourceLineNo">1801</span>        /**<a name="line.1801"></a>
 <span class="sourceLineNo">1802</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.1802"></a>
@@ -1906,13 +1939,13 @@
 <span class="sourceLineNo">1898</span>        int CONTENT_ACTION_GROUP_ITEM_OPERATION_COUNT = ACTION_GROUP_ITEM_OPERATION_COUNT + 0;<a name="line.1898"></a>
 <span class="sourceLineNo">1899</span><a name="line.1899"></a>
 <span class="sourceLineNo">1900</span>        /**<a name="line.1900"></a>
-<span class="sourceLineNo">1901</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.1901"></a>
+<span class="sourceLineNo">1901</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.1901"></a>
 <span class="sourceLineNo">1902</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.1902"></a>
 <span class="sourceLineNo">1903</span>         * &lt;!-- end-user-doc --&gt;<a name="line.1903"></a>
 <span class="sourceLineNo">1904</span>         * @generated<a name="line.1904"></a>
 <span class="sourceLineNo">1905</span>         * @ordered<a name="line.1905"></a>
 <span class="sourceLineNo">1906</span>         */<a name="line.1906"></a>
-<span class="sourceLineNo">1907</span>        int ACTION_GROUP__MARKER = DIV__MARKER;<a name="line.1907"></a>
+<span class="sourceLineNo">1907</span>        int ACTION_GROUP__MARKERS = DIV__MARKERS;<a name="line.1907"></a>
 <span class="sourceLineNo">1908</span><a name="line.1908"></a>
 <span class="sourceLineNo">1909</span>        /**<a name="line.1909"></a>
 <span class="sourceLineNo">1910</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.1910"></a>
@@ -2023,13 +2056,13 @@
 <span class="sourceLineNo">2015</span>        int ACTION_GROUP_OPERATION_COUNT = DIV_OPERATION_COUNT + 0;<a name="line.2015"></a>
 <span class="sourceLineNo">2016</span><a name="line.2016"></a>
 <span class="sourceLineNo">2017</span>        /**<a name="line.2017"></a>
-<span class="sourceLineNo">2018</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.2018"></a>
+<span class="sourceLineNo">2018</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.2018"></a>
 <span class="sourceLineNo">2019</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.2019"></a>
 <span class="sourceLineNo">2020</span>         * &lt;!-- end-user-doc --&gt;<a name="line.2020"></a>
 <span class="sourceLineNo">2021</span>         * @generated<a name="line.2021"></a>
 <span class="sourceLineNo">2022</span>         * @ordered<a name="line.2022"></a>
 <span class="sourceLineNo">2023</span>         */<a name="line.2023"></a>
-<span class="sourceLineNo">2024</span>        int CONTAINER__MARKER = BOOTSTRAP_ELEMENT__MARKER;<a name="line.2024"></a>
+<span class="sourceLineNo">2024</span>        int CONTAINER__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;<a name="line.2024"></a>
 <span class="sourceLineNo">2025</span><a name="line.2025"></a>
 <span class="sourceLineNo">2026</span>        /**<a name="line.2026"></a>
 <span class="sourceLineNo">2027</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.2027"></a>
@@ -2131,13 +2164,13 @@
 <span class="sourceLineNo">2123</span>        int CONTAINER_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;<a name="line.2123"></a>
 <span class="sourceLineNo">2124</span><a name="line.2124"></a>
 <span class="sourceLineNo">2125</span>        /**<a name="line.2125"></a>
-<span class="sourceLineNo">2126</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.2126"></a>
+<span class="sourceLineNo">2126</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.2126"></a>
 <span class="sourceLineNo">2127</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.2127"></a>
 <span class="sourceLineNo">2128</span>         * &lt;!-- end-user-doc --&gt;<a name="line.2128"></a>
 <span class="sourceLineNo">2129</span>         * @generated<a name="line.2129"></a>
 <span class="sourceLineNo">2130</span>         * @ordered<a name="line.2130"></a>
 <span class="sourceLineNo">2131</span>         */<a name="line.2131"></a>
-<span class="sourceLineNo">2132</span>        int ROW__MARKER = BOOTSTRAP_ELEMENT__MARKER;<a name="line.2132"></a>
+<span class="sourceLineNo">2132</span>        int ROW__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;<a name="line.2132"></a>
 <span class="sourceLineNo">2133</span><a name="line.2133"></a>
 <span class="sourceLineNo">2134</span>        /**<a name="line.2134"></a>
 <span class="sourceLineNo">2135</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.2135"></a>
@@ -2266,13 +2299,13 @@
 <span class="sourceLineNo">2258</span>        int COLUMN_WIDTH_OPERATION_COUNT = 0;<a name="line.2258"></a>
 <span class="sourceLineNo">2259</span><a name="line.2259"></a>
 <span class="sourceLineNo">2260</span>        /**<a name="line.2260"></a>
-<span class="sourceLineNo">2261</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.2261"></a>
+<span class="sourceLineNo">2261</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.2261"></a>
 <span class="sourceLineNo">2262</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.2262"></a>
 <span class="sourceLineNo">2263</span>         * &lt;!-- end-user-doc --&gt;<a name="line.2263"></a>
 <span class="sourceLineNo">2264</span>         * @generated<a name="line.2264"></a>
 <span class="sourceLineNo">2265</span>         * @ordered<a name="line.2265"></a>
 <span class="sourceLineNo">2266</span>         */<a name="line.2266"></a>
-<span class="sourceLineNo">2267</span>        int COLUMN__MARKER = BOOTSTRAP_ELEMENT__MARKER;<a name="line.2267"></a>
+<span class="sourceLineNo">2267</span>        int COLUMN__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;<a name="line.2267"></a>
 <span class="sourceLineNo">2268</span><a name="line.2268"></a>
 <span class="sourceLineNo">2269</span>        /**<a name="line.2269"></a>
 <span class="sourceLineNo">2270</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.2270"></a>
@@ -2365,13 +2398,13 @@
 <span class="sourceLineNo">2357</span>        int COLUMN_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;<a name="line.2357"></a>
 <span class="sourceLineNo">2358</span><a name="line.2358"></a>
 <span class="sourceLineNo">2359</span>        /**<a name="line.2359"></a>
-<span class="sourceLineNo">2360</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.2360"></a>
+<span class="sourceLineNo">2360</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.2360"></a>
 <span class="sourceLineNo">2361</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.2361"></a>
 <span class="sourceLineNo">2362</span>         * &lt;!-- end-user-doc --&gt;<a name="line.2362"></a>
 <span class="sourceLineNo">2363</span>         * @generated<a name="line.2363"></a>
 <span class="sourceLineNo">2364</span>         * @ordered<a name="line.2364"></a>
 <span class="sourceLineNo">2365</span>         */<a name="line.2365"></a>
-<span class="sourceLineNo">2366</span>        int TABLE_ROW_CONTAINER__MARKER = BOOTSTRAP_ELEMENT__MARKER;<a name="line.2366"></a>
+<span class="sourceLineNo">2366</span>        int TABLE_ROW_CONTAINER__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;<a name="line.2366"></a>
 <span class="sourceLineNo">2367</span><a name="line.2367"></a>
 <span class="sourceLineNo">2368</span>        /**<a name="line.2368"></a>
 <span class="sourceLineNo">2369</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.2369"></a>
@@ -2464,13 +2497,13 @@
 <span class="sourceLineNo">2456</span>        int TABLE_ROW_CONTAINER_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;<a name="line.2456"></a>
 <span class="sourceLineNo">2457</span><a name="line.2457"></a>
 <span class="sourceLineNo">2458</span>        /**<a name="line.2458"></a>
-<span class="sourceLineNo">2459</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.2459"></a>
+<span class="sourceLineNo">2459</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.2459"></a>
 <span class="sourceLineNo">2460</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.2460"></a>
 <span class="sourceLineNo">2461</span>         * &lt;!-- end-user-doc --&gt;<a name="line.2461"></a>
 <span class="sourceLineNo">2462</span>         * @generated<a name="line.2462"></a>
 <span class="sourceLineNo">2463</span>         * @ordered<a name="line.2463"></a>
 <span class="sourceLineNo">2464</span>         */<a name="line.2464"></a>
-<span class="sourceLineNo">2465</span>        int TABLE_SECTION__MARKER = TABLE_ROW_CONTAINER__MARKER;<a name="line.2465"></a>
+<span class="sourceLineNo">2465</span>        int TABLE_SECTION__MARKERS = TABLE_ROW_CONTAINER__MARKERS;<a name="line.2465"></a>
 <span class="sourceLineNo">2466</span><a name="line.2466"></a>
 <span class="sourceLineNo">2467</span>        /**<a name="line.2467"></a>
 <span class="sourceLineNo">2468</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.2468"></a>
@@ -2563,13 +2596,13 @@
 <span class="sourceLineNo">2555</span>        int TABLE_SECTION_OPERATION_COUNT = TABLE_ROW_CONTAINER_OPERATION_COUNT + 0;<a name="line.2555"></a>
 <span class="sourceLineNo">2556</span><a name="line.2556"></a>
 <span class="sourceLineNo">2557</span>        /**<a name="line.2557"></a>
-<span class="sourceLineNo">2558</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.2558"></a>
+<span class="sourceLineNo">2558</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.2558"></a>
 <span class="sourceLineNo">2559</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.2559"></a>
 <span class="sourceLineNo">2560</span>         * &lt;!-- end-user-doc --&gt;<a name="line.2560"></a>
 <span class="sourceLineNo">2561</span>         * @generated<a name="line.2561"></a>
 <span class="sourceLineNo">2562</span>         * @ordered<a name="line.2562"></a>
 <span class="sourceLineNo">2563</span>         */<a name="line.2563"></a>
-<span class="sourceLineNo">2564</span>        int TABLE_HEADER__MARKER = TABLE_SECTION__MARKER;<a name="line.2564"></a>
+<span class="sourceLineNo">2564</span>        int TABLE_HEADER__MARKERS = TABLE_SECTION__MARKERS;<a name="line.2564"></a>
 <span class="sourceLineNo">2565</span><a name="line.2565"></a>
 <span class="sourceLineNo">2566</span>        /**<a name="line.2566"></a>
 <span class="sourceLineNo">2567</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.2567"></a>
@@ -2752,13 +2785,13 @@
 <span class="sourceLineNo">2744</span>        int TABLE_CONFIGURATION_OPERATION_COUNT = 0;<a name="line.2744"></a>
 <span class="sourceLineNo">2745</span><a name="line.2745"></a>
 <span class="sourceLineNo">2746</span>        /**<a name="line.2746"></a>
-<span class="sourceLineNo">2747</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.2747"></a>
+<span class="sourceLineNo">2747</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.2747"></a>
 <span class="sourceLineNo">2748</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.2748"></a>
 <span class="sourceLineNo">2749</span>         * &lt;!-- end-user-doc --&gt;<a name="line.2749"></a>
 <span class="sourceLineNo">2750</span>         * @generated<a name="line.2750"></a>
 <span class="sourceLineNo">2751</span>         * @ordered<a name="line.2751"></a>
 <span class="sourceLineNo">2752</span>         */<a name="line.2752"></a>
-<span class="sourceLineNo">2753</span>        int TABLE__MARKER = TABLE_ROW_CONTAINER__MARKER;<a name="line.2753"></a>
+<span class="sourceLineNo">2753</span>        int TABLE__MARKERS = TABLE_ROW_CONTAINER__MARKERS;<a name="line.2753"></a>
 <span class="sourceLineNo">2754</span><a name="line.2754"></a>
 <span class="sourceLineNo">2755</span>        /**<a name="line.2755"></a>
 <span class="sourceLineNo">2756</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.2756"></a>
@@ -2932,13 +2965,13 @@
 <span class="sourceLineNo">2924</span>        int TABLE_OPERATION_COUNT = TABLE_ROW_CONTAINER_OPERATION_COUNT + 0;<a name="line.2924"></a>
 <span class="sourceLineNo">2925</span><a name="line.2925"></a>
 <span class="sourceLineNo">2926</span>        /**<a name="line.2926"></a>
-<span class="sourceLineNo">2927</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.2927"></a>
+<span class="sourceLineNo">2927</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.2927"></a>
 <span class="sourceLineNo">2928</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.2928"></a>
 <span class="sourceLineNo">2929</span>         * &lt;!-- end-user-doc --&gt;<a name="line.2929"></a>
 <span class="sourceLineNo">2930</span>         * @generated<a name="line.2930"></a>
 <span class="sourceLineNo">2931</span>         * @ordered<a name="line.2931"></a>
 <span class="sourceLineNo">2932</span>         */<a name="line.2932"></a>
-<span class="sourceLineNo">2933</span>        int TABLE_ROW__MARKER = BOOTSTRAP_ELEMENT__MARKER;<a name="line.2933"></a>
+<span class="sourceLineNo">2933</span>        int TABLE_ROW__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;<a name="line.2933"></a>
 <span class="sourceLineNo">2934</span><a name="line.2934"></a>
 <span class="sourceLineNo">2935</span>        /**<a name="line.2935"></a>
 <span class="sourceLineNo">2936</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.2936"></a>
@@ -3049,13 +3082,13 @@
 <span class="sourceLineNo">3041</span>        int TABLE_ROW_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;<a name="line.3041"></a>
 <span class="sourceLineNo">3042</span><a name="line.3042"></a>
 <span class="sourceLineNo">3043</span>        /**<a name="line.3043"></a>
-<span class="sourceLineNo">3044</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.3044"></a>
+<span class="sourceLineNo">3044</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.3044"></a>
 <span class="sourceLineNo">3045</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.3045"></a>
 <span class="sourceLineNo">3046</span>         * &lt;!-- end-user-doc --&gt;<a name="line.3046"></a>
 <span class="sourceLineNo">3047</span>         * @generated<a name="line.3047"></a>
 <span class="sourceLineNo">3048</span>         * @ordered<a name="line.3048"></a>
 <span class="sourceLineNo">3049</span>         */<a name="line.3049"></a>
-<span class="sourceLineNo">3050</span>        int TABLE_CELL__MARKER = BOOTSTRAP_ELEMENT__MARKER;<a name="line.3050"></a>
+<span class="sourceLineNo">3050</span>        int TABLE_CELL__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;<a name="line.3050"></a>
 <span class="sourceLineNo">3051</span><a name="line.3051"></a>
 <span class="sourceLineNo">3052</span>        /**<a name="line.3052"></a>
 <span class="sourceLineNo">3053</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.3053"></a>
@@ -3184,13 +3217,13 @@
 <span class="sourceLineNo">3176</span>        int TABLE_CELL_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;<a name="line.3176"></a>
 <span class="sourceLineNo">3177</span><a name="line.3177"></a>
 <span class="sourceLineNo">3178</span>        /**<a name="line.3178"></a>
-<span class="sourceLineNo">3179</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.3179"></a>
+<span class="sourceLineNo">3179</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.3179"></a>
 <span class="sourceLineNo">3180</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.3180"></a>
 <span class="sourceLineNo">3181</span>         * &lt;!-- end-user-doc --&gt;<a name="line.3181"></a>
 <span class="sourceLineNo">3182</span>         * @generated<a name="line.3182"></a>
 <span class="sourceLineNo">3183</span>         * @ordered<a name="line.3183"></a>
 <span class="sourceLineNo">3184</span>         */<a name="line.3184"></a>
-<span class="sourceLineNo">3185</span>        int CARD__MARKER = DIV__MARKER;<a name="line.3185"></a>
+<span class="sourceLineNo">3185</span>        int CARD__MARKERS = DIV__MARKERS;<a name="line.3185"></a>
 <span class="sourceLineNo">3186</span><a name="line.3186"></a>
 <span class="sourceLineNo">3187</span>        /**<a name="line.3187"></a>
 <span class="sourceLineNo">3188</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.3188"></a>
@@ -3310,13 +3343,13 @@
 <span class="sourceLineNo">3302</span>        int CARD_OPERATION_COUNT = DIV_OPERATION_COUNT + 0;<a name="line.3302"></a>
 <span class="sourceLineNo">3303</span><a name="line.3303"></a>
 <span class="sourceLineNo">3304</span>        /**<a name="line.3304"></a>
-<span class="sourceLineNo">3305</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.3305"></a>
+<span class="sourceLineNo">3305</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.3305"></a>
 <span class="sourceLineNo">3306</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.3306"></a>
 <span class="sourceLineNo">3307</span>         * &lt;!-- end-user-doc --&gt;<a name="line.3307"></a>
 <span class="sourceLineNo">3308</span>         * @generated<a name="line.3308"></a>
 <span class="sourceLineNo">3309</span>         * @ordered<a name="line.3309"></a>
 <span class="sourceLineNo">3310</span>         */<a name="line.3310"></a>
-<span class="sourceLineNo">3311</span>        int ALERT__MARKER = DIV__MARKER;<a name="line.3311"></a>
+<span class="sourceLineNo">3311</span>        int ALERT__MARKERS = DIV__MARKERS;<a name="line.3311"></a>
 <span class="sourceLineNo">3312</span><a name="line.3312"></a>
 <span class="sourceLineNo">3313</span>        /**<a name="line.3313"></a>
 <span class="sourceLineNo">3314</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.3314"></a>
@@ -3418,13 +3451,13 @@
 <span class="sourceLineNo">3410</span>        int ALERT_OPERATION_COUNT = DIV_OPERATION_COUNT + 0;<a name="line.3410"></a>
 <span class="sourceLineNo">3411</span><a name="line.3411"></a>
 <span class="sourceLineNo">3412</span>        /**<a name="line.3412"></a>
-<span class="sourceLineNo">3413</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.3413"></a>
+<span class="sourceLineNo">3413</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.3413"></a>
 <span class="sourceLineNo">3414</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.3414"></a>
 <span class="sourceLineNo">3415</span>         * &lt;!-- end-user-doc --&gt;<a name="line.3415"></a>
 <span class="sourceLineNo">3416</span>         * @generated<a name="line.3416"></a>
 <span class="sourceLineNo">3417</span>         * @ordered<a name="line.3417"></a>
 <span class="sourceLineNo">3418</span>         */<a name="line.3418"></a>
-<span class="sourceLineNo">3419</span>        int BADGE__MARKER = DIV__MARKER;<a name="line.3419"></a>
+<span class="sourceLineNo">3419</span>        int BADGE__MARKERS = DIV__MARKERS;<a name="line.3419"></a>
 <span class="sourceLineNo">3420</span><a name="line.3420"></a>
 <span class="sourceLineNo">3421</span>        /**<a name="line.3421"></a>
 <span class="sourceLineNo">3422</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.3422"></a>
@@ -3544,13 +3577,13 @@
 <span class="sourceLineNo">3536</span>        int BREADCRUMB_OPERATION_COUNT = 0;<a name="line.3536"></a>
 <span class="sourceLineNo">3537</span><a name="line.3537"></a>
 <span class="sourceLineNo">3538</span>        /**<a name="line.3538"></a>
-<span class="sourceLineNo">3539</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.3539"></a>
+<span class="sourceLineNo">3539</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.3539"></a>
 <span class="sourceLineNo">3540</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.3540"></a>
 <span class="sourceLineNo">3541</span>         * &lt;!-- end-user-doc --&gt;<a name="line.3541"></a>
 <span class="sourceLineNo">3542</span>         * @generated<a name="line.3542"></a>
 <span class="sourceLineNo">3543</span>         * @ordered<a name="line.3543"></a>
 <span class="sourceLineNo">3544</span>         */<a name="line.3544"></a>
-<span class="sourceLineNo">3545</span>        int BUTTON__MARKER = DIV__MARKER;<a name="line.3545"></a>
+<span class="sourceLineNo">3545</span>        int BUTTON__MARKERS = DIV__MARKERS;<a name="line.3545"></a>
 <span class="sourceLineNo">3546</span><a name="line.3546"></a>
 <span class="sourceLineNo">3547</span>        /**<a name="line.3547"></a>
 <span class="sourceLineNo">3548</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.3548"></a>
@@ -3898,13 +3931,13 @@
 <span class="sourceLineNo">3890</span>        int CAROUSEL = 44;<a name="line.3890"></a>
 <span class="sourceLineNo">3891</span><a name="line.3891"></a>
 <span class="sourceLineNo">3892</span>        /**<a name="line.3892"></a>
-<span class="sourceLineNo">3893</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.3893"></a>
+<span class="sourceLineNo">3893</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.3893"></a>
 <span class="sourceLineNo">3894</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.3894"></a>
 <span class="sourceLineNo">3895</span>         * &lt;!-- end-user-doc --&gt;<a name="line.3895"></a>
 <span class="sourceLineNo">3896</span>         * @generated<a name="line.3896"></a>
 <span class="sourceLineNo">3897</span>         * @ordered<a name="line.3897"></a>
 <span class="sourceLineNo">3898</span>         */<a name="line.3898"></a>
-<span class="sourceLineNo">3899</span>        int CAROUSEL__MARKER = DIV__MARKER;<a name="line.3899"></a>
+<span class="sourceLineNo">3899</span>        int CAROUSEL__MARKERS = DIV__MARKERS;<a name="line.3899"></a>
 <span class="sourceLineNo">3900</span><a name="line.3900"></a>
 <span class="sourceLineNo">3901</span>        /**<a name="line.3901"></a>
 <span class="sourceLineNo">3902</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.3902"></a>
@@ -4061,13 +4094,13 @@
 <span class="sourceLineNo">4053</span>        int SLIDE = 45;<a name="line.4053"></a>
 <span class="sourceLineNo">4054</span><a name="line.4054"></a>
 <span class="sourceLineNo">4055</span>        /**<a name="line.4055"></a>
-<span class="sourceLineNo">4056</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.4056"></a>
+<span class="sourceLineNo">4056</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.4056"></a>
 <span class="sourceLineNo">4057</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.4057"></a>
 <span class="sourceLineNo">4058</span>         * &lt;!-- end-user-doc --&gt;<a name="line.4058"></a>
 <span class="sourceLineNo">4059</span>         * @generated<a name="line.4059"></a>
 <span class="sourceLineNo">4060</span>         * @ordered<a name="line.4060"></a>
 <span class="sourceLineNo">4061</span>         */<a name="line.4061"></a>
-<span class="sourceLineNo">4062</span>        int SLIDE__MARKER = DIV__MARKER;<a name="line.4062"></a>
+<span class="sourceLineNo">4062</span>        int SLIDE__MARKERS = DIV__MARKERS;<a name="line.4062"></a>
 <span class="sourceLineNo">4063</span><a name="line.4063"></a>
 <span class="sourceLineNo">4064</span>        /**<a name="line.4064"></a>
 <span class="sourceLineNo">4065</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.4065"></a>
@@ -7170,7 +7203,7 @@
 
 
 
-</pre>
-</div>
-</body>
+</pre> 
+  </div>  
+ </body>
 </html>

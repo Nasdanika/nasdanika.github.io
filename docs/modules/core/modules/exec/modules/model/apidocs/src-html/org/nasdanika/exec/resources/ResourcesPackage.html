@@ -1,12 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-<head>
-<title>Source code</title>
-<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
-</head>
-<body>
-<div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>/**<a name="line.1"></a>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <div class="sourceContainer"> 
+   <pre><span class="sourceLineNo">001</span>/**<a name="line.1"></a>
 <span class="sourceLineNo">002</span> */<a name="line.2"></a>
 <span class="sourceLineNo">003</span>package org.nasdanika.exec.resources;<a name="line.3"></a>
 <span class="sourceLineNo">004</span><a name="line.4"></a>
@@ -79,13 +112,13 @@
 <span class="sourceLineNo">071</span>        int RESOURCE = 0;<a name="line.71"></a>
 <span class="sourceLineNo">072</span><a name="line.72"></a>
 <span class="sourceLineNo">073</span>        /**<a name="line.73"></a>
-<span class="sourceLineNo">074</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.74"></a>
+<span class="sourceLineNo">074</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.74"></a>
 <span class="sourceLineNo">075</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.75"></a>
 <span class="sourceLineNo">076</span>         * &lt;!-- end-user-doc --&gt;<a name="line.76"></a>
 <span class="sourceLineNo">077</span>         * @generated<a name="line.77"></a>
 <span class="sourceLineNo">078</span>         * @ordered<a name="line.78"></a>
 <span class="sourceLineNo">079</span>         */<a name="line.79"></a>
-<span class="sourceLineNo">080</span>        int RESOURCE__MARKER = NcorePackage.MODEL_ELEMENT__MARKER;<a name="line.80"></a>
+<span class="sourceLineNo">080</span>        int RESOURCE__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;<a name="line.80"></a>
 <span class="sourceLineNo">081</span><a name="line.81"></a>
 <span class="sourceLineNo">082</span>        /**<a name="line.82"></a>
 <span class="sourceLineNo">083</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.83"></a>
@@ -188,13 +221,13 @@
 <span class="sourceLineNo">180</span>        int CONTAINER = 1;<a name="line.180"></a>
 <span class="sourceLineNo">181</span><a name="line.181"></a>
 <span class="sourceLineNo">182</span>        /**<a name="line.182"></a>
-<span class="sourceLineNo">183</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.183"></a>
+<span class="sourceLineNo">183</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.183"></a>
 <span class="sourceLineNo">184</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.184"></a>
 <span class="sourceLineNo">185</span>         * &lt;!-- end-user-doc --&gt;<a name="line.185"></a>
 <span class="sourceLineNo">186</span>         * @generated<a name="line.186"></a>
 <span class="sourceLineNo">187</span>         * @ordered<a name="line.187"></a>
 <span class="sourceLineNo">188</span>         */<a name="line.188"></a>
-<span class="sourceLineNo">189</span>        int CONTAINER__MARKER = RESOURCE__MARKER;<a name="line.189"></a>
+<span class="sourceLineNo">189</span>        int CONTAINER__MARKERS = RESOURCE__MARKERS;<a name="line.189"></a>
 <span class="sourceLineNo">190</span><a name="line.190"></a>
 <span class="sourceLineNo">191</span>        /**<a name="line.191"></a>
 <span class="sourceLineNo">192</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.192"></a>
@@ -324,13 +357,13 @@
 <span class="sourceLineNo">316</span>        int FILE = 2;<a name="line.316"></a>
 <span class="sourceLineNo">317</span><a name="line.317"></a>
 <span class="sourceLineNo">318</span>        /**<a name="line.318"></a>
-<span class="sourceLineNo">319</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Marker&lt;/b&gt;&lt;/em&gt;' containment reference.<a name="line.319"></a>
+<span class="sourceLineNo">319</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.<a name="line.319"></a>
 <span class="sourceLineNo">320</span>         * &lt;!-- begin-user-doc --&gt;<a name="line.320"></a>
 <span class="sourceLineNo">321</span>         * &lt;!-- end-user-doc --&gt;<a name="line.321"></a>
 <span class="sourceLineNo">322</span>         * @generated<a name="line.322"></a>
 <span class="sourceLineNo">323</span>         * @ordered<a name="line.323"></a>
 <span class="sourceLineNo">324</span>         */<a name="line.324"></a>
-<span class="sourceLineNo">325</span>        int FILE__MARKER = RESOURCE__MARKER;<a name="line.325"></a>
+<span class="sourceLineNo">325</span>        int FILE__MARKERS = RESOURCE__MARKERS;<a name="line.325"></a>
 <span class="sourceLineNo">326</span><a name="line.326"></a>
 <span class="sourceLineNo">327</span>        /**<a name="line.327"></a>
 <span class="sourceLineNo">328</span>         * The feature id for the '&lt;em&gt;&lt;b&gt;Uri&lt;/b&gt;&lt;/em&gt;' attribute.<a name="line.328"></a>
@@ -729,7 +762,7 @@
 
 
 
-</pre>
-</div>
-</body>
+</pre> 
+  </div>  
+ </body>
 </html>

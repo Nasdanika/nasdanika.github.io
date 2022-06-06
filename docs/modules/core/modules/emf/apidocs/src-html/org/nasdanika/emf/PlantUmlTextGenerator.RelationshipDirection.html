@@ -1,12 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-<head>
-<title>Source code</title>
-<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
-</head>
-<body>
-<div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package org.nasdanika.emf;<a name="line.1"></a>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <div class="sourceContainer"> 
+   <pre><span class="sourceLineNo">001</span>package org.nasdanika.emf;<a name="line.1"></a>
 <span class="sourceLineNo">002</span><a name="line.2"></a>
 <span class="sourceLineNo">003</span>import java.io.IOException;<a name="line.3"></a>
 <span class="sourceLineNo">004</span>import java.util.ArrayList;<a name="line.4"></a>
@@ -593,7 +626,7 @@
 <span class="sourceLineNo">585</span>                String modifiers = eClass.isAbstract() &amp;&amp; !eClass.isInterface() ? "abstract" : null;<a name="line.585"></a>
 <span class="sourceLineNo">586</span>                appendClassStart(modifiers, eClass.isInterface() ? "interface" : "class", qualifiedName(eClass) + typeParameters(eClass), getEClassifierLink(eClass), style);<a name="line.586"></a>
 <span class="sourceLineNo">587</span>                if (isAppendAttributes(eClass)) {<a name="line.587"></a>
-<span class="sourceLineNo">588</span>                        for (EAttribute attribute: eClass.getEAttributes()) {                   <a name="line.588"></a>
+<span class="sourceLineNo">588</span>                        for (EAttribute attribute: eClass.getEAttributes().stream().sorted((a,b) -&gt; a.getName().compareTo(b.getName())).collect(Collectors.toList())) {                 <a name="line.588"></a>
 <span class="sourceLineNo">589</span>                                EGenericType eGenericType = attribute.getEGenericType();<a name="line.589"></a>
 <span class="sourceLineNo">590</span>                                if (eGenericType != null) {<a name="line.590"></a>
 <span class="sourceLineNo">591</span>                                        appendAttribute(null, null, genericName(eGenericType) + (attribute.isMany() ? "[]" : ""), getLocalizedName(attribute));<a name="line.591"></a>
@@ -601,7 +634,7 @@
 <span class="sourceLineNo">593</span>                        }<a name="line.593"></a>
 <span class="sourceLineNo">594</span>                }<a name="line.594"></a>
 <span class="sourceLineNo">595</span>                collector.append(CLASS_COMPARTMENT_SEPARATOR_LINE);<a name="line.595"></a>
-<span class="sourceLineNo">596</span>                for (EReference reference: eClass.getEReferences()) {<a name="line.596"></a>
+<span class="sourceLineNo">596</span>                for (EReference reference: eClass.getEReferences().stream().sorted((a,b) -&gt; a.getName().compareTo(b.getName())).collect(Collectors.toList())) {<a name="line.596"></a>
 <span class="sourceLineNo">597</span>                        EGenericType eGenericType = reference.getEGenericType();                        <a name="line.597"></a>
 <span class="sourceLineNo">598</span>                        if (eGenericType == null || !allClassifiers.contains(reference.getEReferenceType())) {<a name="line.598"></a>
 <span class="sourceLineNo">599</span>                                appendAttribute(null, null, genericName(eGenericType) + (reference.isMany() ? "[]" : ""), getLocalizedName(reference));<a name="line.599"></a>
@@ -610,7 +643,7 @@
 <span class="sourceLineNo">602</span>                <a name="line.602"></a>
 <span class="sourceLineNo">603</span>                collector.append(CLASS_COMPARTMENT_SEPARATOR_LINE);<a name="line.603"></a>
 <span class="sourceLineNo">604</span>                if (isAppendOperations(eClass)) {<a name="line.604"></a>
-<span class="sourceLineNo">605</span>                        for (EOperation op : eClass.getEOperations()) {<a name="line.605"></a>
+<span class="sourceLineNo">605</span>                        for (EOperation op : eClass.getEOperations().stream().sorted((a,b) -&gt; a.getName().compareTo(b.getName())).collect(Collectors.toList())) {<a name="line.605"></a>
 <span class="sourceLineNo">606</span>                                Collection&lt;String&gt; parameters = new ArrayList&lt;String&gt;();<a name="line.606"></a>
 <span class="sourceLineNo">607</span>                                for (EParameter parameter : op.getEParameters()) {<a name="line.607"></a>
 <span class="sourceLineNo">608</span>                                        String paramString = getLocalizedName(parameter);<a name="line.608"></a>
@@ -758,7 +791,7 @@
 
 
 
-</pre>
-</div>
-</body>
+</pre> 
+  </div>  
+ </body>
 </html>

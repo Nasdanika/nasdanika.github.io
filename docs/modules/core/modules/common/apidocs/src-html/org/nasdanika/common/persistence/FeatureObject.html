@@ -1,12 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-<head>
-<title>Source code</title>
-<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
-</head>
-<body>
-<div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package org.nasdanika.common.persistence;<a name="line.1"></a>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <div class="sourceContainer"> 
+   <pre><span class="sourceLineNo">001</span>package org.nasdanika.common.persistence;<a name="line.1"></a>
 <span class="sourceLineNo">002</span><a name="line.2"></a>
 <span class="sourceLineNo">003</span>import java.util.ArrayList;<a name="line.3"></a>
 <span class="sourceLineNo">004</span>import java.util.Collections;<a name="line.4"></a>
@@ -26,11 +59,11 @@
 <span class="sourceLineNo">018</span> */<a name="line.18"></a>
 <span class="sourceLineNo">019</span>public class FeatureObject implements Marked, Loadable {<a name="line.19"></a>
 <span class="sourceLineNo">020</span>        <a name="line.20"></a>
-<span class="sourceLineNo">021</span>        private Marker marker;<a name="line.21"></a>
+<span class="sourceLineNo">021</span>        private List&lt;? extends Marker&gt; markers = new ArrayList&lt;&gt;();<a name="line.21"></a>
 <span class="sourceLineNo">022</span>        <a name="line.22"></a>
 <span class="sourceLineNo">023</span>        @Override<a name="line.23"></a>
-<span class="sourceLineNo">024</span>        public Marker getMarker() {<a name="line.24"></a>
-<span class="sourceLineNo">025</span>                return marker;<a name="line.25"></a>
+<span class="sourceLineNo">024</span>        public List&lt;? extends Marker&gt; getMarkers() {<a name="line.24"></a>
+<span class="sourceLineNo">025</span>                return markers;<a name="line.25"></a>
 <span class="sourceLineNo">026</span>        }<a name="line.26"></a>
 <span class="sourceLineNo">027</span>        <a name="line.27"></a>
 <span class="sourceLineNo">028</span>        protected List&lt;Feature&lt;?&gt;&gt; features = new ArrayList&lt;&gt;();<a name="line.28"></a>
@@ -63,22 +96,22 @@
 <span class="sourceLineNo">055</span>         * @throws Exception<a name="line.55"></a>
 <span class="sourceLineNo">056</span>         */<a name="line.56"></a>
 <span class="sourceLineNo">057</span>        @Override<a name="line.57"></a>
-<span class="sourceLineNo">058</span>        public void load(ObjectLoader loader, Object config, URI base, ProgressMonitor progressMonitor, Marker marker) throws Exception {<a name="line.58"></a>
-<span class="sourceLineNo">059</span>                this.marker = marker;                   <a name="line.59"></a>
+<span class="sourceLineNo">058</span>        public void load(ObjectLoader loader, Object config, URI base, ProgressMonitor progressMonitor, List&lt;? extends Marker&gt; markers) throws Exception {<a name="line.58"></a>
+<span class="sourceLineNo">059</span>                this.markers = markers;                 <a name="line.59"></a>
 <span class="sourceLineNo">060</span>                if (config instanceof Map) {<a name="line.60"></a>
 <span class="sourceLineNo">061</span>                        Map&lt;?,?&gt; configMap = (Map&lt;?,?&gt;) config;<a name="line.61"></a>
 <span class="sourceLineNo">062</span>                        Util.checkUnsupportedKeys(configMap, features.stream().map(Feature::getKey).collect(Collectors.toList()));<a name="line.62"></a>
 <span class="sourceLineNo">063</span>                        for (Feature&lt;?&gt; feature: features) {<a name="line.63"></a>
-<span class="sourceLineNo">064</span>                                feature.load(loader, configMap, base, progressMonitor, marker);<a name="line.64"></a>
+<span class="sourceLineNo">064</span>                                feature.load(loader, configMap, base, progressMonitor, markers);<a name="line.64"></a>
 <span class="sourceLineNo">065</span>                        }<a name="line.65"></a>
 <span class="sourceLineNo">066</span>                } else {<a name="line.66"></a>
 <span class="sourceLineNo">067</span>                        Optional&lt;Feature&lt;?&gt;&gt; defaultFeatureOptional = features.stream().filter(Feature::isDefault).findFirst();<a name="line.67"></a>
 <span class="sourceLineNo">068</span>                        if (defaultFeatureOptional.isPresent()) {                               <a name="line.68"></a>
 <span class="sourceLineNo">069</span>                                Feature&lt;?&gt; defaultFeature = defaultFeatureOptional.get();<a name="line.69"></a>
 <span class="sourceLineNo">070</span>                                // Singleton map with a single entry default feature key -&gt; config.<a name="line.70"></a>
-<span class="sourceLineNo">071</span>                                defaultFeature.load(loader, Collections.singletonMap(defaultFeature.getKey(), config), base, progressMonitor, marker);<a name="line.71"></a>
+<span class="sourceLineNo">071</span>                                defaultFeature.load(loader, Collections.singletonMap(defaultFeature.getKey(), config), base, progressMonitor, markers);<a name="line.71"></a>
 <span class="sourceLineNo">072</span>                        } else if (!Boolean.TRUE.equals(config)) {<a name="line.72"></a>
-<span class="sourceLineNo">073</span>                                throw new ConfigurationException(getClass().getName() + " configuration shall be a map, got " + config, marker);<a name="line.73"></a>
+<span class="sourceLineNo">073</span>                                throw new ConfigurationException(getClass().getName() + " configuration shall be a map, got " + config, markers);<a name="line.73"></a>
 <span class="sourceLineNo">074</span>                        }<a name="line.74"></a>
 <span class="sourceLineNo">075</span>                }<a name="line.75"></a>
 <span class="sourceLineNo">076</span>        }                       <a name="line.76"></a>
@@ -144,7 +177,7 @@
 
 
 
-</pre>
-</div>
-</body>
+</pre> 
+  </div>  
+ </body>
 </html>

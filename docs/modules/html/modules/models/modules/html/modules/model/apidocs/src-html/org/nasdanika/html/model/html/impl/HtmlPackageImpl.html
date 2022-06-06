@@ -1,12 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-<head>
-<title>Source code</title>
-<link rel="stylesheet" type="text/css" href="../../../../../../../stylesheet.css" title="Style">
-</head>
-<body>
-<div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>/**<a name="line.1"></a>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <div class="sourceContainer"> 
+   <pre><span class="sourceLineNo">001</span>/**<a name="line.1"></a>
 <span class="sourceLineNo">002</span> */<a name="line.2"></a>
 <span class="sourceLineNo">003</span>package org.nasdanika.html.model.html.impl;<a name="line.3"></a>
 <span class="sourceLineNo">004</span><a name="line.4"></a>
@@ -515,7 +548,7 @@
 <span class="sourceLineNo">507</span>                  (getHtmlElement_Attributes(),<a name="line.507"></a>
 <span class="sourceLineNo">508</span>                   source,<a name="line.508"></a>
 <span class="sourceLineNo">509</span>                   new String[] {<a name="line.509"></a>
-<span class="sourceLineNo">510</span>                           "documentation", "Tag attributes.\n\n## Interpolation\n\nAttribute values are interpolated, i.e. tokens in the form of ``${token name[|default value]}`` are replaced with the contextual values or default values, if any. Examples:\n\n* ``${my-style}`` - Token without a default value.\n* ``${font-weight|bold}`` - Token with a default value.\n\n## Regular attributes\n\nFor all top-level entries except ``class``, ``style``, and ``data`` attribute value is produced by converting the value to string for scalars and to JSON string for lists and maps. \nFor attributes which do not start with ``data-`` a warning is issued if the value is not a scalar, i.e. a list or a map.\n\n## Class\n\nFor class attribute its value is formed by concantenating elements using space as a separator. If elements are hierarchical then class name is formed by concatenation with a dash (``-``) as a separator.\n\n## Data\n\nIf value of ``data`` attbibute is a map then keys of that map get concatenated with ``data`` using dash (``-``) as a separator, them same applies to nested maps. Non-map values become attribute values - scalars are converted to string, lists are converted to JSON string.\n\n## Style\n\nStyle can be defined as a string, list or map. If style is defined as a list, all list values are concatenated with a space as a separator - it is a convent way for long unstructured definitions.\n\nIf style value is a map then the value and its contained map values are processed in the following fashion:\n\n* Keys are concatenated with dash as a separator.\n* List values are contcatenated wtih space as a separator.\n"<a name="line.510"></a>
+<span class="sourceLineNo">510</span>                           "documentation", "Tag attributes.\n\n## Interpolation\n\nAttribute values are interpolated, i.e. tokens in the form of ``${{token name[|default value]}}`` are replaced with the contextual values or default values, if any. Examples:\n\n* ``${my-style}`` - Token without a default value.\n* ``${font-weight|bold}`` - Token with a default value.\n\n## Regular attributes\n\nFor all top-level entries except ``class``, ``style``, and ``data`` attribute value is produced by converting the value to string for scalars and to JSON string for lists and maps. \nFor attributes which do not start with ``data-`` a warning is issued if the value is not a scalar, i.e. a list or a map.\n\n## Class\n\nFor class attribute its value is formed by concantenating elements using space as a separator. If elements are hierarchical then class name is formed by concatenation with a dash (``-``) as a separator.\n\n## Data\n\nIf value of ``data`` attbibute is a map then keys of that map get concatenated with ``data`` using dash (``-``) as a separator, them same applies to nested maps. Non-map values become attribute values - scalars are converted to string, lists are converted to JSON string.\n\n## Style\n\nStyle can be defined as a string, list or map. If style is defined as a list, all list values are concatenated with a space as a separator - it is a convent way for long unstructured definitions.\n\nIf style value is a map then the value and its contained map values are processed in the following fashion:\n\n* Keys are concatenated with dash as a separator.\n* List values are contcatenated wtih space as a separator.\n"<a name="line.510"></a>
 <span class="sourceLineNo">511</span>                   });<a name="line.511"></a>
 <span class="sourceLineNo">512</span>                addAnnotation<a name="line.512"></a>
 <span class="sourceLineNo">513</span>                  (getHtmlElement_Content(),<a name="line.513"></a>
@@ -599,7 +632,7 @@
 <span class="sourceLineNo">591</span>                  (scriptEClass,<a name="line.591"></a>
 <span class="sourceLineNo">592</span>                   source,<a name="line.592"></a>
 <span class="sourceLineNo">593</span>                   new String[] {<a name="line.593"></a>
-<span class="sourceLineNo">594</span>                           "documentation", "Script with code stored in the model element ``code`` attribute."<a name="line.594"></a>
+<span class="sourceLineNo">594</span>                           "documentation", "Script with code stored in the model element ``source`` reference."<a name="line.594"></a>
 <span class="sourceLineNo">595</span>                   });<a name="line.595"></a>
 <span class="sourceLineNo">596</span>                addAnnotation<a name="line.596"></a>
 <span class="sourceLineNo">597</span>                  (scriptReferenceEClass,<a name="line.597"></a>
@@ -714,7 +747,7 @@
 
 
 
-</pre>
-</div>
-</body>
+</pre> 
+  </div>  
+ </body>
 </html>
