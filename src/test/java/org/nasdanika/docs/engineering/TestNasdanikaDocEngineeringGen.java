@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -39,6 +41,7 @@ import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -86,11 +89,17 @@ import org.nasdanika.html.ecore.EcoreActionSupplier;
 import org.nasdanika.html.ecore.EcoreActionSupplierAdapterFactory;
 import org.nasdanika.html.ecore.GenModelResourceSet;
 import org.nasdanika.html.emf.EObjectActionResolver;
+import org.nasdanika.html.jstree.JsTreeFactory;
+import org.nasdanika.html.jstree.JsTreeNode;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.gen.ActionContentProvider;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
+import org.nasdanika.html.model.app.gen.LinkJsTreeNodeSupplierFactoryAdapter;
+import org.nasdanika.html.model.app.gen.NavigationPanelConsumerFactoryAdapter;
 import org.nasdanika.html.model.app.gen.PageContentProvider;
 import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.app.util.ActionProvider;
@@ -386,7 +395,7 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 	 * Loads instance model from previously generated XMI, diagnoses, generates action model.
 	 * @throws Exception
 	 */
-	public void generateActionModel(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
+	public Map<EObject,Action>  generateActionModel(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
 		ResourceSet instanceModelsResourceSet = createResourceSet(context, progressMonitor);
 		Resource instanceModelResource = instanceModelsResourceSet.getResource(URI.createURI(name + ".xml").resolve(ENGINEERING_MODELS_URI), true);
 
@@ -472,6 +481,8 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 		actionModelResource.getContents().add(rootAction);
 
 		actionModelResource.save(null);
+		
+		return registry;
 	}
 	
 	protected EObject loadObject(
@@ -498,7 +509,7 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 	 * Generates a resource model from an action model.
 	 * @throws Exception
 	 */
-	public void generateResourceModel(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
+	public void generateResourceModel(String name, Map<EObject, Action> registry, Context context, ProgressMonitor progressMonitor) throws Exception {
 		java.util.function.Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
 			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
 				System.err.println("***********************");
@@ -530,9 +541,94 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 		contentDir.mkdirs();
 		// Generating content file from action content 
 		ActionContentProvider.Factory actionContentProviderFactory = (contentProviderContext) -> (action, uriResolver, pMonitor) -> {
+			
+			@SuppressWarnings("unchecked")
+			java.util.function.Function<Context, String> siteMapTreeScriptComputer = ctx -> {
+				// TODO - actions from action prototype, e.g. Ecore doc actions, to the tree.
+				
+				JsTreeFactory jsTreeFactory = context.get(JsTreeFactory.class, JsTreeFactory.INSTANCE);
+				Map<EObject, JsTreeNode> nodeMap = new HashMap<>();
+				for (Entry<EObject, Action> re: registry.entrySet()) {
+					Action treeAction = re.getValue();
+					
+					Link link = AppFactory.eINSTANCE.createLink();
+					link.setText(treeAction.getText());
+					link.setIcon(treeAction.getIcon());
+					
+					URI bURI = uriResolver.apply(action, (URI) null);
+					URI tURI = uriResolver.apply(treeAction, bURI);
+					link.setLocation(tURI.toString());
+					LinkJsTreeNodeSupplierFactoryAdapter<Link> adapter = new LinkJsTreeNodeSupplierFactoryAdapter<>(link);
+					
+					try {
+						JsTreeNode jsTreeNode = adapter.create(ctx).execute(progressMonitor);
+						jsTreeNode.attribute(Util.DATA_NSD_ACTION_UUID_ATTRIBUTE, treeAction.getUuid());
+						nodeMap.put(re.getKey(), jsTreeNode);
+					} catch (Exception e) {
+						throw new NasdanikaException(e);
+					}
+				}
+				
+				Map<EObject, JsTreeNode> roots = new HashMap<>(nodeMap);
+				
+				Map<EObject,Map<String,List<JsTreeNode>>> refMap = new HashMap<>();
+				for (EObject eObj: new ArrayList<>(nodeMap.keySet())) {
+					Map<String,List<JsTreeNode>> rMap = new TreeMap<>();					
+					for (EReference eRef: eObj.eClass().getEAllReferences()) {
+						if (eRef.isContainment()) {
+							Object eRefValue = eObj.eGet(eRef);
+							List<JsTreeNode> refNodes = new ArrayList<>();
+							for (Object ve: eRefValue instanceof Collection ? (Collection<Object>) eRefValue : Collections.singletonList(eRefValue)) {
+								JsTreeNode refNode = roots.remove(ve);
+								if (refNode != null) {
+									refNodes.add(refNode);
+								}
+							}
+							if (!refNodes.isEmpty()) {
+								rMap.put(org.nasdanika.common.Util.nameToLabel(eRef.getName()) , refNodes);
+							}
+						}
+					}
+					if (!rMap.isEmpty()) {
+						refMap.put(eObj, rMap);
+					}
+				}
+				
+				for (Entry<EObject, JsTreeNode> ne: nodeMap.entrySet()) {
+					Map<String, List<JsTreeNode>> refs = refMap.get(ne.getKey());
+					if (refs != null) {
+						for (Entry<String, List<JsTreeNode>> ref: refs.entrySet()) {
+							JsTreeNode refNode = jsTreeFactory.jsTreeNode();
+							refNode.text(ref.getKey());
+							refNode.children().addAll(ref.getValue());
+							ne.getValue().children().add(refNode);
+						}
+					}
+				}
+				
+				JSONObject jsTree = jsTreeFactory.buildJsTree(roots.values());
+		
+				List<String> plugins = new ArrayList<>();
+				plugins.add("state");
+				plugins.add("search");
+				JSONObject searchConfig = new JSONObject();
+				searchConfig.put("show_only_matches", true);
+				searchConfig.put("show_only_matches_children", true);
+				jsTree.put("search", searchConfig);
+				jsTree.put("plugins", plugins); 		
+				jsTree.put("state", Collections.singletonMap("key", "nsd-site-map-tree"));
+				
+				// Deletes selection from state
+				String filter = NavigationPanelConsumerFactoryAdapter.CLEAR_STATE_FILTER + " tree.search.search_callback = (results, node) => results.split(' ').includes(node.original['data-nsd-action-uuid']);";
+				
+				return jsTreeFactory.bind("#nsd-site-map-tree", jsTree, filter, null).toString();				
+			};			
+			MutableContext mctx = contentProviderContext.fork();
+			mctx.put("nsd-site-map-tree-script", siteMapTreeScriptComputer);		
+			
 			String fileName = action.getUuid() + ".html";
 			SupplierFactory<InputStream> contentFactory = org.nasdanika.common.Util.asInputStreamSupplierFactory(action.getContent());			
-			try (InputStream contentStream = org.nasdanika.common.Util.call(contentFactory.create(contentProviderContext), pMonitor, diagnosticConsumer, Status.FAIL, Status.ERROR)) {
+			try (InputStream contentStream = org.nasdanika.common.Util.call(contentFactory.create(mctx), pMonitor, diagnosticConsumer, Status.FAIL, Status.ERROR)) {
 				Files.copy(contentStream, new File(contentDir, fileName).toPath(), StandardCopyOption.REPLACE_EXISTING);
 			}
 			
@@ -818,11 +914,11 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 		System.out.println("\tGenerated instance model in " + (System.currentTimeMillis() - start) + " milliseconds");
 		start = System.currentTimeMillis();
 		
-		generateActionModel(name, context, progressMonitor);
+		Map<EObject, Action> registry = generateActionModel(name, context, progressMonitor);
 		System.out.println("\tGenerated action model in " + (System.currentTimeMillis() - start) + " milliseconds");
 		start = System.currentTimeMillis();
 		
-		generateResourceModel(name, context, progressMonitor);
+		generateResourceModel(name, registry, context, progressMonitor);
 		System.out.println("\tGenerated resource model in " + (System.currentTimeMillis() - start) + " milliseconds");
 		start = System.currentTimeMillis();
 		
