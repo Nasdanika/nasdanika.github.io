@@ -552,7 +552,9 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 					Action treeAction = re.getValue();
 					
 					Link link = AppFactory.eINSTANCE.createLink();
-					link.setText(treeAction.getText());
+					String treeActionText = treeAction.getText();
+					int maxLength = 50;
+					link.setText(treeActionText.length() > maxLength ? treeActionText.substring(0, maxLength) + "..." : treeActionText);
 					link.setIcon(treeAction.getIcon());
 					
 					URI bURI = uriResolver.apply(action, (URI) null);
@@ -613,7 +615,6 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 				plugins.add("search");
 				JSONObject searchConfig = new JSONObject();
 				searchConfig.put("show_only_matches", true);
-				searchConfig.put("show_only_matches_children", true);
 				jsTree.put("search", searchConfig);
 				jsTree.put("plugins", plugins); 		
 				jsTree.put("state", Collections.singletonMap("key", "nsd-site-map-tree"));

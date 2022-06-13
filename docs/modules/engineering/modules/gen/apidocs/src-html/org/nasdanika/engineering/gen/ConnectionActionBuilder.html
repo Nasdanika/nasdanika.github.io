@@ -68,7 +68,7 @@ window.nsdJsTreeSearchCallback = function(str, node) {
 <span class="sourceLineNo">027</span>                        ProgressMonitor progressMonitor) throws Exception {<a name="line.27"></a>
 <span class="sourceLineNo">028</span>                Action ret = super.buildAction(action, registry, resolveConsumer, progressMonitor);<a name="line.28"></a>
 <span class="sourceLineNo">029</span>                if (Util.isBlank(ret.getText())) {<a name="line.29"></a>
-<span class="sourceLineNo">030</span>                        ret.setText("(unnamed)");<a name="line.30"></a>
+<span class="sourceLineNo">030</span>                        ret.setText("(" + getTarget().getPath() + ")");<a name="line.30"></a>
 <span class="sourceLineNo">031</span>                }<a name="line.31"></a>
 <span class="sourceLineNo">032</span>                return ret;<a name="line.32"></a>
 <span class="sourceLineNo">033</span>        }<a name="line.33"></a>
