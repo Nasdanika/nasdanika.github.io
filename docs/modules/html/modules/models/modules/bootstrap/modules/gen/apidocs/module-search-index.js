@@ -1,0 +1,1 @@
+moduleSearchIndex = [{"l":"org.nasdanika.html.model.bootstrap.gen"}]

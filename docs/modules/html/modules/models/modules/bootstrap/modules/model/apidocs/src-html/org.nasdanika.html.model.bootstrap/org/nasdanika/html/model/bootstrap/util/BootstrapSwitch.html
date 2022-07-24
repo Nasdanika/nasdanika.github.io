@@ -1,0 +1,1490 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <main role="main"> 
+   <div class="sourceContainer"> 
+    <pre><span class="sourceLineNo">001</span><a id="line.1">/**</a>
+<span class="sourceLineNo">002</span><a id="line.2"> */</a>
+<span class="sourceLineNo">003</span><a id="line.3">package org.nasdanika.html.model.bootstrap.util;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.Map;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.eclipse.emf.ecore.EObject;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import org.eclipse.emf.ecore.EPackage;</a>
+<span class="sourceLineNo">008</span><a id="line.8"></a>
+<span class="sourceLineNo">009</span><a id="line.9">import org.eclipse.emf.ecore.util.Switch;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import org.nasdanika.common.Adaptable;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import org.nasdanika.html.model.bootstrap.Accordion;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import org.nasdanika.html.model.bootstrap.ActionGroup;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import org.nasdanika.html.model.bootstrap.ActionGroupItem;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import org.nasdanika.html.model.bootstrap.Alert;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import org.nasdanika.html.model.bootstrap.Appearance;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import org.nasdanika.html.model.bootstrap.Badge;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import org.nasdanika.html.model.bootstrap.BootstrapElement;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import org.nasdanika.html.model.bootstrap.BootstrapPackage;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import org.nasdanika.html.model.bootstrap.Border;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import org.nasdanika.html.model.bootstrap.Breadcrumb;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import org.nasdanika.html.model.bootstrap.Button;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import org.nasdanika.html.model.bootstrap.ButtonGroup;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import org.nasdanika.html.model.bootstrap.ButtonToolbar;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import org.nasdanika.html.model.bootstrap.Card;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import org.nasdanika.html.model.bootstrap.Carousel;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import org.nasdanika.html.model.bootstrap.Collapse;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import org.nasdanika.html.model.bootstrap.Column;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import org.nasdanika.html.model.bootstrap.ColumnWidth;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import org.nasdanika.html.model.bootstrap.Container;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import org.nasdanika.html.model.bootstrap.ContentActionGroupItem;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import org.nasdanika.html.model.bootstrap.Div;</a>
+<span class="sourceLineNo">032</span><a id="line.32">import org.nasdanika.html.model.bootstrap.Dropdown;</a>
+<span class="sourceLineNo">033</span><a id="line.33">import org.nasdanika.html.model.bootstrap.Form;</a>
+<span class="sourceLineNo">034</span><a id="line.34">import org.nasdanika.html.model.bootstrap.FormGroup;</a>
+<span class="sourceLineNo">035</span><a id="line.35">import org.nasdanika.html.model.bootstrap.InputGroup;</a>
+<span class="sourceLineNo">036</span><a id="line.36">import org.nasdanika.html.model.bootstrap.Item;</a>
+<span class="sourceLineNo">037</span><a id="line.37">import org.nasdanika.html.model.bootstrap.LinkActionGroupItem;</a>
+<span class="sourceLineNo">038</span><a id="line.38">import org.nasdanika.html.model.bootstrap.ListGroup;</a>
+<span class="sourceLineNo">039</span><a id="line.39">import org.nasdanika.html.model.bootstrap.Modal;</a>
+<span class="sourceLineNo">040</span><a id="line.40">import org.nasdanika.html.model.bootstrap.Navbar;</a>
+<span class="sourceLineNo">041</span><a id="line.41">import org.nasdanika.html.model.bootstrap.Navs;</a>
+<span class="sourceLineNo">042</span><a id="line.42">import org.nasdanika.html.model.bootstrap.Row;</a>
+<span class="sourceLineNo">043</span><a id="line.43">import org.nasdanika.html.model.bootstrap.Slide;</a>
+<span class="sourceLineNo">044</span><a id="line.44">import org.nasdanika.html.model.bootstrap.Spacing;</a>
+<span class="sourceLineNo">045</span><a id="line.45">import org.nasdanika.html.model.bootstrap.Table;</a>
+<span class="sourceLineNo">046</span><a id="line.46">import org.nasdanika.html.model.bootstrap.TableCell;</a>
+<span class="sourceLineNo">047</span><a id="line.47">import org.nasdanika.html.model.bootstrap.TableConfiguration;</a>
+<span class="sourceLineNo">048</span><a id="line.48">import org.nasdanika.html.model.bootstrap.TableHeader;</a>
+<span class="sourceLineNo">049</span><a id="line.49">import org.nasdanika.html.model.bootstrap.TableRow;</a>
+<span class="sourceLineNo">050</span><a id="line.50">import org.nasdanika.html.model.bootstrap.TableRowContainer;</a>
+<span class="sourceLineNo">051</span><a id="line.51">import org.nasdanika.html.model.bootstrap.TableSection;</a>
+<span class="sourceLineNo">052</span><a id="line.52">import org.nasdanika.html.model.bootstrap.Tag;</a>
+<span class="sourceLineNo">053</span><a id="line.53">import org.nasdanika.html.model.bootstrap.Text;</a>
+<span class="sourceLineNo">054</span><a id="line.54">import org.nasdanika.html.model.bootstrap.Tooltip;</a>
+<span class="sourceLineNo">055</span><a id="line.55"></a>
+<span class="sourceLineNo">056</span><a id="line.56">import org.nasdanika.html.model.html.HtmlElement;</a>
+<span class="sourceLineNo">057</span><a id="line.57">import org.nasdanika.html.model.html.Page;</a>
+<span class="sourceLineNo">058</span><a id="line.58">import org.nasdanika.ncore.Marked;</a>
+<span class="sourceLineNo">059</span><a id="line.59">import org.nasdanika.ncore.ModelElement;</a>
+<span class="sourceLineNo">060</span><a id="line.60"></a>
+<span class="sourceLineNo">061</span><a id="line.61">/**</a>
+<span class="sourceLineNo">062</span><a id="line.62"> * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">063</span><a id="line.63"> * The &lt;b&gt;Switch&lt;/b&gt; for the model's inheritance hierarchy.</a>
+<span class="sourceLineNo">064</span><a id="line.64"> * It supports the call {@link #doSwitch(EObject) doSwitch(object)}</a>
+<span class="sourceLineNo">065</span><a id="line.65"> * to invoke the &lt;code&gt;caseXXX&lt;/code&gt; method for each class of the model,</a>
+<span class="sourceLineNo">066</span><a id="line.66"> * starting with the actual class of the object</a>
+<span class="sourceLineNo">067</span><a id="line.67"> * and proceeding up the inheritance hierarchy</a>
+<span class="sourceLineNo">068</span><a id="line.68"> * until a non-null result is returned,</a>
+<span class="sourceLineNo">069</span><a id="line.69"> * which is the result of the switch.</a>
+<span class="sourceLineNo">070</span><a id="line.70"> * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">071</span><a id="line.71"> * @see org.nasdanika.html.model.bootstrap.BootstrapPackage</a>
+<span class="sourceLineNo">072</span><a id="line.72"> * @generated</a>
+<span class="sourceLineNo">073</span><a id="line.73"> */</a>
+<span class="sourceLineNo">074</span><a id="line.74">public class BootstrapSwitch&lt;T&gt; extends Switch&lt;T&gt; {</a>
+<span class="sourceLineNo">075</span><a id="line.75">        /**</a>
+<span class="sourceLineNo">076</span><a id="line.76">         * The cached model package</a>
+<span class="sourceLineNo">077</span><a id="line.77">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">078</span><a id="line.78">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">079</span><a id="line.79">         * @generated</a>
+<span class="sourceLineNo">080</span><a id="line.80">         */</a>
+<span class="sourceLineNo">081</span><a id="line.81">        protected static BootstrapPackage modelPackage;</a>
+<span class="sourceLineNo">082</span><a id="line.82"></a>
+<span class="sourceLineNo">083</span><a id="line.83">        /**</a>
+<span class="sourceLineNo">084</span><a id="line.84">         * Creates an instance of the switch.</a>
+<span class="sourceLineNo">085</span><a id="line.85">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">086</span><a id="line.86">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">087</span><a id="line.87">         * @generated</a>
+<span class="sourceLineNo">088</span><a id="line.88">         */</a>
+<span class="sourceLineNo">089</span><a id="line.89">        public BootstrapSwitch() {</a>
+<span class="sourceLineNo">090</span><a id="line.90">                if (modelPackage == null) {</a>
+<span class="sourceLineNo">091</span><a id="line.91">                        modelPackage = BootstrapPackage.eINSTANCE;</a>
+<span class="sourceLineNo">092</span><a id="line.92">                }</a>
+<span class="sourceLineNo">093</span><a id="line.93">        }</a>
+<span class="sourceLineNo">094</span><a id="line.94"></a>
+<span class="sourceLineNo">095</span><a id="line.95">        /**</a>
+<span class="sourceLineNo">096</span><a id="line.96">         * Checks whether this is a switch for the given package.</a>
+<span class="sourceLineNo">097</span><a id="line.97">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">098</span><a id="line.98">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">099</span><a id="line.99">         * @param ePackage the package in question.</a>
+<span class="sourceLineNo">100</span><a id="line.100">         * @return whether this is a switch for the given package.</a>
+<span class="sourceLineNo">101</span><a id="line.101">         * @generated</a>
+<span class="sourceLineNo">102</span><a id="line.102">         */</a>
+<span class="sourceLineNo">103</span><a id="line.103">        @Override</a>
+<span class="sourceLineNo">104</span><a id="line.104">        protected boolean isSwitchFor(EPackage ePackage) {</a>
+<span class="sourceLineNo">105</span><a id="line.105">                return ePackage == modelPackage;</a>
+<span class="sourceLineNo">106</span><a id="line.106">        }</a>
+<span class="sourceLineNo">107</span><a id="line.107"></a>
+<span class="sourceLineNo">108</span><a id="line.108">        /**</a>
+<span class="sourceLineNo">109</span><a id="line.109">         * Calls &lt;code&gt;caseXXX&lt;/code&gt; for each class of the model until one returns a non null result; it yields that result.</a>
+<span class="sourceLineNo">110</span><a id="line.110">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">111</span><a id="line.111">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">112</span><a id="line.112">         * @return the first non-null result returned by a &lt;code&gt;caseXXX&lt;/code&gt; call.</a>
+<span class="sourceLineNo">113</span><a id="line.113">         * @generated</a>
+<span class="sourceLineNo">114</span><a id="line.114">         */</a>
+<span class="sourceLineNo">115</span><a id="line.115">        @Override</a>
+<span class="sourceLineNo">116</span><a id="line.116">        protected T doSwitch(int classifierID, EObject theEObject) {</a>
+<span class="sourceLineNo">117</span><a id="line.117">                switch (classifierID) {</a>
+<span class="sourceLineNo">118</span><a id="line.118">                        case BootstrapPackage.BOOTSTRAP_ELEMENT: {</a>
+<span class="sourceLineNo">119</span><a id="line.119">                                BootstrapElement bootstrapElement = (BootstrapElement)theEObject;</a>
+<span class="sourceLineNo">120</span><a id="line.120">                                T result = caseBootstrapElement(bootstrapElement);</a>
+<span class="sourceLineNo">121</span><a id="line.121">                                if (result == null) result = caseHtmlElement(bootstrapElement);</a>
+<span class="sourceLineNo">122</span><a id="line.122">                                if (result == null) result = caseModelElement(bootstrapElement);</a>
+<span class="sourceLineNo">123</span><a id="line.123">                                if (result == null) result = caseMarked(bootstrapElement);</a>
+<span class="sourceLineNo">124</span><a id="line.124">                                if (result == null) result = caseAdaptable(bootstrapElement);</a>
+<span class="sourceLineNo">125</span><a id="line.125">                                if (result == null) result = caseIMarked(bootstrapElement);</a>
+<span class="sourceLineNo">126</span><a id="line.126">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">127</span><a id="line.127">                                return result;</a>
+<span class="sourceLineNo">128</span><a id="line.128">                        }</a>
+<span class="sourceLineNo">129</span><a id="line.129">                        case BootstrapPackage.PAGE: {</a>
+<span class="sourceLineNo">130</span><a id="line.130">                                org.nasdanika.html.model.bootstrap.Page page = (org.nasdanika.html.model.bootstrap.Page)theEObject;</a>
+<span class="sourceLineNo">131</span><a id="line.131">                                T result = casePage(page);</a>
+<span class="sourceLineNo">132</span><a id="line.132">                                if (result == null) result = caseHtml_Page(page);</a>
+<span class="sourceLineNo">133</span><a id="line.133">                                if (result == null) result = caseModelElement(page);</a>
+<span class="sourceLineNo">134</span><a id="line.134">                                if (result == null) result = caseMarked(page);</a>
+<span class="sourceLineNo">135</span><a id="line.135">                                if (result == null) result = caseAdaptable(page);</a>
+<span class="sourceLineNo">136</span><a id="line.136">                                if (result == null) result = caseIMarked(page);</a>
+<span class="sourceLineNo">137</span><a id="line.137">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">138</span><a id="line.138">                                return result;</a>
+<span class="sourceLineNo">139</span><a id="line.139">                        }</a>
+<span class="sourceLineNo">140</span><a id="line.140">                        case BootstrapPackage.APPEARANCE: {</a>
+<span class="sourceLineNo">141</span><a id="line.141">                                Appearance appearance = (Appearance)theEObject;</a>
+<span class="sourceLineNo">142</span><a id="line.142">                                T result = caseAppearance(appearance);</a>
+<span class="sourceLineNo">143</span><a id="line.143">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">144</span><a id="line.144">                                return result;</a>
+<span class="sourceLineNo">145</span><a id="line.145">                        }</a>
+<span class="sourceLineNo">146</span><a id="line.146">                        case BootstrapPackage.APPEARANCE_ENTRY: {</a>
+<span class="sourceLineNo">147</span><a id="line.147">                                @SuppressWarnings("unchecked") Map.Entry&lt;String, Appearance&gt; appearanceEntry = (Map.Entry&lt;String, Appearance&gt;)theEObject;</a>
+<span class="sourceLineNo">148</span><a id="line.148">                                T result = caseAppearanceEntry(appearanceEntry);</a>
+<span class="sourceLineNo">149</span><a id="line.149">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">150</span><a id="line.150">                                return result;</a>
+<span class="sourceLineNo">151</span><a id="line.151">                        }</a>
+<span class="sourceLineNo">152</span><a id="line.152">                        case BootstrapPackage.BORDER: {</a>
+<span class="sourceLineNo">153</span><a id="line.153">                                Border border = (Border)theEObject;</a>
+<span class="sourceLineNo">154</span><a id="line.154">                                T result = caseBorder(border);</a>
+<span class="sourceLineNo">155</span><a id="line.155">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">156</span><a id="line.156">                                return result;</a>
+<span class="sourceLineNo">157</span><a id="line.157">                        }</a>
+<span class="sourceLineNo">158</span><a id="line.158">                        case BootstrapPackage.SPACING: {</a>
+<span class="sourceLineNo">159</span><a id="line.159">                                Spacing spacing = (Spacing)theEObject;</a>
+<span class="sourceLineNo">160</span><a id="line.160">                                T result = caseSpacing(spacing);</a>
+<span class="sourceLineNo">161</span><a id="line.161">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">162</span><a id="line.162">                                return result;</a>
+<span class="sourceLineNo">163</span><a id="line.163">                        }</a>
+<span class="sourceLineNo">164</span><a id="line.164">                        case BootstrapPackage.TEXT: {</a>
+<span class="sourceLineNo">165</span><a id="line.165">                                Text text = (Text)theEObject;</a>
+<span class="sourceLineNo">166</span><a id="line.166">                                T result = caseText(text);</a>
+<span class="sourceLineNo">167</span><a id="line.167">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">168</span><a id="line.168">                                return result;</a>
+<span class="sourceLineNo">169</span><a id="line.169">                        }</a>
+<span class="sourceLineNo">170</span><a id="line.170">                        case BootstrapPackage.FLOAT: {</a>
+<span class="sourceLineNo">171</span><a id="line.171">                                org.nasdanika.html.model.bootstrap.Float float_ = (org.nasdanika.html.model.bootstrap.Float)theEObject;</a>
+<span class="sourceLineNo">172</span><a id="line.172">                                T result = caseFloat(float_);</a>
+<span class="sourceLineNo">173</span><a id="line.173">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">174</span><a id="line.174">                                return result;</a>
+<span class="sourceLineNo">175</span><a id="line.175">                        }</a>
+<span class="sourceLineNo">176</span><a id="line.176">                        case BootstrapPackage.TAG: {</a>
+<span class="sourceLineNo">177</span><a id="line.177">                                Tag tag = (Tag)theEObject;</a>
+<span class="sourceLineNo">178</span><a id="line.178">                                T result = caseTag(tag);</a>
+<span class="sourceLineNo">179</span><a id="line.179">                                if (result == null) result = caseHtml_Tag(tag);</a>
+<span class="sourceLineNo">180</span><a id="line.180">                                if (result == null) result = caseBootstrapElement(tag);</a>
+<span class="sourceLineNo">181</span><a id="line.181">                                if (result == null) result = caseHtmlElement(tag);</a>
+<span class="sourceLineNo">182</span><a id="line.182">                                if (result == null) result = caseModelElement(tag);</a>
+<span class="sourceLineNo">183</span><a id="line.183">                                if (result == null) result = caseMarked(tag);</a>
+<span class="sourceLineNo">184</span><a id="line.184">                                if (result == null) result = caseAdaptable(tag);</a>
+<span class="sourceLineNo">185</span><a id="line.185">                                if (result == null) result = caseIMarked(tag);</a>
+<span class="sourceLineNo">186</span><a id="line.186">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">187</span><a id="line.187">                                return result;</a>
+<span class="sourceLineNo">188</span><a id="line.188">                        }</a>
+<span class="sourceLineNo">189</span><a id="line.189">                        case BootstrapPackage.MODAL: {</a>
+<span class="sourceLineNo">190</span><a id="line.190">                                Modal modal = (Modal)theEObject;</a>
+<span class="sourceLineNo">191</span><a id="line.191">                                T result = caseModal(modal);</a>
+<span class="sourceLineNo">192</span><a id="line.192">                                if (result == null) result = caseBootstrapElement(modal);</a>
+<span class="sourceLineNo">193</span><a id="line.193">                                if (result == null) result = caseHtmlElement(modal);</a>
+<span class="sourceLineNo">194</span><a id="line.194">                                if (result == null) result = caseModelElement(modal);</a>
+<span class="sourceLineNo">195</span><a id="line.195">                                if (result == null) result = caseMarked(modal);</a>
+<span class="sourceLineNo">196</span><a id="line.196">                                if (result == null) result = caseAdaptable(modal);</a>
+<span class="sourceLineNo">197</span><a id="line.197">                                if (result == null) result = caseIMarked(modal);</a>
+<span class="sourceLineNo">198</span><a id="line.198">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">199</span><a id="line.199">                                return result;</a>
+<span class="sourceLineNo">200</span><a id="line.200">                        }</a>
+<span class="sourceLineNo">201</span><a id="line.201">                        case BootstrapPackage.DIV: {</a>
+<span class="sourceLineNo">202</span><a id="line.202">                                Div div = (Div)theEObject;</a>
+<span class="sourceLineNo">203</span><a id="line.203">                                T result = caseDiv(div);</a>
+<span class="sourceLineNo">204</span><a id="line.204">                                if (result == null) result = caseTag(div);</a>
+<span class="sourceLineNo">205</span><a id="line.205">                                if (result == null) result = caseHtml_Tag(div);</a>
+<span class="sourceLineNo">206</span><a id="line.206">                                if (result == null) result = caseBootstrapElement(div);</a>
+<span class="sourceLineNo">207</span><a id="line.207">                                if (result == null) result = caseHtmlElement(div);</a>
+<span class="sourceLineNo">208</span><a id="line.208">                                if (result == null) result = caseModelElement(div);</a>
+<span class="sourceLineNo">209</span><a id="line.209">                                if (result == null) result = caseMarked(div);</a>
+<span class="sourceLineNo">210</span><a id="line.210">                                if (result == null) result = caseAdaptable(div);</a>
+<span class="sourceLineNo">211</span><a id="line.211">                                if (result == null) result = caseIMarked(div);</a>
+<span class="sourceLineNo">212</span><a id="line.212">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">213</span><a id="line.213">                                return result;</a>
+<span class="sourceLineNo">214</span><a id="line.214">                        }</a>
+<span class="sourceLineNo">215</span><a id="line.215">                        case BootstrapPackage.ITEM: {</a>
+<span class="sourceLineNo">216</span><a id="line.216">                                Item item = (Item)theEObject;</a>
+<span class="sourceLineNo">217</span><a id="line.217">                                T result = caseItem(item);</a>
+<span class="sourceLineNo">218</span><a id="line.218">                                if (result == null) result = caseModelElement(item);</a>
+<span class="sourceLineNo">219</span><a id="line.219">                                if (result == null) result = caseMarked(item);</a>
+<span class="sourceLineNo">220</span><a id="line.220">                                if (result == null) result = caseAdaptable(item);</a>
+<span class="sourceLineNo">221</span><a id="line.221">                                if (result == null) result = caseIMarked(item);</a>
+<span class="sourceLineNo">222</span><a id="line.222">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">223</span><a id="line.223">                                return result;</a>
+<span class="sourceLineNo">224</span><a id="line.224">                        }</a>
+<span class="sourceLineNo">225</span><a id="line.225">                        case BootstrapPackage.ACTION_GROUP_ITEM: {</a>
+<span class="sourceLineNo">226</span><a id="line.226">                                ActionGroupItem actionGroupItem = (ActionGroupItem)theEObject;</a>
+<span class="sourceLineNo">227</span><a id="line.227">                                T result = caseActionGroupItem(actionGroupItem);</a>
+<span class="sourceLineNo">228</span><a id="line.228">                                if (result == null) result = caseItem(actionGroupItem);</a>
+<span class="sourceLineNo">229</span><a id="line.229">                                if (result == null) result = caseModelElement(actionGroupItem);</a>
+<span class="sourceLineNo">230</span><a id="line.230">                                if (result == null) result = caseMarked(actionGroupItem);</a>
+<span class="sourceLineNo">231</span><a id="line.231">                                if (result == null) result = caseAdaptable(actionGroupItem);</a>
+<span class="sourceLineNo">232</span><a id="line.232">                                if (result == null) result = caseIMarked(actionGroupItem);</a>
+<span class="sourceLineNo">233</span><a id="line.233">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">234</span><a id="line.234">                                return result;</a>
+<span class="sourceLineNo">235</span><a id="line.235">                        }</a>
+<span class="sourceLineNo">236</span><a id="line.236">                        case BootstrapPackage.LINK_ACTION_GROUP_ITEM: {</a>
+<span class="sourceLineNo">237</span><a id="line.237">                                LinkActionGroupItem linkActionGroupItem = (LinkActionGroupItem)theEObject;</a>
+<span class="sourceLineNo">238</span><a id="line.238">                                T result = caseLinkActionGroupItem(linkActionGroupItem);</a>
+<span class="sourceLineNo">239</span><a id="line.239">                                if (result == null) result = caseActionGroupItem(linkActionGroupItem);</a>
+<span class="sourceLineNo">240</span><a id="line.240">                                if (result == null) result = caseItem(linkActionGroupItem);</a>
+<span class="sourceLineNo">241</span><a id="line.241">                                if (result == null) result = caseModelElement(linkActionGroupItem);</a>
+<span class="sourceLineNo">242</span><a id="line.242">                                if (result == null) result = caseMarked(linkActionGroupItem);</a>
+<span class="sourceLineNo">243</span><a id="line.243">                                if (result == null) result = caseAdaptable(linkActionGroupItem);</a>
+<span class="sourceLineNo">244</span><a id="line.244">                                if (result == null) result = caseIMarked(linkActionGroupItem);</a>
+<span class="sourceLineNo">245</span><a id="line.245">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">246</span><a id="line.246">                                return result;</a>
+<span class="sourceLineNo">247</span><a id="line.247">                        }</a>
+<span class="sourceLineNo">248</span><a id="line.248">                        case BootstrapPackage.CONTENT_ACTION_GROUP_ITEM: {</a>
+<span class="sourceLineNo">249</span><a id="line.249">                                ContentActionGroupItem contentActionGroupItem = (ContentActionGroupItem)theEObject;</a>
+<span class="sourceLineNo">250</span><a id="line.250">                                T result = caseContentActionGroupItem(contentActionGroupItem);</a>
+<span class="sourceLineNo">251</span><a id="line.251">                                if (result == null) result = caseActionGroupItem(contentActionGroupItem);</a>
+<span class="sourceLineNo">252</span><a id="line.252">                                if (result == null) result = caseItem(contentActionGroupItem);</a>
+<span class="sourceLineNo">253</span><a id="line.253">                                if (result == null) result = caseModelElement(contentActionGroupItem);</a>
+<span class="sourceLineNo">254</span><a id="line.254">                                if (result == null) result = caseMarked(contentActionGroupItem);</a>
+<span class="sourceLineNo">255</span><a id="line.255">                                if (result == null) result = caseAdaptable(contentActionGroupItem);</a>
+<span class="sourceLineNo">256</span><a id="line.256">                                if (result == null) result = caseIMarked(contentActionGroupItem);</a>
+<span class="sourceLineNo">257</span><a id="line.257">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">258</span><a id="line.258">                                return result;</a>
+<span class="sourceLineNo">259</span><a id="line.259">                        }</a>
+<span class="sourceLineNo">260</span><a id="line.260">                        case BootstrapPackage.ACTION_GROUP: {</a>
+<span class="sourceLineNo">261</span><a id="line.261">                                ActionGroup actionGroup = (ActionGroup)theEObject;</a>
+<span class="sourceLineNo">262</span><a id="line.262">                                T result = caseActionGroup(actionGroup);</a>
+<span class="sourceLineNo">263</span><a id="line.263">                                if (result == null) result = caseDiv(actionGroup);</a>
+<span class="sourceLineNo">264</span><a id="line.264">                                if (result == null) result = caseTag(actionGroup);</a>
+<span class="sourceLineNo">265</span><a id="line.265">                                if (result == null) result = caseHtml_Tag(actionGroup);</a>
+<span class="sourceLineNo">266</span><a id="line.266">                                if (result == null) result = caseBootstrapElement(actionGroup);</a>
+<span class="sourceLineNo">267</span><a id="line.267">                                if (result == null) result = caseHtmlElement(actionGroup);</a>
+<span class="sourceLineNo">268</span><a id="line.268">                                if (result == null) result = caseModelElement(actionGroup);</a>
+<span class="sourceLineNo">269</span><a id="line.269">                                if (result == null) result = caseMarked(actionGroup);</a>
+<span class="sourceLineNo">270</span><a id="line.270">                                if (result == null) result = caseAdaptable(actionGroup);</a>
+<span class="sourceLineNo">271</span><a id="line.271">                                if (result == null) result = caseIMarked(actionGroup);</a>
+<span class="sourceLineNo">272</span><a id="line.272">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">273</span><a id="line.273">                                return result;</a>
+<span class="sourceLineNo">274</span><a id="line.274">                        }</a>
+<span class="sourceLineNo">275</span><a id="line.275">                        case BootstrapPackage.CONTAINER: {</a>
+<span class="sourceLineNo">276</span><a id="line.276">                                Container container = (Container)theEObject;</a>
+<span class="sourceLineNo">277</span><a id="line.277">                                T result = caseContainer(container);</a>
+<span class="sourceLineNo">278</span><a id="line.278">                                if (result == null) result = caseBootstrapElement(container);</a>
+<span class="sourceLineNo">279</span><a id="line.279">                                if (result == null) result = caseHtmlElement(container);</a>
+<span class="sourceLineNo">280</span><a id="line.280">                                if (result == null) result = caseModelElement(container);</a>
+<span class="sourceLineNo">281</span><a id="line.281">                                if (result == null) result = caseMarked(container);</a>
+<span class="sourceLineNo">282</span><a id="line.282">                                if (result == null) result = caseAdaptable(container);</a>
+<span class="sourceLineNo">283</span><a id="line.283">                                if (result == null) result = caseIMarked(container);</a>
+<span class="sourceLineNo">284</span><a id="line.284">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">285</span><a id="line.285">                                return result;</a>
+<span class="sourceLineNo">286</span><a id="line.286">                        }</a>
+<span class="sourceLineNo">287</span><a id="line.287">                        case BootstrapPackage.ROW: {</a>
+<span class="sourceLineNo">288</span><a id="line.288">                                Row row = (Row)theEObject;</a>
+<span class="sourceLineNo">289</span><a id="line.289">                                T result = caseRow(row);</a>
+<span class="sourceLineNo">290</span><a id="line.290">                                if (result == null) result = caseBootstrapElement(row);</a>
+<span class="sourceLineNo">291</span><a id="line.291">                                if (result == null) result = caseHtmlElement(row);</a>
+<span class="sourceLineNo">292</span><a id="line.292">                                if (result == null) result = caseModelElement(row);</a>
+<span class="sourceLineNo">293</span><a id="line.293">                                if (result == null) result = caseMarked(row);</a>
+<span class="sourceLineNo">294</span><a id="line.294">                                if (result == null) result = caseAdaptable(row);</a>
+<span class="sourceLineNo">295</span><a id="line.295">                                if (result == null) result = caseIMarked(row);</a>
+<span class="sourceLineNo">296</span><a id="line.296">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">297</span><a id="line.297">                                return result;</a>
+<span class="sourceLineNo">298</span><a id="line.298">                        }</a>
+<span class="sourceLineNo">299</span><a id="line.299">                        case BootstrapPackage.COLUMN_WIDTH: {</a>
+<span class="sourceLineNo">300</span><a id="line.300">                                ColumnWidth columnWidth = (ColumnWidth)theEObject;</a>
+<span class="sourceLineNo">301</span><a id="line.301">                                T result = caseColumnWidth(columnWidth);</a>
+<span class="sourceLineNo">302</span><a id="line.302">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">303</span><a id="line.303">                                return result;</a>
+<span class="sourceLineNo">304</span><a id="line.304">                        }</a>
+<span class="sourceLineNo">305</span><a id="line.305">                        case BootstrapPackage.COLUMN: {</a>
+<span class="sourceLineNo">306</span><a id="line.306">                                Column column = (Column)theEObject;</a>
+<span class="sourceLineNo">307</span><a id="line.307">                                T result = caseColumn(column);</a>
+<span class="sourceLineNo">308</span><a id="line.308">                                if (result == null) result = caseBootstrapElement(column);</a>
+<span class="sourceLineNo">309</span><a id="line.309">                                if (result == null) result = caseHtmlElement(column);</a>
+<span class="sourceLineNo">310</span><a id="line.310">                                if (result == null) result = caseModelElement(column);</a>
+<span class="sourceLineNo">311</span><a id="line.311">                                if (result == null) result = caseMarked(column);</a>
+<span class="sourceLineNo">312</span><a id="line.312">                                if (result == null) result = caseAdaptable(column);</a>
+<span class="sourceLineNo">313</span><a id="line.313">                                if (result == null) result = caseIMarked(column);</a>
+<span class="sourceLineNo">314</span><a id="line.314">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">315</span><a id="line.315">                                return result;</a>
+<span class="sourceLineNo">316</span><a id="line.316">                        }</a>
+<span class="sourceLineNo">317</span><a id="line.317">                        case BootstrapPackage.TABLE_ROW_CONTAINER: {</a>
+<span class="sourceLineNo">318</span><a id="line.318">                                TableRowContainer tableRowContainer = (TableRowContainer)theEObject;</a>
+<span class="sourceLineNo">319</span><a id="line.319">                                T result = caseTableRowContainer(tableRowContainer);</a>
+<span class="sourceLineNo">320</span><a id="line.320">                                if (result == null) result = caseBootstrapElement(tableRowContainer);</a>
+<span class="sourceLineNo">321</span><a id="line.321">                                if (result == null) result = caseHtmlElement(tableRowContainer);</a>
+<span class="sourceLineNo">322</span><a id="line.322">                                if (result == null) result = caseModelElement(tableRowContainer);</a>
+<span class="sourceLineNo">323</span><a id="line.323">                                if (result == null) result = caseMarked(tableRowContainer);</a>
+<span class="sourceLineNo">324</span><a id="line.324">                                if (result == null) result = caseAdaptable(tableRowContainer);</a>
+<span class="sourceLineNo">325</span><a id="line.325">                                if (result == null) result = caseIMarked(tableRowContainer);</a>
+<span class="sourceLineNo">326</span><a id="line.326">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">327</span><a id="line.327">                                return result;</a>
+<span class="sourceLineNo">328</span><a id="line.328">                        }</a>
+<span class="sourceLineNo">329</span><a id="line.329">                        case BootstrapPackage.TABLE_SECTION: {</a>
+<span class="sourceLineNo">330</span><a id="line.330">                                TableSection tableSection = (TableSection)theEObject;</a>
+<span class="sourceLineNo">331</span><a id="line.331">                                T result = caseTableSection(tableSection);</a>
+<span class="sourceLineNo">332</span><a id="line.332">                                if (result == null) result = caseTableRowContainer(tableSection);</a>
+<span class="sourceLineNo">333</span><a id="line.333">                                if (result == null) result = caseBootstrapElement(tableSection);</a>
+<span class="sourceLineNo">334</span><a id="line.334">                                if (result == null) result = caseHtmlElement(tableSection);</a>
+<span class="sourceLineNo">335</span><a id="line.335">                                if (result == null) result = caseModelElement(tableSection);</a>
+<span class="sourceLineNo">336</span><a id="line.336">                                if (result == null) result = caseMarked(tableSection);</a>
+<span class="sourceLineNo">337</span><a id="line.337">                                if (result == null) result = caseAdaptable(tableSection);</a>
+<span class="sourceLineNo">338</span><a id="line.338">                                if (result == null) result = caseIMarked(tableSection);</a>
+<span class="sourceLineNo">339</span><a id="line.339">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">340</span><a id="line.340">                                return result;</a>
+<span class="sourceLineNo">341</span><a id="line.341">                        }</a>
+<span class="sourceLineNo">342</span><a id="line.342">                        case BootstrapPackage.TABLE_HEADER: {</a>
+<span class="sourceLineNo">343</span><a id="line.343">                                TableHeader tableHeader = (TableHeader)theEObject;</a>
+<span class="sourceLineNo">344</span><a id="line.344">                                T result = caseTableHeader(tableHeader);</a>
+<span class="sourceLineNo">345</span><a id="line.345">                                if (result == null) result = caseTableSection(tableHeader);</a>
+<span class="sourceLineNo">346</span><a id="line.346">                                if (result == null) result = caseTableRowContainer(tableHeader);</a>
+<span class="sourceLineNo">347</span><a id="line.347">                                if (result == null) result = caseBootstrapElement(tableHeader);</a>
+<span class="sourceLineNo">348</span><a id="line.348">                                if (result == null) result = caseHtmlElement(tableHeader);</a>
+<span class="sourceLineNo">349</span><a id="line.349">                                if (result == null) result = caseModelElement(tableHeader);</a>
+<span class="sourceLineNo">350</span><a id="line.350">                                if (result == null) result = caseMarked(tableHeader);</a>
+<span class="sourceLineNo">351</span><a id="line.351">                                if (result == null) result = caseAdaptable(tableHeader);</a>
+<span class="sourceLineNo">352</span><a id="line.352">                                if (result == null) result = caseIMarked(tableHeader);</a>
+<span class="sourceLineNo">353</span><a id="line.353">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">354</span><a id="line.354">                                return result;</a>
+<span class="sourceLineNo">355</span><a id="line.355">                        }</a>
+<span class="sourceLineNo">356</span><a id="line.356">                        case BootstrapPackage.TABLE_CONFIGURATION: {</a>
+<span class="sourceLineNo">357</span><a id="line.357">                                TableConfiguration tableConfiguration = (TableConfiguration)theEObject;</a>
+<span class="sourceLineNo">358</span><a id="line.358">                                T result = caseTableConfiguration(tableConfiguration);</a>
+<span class="sourceLineNo">359</span><a id="line.359">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">360</span><a id="line.360">                                return result;</a>
+<span class="sourceLineNo">361</span><a id="line.361">                        }</a>
+<span class="sourceLineNo">362</span><a id="line.362">                        case BootstrapPackage.TABLE: {</a>
+<span class="sourceLineNo">363</span><a id="line.363">                                Table table = (Table)theEObject;</a>
+<span class="sourceLineNo">364</span><a id="line.364">                                T result = caseTable(table);</a>
+<span class="sourceLineNo">365</span><a id="line.365">                                if (result == null) result = caseTableRowContainer(table);</a>
+<span class="sourceLineNo">366</span><a id="line.366">                                if (result == null) result = caseTableConfiguration(table);</a>
+<span class="sourceLineNo">367</span><a id="line.367">                                if (result == null) result = caseBootstrapElement(table);</a>
+<span class="sourceLineNo">368</span><a id="line.368">                                if (result == null) result = caseHtmlElement(table);</a>
+<span class="sourceLineNo">369</span><a id="line.369">                                if (result == null) result = caseModelElement(table);</a>
+<span class="sourceLineNo">370</span><a id="line.370">                                if (result == null) result = caseMarked(table);</a>
+<span class="sourceLineNo">371</span><a id="line.371">                                if (result == null) result = caseAdaptable(table);</a>
+<span class="sourceLineNo">372</span><a id="line.372">                                if (result == null) result = caseIMarked(table);</a>
+<span class="sourceLineNo">373</span><a id="line.373">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">374</span><a id="line.374">                                return result;</a>
+<span class="sourceLineNo">375</span><a id="line.375">                        }</a>
+<span class="sourceLineNo">376</span><a id="line.376">                        case BootstrapPackage.TABLE_ROW: {</a>
+<span class="sourceLineNo">377</span><a id="line.377">                                TableRow tableRow = (TableRow)theEObject;</a>
+<span class="sourceLineNo">378</span><a id="line.378">                                T result = caseTableRow(tableRow);</a>
+<span class="sourceLineNo">379</span><a id="line.379">                                if (result == null) result = caseBootstrapElement(tableRow);</a>
+<span class="sourceLineNo">380</span><a id="line.380">                                if (result == null) result = caseHtmlElement(tableRow);</a>
+<span class="sourceLineNo">381</span><a id="line.381">                                if (result == null) result = caseModelElement(tableRow);</a>
+<span class="sourceLineNo">382</span><a id="line.382">                                if (result == null) result = caseMarked(tableRow);</a>
+<span class="sourceLineNo">383</span><a id="line.383">                                if (result == null) result = caseAdaptable(tableRow);</a>
+<span class="sourceLineNo">384</span><a id="line.384">                                if (result == null) result = caseIMarked(tableRow);</a>
+<span class="sourceLineNo">385</span><a id="line.385">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">386</span><a id="line.386">                                return result;</a>
+<span class="sourceLineNo">387</span><a id="line.387">                        }</a>
+<span class="sourceLineNo">388</span><a id="line.388">                        case BootstrapPackage.TABLE_CELL: {</a>
+<span class="sourceLineNo">389</span><a id="line.389">                                TableCell tableCell = (TableCell)theEObject;</a>
+<span class="sourceLineNo">390</span><a id="line.390">                                T result = caseTableCell(tableCell);</a>
+<span class="sourceLineNo">391</span><a id="line.391">                                if (result == null) result = caseBootstrapElement(tableCell);</a>
+<span class="sourceLineNo">392</span><a id="line.392">                                if (result == null) result = caseHtmlElement(tableCell);</a>
+<span class="sourceLineNo">393</span><a id="line.393">                                if (result == null) result = caseModelElement(tableCell);</a>
+<span class="sourceLineNo">394</span><a id="line.394">                                if (result == null) result = caseMarked(tableCell);</a>
+<span class="sourceLineNo">395</span><a id="line.395">                                if (result == null) result = caseAdaptable(tableCell);</a>
+<span class="sourceLineNo">396</span><a id="line.396">                                if (result == null) result = caseIMarked(tableCell);</a>
+<span class="sourceLineNo">397</span><a id="line.397">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">398</span><a id="line.398">                                return result;</a>
+<span class="sourceLineNo">399</span><a id="line.399">                        }</a>
+<span class="sourceLineNo">400</span><a id="line.400">                        case BootstrapPackage.CARD: {</a>
+<span class="sourceLineNo">401</span><a id="line.401">                                Card card = (Card)theEObject;</a>
+<span class="sourceLineNo">402</span><a id="line.402">                                T result = caseCard(card);</a>
+<span class="sourceLineNo">403</span><a id="line.403">                                if (result == null) result = caseDiv(card);</a>
+<span class="sourceLineNo">404</span><a id="line.404">                                if (result == null) result = caseTag(card);</a>
+<span class="sourceLineNo">405</span><a id="line.405">                                if (result == null) result = caseHtml_Tag(card);</a>
+<span class="sourceLineNo">406</span><a id="line.406">                                if (result == null) result = caseBootstrapElement(card);</a>
+<span class="sourceLineNo">407</span><a id="line.407">                                if (result == null) result = caseHtmlElement(card);</a>
+<span class="sourceLineNo">408</span><a id="line.408">                                if (result == null) result = caseModelElement(card);</a>
+<span class="sourceLineNo">409</span><a id="line.409">                                if (result == null) result = caseMarked(card);</a>
+<span class="sourceLineNo">410</span><a id="line.410">                                if (result == null) result = caseAdaptable(card);</a>
+<span class="sourceLineNo">411</span><a id="line.411">                                if (result == null) result = caseIMarked(card);</a>
+<span class="sourceLineNo">412</span><a id="line.412">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">413</span><a id="line.413">                                return result;</a>
+<span class="sourceLineNo">414</span><a id="line.414">                        }</a>
+<span class="sourceLineNo">415</span><a id="line.415">                        case BootstrapPackage.ALERT: {</a>
+<span class="sourceLineNo">416</span><a id="line.416">                                Alert alert = (Alert)theEObject;</a>
+<span class="sourceLineNo">417</span><a id="line.417">                                T result = caseAlert(alert);</a>
+<span class="sourceLineNo">418</span><a id="line.418">                                if (result == null) result = caseDiv(alert);</a>
+<span class="sourceLineNo">419</span><a id="line.419">                                if (result == null) result = caseTag(alert);</a>
+<span class="sourceLineNo">420</span><a id="line.420">                                if (result == null) result = caseHtml_Tag(alert);</a>
+<span class="sourceLineNo">421</span><a id="line.421">                                if (result == null) result = caseBootstrapElement(alert);</a>
+<span class="sourceLineNo">422</span><a id="line.422">                                if (result == null) result = caseHtmlElement(alert);</a>
+<span class="sourceLineNo">423</span><a id="line.423">                                if (result == null) result = caseModelElement(alert);</a>
+<span class="sourceLineNo">424</span><a id="line.424">                                if (result == null) result = caseMarked(alert);</a>
+<span class="sourceLineNo">425</span><a id="line.425">                                if (result == null) result = caseAdaptable(alert);</a>
+<span class="sourceLineNo">426</span><a id="line.426">                                if (result == null) result = caseIMarked(alert);</a>
+<span class="sourceLineNo">427</span><a id="line.427">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">428</span><a id="line.428">                                return result;</a>
+<span class="sourceLineNo">429</span><a id="line.429">                        }</a>
+<span class="sourceLineNo">430</span><a id="line.430">                        case BootstrapPackage.BADGE: {</a>
+<span class="sourceLineNo">431</span><a id="line.431">                                Badge badge = (Badge)theEObject;</a>
+<span class="sourceLineNo">432</span><a id="line.432">                                T result = caseBadge(badge);</a>
+<span class="sourceLineNo">433</span><a id="line.433">                                if (result == null) result = caseDiv(badge);</a>
+<span class="sourceLineNo">434</span><a id="line.434">                                if (result == null) result = caseTag(badge);</a>
+<span class="sourceLineNo">435</span><a id="line.435">                                if (result == null) result = caseHtml_Tag(badge);</a>
+<span class="sourceLineNo">436</span><a id="line.436">                                if (result == null) result = caseBootstrapElement(badge);</a>
+<span class="sourceLineNo">437</span><a id="line.437">                                if (result == null) result = caseHtmlElement(badge);</a>
+<span class="sourceLineNo">438</span><a id="line.438">                                if (result == null) result = caseModelElement(badge);</a>
+<span class="sourceLineNo">439</span><a id="line.439">                                if (result == null) result = caseMarked(badge);</a>
+<span class="sourceLineNo">440</span><a id="line.440">                                if (result == null) result = caseAdaptable(badge);</a>
+<span class="sourceLineNo">441</span><a id="line.441">                                if (result == null) result = caseIMarked(badge);</a>
+<span class="sourceLineNo">442</span><a id="line.442">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">443</span><a id="line.443">                                return result;</a>
+<span class="sourceLineNo">444</span><a id="line.444">                        }</a>
+<span class="sourceLineNo">445</span><a id="line.445">                        case BootstrapPackage.BREADCRUMB: {</a>
+<span class="sourceLineNo">446</span><a id="line.446">                                Breadcrumb breadcrumb = (Breadcrumb)theEObject;</a>
+<span class="sourceLineNo">447</span><a id="line.447">                                T result = caseBreadcrumb(breadcrumb);</a>
+<span class="sourceLineNo">448</span><a id="line.448">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">449</span><a id="line.449">                                return result;</a>
+<span class="sourceLineNo">450</span><a id="line.450">                        }</a>
+<span class="sourceLineNo">451</span><a id="line.451">                        case BootstrapPackage.BUTTON: {</a>
+<span class="sourceLineNo">452</span><a id="line.452">                                Button button = (Button)theEObject;</a>
+<span class="sourceLineNo">453</span><a id="line.453">                                T result = caseButton(button);</a>
+<span class="sourceLineNo">454</span><a id="line.454">                                if (result == null) result = caseDiv(button);</a>
+<span class="sourceLineNo">455</span><a id="line.455">                                if (result == null) result = caseTag(button);</a>
+<span class="sourceLineNo">456</span><a id="line.456">                                if (result == null) result = caseHtml_Tag(button);</a>
+<span class="sourceLineNo">457</span><a id="line.457">                                if (result == null) result = caseBootstrapElement(button);</a>
+<span class="sourceLineNo">458</span><a id="line.458">                                if (result == null) result = caseHtmlElement(button);</a>
+<span class="sourceLineNo">459</span><a id="line.459">                                if (result == null) result = caseModelElement(button);</a>
+<span class="sourceLineNo">460</span><a id="line.460">                                if (result == null) result = caseMarked(button);</a>
+<span class="sourceLineNo">461</span><a id="line.461">                                if (result == null) result = caseAdaptable(button);</a>
+<span class="sourceLineNo">462</span><a id="line.462">                                if (result == null) result = caseIMarked(button);</a>
+<span class="sourceLineNo">463</span><a id="line.463">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">464</span><a id="line.464">                                return result;</a>
+<span class="sourceLineNo">465</span><a id="line.465">                        }</a>
+<span class="sourceLineNo">466</span><a id="line.466">                        case BootstrapPackage.BUTTON_GROUP: {</a>
+<span class="sourceLineNo">467</span><a id="line.467">                                ButtonGroup buttonGroup = (ButtonGroup)theEObject;</a>
+<span class="sourceLineNo">468</span><a id="line.468">                                T result = caseButtonGroup(buttonGroup);</a>
+<span class="sourceLineNo">469</span><a id="line.469">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">470</span><a id="line.470">                                return result;</a>
+<span class="sourceLineNo">471</span><a id="line.471">                        }</a>
+<span class="sourceLineNo">472</span><a id="line.472">                        case BootstrapPackage.BUTTON_TOOLBAR: {</a>
+<span class="sourceLineNo">473</span><a id="line.473">                                ButtonToolbar buttonToolbar = (ButtonToolbar)theEObject;</a>
+<span class="sourceLineNo">474</span><a id="line.474">                                T result = caseButtonToolbar(buttonToolbar);</a>
+<span class="sourceLineNo">475</span><a id="line.475">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">476</span><a id="line.476">                                return result;</a>
+<span class="sourceLineNo">477</span><a id="line.477">                        }</a>
+<span class="sourceLineNo">478</span><a id="line.478">                        case BootstrapPackage.DROPDOWN: {</a>
+<span class="sourceLineNo">479</span><a id="line.479">                                Dropdown dropdown = (Dropdown)theEObject;</a>
+<span class="sourceLineNo">480</span><a id="line.480">                                T result = caseDropdown(dropdown);</a>
+<span class="sourceLineNo">481</span><a id="line.481">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">482</span><a id="line.482">                                return result;</a>
+<span class="sourceLineNo">483</span><a id="line.483">                        }</a>
+<span class="sourceLineNo">484</span><a id="line.484">                        case BootstrapPackage.FORM: {</a>
+<span class="sourceLineNo">485</span><a id="line.485">                                Form form = (Form)theEObject;</a>
+<span class="sourceLineNo">486</span><a id="line.486">                                T result = caseForm(form);</a>
+<span class="sourceLineNo">487</span><a id="line.487">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">488</span><a id="line.488">                                return result;</a>
+<span class="sourceLineNo">489</span><a id="line.489">                        }</a>
+<span class="sourceLineNo">490</span><a id="line.490">                        case BootstrapPackage.LIST_GROUP: {</a>
+<span class="sourceLineNo">491</span><a id="line.491">                                ListGroup listGroup = (ListGroup)theEObject;</a>
+<span class="sourceLineNo">492</span><a id="line.492">                                T result = caseListGroup(listGroup);</a>
+<span class="sourceLineNo">493</span><a id="line.493">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">494</span><a id="line.494">                                return result;</a>
+<span class="sourceLineNo">495</span><a id="line.495">                        }</a>
+<span class="sourceLineNo">496</span><a id="line.496">                        case BootstrapPackage.NAVS: {</a>
+<span class="sourceLineNo">497</span><a id="line.497">                                Navs navs = (Navs)theEObject;</a>
+<span class="sourceLineNo">498</span><a id="line.498">                                T result = caseNavs(navs);</a>
+<span class="sourceLineNo">499</span><a id="line.499">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">500</span><a id="line.500">                                return result;</a>
+<span class="sourceLineNo">501</span><a id="line.501">                        }</a>
+<span class="sourceLineNo">502</span><a id="line.502">                        case BootstrapPackage.NAVBAR: {</a>
+<span class="sourceLineNo">503</span><a id="line.503">                                Navbar navbar = (Navbar)theEObject;</a>
+<span class="sourceLineNo">504</span><a id="line.504">                                T result = caseNavbar(navbar);</a>
+<span class="sourceLineNo">505</span><a id="line.505">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">506</span><a id="line.506">                                return result;</a>
+<span class="sourceLineNo">507</span><a id="line.507">                        }</a>
+<span class="sourceLineNo">508</span><a id="line.508">                        case BootstrapPackage.TOOLTIP: {</a>
+<span class="sourceLineNo">509</span><a id="line.509">                                Tooltip tooltip = (Tooltip)theEObject;</a>
+<span class="sourceLineNo">510</span><a id="line.510">                                T result = caseTooltip(tooltip);</a>
+<span class="sourceLineNo">511</span><a id="line.511">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">512</span><a id="line.512">                                return result;</a>
+<span class="sourceLineNo">513</span><a id="line.513">                        }</a>
+<span class="sourceLineNo">514</span><a id="line.514">                        case BootstrapPackage.INPUT_GROUP: {</a>
+<span class="sourceLineNo">515</span><a id="line.515">                                InputGroup inputGroup = (InputGroup)theEObject;</a>
+<span class="sourceLineNo">516</span><a id="line.516">                                T result = caseInputGroup(inputGroup);</a>
+<span class="sourceLineNo">517</span><a id="line.517">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">518</span><a id="line.518">                                return result;</a>
+<span class="sourceLineNo">519</span><a id="line.519">                        }</a>
+<span class="sourceLineNo">520</span><a id="line.520">                        case BootstrapPackage.FORM_GROUP: {</a>
+<span class="sourceLineNo">521</span><a id="line.521">                                FormGroup formGroup = (FormGroup)theEObject;</a>
+<span class="sourceLineNo">522</span><a id="line.522">                                T result = caseFormGroup(formGroup);</a>
+<span class="sourceLineNo">523</span><a id="line.523">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">524</span><a id="line.524">                                return result;</a>
+<span class="sourceLineNo">525</span><a id="line.525">                        }</a>
+<span class="sourceLineNo">526</span><a id="line.526">                        case BootstrapPackage.COLLAPSE: {</a>
+<span class="sourceLineNo">527</span><a id="line.527">                                Collapse collapse = (Collapse)theEObject;</a>
+<span class="sourceLineNo">528</span><a id="line.528">                                T result = caseCollapse(collapse);</a>
+<span class="sourceLineNo">529</span><a id="line.529">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">530</span><a id="line.530">                                return result;</a>
+<span class="sourceLineNo">531</span><a id="line.531">                        }</a>
+<span class="sourceLineNo">532</span><a id="line.532">                        case BootstrapPackage.ACCORDION: {</a>
+<span class="sourceLineNo">533</span><a id="line.533">                                Accordion accordion = (Accordion)theEObject;</a>
+<span class="sourceLineNo">534</span><a id="line.534">                                T result = caseAccordion(accordion);</a>
+<span class="sourceLineNo">535</span><a id="line.535">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">536</span><a id="line.536">                                return result;</a>
+<span class="sourceLineNo">537</span><a id="line.537">                        }</a>
+<span class="sourceLineNo">538</span><a id="line.538">                        case BootstrapPackage.CAROUSEL: {</a>
+<span class="sourceLineNo">539</span><a id="line.539">                                Carousel carousel = (Carousel)theEObject;</a>
+<span class="sourceLineNo">540</span><a id="line.540">                                T result = caseCarousel(carousel);</a>
+<span class="sourceLineNo">541</span><a id="line.541">                                if (result == null) result = caseDiv(carousel);</a>
+<span class="sourceLineNo">542</span><a id="line.542">                                if (result == null) result = caseTag(carousel);</a>
+<span class="sourceLineNo">543</span><a id="line.543">                                if (result == null) result = caseHtml_Tag(carousel);</a>
+<span class="sourceLineNo">544</span><a id="line.544">                                if (result == null) result = caseBootstrapElement(carousel);</a>
+<span class="sourceLineNo">545</span><a id="line.545">                                if (result == null) result = caseHtmlElement(carousel);</a>
+<span class="sourceLineNo">546</span><a id="line.546">                                if (result == null) result = caseModelElement(carousel);</a>
+<span class="sourceLineNo">547</span><a id="line.547">                                if (result == null) result = caseMarked(carousel);</a>
+<span class="sourceLineNo">548</span><a id="line.548">                                if (result == null) result = caseAdaptable(carousel);</a>
+<span class="sourceLineNo">549</span><a id="line.549">                                if (result == null) result = caseIMarked(carousel);</a>
+<span class="sourceLineNo">550</span><a id="line.550">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">551</span><a id="line.551">                                return result;</a>
+<span class="sourceLineNo">552</span><a id="line.552">                        }</a>
+<span class="sourceLineNo">553</span><a id="line.553">                        case BootstrapPackage.SLIDE: {</a>
+<span class="sourceLineNo">554</span><a id="line.554">                                Slide slide = (Slide)theEObject;</a>
+<span class="sourceLineNo">555</span><a id="line.555">                                T result = caseSlide(slide);</a>
+<span class="sourceLineNo">556</span><a id="line.556">                                if (result == null) result = caseDiv(slide);</a>
+<span class="sourceLineNo">557</span><a id="line.557">                                if (result == null) result = caseTag(slide);</a>
+<span class="sourceLineNo">558</span><a id="line.558">                                if (result == null) result = caseHtml_Tag(slide);</a>
+<span class="sourceLineNo">559</span><a id="line.559">                                if (result == null) result = caseBootstrapElement(slide);</a>
+<span class="sourceLineNo">560</span><a id="line.560">                                if (result == null) result = caseHtmlElement(slide);</a>
+<span class="sourceLineNo">561</span><a id="line.561">                                if (result == null) result = caseModelElement(slide);</a>
+<span class="sourceLineNo">562</span><a id="line.562">                                if (result == null) result = caseMarked(slide);</a>
+<span class="sourceLineNo">563</span><a id="line.563">                                if (result == null) result = caseAdaptable(slide);</a>
+<span class="sourceLineNo">564</span><a id="line.564">                                if (result == null) result = caseIMarked(slide);</a>
+<span class="sourceLineNo">565</span><a id="line.565">                                if (result == null) result = defaultCase(theEObject);</a>
+<span class="sourceLineNo">566</span><a id="line.566">                                return result;</a>
+<span class="sourceLineNo">567</span><a id="line.567">                        }</a>
+<span class="sourceLineNo">568</span><a id="line.568">                        default: return defaultCase(theEObject);</a>
+<span class="sourceLineNo">569</span><a id="line.569">                }</a>
+<span class="sourceLineNo">570</span><a id="line.570">        }</a>
+<span class="sourceLineNo">571</span><a id="line.571"></a>
+<span class="sourceLineNo">572</span><a id="line.572">        /**</a>
+<span class="sourceLineNo">573</span><a id="line.573">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Element&lt;/em&gt;'.</a>
+<span class="sourceLineNo">574</span><a id="line.574">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">575</span><a id="line.575">         * This implementation returns null;</a>
+<span class="sourceLineNo">576</span><a id="line.576">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">577</span><a id="line.577">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">578</span><a id="line.578">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">579</span><a id="line.579">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Element&lt;/em&gt;'.</a>
+<span class="sourceLineNo">580</span><a id="line.580">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">581</span><a id="line.581">         * @generated</a>
+<span class="sourceLineNo">582</span><a id="line.582">         */</a>
+<span class="sourceLineNo">583</span><a id="line.583">        public T caseBootstrapElement(BootstrapElement object) {</a>
+<span class="sourceLineNo">584</span><a id="line.584">                return null;</a>
+<span class="sourceLineNo">585</span><a id="line.585">        }</a>
+<span class="sourceLineNo">586</span><a id="line.586"></a>
+<span class="sourceLineNo">587</span><a id="line.587">        /**</a>
+<span class="sourceLineNo">588</span><a id="line.588">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Page&lt;/em&gt;'.</a>
+<span class="sourceLineNo">589</span><a id="line.589">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">590</span><a id="line.590">         * This implementation returns null;</a>
+<span class="sourceLineNo">591</span><a id="line.591">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">592</span><a id="line.592">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">593</span><a id="line.593">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">594</span><a id="line.594">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Page&lt;/em&gt;'.</a>
+<span class="sourceLineNo">595</span><a id="line.595">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">596</span><a id="line.596">         * @generated</a>
+<span class="sourceLineNo">597</span><a id="line.597">         */</a>
+<span class="sourceLineNo">598</span><a id="line.598">        public T casePage(org.nasdanika.html.model.bootstrap.Page object) {</a>
+<span class="sourceLineNo">599</span><a id="line.599">                return null;</a>
+<span class="sourceLineNo">600</span><a id="line.600">        }</a>
+<span class="sourceLineNo">601</span><a id="line.601"></a>
+<span class="sourceLineNo">602</span><a id="line.602">        /**</a>
+<span class="sourceLineNo">603</span><a id="line.603">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Appearance&lt;/em&gt;'.</a>
+<span class="sourceLineNo">604</span><a id="line.604">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">605</span><a id="line.605">         * This implementation returns null;</a>
+<span class="sourceLineNo">606</span><a id="line.606">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">607</span><a id="line.607">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">608</span><a id="line.608">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">609</span><a id="line.609">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Appearance&lt;/em&gt;'.</a>
+<span class="sourceLineNo">610</span><a id="line.610">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">611</span><a id="line.611">         * @generated</a>
+<span class="sourceLineNo">612</span><a id="line.612">         */</a>
+<span class="sourceLineNo">613</span><a id="line.613">        public T caseAppearance(Appearance object) {</a>
+<span class="sourceLineNo">614</span><a id="line.614">                return null;</a>
+<span class="sourceLineNo">615</span><a id="line.615">        }</a>
+<span class="sourceLineNo">616</span><a id="line.616"></a>
+<span class="sourceLineNo">617</span><a id="line.617">        /**</a>
+<span class="sourceLineNo">618</span><a id="line.618">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Appearance Entry&lt;/em&gt;'.</a>
+<span class="sourceLineNo">619</span><a id="line.619">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">620</span><a id="line.620">         * This implementation returns null;</a>
+<span class="sourceLineNo">621</span><a id="line.621">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">622</span><a id="line.622">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">623</span><a id="line.623">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">624</span><a id="line.624">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Appearance Entry&lt;/em&gt;'.</a>
+<span class="sourceLineNo">625</span><a id="line.625">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">626</span><a id="line.626">         * @generated</a>
+<span class="sourceLineNo">627</span><a id="line.627">         */</a>
+<span class="sourceLineNo">628</span><a id="line.628">        public T caseAppearanceEntry(Map.Entry&lt;String, Appearance&gt; object) {</a>
+<span class="sourceLineNo">629</span><a id="line.629">                return null;</a>
+<span class="sourceLineNo">630</span><a id="line.630">        }</a>
+<span class="sourceLineNo">631</span><a id="line.631"></a>
+<span class="sourceLineNo">632</span><a id="line.632">        /**</a>
+<span class="sourceLineNo">633</span><a id="line.633">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Border&lt;/em&gt;'.</a>
+<span class="sourceLineNo">634</span><a id="line.634">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">635</span><a id="line.635">         * This implementation returns null;</a>
+<span class="sourceLineNo">636</span><a id="line.636">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">637</span><a id="line.637">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">638</span><a id="line.638">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">639</span><a id="line.639">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Border&lt;/em&gt;'.</a>
+<span class="sourceLineNo">640</span><a id="line.640">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">641</span><a id="line.641">         * @generated</a>
+<span class="sourceLineNo">642</span><a id="line.642">         */</a>
+<span class="sourceLineNo">643</span><a id="line.643">        public T caseBorder(Border object) {</a>
+<span class="sourceLineNo">644</span><a id="line.644">                return null;</a>
+<span class="sourceLineNo">645</span><a id="line.645">        }</a>
+<span class="sourceLineNo">646</span><a id="line.646"></a>
+<span class="sourceLineNo">647</span><a id="line.647">        /**</a>
+<span class="sourceLineNo">648</span><a id="line.648">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Spacing&lt;/em&gt;'.</a>
+<span class="sourceLineNo">649</span><a id="line.649">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">650</span><a id="line.650">         * This implementation returns null;</a>
+<span class="sourceLineNo">651</span><a id="line.651">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">652</span><a id="line.652">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">653</span><a id="line.653">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">654</span><a id="line.654">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Spacing&lt;/em&gt;'.</a>
+<span class="sourceLineNo">655</span><a id="line.655">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">656</span><a id="line.656">         * @generated</a>
+<span class="sourceLineNo">657</span><a id="line.657">         */</a>
+<span class="sourceLineNo">658</span><a id="line.658">        public T caseSpacing(Spacing object) {</a>
+<span class="sourceLineNo">659</span><a id="line.659">                return null;</a>
+<span class="sourceLineNo">660</span><a id="line.660">        }</a>
+<span class="sourceLineNo">661</span><a id="line.661"></a>
+<span class="sourceLineNo">662</span><a id="line.662">        /**</a>
+<span class="sourceLineNo">663</span><a id="line.663">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Text&lt;/em&gt;'.</a>
+<span class="sourceLineNo">664</span><a id="line.664">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">665</span><a id="line.665">         * This implementation returns null;</a>
+<span class="sourceLineNo">666</span><a id="line.666">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">667</span><a id="line.667">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">668</span><a id="line.668">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">669</span><a id="line.669">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Text&lt;/em&gt;'.</a>
+<span class="sourceLineNo">670</span><a id="line.670">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">671</span><a id="line.671">         * @generated</a>
+<span class="sourceLineNo">672</span><a id="line.672">         */</a>
+<span class="sourceLineNo">673</span><a id="line.673">        public T caseText(Text object) {</a>
+<span class="sourceLineNo">674</span><a id="line.674">                return null;</a>
+<span class="sourceLineNo">675</span><a id="line.675">        }</a>
+<span class="sourceLineNo">676</span><a id="line.676"></a>
+<span class="sourceLineNo">677</span><a id="line.677">        /**</a>
+<span class="sourceLineNo">678</span><a id="line.678">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Float&lt;/em&gt;'.</a>
+<span class="sourceLineNo">679</span><a id="line.679">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">680</span><a id="line.680">         * This implementation returns null;</a>
+<span class="sourceLineNo">681</span><a id="line.681">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">682</span><a id="line.682">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">683</span><a id="line.683">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">684</span><a id="line.684">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Float&lt;/em&gt;'.</a>
+<span class="sourceLineNo">685</span><a id="line.685">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">686</span><a id="line.686">         * @generated</a>
+<span class="sourceLineNo">687</span><a id="line.687">         */</a>
+<span class="sourceLineNo">688</span><a id="line.688">        public T caseFloat(org.nasdanika.html.model.bootstrap.Float object) {</a>
+<span class="sourceLineNo">689</span><a id="line.689">                return null;</a>
+<span class="sourceLineNo">690</span><a id="line.690">        }</a>
+<span class="sourceLineNo">691</span><a id="line.691"></a>
+<span class="sourceLineNo">692</span><a id="line.692">        /**</a>
+<span class="sourceLineNo">693</span><a id="line.693">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Tag&lt;/em&gt;'.</a>
+<span class="sourceLineNo">694</span><a id="line.694">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">695</span><a id="line.695">         * This implementation returns null;</a>
+<span class="sourceLineNo">696</span><a id="line.696">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">697</span><a id="line.697">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">698</span><a id="line.698">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">699</span><a id="line.699">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Tag&lt;/em&gt;'.</a>
+<span class="sourceLineNo">700</span><a id="line.700">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">701</span><a id="line.701">         * @generated</a>
+<span class="sourceLineNo">702</span><a id="line.702">         */</a>
+<span class="sourceLineNo">703</span><a id="line.703">        public T caseTag(Tag object) {</a>
+<span class="sourceLineNo">704</span><a id="line.704">                return null;</a>
+<span class="sourceLineNo">705</span><a id="line.705">        }</a>
+<span class="sourceLineNo">706</span><a id="line.706"></a>
+<span class="sourceLineNo">707</span><a id="line.707">        /**</a>
+<span class="sourceLineNo">708</span><a id="line.708">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Div&lt;/em&gt;'.</a>
+<span class="sourceLineNo">709</span><a id="line.709">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">710</span><a id="line.710">         * This implementation returns null;</a>
+<span class="sourceLineNo">711</span><a id="line.711">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">712</span><a id="line.712">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">713</span><a id="line.713">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">714</span><a id="line.714">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Div&lt;/em&gt;'.</a>
+<span class="sourceLineNo">715</span><a id="line.715">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">716</span><a id="line.716">         * @generated</a>
+<span class="sourceLineNo">717</span><a id="line.717">         */</a>
+<span class="sourceLineNo">718</span><a id="line.718">        public T caseDiv(Div object) {</a>
+<span class="sourceLineNo">719</span><a id="line.719">                return null;</a>
+<span class="sourceLineNo">720</span><a id="line.720">        }</a>
+<span class="sourceLineNo">721</span><a id="line.721"></a>
+<span class="sourceLineNo">722</span><a id="line.722">        /**</a>
+<span class="sourceLineNo">723</span><a id="line.723">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Item&lt;/em&gt;'.</a>
+<span class="sourceLineNo">724</span><a id="line.724">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">725</span><a id="line.725">         * This implementation returns null;</a>
+<span class="sourceLineNo">726</span><a id="line.726">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">727</span><a id="line.727">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">728</span><a id="line.728">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">729</span><a id="line.729">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Item&lt;/em&gt;'.</a>
+<span class="sourceLineNo">730</span><a id="line.730">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">731</span><a id="line.731">         * @generated</a>
+<span class="sourceLineNo">732</span><a id="line.732">         */</a>
+<span class="sourceLineNo">733</span><a id="line.733">        public T caseItem(Item object) {</a>
+<span class="sourceLineNo">734</span><a id="line.734">                return null;</a>
+<span class="sourceLineNo">735</span><a id="line.735">        }</a>
+<span class="sourceLineNo">736</span><a id="line.736"></a>
+<span class="sourceLineNo">737</span><a id="line.737">        /**</a>
+<span class="sourceLineNo">738</span><a id="line.738">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Action Group Item&lt;/em&gt;'.</a>
+<span class="sourceLineNo">739</span><a id="line.739">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">740</span><a id="line.740">         * This implementation returns null;</a>
+<span class="sourceLineNo">741</span><a id="line.741">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">742</span><a id="line.742">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">743</span><a id="line.743">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">744</span><a id="line.744">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Action Group Item&lt;/em&gt;'.</a>
+<span class="sourceLineNo">745</span><a id="line.745">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">746</span><a id="line.746">         * @generated</a>
+<span class="sourceLineNo">747</span><a id="line.747">         */</a>
+<span class="sourceLineNo">748</span><a id="line.748">        public T caseActionGroupItem(ActionGroupItem object) {</a>
+<span class="sourceLineNo">749</span><a id="line.749">                return null;</a>
+<span class="sourceLineNo">750</span><a id="line.750">        }</a>
+<span class="sourceLineNo">751</span><a id="line.751"></a>
+<span class="sourceLineNo">752</span><a id="line.752">        /**</a>
+<span class="sourceLineNo">753</span><a id="line.753">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Link Action Group Item&lt;/em&gt;'.</a>
+<span class="sourceLineNo">754</span><a id="line.754">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">755</span><a id="line.755">         * This implementation returns null;</a>
+<span class="sourceLineNo">756</span><a id="line.756">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">757</span><a id="line.757">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">758</span><a id="line.758">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">759</span><a id="line.759">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Link Action Group Item&lt;/em&gt;'.</a>
+<span class="sourceLineNo">760</span><a id="line.760">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">761</span><a id="line.761">         * @generated</a>
+<span class="sourceLineNo">762</span><a id="line.762">         */</a>
+<span class="sourceLineNo">763</span><a id="line.763">        public T caseLinkActionGroupItem(LinkActionGroupItem object) {</a>
+<span class="sourceLineNo">764</span><a id="line.764">                return null;</a>
+<span class="sourceLineNo">765</span><a id="line.765">        }</a>
+<span class="sourceLineNo">766</span><a id="line.766"></a>
+<span class="sourceLineNo">767</span><a id="line.767">        /**</a>
+<span class="sourceLineNo">768</span><a id="line.768">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Content Action Group Item&lt;/em&gt;'.</a>
+<span class="sourceLineNo">769</span><a id="line.769">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">770</span><a id="line.770">         * This implementation returns null;</a>
+<span class="sourceLineNo">771</span><a id="line.771">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">772</span><a id="line.772">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">773</span><a id="line.773">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">774</span><a id="line.774">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Content Action Group Item&lt;/em&gt;'.</a>
+<span class="sourceLineNo">775</span><a id="line.775">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">776</span><a id="line.776">         * @generated</a>
+<span class="sourceLineNo">777</span><a id="line.777">         */</a>
+<span class="sourceLineNo">778</span><a id="line.778">        public T caseContentActionGroupItem(ContentActionGroupItem object) {</a>
+<span class="sourceLineNo">779</span><a id="line.779">                return null;</a>
+<span class="sourceLineNo">780</span><a id="line.780">        }</a>
+<span class="sourceLineNo">781</span><a id="line.781"></a>
+<span class="sourceLineNo">782</span><a id="line.782">        /**</a>
+<span class="sourceLineNo">783</span><a id="line.783">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Action Group&lt;/em&gt;'.</a>
+<span class="sourceLineNo">784</span><a id="line.784">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">785</span><a id="line.785">         * This implementation returns null;</a>
+<span class="sourceLineNo">786</span><a id="line.786">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">787</span><a id="line.787">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">788</span><a id="line.788">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">789</span><a id="line.789">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Action Group&lt;/em&gt;'.</a>
+<span class="sourceLineNo">790</span><a id="line.790">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">791</span><a id="line.791">         * @generated</a>
+<span class="sourceLineNo">792</span><a id="line.792">         */</a>
+<span class="sourceLineNo">793</span><a id="line.793">        public T caseActionGroup(ActionGroup object) {</a>
+<span class="sourceLineNo">794</span><a id="line.794">                return null;</a>
+<span class="sourceLineNo">795</span><a id="line.795">        }</a>
+<span class="sourceLineNo">796</span><a id="line.796"></a>
+<span class="sourceLineNo">797</span><a id="line.797">        /**</a>
+<span class="sourceLineNo">798</span><a id="line.798">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Container&lt;/em&gt;'.</a>
+<span class="sourceLineNo">799</span><a id="line.799">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">800</span><a id="line.800">         * This implementation returns null;</a>
+<span class="sourceLineNo">801</span><a id="line.801">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">802</span><a id="line.802">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">803</span><a id="line.803">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">804</span><a id="line.804">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Container&lt;/em&gt;'.</a>
+<span class="sourceLineNo">805</span><a id="line.805">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">806</span><a id="line.806">         * @generated</a>
+<span class="sourceLineNo">807</span><a id="line.807">         */</a>
+<span class="sourceLineNo">808</span><a id="line.808">        public T caseContainer(Container object) {</a>
+<span class="sourceLineNo">809</span><a id="line.809">                return null;</a>
+<span class="sourceLineNo">810</span><a id="line.810">        }</a>
+<span class="sourceLineNo">811</span><a id="line.811"></a>
+<span class="sourceLineNo">812</span><a id="line.812">        /**</a>
+<span class="sourceLineNo">813</span><a id="line.813">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Row&lt;/em&gt;'.</a>
+<span class="sourceLineNo">814</span><a id="line.814">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">815</span><a id="line.815">         * This implementation returns null;</a>
+<span class="sourceLineNo">816</span><a id="line.816">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">817</span><a id="line.817">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">818</span><a id="line.818">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">819</span><a id="line.819">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Row&lt;/em&gt;'.</a>
+<span class="sourceLineNo">820</span><a id="line.820">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">821</span><a id="line.821">         * @generated</a>
+<span class="sourceLineNo">822</span><a id="line.822">         */</a>
+<span class="sourceLineNo">823</span><a id="line.823">        public T caseRow(Row object) {</a>
+<span class="sourceLineNo">824</span><a id="line.824">                return null;</a>
+<span class="sourceLineNo">825</span><a id="line.825">        }</a>
+<span class="sourceLineNo">826</span><a id="line.826"></a>
+<span class="sourceLineNo">827</span><a id="line.827">        /**</a>
+<span class="sourceLineNo">828</span><a id="line.828">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Column Width&lt;/em&gt;'.</a>
+<span class="sourceLineNo">829</span><a id="line.829">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">830</span><a id="line.830">         * This implementation returns null;</a>
+<span class="sourceLineNo">831</span><a id="line.831">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">832</span><a id="line.832">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">833</span><a id="line.833">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">834</span><a id="line.834">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Column Width&lt;/em&gt;'.</a>
+<span class="sourceLineNo">835</span><a id="line.835">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">836</span><a id="line.836">         * @generated</a>
+<span class="sourceLineNo">837</span><a id="line.837">         */</a>
+<span class="sourceLineNo">838</span><a id="line.838">        public T caseColumnWidth(ColumnWidth object) {</a>
+<span class="sourceLineNo">839</span><a id="line.839">                return null;</a>
+<span class="sourceLineNo">840</span><a id="line.840">        }</a>
+<span class="sourceLineNo">841</span><a id="line.841"></a>
+<span class="sourceLineNo">842</span><a id="line.842">        /**</a>
+<span class="sourceLineNo">843</span><a id="line.843">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Column&lt;/em&gt;'.</a>
+<span class="sourceLineNo">844</span><a id="line.844">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">845</span><a id="line.845">         * This implementation returns null;</a>
+<span class="sourceLineNo">846</span><a id="line.846">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">847</span><a id="line.847">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">848</span><a id="line.848">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">849</span><a id="line.849">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Column&lt;/em&gt;'.</a>
+<span class="sourceLineNo">850</span><a id="line.850">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">851</span><a id="line.851">         * @generated</a>
+<span class="sourceLineNo">852</span><a id="line.852">         */</a>
+<span class="sourceLineNo">853</span><a id="line.853">        public T caseColumn(Column object) {</a>
+<span class="sourceLineNo">854</span><a id="line.854">                return null;</a>
+<span class="sourceLineNo">855</span><a id="line.855">        }</a>
+<span class="sourceLineNo">856</span><a id="line.856"></a>
+<span class="sourceLineNo">857</span><a id="line.857">        /**</a>
+<span class="sourceLineNo">858</span><a id="line.858">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Table Row Container&lt;/em&gt;'.</a>
+<span class="sourceLineNo">859</span><a id="line.859">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">860</span><a id="line.860">         * This implementation returns null;</a>
+<span class="sourceLineNo">861</span><a id="line.861">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">862</span><a id="line.862">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">863</span><a id="line.863">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">864</span><a id="line.864">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Table Row Container&lt;/em&gt;'.</a>
+<span class="sourceLineNo">865</span><a id="line.865">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">866</span><a id="line.866">         * @generated</a>
+<span class="sourceLineNo">867</span><a id="line.867">         */</a>
+<span class="sourceLineNo">868</span><a id="line.868">        public T caseTableRowContainer(TableRowContainer object) {</a>
+<span class="sourceLineNo">869</span><a id="line.869">                return null;</a>
+<span class="sourceLineNo">870</span><a id="line.870">        }</a>
+<span class="sourceLineNo">871</span><a id="line.871"></a>
+<span class="sourceLineNo">872</span><a id="line.872">        /**</a>
+<span class="sourceLineNo">873</span><a id="line.873">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Table Section&lt;/em&gt;'.</a>
+<span class="sourceLineNo">874</span><a id="line.874">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">875</span><a id="line.875">         * This implementation returns null;</a>
+<span class="sourceLineNo">876</span><a id="line.876">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">877</span><a id="line.877">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">878</span><a id="line.878">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">879</span><a id="line.879">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Table Section&lt;/em&gt;'.</a>
+<span class="sourceLineNo">880</span><a id="line.880">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">881</span><a id="line.881">         * @generated</a>
+<span class="sourceLineNo">882</span><a id="line.882">         */</a>
+<span class="sourceLineNo">883</span><a id="line.883">        public T caseTableSection(TableSection object) {</a>
+<span class="sourceLineNo">884</span><a id="line.884">                return null;</a>
+<span class="sourceLineNo">885</span><a id="line.885">        }</a>
+<span class="sourceLineNo">886</span><a id="line.886"></a>
+<span class="sourceLineNo">887</span><a id="line.887">        /**</a>
+<span class="sourceLineNo">888</span><a id="line.888">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Table Header&lt;/em&gt;'.</a>
+<span class="sourceLineNo">889</span><a id="line.889">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">890</span><a id="line.890">         * This implementation returns null;</a>
+<span class="sourceLineNo">891</span><a id="line.891">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">892</span><a id="line.892">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">893</span><a id="line.893">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">894</span><a id="line.894">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Table Header&lt;/em&gt;'.</a>
+<span class="sourceLineNo">895</span><a id="line.895">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">896</span><a id="line.896">         * @generated</a>
+<span class="sourceLineNo">897</span><a id="line.897">         */</a>
+<span class="sourceLineNo">898</span><a id="line.898">        public T caseTableHeader(TableHeader object) {</a>
+<span class="sourceLineNo">899</span><a id="line.899">                return null;</a>
+<span class="sourceLineNo">900</span><a id="line.900">        }</a>
+<span class="sourceLineNo">901</span><a id="line.901"></a>
+<span class="sourceLineNo">902</span><a id="line.902">        /**</a>
+<span class="sourceLineNo">903</span><a id="line.903">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Table Configuration&lt;/em&gt;'.</a>
+<span class="sourceLineNo">904</span><a id="line.904">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">905</span><a id="line.905">         * This implementation returns null;</a>
+<span class="sourceLineNo">906</span><a id="line.906">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">907</span><a id="line.907">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">908</span><a id="line.908">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">909</span><a id="line.909">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Table Configuration&lt;/em&gt;'.</a>
+<span class="sourceLineNo">910</span><a id="line.910">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">911</span><a id="line.911">         * @generated</a>
+<span class="sourceLineNo">912</span><a id="line.912">         */</a>
+<span class="sourceLineNo">913</span><a id="line.913">        public T caseTableConfiguration(TableConfiguration object) {</a>
+<span class="sourceLineNo">914</span><a id="line.914">                return null;</a>
+<span class="sourceLineNo">915</span><a id="line.915">        }</a>
+<span class="sourceLineNo">916</span><a id="line.916"></a>
+<span class="sourceLineNo">917</span><a id="line.917">        /**</a>
+<span class="sourceLineNo">918</span><a id="line.918">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Table&lt;/em&gt;'.</a>
+<span class="sourceLineNo">919</span><a id="line.919">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">920</span><a id="line.920">         * This implementation returns null;</a>
+<span class="sourceLineNo">921</span><a id="line.921">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">922</span><a id="line.922">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">923</span><a id="line.923">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">924</span><a id="line.924">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Table&lt;/em&gt;'.</a>
+<span class="sourceLineNo">925</span><a id="line.925">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">926</span><a id="line.926">         * @generated</a>
+<span class="sourceLineNo">927</span><a id="line.927">         */</a>
+<span class="sourceLineNo">928</span><a id="line.928">        public T caseTable(Table object) {</a>
+<span class="sourceLineNo">929</span><a id="line.929">                return null;</a>
+<span class="sourceLineNo">930</span><a id="line.930">        }</a>
+<span class="sourceLineNo">931</span><a id="line.931"></a>
+<span class="sourceLineNo">932</span><a id="line.932">        /**</a>
+<span class="sourceLineNo">933</span><a id="line.933">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Table Row&lt;/em&gt;'.</a>
+<span class="sourceLineNo">934</span><a id="line.934">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">935</span><a id="line.935">         * This implementation returns null;</a>
+<span class="sourceLineNo">936</span><a id="line.936">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">937</span><a id="line.937">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">938</span><a id="line.938">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">939</span><a id="line.939">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Table Row&lt;/em&gt;'.</a>
+<span class="sourceLineNo">940</span><a id="line.940">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">941</span><a id="line.941">         * @generated</a>
+<span class="sourceLineNo">942</span><a id="line.942">         */</a>
+<span class="sourceLineNo">943</span><a id="line.943">        public T caseTableRow(TableRow object) {</a>
+<span class="sourceLineNo">944</span><a id="line.944">                return null;</a>
+<span class="sourceLineNo">945</span><a id="line.945">        }</a>
+<span class="sourceLineNo">946</span><a id="line.946"></a>
+<span class="sourceLineNo">947</span><a id="line.947">        /**</a>
+<span class="sourceLineNo">948</span><a id="line.948">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Table Cell&lt;/em&gt;'.</a>
+<span class="sourceLineNo">949</span><a id="line.949">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">950</span><a id="line.950">         * This implementation returns null;</a>
+<span class="sourceLineNo">951</span><a id="line.951">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">952</span><a id="line.952">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">953</span><a id="line.953">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">954</span><a id="line.954">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Table Cell&lt;/em&gt;'.</a>
+<span class="sourceLineNo">955</span><a id="line.955">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">956</span><a id="line.956">         * @generated</a>
+<span class="sourceLineNo">957</span><a id="line.957">         */</a>
+<span class="sourceLineNo">958</span><a id="line.958">        public T caseTableCell(TableCell object) {</a>
+<span class="sourceLineNo">959</span><a id="line.959">                return null;</a>
+<span class="sourceLineNo">960</span><a id="line.960">        }</a>
+<span class="sourceLineNo">961</span><a id="line.961"></a>
+<span class="sourceLineNo">962</span><a id="line.962">        /**</a>
+<span class="sourceLineNo">963</span><a id="line.963">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Card&lt;/em&gt;'.</a>
+<span class="sourceLineNo">964</span><a id="line.964">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">965</span><a id="line.965">         * This implementation returns null;</a>
+<span class="sourceLineNo">966</span><a id="line.966">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">967</span><a id="line.967">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">968</span><a id="line.968">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">969</span><a id="line.969">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Card&lt;/em&gt;'.</a>
+<span class="sourceLineNo">970</span><a id="line.970">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">971</span><a id="line.971">         * @generated</a>
+<span class="sourceLineNo">972</span><a id="line.972">         */</a>
+<span class="sourceLineNo">973</span><a id="line.973">        public T caseCard(Card object) {</a>
+<span class="sourceLineNo">974</span><a id="line.974">                return null;</a>
+<span class="sourceLineNo">975</span><a id="line.975">        }</a>
+<span class="sourceLineNo">976</span><a id="line.976"></a>
+<span class="sourceLineNo">977</span><a id="line.977">        /**</a>
+<span class="sourceLineNo">978</span><a id="line.978">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Alert&lt;/em&gt;'.</a>
+<span class="sourceLineNo">979</span><a id="line.979">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">980</span><a id="line.980">         * This implementation returns null;</a>
+<span class="sourceLineNo">981</span><a id="line.981">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">982</span><a id="line.982">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">983</span><a id="line.983">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">984</span><a id="line.984">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Alert&lt;/em&gt;'.</a>
+<span class="sourceLineNo">985</span><a id="line.985">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">986</span><a id="line.986">         * @generated</a>
+<span class="sourceLineNo">987</span><a id="line.987">         */</a>
+<span class="sourceLineNo">988</span><a id="line.988">        public T caseAlert(Alert object) {</a>
+<span class="sourceLineNo">989</span><a id="line.989">                return null;</a>
+<span class="sourceLineNo">990</span><a id="line.990">        }</a>
+<span class="sourceLineNo">991</span><a id="line.991"></a>
+<span class="sourceLineNo">992</span><a id="line.992">        /**</a>
+<span class="sourceLineNo">993</span><a id="line.993">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Badge&lt;/em&gt;'.</a>
+<span class="sourceLineNo">994</span><a id="line.994">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">995</span><a id="line.995">         * This implementation returns null;</a>
+<span class="sourceLineNo">996</span><a id="line.996">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">997</span><a id="line.997">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">998</span><a id="line.998">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">999</span><a id="line.999">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Badge&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1000</span><a id="line.1000">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1001</span><a id="line.1001">         * @generated</a>
+<span class="sourceLineNo">1002</span><a id="line.1002">         */</a>
+<span class="sourceLineNo">1003</span><a id="line.1003">        public T caseBadge(Badge object) {</a>
+<span class="sourceLineNo">1004</span><a id="line.1004">                return null;</a>
+<span class="sourceLineNo">1005</span><a id="line.1005">        }</a>
+<span class="sourceLineNo">1006</span><a id="line.1006"></a>
+<span class="sourceLineNo">1007</span><a id="line.1007">        /**</a>
+<span class="sourceLineNo">1008</span><a id="line.1008">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Breadcrumb&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1009</span><a id="line.1009">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1010</span><a id="line.1010">         * This implementation returns null;</a>
+<span class="sourceLineNo">1011</span><a id="line.1011">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1012</span><a id="line.1012">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1013</span><a id="line.1013">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1014</span><a id="line.1014">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Breadcrumb&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1015</span><a id="line.1015">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1016</span><a id="line.1016">         * @generated</a>
+<span class="sourceLineNo">1017</span><a id="line.1017">         */</a>
+<span class="sourceLineNo">1018</span><a id="line.1018">        public T caseBreadcrumb(Breadcrumb object) {</a>
+<span class="sourceLineNo">1019</span><a id="line.1019">                return null;</a>
+<span class="sourceLineNo">1020</span><a id="line.1020">        }</a>
+<span class="sourceLineNo">1021</span><a id="line.1021"></a>
+<span class="sourceLineNo">1022</span><a id="line.1022">        /**</a>
+<span class="sourceLineNo">1023</span><a id="line.1023">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Button&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1024</span><a id="line.1024">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1025</span><a id="line.1025">         * This implementation returns null;</a>
+<span class="sourceLineNo">1026</span><a id="line.1026">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1027</span><a id="line.1027">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1028</span><a id="line.1028">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1029</span><a id="line.1029">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Button&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1030</span><a id="line.1030">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1031</span><a id="line.1031">         * @generated</a>
+<span class="sourceLineNo">1032</span><a id="line.1032">         */</a>
+<span class="sourceLineNo">1033</span><a id="line.1033">        public T caseButton(Button object) {</a>
+<span class="sourceLineNo">1034</span><a id="line.1034">                return null;</a>
+<span class="sourceLineNo">1035</span><a id="line.1035">        }</a>
+<span class="sourceLineNo">1036</span><a id="line.1036"></a>
+<span class="sourceLineNo">1037</span><a id="line.1037">        /**</a>
+<span class="sourceLineNo">1038</span><a id="line.1038">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Button Group&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1039</span><a id="line.1039">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1040</span><a id="line.1040">         * This implementation returns null;</a>
+<span class="sourceLineNo">1041</span><a id="line.1041">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1042</span><a id="line.1042">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1043</span><a id="line.1043">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1044</span><a id="line.1044">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Button Group&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1045</span><a id="line.1045">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1046</span><a id="line.1046">         * @generated</a>
+<span class="sourceLineNo">1047</span><a id="line.1047">         */</a>
+<span class="sourceLineNo">1048</span><a id="line.1048">        public T caseButtonGroup(ButtonGroup object) {</a>
+<span class="sourceLineNo">1049</span><a id="line.1049">                return null;</a>
+<span class="sourceLineNo">1050</span><a id="line.1050">        }</a>
+<span class="sourceLineNo">1051</span><a id="line.1051"></a>
+<span class="sourceLineNo">1052</span><a id="line.1052">        /**</a>
+<span class="sourceLineNo">1053</span><a id="line.1053">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Button Toolbar&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1054</span><a id="line.1054">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1055</span><a id="line.1055">         * This implementation returns null;</a>
+<span class="sourceLineNo">1056</span><a id="line.1056">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1057</span><a id="line.1057">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1058</span><a id="line.1058">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1059</span><a id="line.1059">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Button Toolbar&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1060</span><a id="line.1060">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1061</span><a id="line.1061">         * @generated</a>
+<span class="sourceLineNo">1062</span><a id="line.1062">         */</a>
+<span class="sourceLineNo">1063</span><a id="line.1063">        public T caseButtonToolbar(ButtonToolbar object) {</a>
+<span class="sourceLineNo">1064</span><a id="line.1064">                return null;</a>
+<span class="sourceLineNo">1065</span><a id="line.1065">        }</a>
+<span class="sourceLineNo">1066</span><a id="line.1066"></a>
+<span class="sourceLineNo">1067</span><a id="line.1067">        /**</a>
+<span class="sourceLineNo">1068</span><a id="line.1068">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Dropdown&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1069</span><a id="line.1069">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1070</span><a id="line.1070">         * This implementation returns null;</a>
+<span class="sourceLineNo">1071</span><a id="line.1071">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1072</span><a id="line.1072">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1073</span><a id="line.1073">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1074</span><a id="line.1074">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Dropdown&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1075</span><a id="line.1075">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1076</span><a id="line.1076">         * @generated</a>
+<span class="sourceLineNo">1077</span><a id="line.1077">         */</a>
+<span class="sourceLineNo">1078</span><a id="line.1078">        public T caseDropdown(Dropdown object) {</a>
+<span class="sourceLineNo">1079</span><a id="line.1079">                return null;</a>
+<span class="sourceLineNo">1080</span><a id="line.1080">        }</a>
+<span class="sourceLineNo">1081</span><a id="line.1081"></a>
+<span class="sourceLineNo">1082</span><a id="line.1082">        /**</a>
+<span class="sourceLineNo">1083</span><a id="line.1083">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Form&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1084</span><a id="line.1084">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1085</span><a id="line.1085">         * This implementation returns null;</a>
+<span class="sourceLineNo">1086</span><a id="line.1086">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1087</span><a id="line.1087">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1088</span><a id="line.1088">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1089</span><a id="line.1089">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Form&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1090</span><a id="line.1090">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1091</span><a id="line.1091">         * @generated</a>
+<span class="sourceLineNo">1092</span><a id="line.1092">         */</a>
+<span class="sourceLineNo">1093</span><a id="line.1093">        public T caseForm(Form object) {</a>
+<span class="sourceLineNo">1094</span><a id="line.1094">                return null;</a>
+<span class="sourceLineNo">1095</span><a id="line.1095">        }</a>
+<span class="sourceLineNo">1096</span><a id="line.1096"></a>
+<span class="sourceLineNo">1097</span><a id="line.1097">        /**</a>
+<span class="sourceLineNo">1098</span><a id="line.1098">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;List Group&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1099</span><a id="line.1099">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1100</span><a id="line.1100">         * This implementation returns null;</a>
+<span class="sourceLineNo">1101</span><a id="line.1101">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1102</span><a id="line.1102">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1103</span><a id="line.1103">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1104</span><a id="line.1104">         * @return the result of interpreting the object as an instance of '&lt;em&gt;List Group&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1105</span><a id="line.1105">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1106</span><a id="line.1106">         * @generated</a>
+<span class="sourceLineNo">1107</span><a id="line.1107">         */</a>
+<span class="sourceLineNo">1108</span><a id="line.1108">        public T caseListGroup(ListGroup object) {</a>
+<span class="sourceLineNo">1109</span><a id="line.1109">                return null;</a>
+<span class="sourceLineNo">1110</span><a id="line.1110">        }</a>
+<span class="sourceLineNo">1111</span><a id="line.1111"></a>
+<span class="sourceLineNo">1112</span><a id="line.1112">        /**</a>
+<span class="sourceLineNo">1113</span><a id="line.1113">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Navs&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1114</span><a id="line.1114">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1115</span><a id="line.1115">         * This implementation returns null;</a>
+<span class="sourceLineNo">1116</span><a id="line.1116">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1117</span><a id="line.1117">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1118</span><a id="line.1118">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1119</span><a id="line.1119">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Navs&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1120</span><a id="line.1120">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1121</span><a id="line.1121">         * @generated</a>
+<span class="sourceLineNo">1122</span><a id="line.1122">         */</a>
+<span class="sourceLineNo">1123</span><a id="line.1123">        public T caseNavs(Navs object) {</a>
+<span class="sourceLineNo">1124</span><a id="line.1124">                return null;</a>
+<span class="sourceLineNo">1125</span><a id="line.1125">        }</a>
+<span class="sourceLineNo">1126</span><a id="line.1126"></a>
+<span class="sourceLineNo">1127</span><a id="line.1127">        /**</a>
+<span class="sourceLineNo">1128</span><a id="line.1128">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Navbar&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1129</span><a id="line.1129">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1130</span><a id="line.1130">         * This implementation returns null;</a>
+<span class="sourceLineNo">1131</span><a id="line.1131">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1132</span><a id="line.1132">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1133</span><a id="line.1133">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1134</span><a id="line.1134">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Navbar&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1135</span><a id="line.1135">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1136</span><a id="line.1136">         * @generated</a>
+<span class="sourceLineNo">1137</span><a id="line.1137">         */</a>
+<span class="sourceLineNo">1138</span><a id="line.1138">        public T caseNavbar(Navbar object) {</a>
+<span class="sourceLineNo">1139</span><a id="line.1139">                return null;</a>
+<span class="sourceLineNo">1140</span><a id="line.1140">        }</a>
+<span class="sourceLineNo">1141</span><a id="line.1141"></a>
+<span class="sourceLineNo">1142</span><a id="line.1142">        /**</a>
+<span class="sourceLineNo">1143</span><a id="line.1143">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Tooltip&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1144</span><a id="line.1144">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1145</span><a id="line.1145">         * This implementation returns null;</a>
+<span class="sourceLineNo">1146</span><a id="line.1146">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1147</span><a id="line.1147">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1148</span><a id="line.1148">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1149</span><a id="line.1149">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Tooltip&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1150</span><a id="line.1150">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1151</span><a id="line.1151">         * @generated</a>
+<span class="sourceLineNo">1152</span><a id="line.1152">         */</a>
+<span class="sourceLineNo">1153</span><a id="line.1153">        public T caseTooltip(Tooltip object) {</a>
+<span class="sourceLineNo">1154</span><a id="line.1154">                return null;</a>
+<span class="sourceLineNo">1155</span><a id="line.1155">        }</a>
+<span class="sourceLineNo">1156</span><a id="line.1156"></a>
+<span class="sourceLineNo">1157</span><a id="line.1157">        /**</a>
+<span class="sourceLineNo">1158</span><a id="line.1158">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Input Group&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1159</span><a id="line.1159">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1160</span><a id="line.1160">         * This implementation returns null;</a>
+<span class="sourceLineNo">1161</span><a id="line.1161">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1162</span><a id="line.1162">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1163</span><a id="line.1163">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1164</span><a id="line.1164">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Input Group&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1165</span><a id="line.1165">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1166</span><a id="line.1166">         * @generated</a>
+<span class="sourceLineNo">1167</span><a id="line.1167">         */</a>
+<span class="sourceLineNo">1168</span><a id="line.1168">        public T caseInputGroup(InputGroup object) {</a>
+<span class="sourceLineNo">1169</span><a id="line.1169">                return null;</a>
+<span class="sourceLineNo">1170</span><a id="line.1170">        }</a>
+<span class="sourceLineNo">1171</span><a id="line.1171"></a>
+<span class="sourceLineNo">1172</span><a id="line.1172">        /**</a>
+<span class="sourceLineNo">1173</span><a id="line.1173">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Form Group&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1174</span><a id="line.1174">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1175</span><a id="line.1175">         * This implementation returns null;</a>
+<span class="sourceLineNo">1176</span><a id="line.1176">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1177</span><a id="line.1177">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1178</span><a id="line.1178">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1179</span><a id="line.1179">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Form Group&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1180</span><a id="line.1180">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1181</span><a id="line.1181">         * @generated</a>
+<span class="sourceLineNo">1182</span><a id="line.1182">         */</a>
+<span class="sourceLineNo">1183</span><a id="line.1183">        public T caseFormGroup(FormGroup object) {</a>
+<span class="sourceLineNo">1184</span><a id="line.1184">                return null;</a>
+<span class="sourceLineNo">1185</span><a id="line.1185">        }</a>
+<span class="sourceLineNo">1186</span><a id="line.1186"></a>
+<span class="sourceLineNo">1187</span><a id="line.1187">        /**</a>
+<span class="sourceLineNo">1188</span><a id="line.1188">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Collapse&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1189</span><a id="line.1189">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1190</span><a id="line.1190">         * This implementation returns null;</a>
+<span class="sourceLineNo">1191</span><a id="line.1191">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1192</span><a id="line.1192">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1193</span><a id="line.1193">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1194</span><a id="line.1194">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Collapse&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1195</span><a id="line.1195">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1196</span><a id="line.1196">         * @generated</a>
+<span class="sourceLineNo">1197</span><a id="line.1197">         */</a>
+<span class="sourceLineNo">1198</span><a id="line.1198">        public T caseCollapse(Collapse object) {</a>
+<span class="sourceLineNo">1199</span><a id="line.1199">                return null;</a>
+<span class="sourceLineNo">1200</span><a id="line.1200">        }</a>
+<span class="sourceLineNo">1201</span><a id="line.1201"></a>
+<span class="sourceLineNo">1202</span><a id="line.1202">        /**</a>
+<span class="sourceLineNo">1203</span><a id="line.1203">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Modal&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1204</span><a id="line.1204">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1205</span><a id="line.1205">         * This implementation returns null;</a>
+<span class="sourceLineNo">1206</span><a id="line.1206">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1207</span><a id="line.1207">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1208</span><a id="line.1208">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1209</span><a id="line.1209">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Modal&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1210</span><a id="line.1210">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1211</span><a id="line.1211">         * @generated</a>
+<span class="sourceLineNo">1212</span><a id="line.1212">         */</a>
+<span class="sourceLineNo">1213</span><a id="line.1213">        public T caseModal(Modal object) {</a>
+<span class="sourceLineNo">1214</span><a id="line.1214">                return null;</a>
+<span class="sourceLineNo">1215</span><a id="line.1215">        }</a>
+<span class="sourceLineNo">1216</span><a id="line.1216"></a>
+<span class="sourceLineNo">1217</span><a id="line.1217">        /**</a>
+<span class="sourceLineNo">1218</span><a id="line.1218">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Accordion&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1219</span><a id="line.1219">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1220</span><a id="line.1220">         * This implementation returns null;</a>
+<span class="sourceLineNo">1221</span><a id="line.1221">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1222</span><a id="line.1222">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1223</span><a id="line.1223">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1224</span><a id="line.1224">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Accordion&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1225</span><a id="line.1225">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1226</span><a id="line.1226">         * @generated</a>
+<span class="sourceLineNo">1227</span><a id="line.1227">         */</a>
+<span class="sourceLineNo">1228</span><a id="line.1228">        public T caseAccordion(Accordion object) {</a>
+<span class="sourceLineNo">1229</span><a id="line.1229">                return null;</a>
+<span class="sourceLineNo">1230</span><a id="line.1230">        }</a>
+<span class="sourceLineNo">1231</span><a id="line.1231"></a>
+<span class="sourceLineNo">1232</span><a id="line.1232">        /**</a>
+<span class="sourceLineNo">1233</span><a id="line.1233">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Carousel&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1234</span><a id="line.1234">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1235</span><a id="line.1235">         * This implementation returns null;</a>
+<span class="sourceLineNo">1236</span><a id="line.1236">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1237</span><a id="line.1237">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1238</span><a id="line.1238">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1239</span><a id="line.1239">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Carousel&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1240</span><a id="line.1240">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1241</span><a id="line.1241">         * @generated</a>
+<span class="sourceLineNo">1242</span><a id="line.1242">         */</a>
+<span class="sourceLineNo">1243</span><a id="line.1243">        public T caseCarousel(Carousel object) {</a>
+<span class="sourceLineNo">1244</span><a id="line.1244">                return null;</a>
+<span class="sourceLineNo">1245</span><a id="line.1245">        }</a>
+<span class="sourceLineNo">1246</span><a id="line.1246"></a>
+<span class="sourceLineNo">1247</span><a id="line.1247">        /**</a>
+<span class="sourceLineNo">1248</span><a id="line.1248">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Slide&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1249</span><a id="line.1249">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1250</span><a id="line.1250">         * This implementation returns null;</a>
+<span class="sourceLineNo">1251</span><a id="line.1251">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1252</span><a id="line.1252">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1253</span><a id="line.1253">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1254</span><a id="line.1254">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Slide&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1255</span><a id="line.1255">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1256</span><a id="line.1256">         * @generated</a>
+<span class="sourceLineNo">1257</span><a id="line.1257">         */</a>
+<span class="sourceLineNo">1258</span><a id="line.1258">        public T caseSlide(Slide object) {</a>
+<span class="sourceLineNo">1259</span><a id="line.1259">                return null;</a>
+<span class="sourceLineNo">1260</span><a id="line.1260">        }</a>
+<span class="sourceLineNo">1261</span><a id="line.1261"></a>
+<span class="sourceLineNo">1262</span><a id="line.1262">        /**</a>
+<span class="sourceLineNo">1263</span><a id="line.1263">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;IMarked&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1264</span><a id="line.1264">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1265</span><a id="line.1265">         * This implementation returns null;</a>
+<span class="sourceLineNo">1266</span><a id="line.1266">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1267</span><a id="line.1267">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1268</span><a id="line.1268">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1269</span><a id="line.1269">         * @return the result of interpreting the object as an instance of '&lt;em&gt;IMarked&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1270</span><a id="line.1270">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1271</span><a id="line.1271">         * @generated</a>
+<span class="sourceLineNo">1272</span><a id="line.1272">         */</a>
+<span class="sourceLineNo">1273</span><a id="line.1273">        public T caseIMarked(org.nasdanika.common.persistence.Marked object) {</a>
+<span class="sourceLineNo">1274</span><a id="line.1274">                return null;</a>
+<span class="sourceLineNo">1275</span><a id="line.1275">        }</a>
+<span class="sourceLineNo">1276</span><a id="line.1276"></a>
+<span class="sourceLineNo">1277</span><a id="line.1277">        /**</a>
+<span class="sourceLineNo">1278</span><a id="line.1278">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Marked&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1279</span><a id="line.1279">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1280</span><a id="line.1280">         * This implementation returns null;</a>
+<span class="sourceLineNo">1281</span><a id="line.1281">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1282</span><a id="line.1282">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1283</span><a id="line.1283">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1284</span><a id="line.1284">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Marked&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1285</span><a id="line.1285">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1286</span><a id="line.1286">         * @generated</a>
+<span class="sourceLineNo">1287</span><a id="line.1287">         */</a>
+<span class="sourceLineNo">1288</span><a id="line.1288">        public T caseMarked(Marked object) {</a>
+<span class="sourceLineNo">1289</span><a id="line.1289">                return null;</a>
+<span class="sourceLineNo">1290</span><a id="line.1290">        }</a>
+<span class="sourceLineNo">1291</span><a id="line.1291"></a>
+<span class="sourceLineNo">1292</span><a id="line.1292">        /**</a>
+<span class="sourceLineNo">1293</span><a id="line.1293">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Adaptable&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1294</span><a id="line.1294">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1295</span><a id="line.1295">         * This implementation returns null;</a>
+<span class="sourceLineNo">1296</span><a id="line.1296">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1297</span><a id="line.1297">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1298</span><a id="line.1298">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1299</span><a id="line.1299">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Adaptable&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1300</span><a id="line.1300">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1301</span><a id="line.1301">         * @generated</a>
+<span class="sourceLineNo">1302</span><a id="line.1302">         */</a>
+<span class="sourceLineNo">1303</span><a id="line.1303">        public T caseAdaptable(Adaptable object) {</a>
+<span class="sourceLineNo">1304</span><a id="line.1304">                return null;</a>
+<span class="sourceLineNo">1305</span><a id="line.1305">        }</a>
+<span class="sourceLineNo">1306</span><a id="line.1306"></a>
+<span class="sourceLineNo">1307</span><a id="line.1307">        /**</a>
+<span class="sourceLineNo">1308</span><a id="line.1308">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Model Element&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1309</span><a id="line.1309">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1310</span><a id="line.1310">         * This implementation returns null;</a>
+<span class="sourceLineNo">1311</span><a id="line.1311">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1312</span><a id="line.1312">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1313</span><a id="line.1313">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1314</span><a id="line.1314">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Model Element&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1315</span><a id="line.1315">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1316</span><a id="line.1316">         * @generated</a>
+<span class="sourceLineNo">1317</span><a id="line.1317">         */</a>
+<span class="sourceLineNo">1318</span><a id="line.1318">        public T caseModelElement(ModelElement object) {</a>
+<span class="sourceLineNo">1319</span><a id="line.1319">                return null;</a>
+<span class="sourceLineNo">1320</span><a id="line.1320">        }</a>
+<span class="sourceLineNo">1321</span><a id="line.1321"></a>
+<span class="sourceLineNo">1322</span><a id="line.1322">        /**</a>
+<span class="sourceLineNo">1323</span><a id="line.1323">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Element&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1324</span><a id="line.1324">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1325</span><a id="line.1325">         * This implementation returns null;</a>
+<span class="sourceLineNo">1326</span><a id="line.1326">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1327</span><a id="line.1327">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1328</span><a id="line.1328">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1329</span><a id="line.1329">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Element&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1330</span><a id="line.1330">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1331</span><a id="line.1331">         * @generated</a>
+<span class="sourceLineNo">1332</span><a id="line.1332">         */</a>
+<span class="sourceLineNo">1333</span><a id="line.1333">        public T caseHtmlElement(HtmlElement object) {</a>
+<span class="sourceLineNo">1334</span><a id="line.1334">                return null;</a>
+<span class="sourceLineNo">1335</span><a id="line.1335">        }</a>
+<span class="sourceLineNo">1336</span><a id="line.1336"></a>
+<span class="sourceLineNo">1337</span><a id="line.1337">        /**</a>
+<span class="sourceLineNo">1338</span><a id="line.1338">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Page&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1339</span><a id="line.1339">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1340</span><a id="line.1340">         * This implementation returns null;</a>
+<span class="sourceLineNo">1341</span><a id="line.1341">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1342</span><a id="line.1342">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1343</span><a id="line.1343">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1344</span><a id="line.1344">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Page&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1345</span><a id="line.1345">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1346</span><a id="line.1346">         * @generated</a>
+<span class="sourceLineNo">1347</span><a id="line.1347">         */</a>
+<span class="sourceLineNo">1348</span><a id="line.1348">        public T caseHtml_Page(Page object) {</a>
+<span class="sourceLineNo">1349</span><a id="line.1349">                return null;</a>
+<span class="sourceLineNo">1350</span><a id="line.1350">        }</a>
+<span class="sourceLineNo">1351</span><a id="line.1351"></a>
+<span class="sourceLineNo">1352</span><a id="line.1352">        /**</a>
+<span class="sourceLineNo">1353</span><a id="line.1353">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;Tag&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1354</span><a id="line.1354">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1355</span><a id="line.1355">         * This implementation returns null;</a>
+<span class="sourceLineNo">1356</span><a id="line.1356">         * returning a non-null result will terminate the switch.</a>
+<span class="sourceLineNo">1357</span><a id="line.1357">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1358</span><a id="line.1358">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1359</span><a id="line.1359">         * @return the result of interpreting the object as an instance of '&lt;em&gt;Tag&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1360</span><a id="line.1360">         * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)</a>
+<span class="sourceLineNo">1361</span><a id="line.1361">         * @generated</a>
+<span class="sourceLineNo">1362</span><a id="line.1362">         */</a>
+<span class="sourceLineNo">1363</span><a id="line.1363">        public T caseHtml_Tag(org.nasdanika.html.model.html.Tag object) {</a>
+<span class="sourceLineNo">1364</span><a id="line.1364">                return null;</a>
+<span class="sourceLineNo">1365</span><a id="line.1365">        }</a>
+<span class="sourceLineNo">1366</span><a id="line.1366"></a>
+<span class="sourceLineNo">1367</span><a id="line.1367">        /**</a>
+<span class="sourceLineNo">1368</span><a id="line.1368">         * Returns the result of interpreting the object as an instance of '&lt;em&gt;EObject&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1369</span><a id="line.1369">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">1370</span><a id="line.1370">         * This implementation returns null;</a>
+<span class="sourceLineNo">1371</span><a id="line.1371">         * returning a non-null result will terminate the switch, but this is the last case anyway.</a>
+<span class="sourceLineNo">1372</span><a id="line.1372">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">1373</span><a id="line.1373">         * @param object the target of the switch.</a>
+<span class="sourceLineNo">1374</span><a id="line.1374">         * @return the result of interpreting the object as an instance of '&lt;em&gt;EObject&lt;/em&gt;'.</a>
+<span class="sourceLineNo">1375</span><a id="line.1375">         * @see #doSwitch(org.eclipse.emf.ecore.EObject)</a>
+<span class="sourceLineNo">1376</span><a id="line.1376">         * @generated</a>
+<span class="sourceLineNo">1377</span><a id="line.1377">         */</a>
+<span class="sourceLineNo">1378</span><a id="line.1378">        @Override</a>
+<span class="sourceLineNo">1379</span><a id="line.1379">        public T defaultCase(EObject object) {</a>
+<span class="sourceLineNo">1380</span><a id="line.1380">                return null;</a>
+<span class="sourceLineNo">1381</span><a id="line.1381">        }</a>
+<span class="sourceLineNo">1382</span><a id="line.1382"></a>
+<span class="sourceLineNo">1383</span><a id="line.1383">} //BootstrapSwitch</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre> 
+   </div> 
+  </main>  
+ </body>
+</html>

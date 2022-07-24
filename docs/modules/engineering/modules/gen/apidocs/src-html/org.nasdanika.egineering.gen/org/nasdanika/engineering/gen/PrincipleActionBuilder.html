@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <main role="main"> 
+   <div class="sourceContainer"> 
+    <pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.engineering.gen;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.util.Collections;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.util.List;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.Optional;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.util.function.BiConsumer;</a>
+<span class="sourceLineNo">007</span><a id="line.7"></a>
+<span class="sourceLineNo">008</span><a id="line.8">import org.eclipse.emf.common.util.EList;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import org.eclipse.emf.ecore.EObject;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import org.eclipse.emf.ecore.ETypedElement;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import org.nasdanika.common.Context;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import org.nasdanika.common.ProgressMonitor;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import org.nasdanika.engineering.EngineeringPackage;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import org.nasdanika.engineering.Principle;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import org.nasdanika.html.model.app.Action;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import org.nasdanika.html.model.app.AppFactory;</a>
+<span class="sourceLineNo">017</span><a id="line.17"></a>
+<span class="sourceLineNo">018</span><a id="line.18">public class PrincipleActionBuilder extends AimActionBuilder&lt;Principle&gt; {</a>
+<span class="sourceLineNo">019</span><a id="line.19">        </a>
+<span class="sourceLineNo">020</span><a id="line.20">        public PrincipleActionBuilder(Principle target, Context context) {</a>
+<span class="sourceLineNo">021</span><a id="line.21">                super(target, context);         </a>
+<span class="sourceLineNo">022</span><a id="line.22">        }</a>
+<span class="sourceLineNo">023</span><a id="line.23">        </a>
+<span class="sourceLineNo">024</span><a id="line.24">        @Override</a>
+<span class="sourceLineNo">025</span><a id="line.25">        protected Action buildAction(</a>
+<span class="sourceLineNo">026</span><a id="line.26">                        Action action,</a>
+<span class="sourceLineNo">027</span><a id="line.27">                        BiConsumer&lt;EObject,Action&gt; registry, </a>
+<span class="sourceLineNo">028</span><a id="line.28">                        java.util.function.Consumer&lt;org.nasdanika.common.Consumer&lt;org.nasdanika.html.emf.EObjectActionResolver.Context&gt;&gt; resolveConsumer, </a>
+<span class="sourceLineNo">029</span><a id="line.29">                        ProgressMonitor progressMonitor) throws Exception {</a>
+<span class="sourceLineNo">030</span><a id="line.30">                action = super.buildAction(action, registry, resolveConsumer, progressMonitor);</a>
+<span class="sourceLineNo">031</span><a id="line.31">                </a>
+<span class="sourceLineNo">032</span><a id="line.32">                createChildrenActions(action, registry, resolveConsumer, progressMonitor);</a>
+<span class="sourceLineNo">033</span><a id="line.33">                </a>
+<span class="sourceLineNo">034</span><a id="line.34">                return action;</a>
+<span class="sourceLineNo">035</span><a id="line.35">        }</a>
+<span class="sourceLineNo">036</span><a id="line.36">        </a>
+<span class="sourceLineNo">037</span><a id="line.37">        protected void createChildrenActions(</a>
+<span class="sourceLineNo">038</span><a id="line.38">                        Action action, </a>
+<span class="sourceLineNo">039</span><a id="line.39">                        BiConsumer&lt;EObject,Action&gt; registry, </a>
+<span class="sourceLineNo">040</span><a id="line.40">                        java.util.function.Consumer&lt;org.nasdanika.common.Consumer&lt;org.nasdanika.html.emf.EObjectActionResolver.Context&gt;&gt; resolveConsumer, </a>
+<span class="sourceLineNo">041</span><a id="line.41">                        ProgressMonitor progressMonitor) throws Exception {</a>
+<span class="sourceLineNo">042</span><a id="line.42">                </a>
+<span class="sourceLineNo">043</span><a id="line.43">                List&lt;Principle&gt; children = getTarget().getChildren();</a>
+<span class="sourceLineNo">044</span><a id="line.44">                if (!children.isEmpty()) {</a>
+<span class="sourceLineNo">045</span><a id="line.45">                        Action group = AppFactory.eINSTANCE.createAction();</a>
+<span class="sourceLineNo">046</span><a id="line.46">                        group.setText("Children");</a>
+<span class="sourceLineNo">047</span><a id="line.47">                        group.setUuid(action.getUuid() + "-children");</a>
+<span class="sourceLineNo">048</span><a id="line.48">                        action.getSections().add(group);</a>
+<span class="sourceLineNo">049</span><a id="line.49">                        EList&lt;Action&gt; groupAnonymous = group.getAnonymous();</a>
+<span class="sourceLineNo">050</span><a id="line.50">                        for (Principle goal: children) {</a>
+<span class="sourceLineNo">051</span><a id="line.51">                                groupAnonymous.add(createChildAction(goal, registry, resolveConsumer, progressMonitor));</a>
+<span class="sourceLineNo">052</span><a id="line.52">                        }</a>
+<span class="sourceLineNo">053</span><a id="line.53">                }</a>
+<span class="sourceLineNo">054</span><a id="line.54">        }</a>
+<span class="sourceLineNo">055</span><a id="line.55">        </a>
+<span class="sourceLineNo">056</span><a id="line.56">        @Override</a>
+<span class="sourceLineNo">057</span><a id="line.57">        protected void resolve(</a>
+<span class="sourceLineNo">058</span><a id="line.58">                        Action action, </a>
+<span class="sourceLineNo">059</span><a id="line.59">                        org.nasdanika.html.emf.EObjectActionResolver.Context context,</a>
+<span class="sourceLineNo">060</span><a id="line.60">                        ProgressMonitor progressMonitor) throws Exception {</a>
+<span class="sourceLineNo">061</span><a id="line.61">                super.resolve(action, context, progressMonitor);</a>
+<span class="sourceLineNo">062</span><a id="line.62">                </a>
+<span class="sourceLineNo">063</span><a id="line.63">                EList&lt;Principle&gt; children = getTarget().getChildren();</a>
+<span class="sourceLineNo">064</span><a id="line.64">                if (!children.isEmpty()) {</a>
+<span class="sourceLineNo">065</span><a id="line.65">                        String childrenGroupUUID = action.getUuid() + "-children";</a>
+<span class="sourceLineNo">066</span><a id="line.66">                        Optional&lt;Action&gt; childrenActionOptional = action.getSections().stream()</a>
+<span class="sourceLineNo">067</span><a id="line.67">                                        .filter(a -&gt; childrenGroupUUID.equals(a.getUuid()))</a>
+<span class="sourceLineNo">068</span><a id="line.68">                                        .findFirst();</a>
+<span class="sourceLineNo">069</span><a id="line.69">                        childrenActionOptional.get().getContent().add(renderList(children, true, createGoalChildrenListProvider(), action, EngineeringPackage.Literals.ENGINEERED_ELEMENT__PRINCIPLES, context, progressMonitor));</a>
+<span class="sourceLineNo">070</span><a id="line.70">                }</a>
+<span class="sourceLineNo">071</span><a id="line.71">        }</a>
+<span class="sourceLineNo">072</span><a id="line.72"></a>
+<span class="sourceLineNo">073</span><a id="line.73">        protected ContentProvider&lt;Principle&gt; createGoalChildrenListProvider() {</a>
+<span class="sourceLineNo">074</span><a id="line.74">                ContentProvider&lt;Principle&gt; principleChildrenListProvider = new ContentProvider&lt;Principle&gt;() {</a>
+<span class="sourceLineNo">075</span><a id="line.75"></a>
+<span class="sourceLineNo">076</span><a id="line.76">                        @Override</a>
+<span class="sourceLineNo">077</span><a id="line.77">                        public List&lt;EObject&gt; createContent(</a>
+<span class="sourceLineNo">078</span><a id="line.78">                                        Principle element, </a>
+<span class="sourceLineNo">079</span><a id="line.79">                                        Action base, </a>
+<span class="sourceLineNo">080</span><a id="line.80">                                        ETypedElement typedElement,</a>
+<span class="sourceLineNo">081</span><a id="line.81">                                        org.nasdanika.html.emf.EObjectActionResolver.Context context, </a>
+<span class="sourceLineNo">082</span><a id="line.82">                                        ProgressMonitor progressMonitor) throws Exception {</a>
+<span class="sourceLineNo">083</span><a id="line.83">                                </a>
+<span class="sourceLineNo">084</span><a id="line.84">                                EList&lt;Principle&gt; children = element.getChildren();</a>
+<span class="sourceLineNo">085</span><a id="line.85">                                if (children.isEmpty()) {</a>
+<span class="sourceLineNo">086</span><a id="line.86">                                        return null;</a>
+<span class="sourceLineNo">087</span><a id="line.87">                                }</a>
+<span class="sourceLineNo">088</span><a id="line.88">                                return Collections.singletonList(renderList(children, true, this, base, EngineeringPackage.Literals.PRINCIPLE__CHILDREN, context, progressMonitor));</a>
+<span class="sourceLineNo">089</span><a id="line.89">                        }</a>
+<span class="sourceLineNo">090</span><a id="line.90">                        </a>
+<span class="sourceLineNo">091</span><a id="line.91">                };</a>
+<span class="sourceLineNo">092</span><a id="line.92">                return principleChildrenListProvider;</a>
+<span class="sourceLineNo">093</span><a id="line.93">        }</a>
+<span class="sourceLineNo">094</span><a id="line.94">        </a>
+<span class="sourceLineNo">095</span><a id="line.95">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre> 
+   </div> 
+  </main>  
+ </body>
+</html>

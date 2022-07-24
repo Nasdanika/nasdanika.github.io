@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <main role="main"> 
+   <div class="sourceContainer"> 
+    <pre><span class="sourceLineNo">001</span><a id="line.1">/**</a>
+<span class="sourceLineNo">002</span><a id="line.2"> */</a>
+<span class="sourceLineNo">003</span><a id="line.3">package org.nasdanika.engineering;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import org.eclipse.emf.common.util.EList;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.eclipse.emf.ecore.EObject;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import org.nasdanika.ncore.Property;</a>
+<span class="sourceLineNo">008</span><a id="line.8"></a>
+<span class="sourceLineNo">009</span><a id="line.9">/**</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * A representation of the model object '&lt;em&gt;&lt;b&gt;Model Element&lt;/b&gt;&lt;/em&gt;'.</a>
+<span class="sourceLineNo">012</span><a id="line.12"> * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * &lt;p&gt;</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * The following features are supported:</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * &lt;ul&gt;</a>
+<span class="sourceLineNo">018</span><a id="line.18"> *   &lt;li&gt;{@link org.nasdanika.engineering.ModelElement#getPath &lt;em&gt;Path&lt;/em&gt;}&lt;/li&gt;</a>
+<span class="sourceLineNo">019</span><a id="line.19"> *   &lt;li&gt;{@link org.nasdanika.engineering.ModelElement#getResources &lt;em&gt;Resources&lt;/em&gt;}&lt;/li&gt;</a>
+<span class="sourceLineNo">020</span><a id="line.20"> *   &lt;li&gt;{@link org.nasdanika.engineering.ModelElement#getDocumentation &lt;em&gt;Documentation&lt;/em&gt;}&lt;/li&gt;</a>
+<span class="sourceLineNo">021</span><a id="line.21"> *   &lt;li&gt;{@link org.nasdanika.engineering.ModelElement#getTableOfContents &lt;em&gt;Table Of Contents&lt;/em&gt;}&lt;/li&gt;</a>
+<span class="sourceLineNo">022</span><a id="line.22"> *   &lt;li&gt;{@link org.nasdanika.engineering.ModelElement#getSections &lt;em&gt;Sections&lt;/em&gt;}&lt;/li&gt;</a>
+<span class="sourceLineNo">023</span><a id="line.23"> *   &lt;li&gt;{@link org.nasdanika.engineering.ModelElement#getRepresentations &lt;em&gt;Representations&lt;/em&gt;}&lt;/li&gt;</a>
+<span class="sourceLineNo">024</span><a id="line.24"> *   &lt;li&gt;{@link org.nasdanika.engineering.ModelElement#getAnnotations &lt;em&gt;Annotations&lt;/em&gt;}&lt;/li&gt;</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * &lt;/ul&gt;</a>
+<span class="sourceLineNo">026</span><a id="line.26"> *</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * @see org.nasdanika.engineering.EngineeringPackage#getModelElement()</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * @model abstract="true"</a>
+<span class="sourceLineNo">029</span><a id="line.29"> *        annotation="urn:org.nasdanika documentation-reference='doc/model-element.md'"</a>
+<span class="sourceLineNo">030</span><a id="line.30"> *        annotation="http://www.eclipse.org/emf/2002/Ecore constraints='path'"</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * @generated</a>
+<span class="sourceLineNo">032</span><a id="line.32"> */</a>
+<span class="sourceLineNo">033</span><a id="line.33">public interface ModelElement extends org.nasdanika.ncore.ModelElement {</a>
+<span class="sourceLineNo">034</span><a id="line.34">        /**</a>
+<span class="sourceLineNo">035</span><a id="line.35">         * Returns the value of the '&lt;em&gt;&lt;b&gt;Path&lt;/b&gt;&lt;/em&gt;' attribute.</a>
+<span class="sourceLineNo">036</span><a id="line.36">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">037</span><a id="line.37">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">038</span><a id="line.38">         * &lt;!-- begin-model-doc --&gt;</a>
+<span class="sourceLineNo">039</span><a id="line.39">         * Element path is typically used as a key (EKey) in a containing collection.</a>
+<span class="sourceLineNo">040</span><a id="line.40">         * &lt;!-- end-model-doc --&gt;</a>
+<span class="sourceLineNo">041</span><a id="line.41">         * @return the value of the '&lt;em&gt;Path&lt;/em&gt;' attribute.</a>
+<span class="sourceLineNo">042</span><a id="line.42">         * @see #setPath(String)</a>
+<span class="sourceLineNo">043</span><a id="line.43">         * @see org.nasdanika.engineering.EngineeringPackage#getModelElement_Path()</a>
+<span class="sourceLineNo">044</span><a id="line.44">         * @model required="true"</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * @generated</a>
+<span class="sourceLineNo">046</span><a id="line.46">         */</a>
+<span class="sourceLineNo">047</span><a id="line.47">        String getPath();</a>
+<span class="sourceLineNo">048</span><a id="line.48"></a>
+<span class="sourceLineNo">049</span><a id="line.49">        /**</a>
+<span class="sourceLineNo">050</span><a id="line.50">         * Sets the value of the '{@link org.nasdanika.engineering.ModelElement#getPath &lt;em&gt;Path&lt;/em&gt;}' attribute.</a>
+<span class="sourceLineNo">051</span><a id="line.51">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">052</span><a id="line.52">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">053</span><a id="line.53">         * @param value the new value of the '&lt;em&gt;Path&lt;/em&gt;' attribute.</a>
+<span class="sourceLineNo">054</span><a id="line.54">         * @see #getPath()</a>
+<span class="sourceLineNo">055</span><a id="line.55">         * @generated</a>
+<span class="sourceLineNo">056</span><a id="line.56">         */</a>
+<span class="sourceLineNo">057</span><a id="line.57">        void setPath(String value);</a>
+<span class="sourceLineNo">058</span><a id="line.58"></a>
+<span class="sourceLineNo">059</span><a id="line.59">        /**</a>
+<span class="sourceLineNo">060</span><a id="line.60">         * Returns the value of the '&lt;em&gt;&lt;b&gt;Resources&lt;/b&gt;&lt;/em&gt;' containment reference list.</a>
+<span class="sourceLineNo">061</span><a id="line.61">         * The list contents are of type {@link org.nasdanika.engineering.NamedElement}.</a>
+<span class="sourceLineNo">062</span><a id="line.62">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">063</span><a id="line.63">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">064</span><a id="line.64">         * &lt;!-- begin-model-doc --&gt;</a>
+<span class="sourceLineNo">065</span><a id="line.65">         * Resources associated with the element, e.g. documentation.</a>
+<span class="sourceLineNo">066</span><a id="line.66">         * &lt;!-- end-model-doc --&gt;</a>
+<span class="sourceLineNo">067</span><a id="line.67">         * @return the value of the '&lt;em&gt;Resources&lt;/em&gt;' containment reference list.</a>
+<span class="sourceLineNo">068</span><a id="line.68">         * @see org.nasdanika.engineering.EngineeringPackage#getModelElement_Resources()</a>
+<span class="sourceLineNo">069</span><a id="line.69">         * @model containment="true" keys="path"</a>
+<span class="sourceLineNo">070</span><a id="line.70">         * @generated</a>
+<span class="sourceLineNo">071</span><a id="line.71">         */</a>
+<span class="sourceLineNo">072</span><a id="line.72">        EList&lt;NamedElement&gt; getResources();</a>
+<span class="sourceLineNo">073</span><a id="line.73"></a>
+<span class="sourceLineNo">074</span><a id="line.74">        /**</a>
+<span class="sourceLineNo">075</span><a id="line.75">         * Returns the value of the '&lt;em&gt;&lt;b&gt;Documentation&lt;/b&gt;&lt;/em&gt;' containment reference list.</a>
+<span class="sourceLineNo">076</span><a id="line.76">         * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.</a>
+<span class="sourceLineNo">077</span><a id="line.77">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">078</span><a id="line.78">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">079</span><a id="line.79">         * &lt;!-- begin-model-doc --&gt;</a>
+<span class="sourceLineNo">080</span><a id="line.80">         * Element documentation, e.g. [Markdown](${classifier/Markdown@urn:org.nasdanika.exec.content}) documentation.</a>
+<span class="sourceLineNo">081</span><a id="line.81">         * &lt;!-- end-model-doc --&gt;</a>
+<span class="sourceLineNo">082</span><a id="line.82">         * @return the value of the '&lt;em&gt;Documentation&lt;/em&gt;' containment reference list.</a>
+<span class="sourceLineNo">083</span><a id="line.83">         * @see org.nasdanika.engineering.EngineeringPackage#getModelElement_Documentation()</a>
+<span class="sourceLineNo">084</span><a id="line.84">         * @model containment="true"</a>
+<span class="sourceLineNo">085</span><a id="line.85">         * @generated</a>
+<span class="sourceLineNo">086</span><a id="line.86">         */</a>
+<span class="sourceLineNo">087</span><a id="line.87">        EList&lt;EObject&gt; getDocumentation();</a>
+<span class="sourceLineNo">088</span><a id="line.88"></a>
+<span class="sourceLineNo">089</span><a id="line.89">        /**</a>
+<span class="sourceLineNo">090</span><a id="line.90">         * Returns the value of the '&lt;em&gt;&lt;b&gt;Table Of Contents&lt;/b&gt;&lt;/em&gt;' containment reference.</a>
+<span class="sourceLineNo">091</span><a id="line.91">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">092</span><a id="line.92">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">093</span><a id="line.93">         * &lt;!-- begin-model-doc --&gt;</a>
+<span class="sourceLineNo">094</span><a id="line.94">         * Table of contents configuration.</a>
+<span class="sourceLineNo">095</span><a id="line.95">         * &lt;!-- end-model-doc --&gt;</a>
+<span class="sourceLineNo">096</span><a id="line.96">         * @return the value of the '&lt;em&gt;Table Of Contents&lt;/em&gt;' containment reference.</a>
+<span class="sourceLineNo">097</span><a id="line.97">         * @see #setTableOfContents(TableOfContents)</a>
+<span class="sourceLineNo">098</span><a id="line.98">         * @see org.nasdanika.engineering.EngineeringPackage#getModelElement_TableOfContents()</a>
+<span class="sourceLineNo">099</span><a id="line.99">         * @model containment="true"</a>
+<span class="sourceLineNo">100</span><a id="line.100">         *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true'"</a>
+<span class="sourceLineNo">101</span><a id="line.101">         * @generated</a>
+<span class="sourceLineNo">102</span><a id="line.102">         */</a>
+<span class="sourceLineNo">103</span><a id="line.103">        TableOfContents getTableOfContents();</a>
+<span class="sourceLineNo">104</span><a id="line.104"></a>
+<span class="sourceLineNo">105</span><a id="line.105">        /**</a>
+<span class="sourceLineNo">106</span><a id="line.106">         * Sets the value of the '{@link org.nasdanika.engineering.ModelElement#getTableOfContents &lt;em&gt;Table Of Contents&lt;/em&gt;}' containment reference.</a>
+<span class="sourceLineNo">107</span><a id="line.107">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">108</span><a id="line.108">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">109</span><a id="line.109">         * @param value the new value of the '&lt;em&gt;Table Of Contents&lt;/em&gt;' containment reference.</a>
+<span class="sourceLineNo">110</span><a id="line.110">         * @see #getTableOfContents()</a>
+<span class="sourceLineNo">111</span><a id="line.111">         * @generated</a>
+<span class="sourceLineNo">112</span><a id="line.112">         */</a>
+<span class="sourceLineNo">113</span><a id="line.113">        void setTableOfContents(TableOfContents value);</a>
+<span class="sourceLineNo">114</span><a id="line.114"></a>
+<span class="sourceLineNo">115</span><a id="line.115">        /**</a>
+<span class="sourceLineNo">116</span><a id="line.116">         * Returns the value of the '&lt;em&gt;&lt;b&gt;Sections&lt;/b&gt;&lt;/em&gt;' containment reference list.</a>
+<span class="sourceLineNo">117</span><a id="line.117">         * The list contents are of type {@link org.nasdanika.engineering.Document}.</a>
+<span class="sourceLineNo">118</span><a id="line.118">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">119</span><a id="line.119">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">120</span><a id="line.120">         * &lt;!-- begin-model-doc --&gt;</a>
+<span class="sourceLineNo">121</span><a id="line.121">         * Sections for model element documentation.</a>
+<span class="sourceLineNo">122</span><a id="line.122">         * &lt;!-- end-model-doc --&gt;</a>
+<span class="sourceLineNo">123</span><a id="line.123">         * @return the value of the '&lt;em&gt;Sections&lt;/em&gt;' containment reference list.</a>
+<span class="sourceLineNo">124</span><a id="line.124">         * @see org.nasdanika.engineering.EngineeringPackage#getModelElement_Sections()</a>
+<span class="sourceLineNo">125</span><a id="line.125">         * @model containment="true" keys="path"</a>
+<span class="sourceLineNo">126</span><a id="line.126">         *        annotation="urn:org.nasdanika homogenous='true'"</a>
+<span class="sourceLineNo">127</span><a id="line.127">         * @generated</a>
+<span class="sourceLineNo">128</span><a id="line.128">         */</a>
+<span class="sourceLineNo">129</span><a id="line.129">        EList&lt;Document&gt; getSections();</a>
+<span class="sourceLineNo">130</span><a id="line.130"></a>
+<span class="sourceLineNo">131</span><a id="line.131">        /**</a>
+<span class="sourceLineNo">132</span><a id="line.132">         * Returns the value of the '&lt;em&gt;&lt;b&gt;Representations&lt;/b&gt;&lt;/em&gt;' containment reference list.</a>
+<span class="sourceLineNo">133</span><a id="line.133">         * The list contents are of type {@link org.nasdanika.engineering.Representation}.</a>
+<span class="sourceLineNo">134</span><a id="line.134">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">135</span><a id="line.135">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">136</span><a id="line.136">         * &lt;!-- begin-model-doc --&gt;</a>
+<span class="sourceLineNo">137</span><a id="line.137">         * Pluggable representations of a model element, e.g. a component diagram for modules.</a>
+<span class="sourceLineNo">138</span><a id="line.138">         * &lt;!-- end-model-doc --&gt;</a>
+<span class="sourceLineNo">139</span><a id="line.139">         * @return the value of the '&lt;em&gt;Representations&lt;/em&gt;' containment reference list.</a>
+<span class="sourceLineNo">140</span><a id="line.140">         * @see org.nasdanika.engineering.EngineeringPackage#getModelElement_Representations()</a>
+<span class="sourceLineNo">141</span><a id="line.141">         * @model containment="true"</a>
+<span class="sourceLineNo">142</span><a id="line.142">         *        annotation="urn:org.nasdanika homogenous='true'"</a>
+<span class="sourceLineNo">143</span><a id="line.143">         * @generated</a>
+<span class="sourceLineNo">144</span><a id="line.144">         */</a>
+<span class="sourceLineNo">145</span><a id="line.145">        EList&lt;Representation&gt; getRepresentations();</a>
+<span class="sourceLineNo">146</span><a id="line.146"></a>
+<span class="sourceLineNo">147</span><a id="line.147">        /**</a>
+<span class="sourceLineNo">148</span><a id="line.148">         * Returns the value of the '&lt;em&gt;&lt;b&gt;Annotations&lt;/b&gt;&lt;/em&gt;' containment reference list.</a>
+<span class="sourceLineNo">149</span><a id="line.149">         * The list contents are of type {@link org.nasdanika.ncore.Property}.</a>
+<span class="sourceLineNo">150</span><a id="line.150">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">151</span><a id="line.151">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">152</span><a id="line.152">         * &lt;!-- begin-model-doc --&gt;</a>
+<span class="sourceLineNo">153</span><a id="line.153">         * Map entries</a>
+<span class="sourceLineNo">154</span><a id="line.154">         * &lt;!-- end-model-doc --&gt;</a>
+<span class="sourceLineNo">155</span><a id="line.155">         * @return the value of the '&lt;em&gt;Annotations&lt;/em&gt;' containment reference list.</a>
+<span class="sourceLineNo">156</span><a id="line.156">         * @see org.nasdanika.engineering.EngineeringPackage#getModelElement_Annotations()</a>
+<span class="sourceLineNo">157</span><a id="line.157">         * @model containment="true" keys="name"</a>
+<span class="sourceLineNo">158</span><a id="line.158">         *        annotation="urn:org.nasdanika reference-type='map: \n  ns-uri: urn:org.nasdanika.ncore\n  name: MapProperty\nlist: \n  ns-uri: urn:org.nasdanika.ncore\n  name: ListProperty\nstring: \n  ns-uri: urn:org.nasdanika.ncore\n  name: StringProperty\ninteger: \n  ns-uri: urn:org.nasdanika.ncore\n  name: IntegerProperty' value-feature='value'"</a>
+<span class="sourceLineNo">159</span><a id="line.159">         * @generated</a>
+<span class="sourceLineNo">160</span><a id="line.160">         */</a>
+<span class="sourceLineNo">161</span><a id="line.161">        EList&lt;Property&gt; getAnnotations();</a>
+<span class="sourceLineNo">162</span><a id="line.162"></a>
+<span class="sourceLineNo">163</span><a id="line.163">} // ModelElement</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre> 
+   </div> 
+  </main>  
+ </body>
+</html>

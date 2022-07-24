@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <main role="main"> 
+   <div class="sourceContainer"> 
+    <pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.html.emf;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.nio.charset.StandardCharsets;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.security.MessageDigest;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.List;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.util.function.BiConsumer;</a>
+<span class="sourceLineNo">007</span><a id="line.7"></a>
+<span class="sourceLineNo">008</span><a id="line.8">import org.apache.commons.codec.binary.Hex;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import org.eclipse.emf.common.util.URI;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import org.eclipse.emf.ecore.EObject;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import org.eclipse.emf.ecore.ETypedElement;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import org.nasdanika.common.BiSupplier;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import org.nasdanika.common.Context;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import org.nasdanika.common.ProgressMonitor;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import org.nasdanika.common.Util;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import org.nasdanika.html.model.app.Action;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import org.nasdanika.html.model.app.SectionStyle;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import org.nasdanika.html.model.bootstrap.Table;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import org.nasdanika.ncore.NcorePackage;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import org.nasdanika.ncore.Temporal;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import org.nasdanika.ncore.util.NcoreUtil;</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">public class TemporalActionBuilder extends EObjectActionBuilder&lt;Temporal&gt; {</a>
+<span class="sourceLineNo">024</span><a id="line.24">        </a>
+<span class="sourceLineNo">025</span><a id="line.25">        public TemporalActionBuilder(Temporal value, Context context) {</a>
+<span class="sourceLineNo">026</span><a id="line.26">                super(value, context);          </a>
+<span class="sourceLineNo">027</span><a id="line.27">        }</a>
+<span class="sourceLineNo">028</span><a id="line.28">        </a>
+<span class="sourceLineNo">029</span><a id="line.29">        @Override</a>
+<span class="sourceLineNo">030</span><a id="line.30">        protected Action buildAction(</a>
+<span class="sourceLineNo">031</span><a id="line.31">                        Action action,</a>
+<span class="sourceLineNo">032</span><a id="line.32">                        BiConsumer&lt;EObject,Action&gt; registry, </a>
+<span class="sourceLineNo">033</span><a id="line.33">                        java.util.function.Consumer&lt;org.nasdanika.common.Consumer&lt;org.nasdanika.html.emf.EObjectActionResolver.Context&gt;&gt; resolveConsumer, </a>
+<span class="sourceLineNo">034</span><a id="line.34">                        ProgressMonitor progressMonitor) throws Exception {</a>
+<span class="sourceLineNo">035</span><a id="line.35">                Action ret = super.buildAction(action, registry, resolveConsumer, progressMonitor);             </a>
+<span class="sourceLineNo">036</span><a id="line.36">                Temporal eObj = getTarget();</a>
+<span class="sourceLineNo">037</span><a id="line.37">                URI uri = NcoreUtil.getUri(eObj);</a>
+<span class="sourceLineNo">038</span><a id="line.38">                String id = uri == null ? eObj.getUuid() : uri.toString();</a>
+<span class="sourceLineNo">039</span><a id="line.39">                String digest = Hex.encodeHexString(MessageDigest.getInstance("SHA-256").digest(id.getBytes(StandardCharsets.UTF_8)));</a>
+<span class="sourceLineNo">040</span><a id="line.40">                ret.setId(digest);</a>
+<span class="sourceLineNo">041</span><a id="line.41">                </a>
+<span class="sourceLineNo">042</span><a id="line.42">                String description = eObj.getDescription();</a>
+<span class="sourceLineNo">043</span><a id="line.43">                addContent(ret, description);</a>
+<span class="sourceLineNo">044</span><a id="line.44">                ret.setDescription(description);</a>
+<span class="sourceLineNo">045</span><a id="line.45"></a>
+<span class="sourceLineNo">046</span><a id="line.46">                BiSupplier&lt;EObject, String&gt; cPath = NcoreUtil.containmentPath(eObj);</a>
+<span class="sourceLineNo">047</span><a id="line.47">                if (cPath == null || Util.isBlank(cPath.getSecond())) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">                        ret.setLocation("${base-uri}index.html");</a>
+<span class="sourceLineNo">049</span><a id="line.49">                } else {</a>
+<span class="sourceLineNo">050</span><a id="line.50">                        ret.setLocation(cPath.getSecond() + "/index.html");</a>
+<span class="sourceLineNo">051</span><a id="line.51">                }</a>
+<span class="sourceLineNo">052</span><a id="line.52">                </a>
+<span class="sourceLineNo">053</span><a id="line.53">                ret.setText(eObj.normalize().toString()); </a>
+<span class="sourceLineNo">054</span><a id="line.54">                ret.setSectionStyle(SectionStyle.HEADER);</a>
+<span class="sourceLineNo">055</span><a id="line.55">                return ret;</a>
+<span class="sourceLineNo">056</span><a id="line.56">        }</a>
+<span class="sourceLineNo">057</span><a id="line.57"></a>
+<span class="sourceLineNo">058</span><a id="line.58">        @Override</a>
+<span class="sourceLineNo">059</span><a id="line.59">        public String name() {</a>
+<span class="sourceLineNo">060</span><a id="line.60">                return getTarget().normalize().toString();</a>
+<span class="sourceLineNo">061</span><a id="line.61">        }</a>
+<span class="sourceLineNo">062</span><a id="line.62">        </a>
+<span class="sourceLineNo">063</span><a id="line.63">        @Override</a>
+<span class="sourceLineNo">064</span><a id="line.64">        protected List&lt;ETypedElement&gt; getProperties() {</a>
+<span class="sourceLineNo">065</span><a id="line.65">                List&lt;ETypedElement&gt; propertiew = super.getProperties();</a>
+<span class="sourceLineNo">066</span><a id="line.66">                propertiew.add(NcorePackage.Literals.TEMPORAL__BASE);</a>
+<span class="sourceLineNo">067</span><a id="line.67">                propertiew.add(NcorePackage.Literals.TEMPORAL__OFFSET);</a>
+<span class="sourceLineNo">068</span><a id="line.68">                return propertiew;</a>
+<span class="sourceLineNo">069</span><a id="line.69">        }</a>
+<span class="sourceLineNo">070</span><a id="line.70">        </a>
+<span class="sourceLineNo">071</span><a id="line.71">        @Override</a>
+<span class="sourceLineNo">072</span><a id="line.72">        protected Table createPropertiesTable(</a>
+<span class="sourceLineNo">073</span><a id="line.73">                        Action action,</a>
+<span class="sourceLineNo">074</span><a id="line.74">                        org.nasdanika.html.emf.EObjectActionResolver.Context context,</a>
+<span class="sourceLineNo">075</span><a id="line.75">                        ProgressMonitor progressMonitor) throws Exception {</a>
+<span class="sourceLineNo">076</span><a id="line.76">                Table propertiesTable = super.createPropertiesTable(action, context, progressMonitor);</a>
+<span class="sourceLineNo">077</span><a id="line.77">                propertiesTable.getAttributes().put("style", createText("width:auto"));</a>
+<span class="sourceLineNo">078</span><a id="line.78">                return propertiesTable;</a>
+<span class="sourceLineNo">079</span><a id="line.79">        }</a>
+<span class="sourceLineNo">080</span><a id="line.80">        </a>
+<span class="sourceLineNo">081</span><a id="line.81">        // TODO - derivatives, lower bounds, upper bounds.</a>
+<span class="sourceLineNo">082</span><a id="line.82">        </a>
+<span class="sourceLineNo">083</span><a id="line.83">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre> 
+   </div> 
+  </main>  
+ </body>
+</html>

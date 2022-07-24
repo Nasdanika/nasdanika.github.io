@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <main role="main"> 
+   <div class="sourceContainer"> 
+    <pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.html.jstree;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import org.json.JSONObject;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import org.nasdanika.html.HTMLElement;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import org.nasdanika.html.HTMLFactory;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.nasdanika.html.HTMLPage;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import org.nasdanika.html.Tag;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import org.nasdanika.html.jstree.impl.DefaultJsTreeFactory;</a>
+<span class="sourceLineNo">009</span><a id="line.9"></a>
+<span class="sourceLineNo">010</span><a id="line.10">public interface JsTreeFactory {</a>
+<span class="sourceLineNo">011</span><a id="line.11">        </a>
+<span class="sourceLineNo">012</span><a id="line.12">        JsTreeFactory INSTANCE = new DefaultJsTreeFactory(HTMLFactory.INSTANCE);</a>
+<span class="sourceLineNo">013</span><a id="line.13">        </a>
+<span class="sourceLineNo">014</span><a id="line.14">        JsTreeNode jsTreeNode();</a>
+<span class="sourceLineNo">015</span><a id="line.15">        </a>
+<span class="sourceLineNo">016</span><a id="line.16">        JsTreeContextMenuItem jsTreeContextMenuItem();</a>
+<span class="sourceLineNo">017</span><a id="line.17">        </a>
+<span class="sourceLineNo">018</span><a id="line.18">        /**</a>
+<span class="sourceLineNo">019</span><a id="line.19">         * Add JsTree stylesheet and script elements referencing CDN locations. Does not add jQuery. </a>
+<span class="sourceLineNo">020</span><a id="line.20">         * @param page</a>
+<span class="sourceLineNo">021</span><a id="line.21">         * @return</a>
+<span class="sourceLineNo">022</span><a id="line.22">         */</a>
+<span class="sourceLineNo">023</span><a id="line.23">        &lt;P extends HTMLPage&gt; P cdn(P page);</a>
+<span class="sourceLineNo">024</span><a id="line.24">        </a>
+<span class="sourceLineNo">025</span><a id="line.25">        /**</a>
+<span class="sourceLineNo">026</span><a id="line.26">         * Builds JsTree object from a list of root nodes.</a>
+<span class="sourceLineNo">027</span><a id="line.27">         * @param roots</a>
+<span class="sourceLineNo">028</span><a id="line.28">         * @return</a>
+<span class="sourceLineNo">029</span><a id="line.29">         */</a>
+<span class="sourceLineNo">030</span><a id="line.30">        JSONObject buildJsTree(Iterable&lt;JsTreeNode&gt; roots);</a>
+<span class="sourceLineNo">031</span><a id="line.31">        </a>
+<span class="sourceLineNo">032</span><a id="line.32">        /**</a>
+<span class="sourceLineNo">033</span><a id="line.33">         * Builds JsTree object from a list of root nodes.</a>
+<span class="sourceLineNo">034</span><a id="line.34">         * @param roots</a>
+<span class="sourceLineNo">035</span><a id="line.35">         * @return</a>
+<span class="sourceLineNo">036</span><a id="line.36">         */</a>
+<span class="sourceLineNo">037</span><a id="line.37">        JSONObject buildJsTree(JsTreeNode... roots);</a>
+<span class="sourceLineNo">038</span><a id="line.38">        </a>
+<span class="sourceLineNo">039</span><a id="line.39">        </a>
+<span class="sourceLineNo">040</span><a id="line.40">        /**</a>
+<span class="sourceLineNo">041</span><a id="line.41">         * Builds JsTree object for loading nodes and context menus using AJAX from the specified URL's.</a>
+<span class="sourceLineNo">042</span><a id="line.42">         * Node id is passed to the server side in "id" request parameter.</a>
+<span class="sourceLineNo">043</span><a id="line.43">         * @param nodesUrl URL to load nodes.</a>
+<span class="sourceLineNo">044</span><a id="line.44">         * @param contextMenuUrl URL to load context menus. Can be null. </a>
+<span class="sourceLineNo">045</span><a id="line.45">         * @return String representation because JSON does not support functions.</a>
+<span class="sourceLineNo">046</span><a id="line.46">         */</a>
+<span class="sourceLineNo">047</span><a id="line.47">        String buildAjaxJsTree(String nodesUrl, String contextMenuUrl);</a>
+<span class="sourceLineNo">048</span><a id="line.48">        </a>
+<span class="sourceLineNo">049</span><a id="line.49">        /**</a>
+<span class="sourceLineNo">050</span><a id="line.50">         * Generates script tag for binding jsTree to html element.</a>
+<span class="sourceLineNo">051</span><a id="line.51">         * @param selector</a>
+<span class="sourceLineNo">052</span><a id="line.52">         * @param jsTree</a>
+<span class="sourceLineNo">053</span><a id="line.53">         * @param filter Filter script to manipulate jsTree object before passing it to jsTree. It can be used to add functions to jsTree, which are not supported by JSON. </a>
+<span class="sourceLineNo">054</span><a id="line.54">         * The filter script can access jsTree via &lt;code&gt;tree&lt;/code&gt; variable.</a>
+<span class="sourceLineNo">055</span><a id="line.55">         * @param searchInputSelector If not null, binds input to tree search.</a>
+<span class="sourceLineNo">056</span><a id="line.56">         * @return</a>
+<span class="sourceLineNo">057</span><a id="line.57">         */</a>
+<span class="sourceLineNo">058</span><a id="line.58">        Tag bind(String selector, Object jsTree, Object filter, Object searchInputSelector);</a>
+<span class="sourceLineNo">059</span><a id="line.59">        </a>
+<span class="sourceLineNo">060</span><a id="line.60">        /**</a>
+<span class="sourceLineNo">061</span><a id="line.61">         * Generates script tag for binding jsTree to html element.</a>
+<span class="sourceLineNo">062</span><a id="line.62">         * @param jsTree</a>
+<span class="sourceLineNo">063</span><a id="line.63">         * @param filter Filter script to manipulate jsTree object before passing it to jsTree. It can be used to add functions to jsTree, which are not supported by JSON. </a>
+<span class="sourceLineNo">064</span><a id="line.64">         * The filter script can access jsTree via &lt;code&gt;tree&lt;/code&gt; variable.</a>
+<span class="sourceLineNo">065</span><a id="line.65">         * @param searchInputSelector If not null, binds input to tree search.</a>
+<span class="sourceLineNo">066</span><a id="line.66">         * @param selector</a>
+<span class="sourceLineNo">067</span><a id="line.67">         * @return</a>
+<span class="sourceLineNo">068</span><a id="line.68">         */</a>
+<span class="sourceLineNo">069</span><a id="line.69">        Tag bind(HTMLElement&lt;?&gt; htmlElement, Object jsTree, Object filter, Object searchInputSelector);</a>
+<span class="sourceLineNo">070</span><a id="line.70">        </a>
+<span class="sourceLineNo">071</span><a id="line.71">        HTMLFactory getHTMLFactory();   </a>
+<span class="sourceLineNo">072</span><a id="line.72">        </a>
+<span class="sourceLineNo">073</span><a id="line.73">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre> 
+   </div> 
+  </main>  
+ </body>
+</html>

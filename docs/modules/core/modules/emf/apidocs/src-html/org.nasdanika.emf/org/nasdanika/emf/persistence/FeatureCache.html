@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <main role="main"> 
+   <div class="sourceContainer"> 
+    <pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.emf.persistence;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.util.function.BiFunction;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.util.function.Supplier;</a>
+<span class="sourceLineNo">005</span><a id="line.5"></a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.eclipse.emf.ecore.EObject;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import org.eclipse.emf.ecore.EStructuralFeature;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import org.nasdanika.emf.EObjectAdaptable;</a>
+<span class="sourceLineNo">009</span><a id="line.9"></a>
+<span class="sourceLineNo">010</span><a id="line.10">/**</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * Computes feature value and caches. </a>
+<span class="sourceLineNo">012</span><a id="line.12"> * This is an adapter interface.</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * @author Pavel</a>
+<span class="sourceLineNo">014</span><a id="line.14"> *</a>
+<span class="sourceLineNo">015</span><a id="line.15"> */</a>
+<span class="sourceLineNo">016</span><a id="line.16">public interface FeatureCache {</a>
+<span class="sourceLineNo">017</span><a id="line.17">        </a>
+<span class="sourceLineNo">018</span><a id="line.18">        &lt;F extends EStructuralFeature, T&gt; T get(F feature, BiFunction&lt;EObject, F, T&gt; computer);</a>
+<span class="sourceLineNo">019</span><a id="line.19">        </a>
+<span class="sourceLineNo">020</span><a id="line.20">        /**</a>
+<span class="sourceLineNo">021</span><a id="line.21">         * Adapts to FeatureCache and gets from cache if it is present or from the computer otherwise.</a>
+<span class="sourceLineNo">022</span><a id="line.22">         * @param &lt;F&gt;</a>
+<span class="sourceLineNo">023</span><a id="line.23">         * @param &lt;T&gt;</a>
+<span class="sourceLineNo">024</span><a id="line.24">         * @param target</a>
+<span class="sourceLineNo">025</span><a id="line.25">         * @param feature</a>
+<span class="sourceLineNo">026</span><a id="line.26">         * @param computer</a>
+<span class="sourceLineNo">027</span><a id="line.27">         * @param add If true and adapter is not present, adds the adapter.</a>
+<span class="sourceLineNo">028</span><a id="line.28">         */</a>
+<span class="sourceLineNo">029</span><a id="line.29">        static &lt;F extends EStructuralFeature, T&gt; T get(EObject target, F feature, BiFunction&lt;EObject, F, T&gt; computer, boolean add) {</a>
+<span class="sourceLineNo">030</span><a id="line.30">                FeatureCache adapter = EObjectAdaptable.adaptTo(target, FeatureCache.class);</a>
+<span class="sourceLineNo">031</span><a id="line.31">                if (adapter == null) {</a>
+<span class="sourceLineNo">032</span><a id="line.32">                        if (add) {</a>
+<span class="sourceLineNo">033</span><a id="line.33">                                adapter = new FeatureCacheAdapter();</a>
+<span class="sourceLineNo">034</span><a id="line.34">                                target.eAdapters().add((FeatureCacheAdapter) adapter);</a>
+<span class="sourceLineNo">035</span><a id="line.35">                                ((FeatureCacheAdapter) adapter).setTarget(target);</a>
+<span class="sourceLineNo">036</span><a id="line.36">                        } else {</a>
+<span class="sourceLineNo">037</span><a id="line.37">                                return computer.apply(target, feature);</a>
+<span class="sourceLineNo">038</span><a id="line.38">                        }</a>
+<span class="sourceLineNo">039</span><a id="line.39">                }</a>
+<span class="sourceLineNo">040</span><a id="line.40">                return adapter.get(feature, computer);</a>
+<span class="sourceLineNo">041</span><a id="line.41">        }</a>
+<span class="sourceLineNo">042</span><a id="line.42">        </a>
+<span class="sourceLineNo">043</span><a id="line.43">        /**</a>
+<span class="sourceLineNo">044</span><a id="line.44">         * Adapts to FeatureCache and gets from cache if it is present or from the computer otherwise.</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * @param &lt;F&gt;</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * @param &lt;T&gt;</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * @param target</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * @param feature</a>
+<span class="sourceLineNo">049</span><a id="line.49">         * @param computer</a>
+<span class="sourceLineNo">050</span><a id="line.50">         * @param add If true and adapter is not present, adds the adapter.</a>
+<span class="sourceLineNo">051</span><a id="line.51">         */</a>
+<span class="sourceLineNo">052</span><a id="line.52">        static &lt;F extends EStructuralFeature, T&gt; T get(EObject target, F feature, Supplier&lt;T&gt; computer, boolean add) {</a>
+<span class="sourceLineNo">053</span><a id="line.53">                return get(target, feature, (t,f) -&gt; computer.get(), add);</a>
+<span class="sourceLineNo">054</span><a id="line.54">        }</a>
+<span class="sourceLineNo">055</span><a id="line.55">        </a>
+<span class="sourceLineNo">056</span><a id="line.56">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre> 
+   </div> 
+  </main>  
+ </body>
+</html>

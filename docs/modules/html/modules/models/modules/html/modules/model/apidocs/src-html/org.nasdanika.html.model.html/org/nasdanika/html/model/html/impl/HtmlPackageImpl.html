@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <main role="main"> 
+   <div class="sourceContainer"> 
+    <pre><span class="sourceLineNo">001</span><a id="line.1">/**</a>
+<span class="sourceLineNo">002</span><a id="line.2"> */</a>
+<span class="sourceLineNo">003</span><a id="line.3">package org.nasdanika.html.model.html.impl;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import org.eclipse.emf.ecore.EAttribute;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.eclipse.emf.ecore.EClass;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import org.eclipse.emf.ecore.EPackage;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import org.eclipse.emf.ecore.EReference;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import org.eclipse.emf.ecore.EValidator;</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">import org.eclipse.emf.ecore.impl.EPackageImpl;</a>
+<span class="sourceLineNo">012</span><a id="line.12"></a>
+<span class="sourceLineNo">013</span><a id="line.13">import org.nasdanika.exec.ExecPackage;</a>
+<span class="sourceLineNo">014</span><a id="line.14"></a>
+<span class="sourceLineNo">015</span><a id="line.15">import org.nasdanika.exec.content.ContentPackage;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import org.nasdanika.html.model.html.HtmlElement;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import org.nasdanika.html.model.html.HtmlFactory;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import org.nasdanika.html.model.html.HtmlPackage;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import org.nasdanika.html.model.html.Page;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import org.nasdanika.html.model.html.Script;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import org.nasdanika.html.model.html.ScriptReference;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import org.nasdanika.html.model.html.Stylesheet;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import org.nasdanika.html.model.html.StylesheetReference;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import org.nasdanika.html.model.html.Tag;</a>
+<span class="sourceLineNo">025</span><a id="line.25"></a>
+<span class="sourceLineNo">026</span><a id="line.26">import org.nasdanika.html.model.html.util.HtmlValidator;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import org.nasdanika.ncore.NcorePackage;</a>
+<span class="sourceLineNo">028</span><a id="line.28"></a>
+<span class="sourceLineNo">029</span><a id="line.29">/**</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * An implementation of the model &lt;b&gt;Package&lt;/b&gt;.</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * @generated</a>
+<span class="sourceLineNo">034</span><a id="line.34"> */</a>
+<span class="sourceLineNo">035</span><a id="line.35">public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {</a>
+<span class="sourceLineNo">036</span><a id="line.36">        /**</a>
+<span class="sourceLineNo">037</span><a id="line.37">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">038</span><a id="line.38">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">039</span><a id="line.39">         * @generated</a>
+<span class="sourceLineNo">040</span><a id="line.40">         */</a>
+<span class="sourceLineNo">041</span><a id="line.41">        private EClass htmlElementEClass = null;</a>
+<span class="sourceLineNo">042</span><a id="line.42"></a>
+<span class="sourceLineNo">043</span><a id="line.43">        /**</a>
+<span class="sourceLineNo">044</span><a id="line.44">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * @generated</a>
+<span class="sourceLineNo">047</span><a id="line.47">         */</a>
+<span class="sourceLineNo">048</span><a id="line.48">        private EClass tagEClass = null;</a>
+<span class="sourceLineNo">049</span><a id="line.49"></a>
+<span class="sourceLineNo">050</span><a id="line.50">        /**</a>
+<span class="sourceLineNo">051</span><a id="line.51">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">052</span><a id="line.52">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">053</span><a id="line.53">         * @generated</a>
+<span class="sourceLineNo">054</span><a id="line.54">         */</a>
+<span class="sourceLineNo">055</span><a id="line.55">        private EClass pageEClass = null;</a>
+<span class="sourceLineNo">056</span><a id="line.56"></a>
+<span class="sourceLineNo">057</span><a id="line.57">        /**</a>
+<span class="sourceLineNo">058</span><a id="line.58">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">059</span><a id="line.59">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">060</span><a id="line.60">         * @generated</a>
+<span class="sourceLineNo">061</span><a id="line.61">         */</a>
+<span class="sourceLineNo">062</span><a id="line.62">        private EClass stylesheetEClass = null;</a>
+<span class="sourceLineNo">063</span><a id="line.63"></a>
+<span class="sourceLineNo">064</span><a id="line.64">        /**</a>
+<span class="sourceLineNo">065</span><a id="line.65">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">066</span><a id="line.66">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">067</span><a id="line.67">         * @generated</a>
+<span class="sourceLineNo">068</span><a id="line.68">         */</a>
+<span class="sourceLineNo">069</span><a id="line.69">        private EClass stylesheetReferenceEClass = null;</a>
+<span class="sourceLineNo">070</span><a id="line.70"></a>
+<span class="sourceLineNo">071</span><a id="line.71">        /**</a>
+<span class="sourceLineNo">072</span><a id="line.72">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">073</span><a id="line.73">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">074</span><a id="line.74">         * @generated</a>
+<span class="sourceLineNo">075</span><a id="line.75">         */</a>
+<span class="sourceLineNo">076</span><a id="line.76">        private EClass scriptEClass = null;</a>
+<span class="sourceLineNo">077</span><a id="line.77"></a>
+<span class="sourceLineNo">078</span><a id="line.78">        /**</a>
+<span class="sourceLineNo">079</span><a id="line.79">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">080</span><a id="line.80">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">081</span><a id="line.81">         * @generated</a>
+<span class="sourceLineNo">082</span><a id="line.82">         */</a>
+<span class="sourceLineNo">083</span><a id="line.83">        private EClass scriptReferenceEClass = null;</a>
+<span class="sourceLineNo">084</span><a id="line.84"></a>
+<span class="sourceLineNo">085</span><a id="line.85">        /**</a>
+<span class="sourceLineNo">086</span><a id="line.86">         * Creates an instance of the model &lt;b&gt;Package&lt;/b&gt;, registered with</a>
+<span class="sourceLineNo">087</span><a id="line.87">         * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package</a>
+<span class="sourceLineNo">088</span><a id="line.88">         * package URI value.</a>
+<span class="sourceLineNo">089</span><a id="line.89">         * &lt;p&gt;Note: the correct way to create the package is via the static</a>
+<span class="sourceLineNo">090</span><a id="line.90">         * factory method {@link #init init()}, which also performs</a>
+<span class="sourceLineNo">091</span><a id="line.91">         * initialization of the package, or returns the registered package,</a>
+<span class="sourceLineNo">092</span><a id="line.92">         * if one already exists.</a>
+<span class="sourceLineNo">093</span><a id="line.93">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">094</span><a id="line.94">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">095</span><a id="line.95">         * @see org.eclipse.emf.ecore.EPackage.Registry</a>
+<span class="sourceLineNo">096</span><a id="line.96">         * @see org.nasdanika.html.model.html.HtmlPackage#eNS_URI</a>
+<span class="sourceLineNo">097</span><a id="line.97">         * @see #init()</a>
+<span class="sourceLineNo">098</span><a id="line.98">         * @generated</a>
+<span class="sourceLineNo">099</span><a id="line.99">         */</a>
+<span class="sourceLineNo">100</span><a id="line.100">        private HtmlPackageImpl() {</a>
+<span class="sourceLineNo">101</span><a id="line.101">                super(eNS_URI, HtmlFactory.eINSTANCE);</a>
+<span class="sourceLineNo">102</span><a id="line.102">        }</a>
+<span class="sourceLineNo">103</span><a id="line.103"></a>
+<span class="sourceLineNo">104</span><a id="line.104">        /**</a>
+<span class="sourceLineNo">105</span><a id="line.105">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">106</span><a id="line.106">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">107</span><a id="line.107">         * @generated</a>
+<span class="sourceLineNo">108</span><a id="line.108">         */</a>
+<span class="sourceLineNo">109</span><a id="line.109">        private static boolean isInited = false;</a>
+<span class="sourceLineNo">110</span><a id="line.110"></a>
+<span class="sourceLineNo">111</span><a id="line.111">        /**</a>
+<span class="sourceLineNo">112</span><a id="line.112">         * Creates, registers, and initializes the &lt;b&gt;Package&lt;/b&gt; for this model, and for any others upon which it depends.</a>
+<span class="sourceLineNo">113</span><a id="line.113">         *</a>
+<span class="sourceLineNo">114</span><a id="line.114">         * &lt;p&gt;This method is used to initialize {@link HtmlPackage#eINSTANCE} when that field is accessed.</a>
+<span class="sourceLineNo">115</span><a id="line.115">         * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.</a>
+<span class="sourceLineNo">116</span><a id="line.116">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">117</span><a id="line.117">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">118</span><a id="line.118">         * @see #eNS_URI</a>
+<span class="sourceLineNo">119</span><a id="line.119">         * @see #createPackageContents()</a>
+<span class="sourceLineNo">120</span><a id="line.120">         * @see #initializePackageContents()</a>
+<span class="sourceLineNo">121</span><a id="line.121">         * @generated</a>
+<span class="sourceLineNo">122</span><a id="line.122">         */</a>
+<span class="sourceLineNo">123</span><a id="line.123">        public static HtmlPackage init() {</a>
+<span class="sourceLineNo">124</span><a id="line.124">                if (isInited) return (HtmlPackage)EPackage.Registry.INSTANCE.getEPackage(HtmlPackage.eNS_URI);</a>
+<span class="sourceLineNo">125</span><a id="line.125"></a>
+<span class="sourceLineNo">126</span><a id="line.126">                // Obtain or create and register package</a>
+<span class="sourceLineNo">127</span><a id="line.127">                Object registeredHtmlPackage = EPackage.Registry.INSTANCE.get(eNS_URI);</a>
+<span class="sourceLineNo">128</span><a id="line.128">                HtmlPackageImpl theHtmlPackage = registeredHtmlPackage instanceof HtmlPackageImpl ? (HtmlPackageImpl)registeredHtmlPackage : new HtmlPackageImpl();</a>
+<span class="sourceLineNo">129</span><a id="line.129"></a>
+<span class="sourceLineNo">130</span><a id="line.130">                isInited = true;</a>
+<span class="sourceLineNo">131</span><a id="line.131"></a>
+<span class="sourceLineNo">132</span><a id="line.132">                // Initialize simple dependencies</a>
+<span class="sourceLineNo">133</span><a id="line.133">                ExecPackage.eINSTANCE.eClass();</a>
+<span class="sourceLineNo">134</span><a id="line.134">                NcorePackage.eINSTANCE.eClass();</a>
+<span class="sourceLineNo">135</span><a id="line.135"></a>
+<span class="sourceLineNo">136</span><a id="line.136">                // Create package meta-data objects</a>
+<span class="sourceLineNo">137</span><a id="line.137">                theHtmlPackage.createPackageContents();</a>
+<span class="sourceLineNo">138</span><a id="line.138"></a>
+<span class="sourceLineNo">139</span><a id="line.139">                // Initialize created meta-data</a>
+<span class="sourceLineNo">140</span><a id="line.140">                theHtmlPackage.initializePackageContents();</a>
+<span class="sourceLineNo">141</span><a id="line.141"></a>
+<span class="sourceLineNo">142</span><a id="line.142">                // Register package validator</a>
+<span class="sourceLineNo">143</span><a id="line.143">                EValidator.Registry.INSTANCE.put</a>
+<span class="sourceLineNo">144</span><a id="line.144">                        (theHtmlPackage,</a>
+<span class="sourceLineNo">145</span><a id="line.145">                         new EValidator.Descriptor() {</a>
+<span class="sourceLineNo">146</span><a id="line.146">                                 @Override</a>
+<span class="sourceLineNo">147</span><a id="line.147">                                 public EValidator getEValidator() {</a>
+<span class="sourceLineNo">148</span><a id="line.148">                                         return HtmlValidator.INSTANCE;</a>
+<span class="sourceLineNo">149</span><a id="line.149">                                 }</a>
+<span class="sourceLineNo">150</span><a id="line.150">                         });</a>
+<span class="sourceLineNo">151</span><a id="line.151"></a>
+<span class="sourceLineNo">152</span><a id="line.152">                // Mark meta-data to indicate it can't be changed</a>
+<span class="sourceLineNo">153</span><a id="line.153">                theHtmlPackage.freeze();</a>
+<span class="sourceLineNo">154</span><a id="line.154"></a>
+<span class="sourceLineNo">155</span><a id="line.155">                // Update the registry and return the package</a>
+<span class="sourceLineNo">156</span><a id="line.156">                EPackage.Registry.INSTANCE.put(HtmlPackage.eNS_URI, theHtmlPackage);</a>
+<span class="sourceLineNo">157</span><a id="line.157">                return theHtmlPackage;</a>
+<span class="sourceLineNo">158</span><a id="line.158">        }</a>
+<span class="sourceLineNo">159</span><a id="line.159"></a>
+<span class="sourceLineNo">160</span><a id="line.160">        /**</a>
+<span class="sourceLineNo">161</span><a id="line.161">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">162</span><a id="line.162">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">163</span><a id="line.163">         * @generated</a>
+<span class="sourceLineNo">164</span><a id="line.164">         */</a>
+<span class="sourceLineNo">165</span><a id="line.165">        @Override</a>
+<span class="sourceLineNo">166</span><a id="line.166">        public EClass getHtmlElement() {</a>
+<span class="sourceLineNo">167</span><a id="line.167">                return htmlElementEClass;</a>
+<span class="sourceLineNo">168</span><a id="line.168">        }</a>
+<span class="sourceLineNo">169</span><a id="line.169"></a>
+<span class="sourceLineNo">170</span><a id="line.170">        /**</a>
+<span class="sourceLineNo">171</span><a id="line.171">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">172</span><a id="line.172">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">173</span><a id="line.173">         * @generated</a>
+<span class="sourceLineNo">174</span><a id="line.174">         */</a>
+<span class="sourceLineNo">175</span><a id="line.175">        @Override</a>
+<span class="sourceLineNo">176</span><a id="line.176">        public EReference getHtmlElement_Attributes() {</a>
+<span class="sourceLineNo">177</span><a id="line.177">                return (EReference)htmlElementEClass.getEStructuralFeatures().get(0);</a>
+<span class="sourceLineNo">178</span><a id="line.178">        }</a>
+<span class="sourceLineNo">179</span><a id="line.179"></a>
+<span class="sourceLineNo">180</span><a id="line.180">        /**</a>
+<span class="sourceLineNo">181</span><a id="line.181">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">182</span><a id="line.182">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">183</span><a id="line.183">         * @generated</a>
+<span class="sourceLineNo">184</span><a id="line.184">         */</a>
+<span class="sourceLineNo">185</span><a id="line.185">        @Override</a>
+<span class="sourceLineNo">186</span><a id="line.186">        public EReference getHtmlElement_Content() {</a>
+<span class="sourceLineNo">187</span><a id="line.187">                return (EReference)htmlElementEClass.getEStructuralFeatures().get(1);</a>
+<span class="sourceLineNo">188</span><a id="line.188">        }</a>
+<span class="sourceLineNo">189</span><a id="line.189"></a>
+<span class="sourceLineNo">190</span><a id="line.190">        /**</a>
+<span class="sourceLineNo">191</span><a id="line.191">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">192</span><a id="line.192">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">193</span><a id="line.193">         * @generated</a>
+<span class="sourceLineNo">194</span><a id="line.194">         */</a>
+<span class="sourceLineNo">195</span><a id="line.195">        @Override</a>
+<span class="sourceLineNo">196</span><a id="line.196">        public EClass getTag() {</a>
+<span class="sourceLineNo">197</span><a id="line.197">                return tagEClass;</a>
+<span class="sourceLineNo">198</span><a id="line.198">        }</a>
+<span class="sourceLineNo">199</span><a id="line.199"></a>
+<span class="sourceLineNo">200</span><a id="line.200">        /**</a>
+<span class="sourceLineNo">201</span><a id="line.201">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">202</span><a id="line.202">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">203</span><a id="line.203">         * @generated</a>
+<span class="sourceLineNo">204</span><a id="line.204">         */</a>
+<span class="sourceLineNo">205</span><a id="line.205">        @Override</a>
+<span class="sourceLineNo">206</span><a id="line.206">        public EAttribute getTag_Name() {</a>
+<span class="sourceLineNo">207</span><a id="line.207">                return (EAttribute)tagEClass.getEStructuralFeatures().get(0);</a>
+<span class="sourceLineNo">208</span><a id="line.208">        }</a>
+<span class="sourceLineNo">209</span><a id="line.209"></a>
+<span class="sourceLineNo">210</span><a id="line.210">        /**</a>
+<span class="sourceLineNo">211</span><a id="line.211">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">212</span><a id="line.212">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">213</span><a id="line.213">         * @generated</a>
+<span class="sourceLineNo">214</span><a id="line.214">         */</a>
+<span class="sourceLineNo">215</span><a id="line.215">        @Override</a>
+<span class="sourceLineNo">216</span><a id="line.216">        public EClass getPage() {</a>
+<span class="sourceLineNo">217</span><a id="line.217">                return pageEClass;</a>
+<span class="sourceLineNo">218</span><a id="line.218">        }</a>
+<span class="sourceLineNo">219</span><a id="line.219"></a>
+<span class="sourceLineNo">220</span><a id="line.220">        /**</a>
+<span class="sourceLineNo">221</span><a id="line.221">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">222</span><a id="line.222">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">223</span><a id="line.223">         * @generated</a>
+<span class="sourceLineNo">224</span><a id="line.224">         */</a>
+<span class="sourceLineNo">225</span><a id="line.225">        @Override</a>
+<span class="sourceLineNo">226</span><a id="line.226">        public EReference getPage_Head() {</a>
+<span class="sourceLineNo">227</span><a id="line.227">                return (EReference)pageEClass.getEStructuralFeatures().get(0);</a>
+<span class="sourceLineNo">228</span><a id="line.228">        }</a>
+<span class="sourceLineNo">229</span><a id="line.229"></a>
+<span class="sourceLineNo">230</span><a id="line.230">        /**</a>
+<span class="sourceLineNo">231</span><a id="line.231">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">232</span><a id="line.232">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">233</span><a id="line.233">         * @generated</a>
+<span class="sourceLineNo">234</span><a id="line.234">         */</a>
+<span class="sourceLineNo">235</span><a id="line.235">        @Override</a>
+<span class="sourceLineNo">236</span><a id="line.236">        public EReference getPage_Body() {</a>
+<span class="sourceLineNo">237</span><a id="line.237">                return (EReference)pageEClass.getEStructuralFeatures().get(1);</a>
+<span class="sourceLineNo">238</span><a id="line.238">        }</a>
+<span class="sourceLineNo">239</span><a id="line.239"></a>
+<span class="sourceLineNo">240</span><a id="line.240">        /**</a>
+<span class="sourceLineNo">241</span><a id="line.241">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">242</span><a id="line.242">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">243</span><a id="line.243">         * @generated</a>
+<span class="sourceLineNo">244</span><a id="line.244">         */</a>
+<span class="sourceLineNo">245</span><a id="line.245">        @Override</a>
+<span class="sourceLineNo">246</span><a id="line.246">        public EReference getPage_Builders() {</a>
+<span class="sourceLineNo">247</span><a id="line.247">                return (EReference)pageEClass.getEStructuralFeatures().get(2);</a>
+<span class="sourceLineNo">248</span><a id="line.248">        }</a>
+<span class="sourceLineNo">249</span><a id="line.249"></a>
+<span class="sourceLineNo">250</span><a id="line.250">        /**</a>
+<span class="sourceLineNo">251</span><a id="line.251">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">252</span><a id="line.252">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">253</span><a id="line.253">         * @generated</a>
+<span class="sourceLineNo">254</span><a id="line.254">         */</a>
+<span class="sourceLineNo">255</span><a id="line.255">        @Override</a>
+<span class="sourceLineNo">256</span><a id="line.256">        public EAttribute getPage_Language() {</a>
+<span class="sourceLineNo">257</span><a id="line.257">                return (EAttribute)pageEClass.getEStructuralFeatures().get(3);</a>
+<span class="sourceLineNo">258</span><a id="line.258">        }</a>
+<span class="sourceLineNo">259</span><a id="line.259"></a>
+<span class="sourceLineNo">260</span><a id="line.260">        /**</a>
+<span class="sourceLineNo">261</span><a id="line.261">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">262</span><a id="line.262">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">263</span><a id="line.263">         * @generated</a>
+<span class="sourceLineNo">264</span><a id="line.264">         */</a>
+<span class="sourceLineNo">265</span><a id="line.265">        @Override</a>
+<span class="sourceLineNo">266</span><a id="line.266">        public EAttribute getPage_Name() {</a>
+<span class="sourceLineNo">267</span><a id="line.267">                return (EAttribute)pageEClass.getEStructuralFeatures().get(4);</a>
+<span class="sourceLineNo">268</span><a id="line.268">        }</a>
+<span class="sourceLineNo">269</span><a id="line.269"></a>
+<span class="sourceLineNo">270</span><a id="line.270">        /**</a>
+<span class="sourceLineNo">271</span><a id="line.271">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">272</span><a id="line.272">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">273</span><a id="line.273">         * @generated</a>
+<span class="sourceLineNo">274</span><a id="line.274">         */</a>
+<span class="sourceLineNo">275</span><a id="line.275">        @Override</a>
+<span class="sourceLineNo">276</span><a id="line.276">        public EAttribute getPage_Stylesheets() {</a>
+<span class="sourceLineNo">277</span><a id="line.277">                return (EAttribute)pageEClass.getEStructuralFeatures().get(5);</a>
+<span class="sourceLineNo">278</span><a id="line.278">        }</a>
+<span class="sourceLineNo">279</span><a id="line.279"></a>
+<span class="sourceLineNo">280</span><a id="line.280">        /**</a>
+<span class="sourceLineNo">281</span><a id="line.281">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">282</span><a id="line.282">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">283</span><a id="line.283">         * @generated</a>
+<span class="sourceLineNo">284</span><a id="line.284">         */</a>
+<span class="sourceLineNo">285</span><a id="line.285">        @Override</a>
+<span class="sourceLineNo">286</span><a id="line.286">        public EAttribute getPage_Scripts() {</a>
+<span class="sourceLineNo">287</span><a id="line.287">                return (EAttribute)pageEClass.getEStructuralFeatures().get(6);</a>
+<span class="sourceLineNo">288</span><a id="line.288">        }</a>
+<span class="sourceLineNo">289</span><a id="line.289"></a>
+<span class="sourceLineNo">290</span><a id="line.290">        /**</a>
+<span class="sourceLineNo">291</span><a id="line.291">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">292</span><a id="line.292">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">293</span><a id="line.293">         * @generated</a>
+<span class="sourceLineNo">294</span><a id="line.294">         */</a>
+<span class="sourceLineNo">295</span><a id="line.295">        @Override</a>
+<span class="sourceLineNo">296</span><a id="line.296">        public EClass getStylesheet() {</a>
+<span class="sourceLineNo">297</span><a id="line.297">                return stylesheetEClass;</a>
+<span class="sourceLineNo">298</span><a id="line.298">        }</a>
+<span class="sourceLineNo">299</span><a id="line.299"></a>
+<span class="sourceLineNo">300</span><a id="line.300">        /**</a>
+<span class="sourceLineNo">301</span><a id="line.301">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">302</span><a id="line.302">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">303</span><a id="line.303">         * @generated</a>
+<span class="sourceLineNo">304</span><a id="line.304">         */</a>
+<span class="sourceLineNo">305</span><a id="line.305">        @Override</a>
+<span class="sourceLineNo">306</span><a id="line.306">        public EClass getStylesheetReference() {</a>
+<span class="sourceLineNo">307</span><a id="line.307">                return stylesheetReferenceEClass;</a>
+<span class="sourceLineNo">308</span><a id="line.308">        }</a>
+<span class="sourceLineNo">309</span><a id="line.309"></a>
+<span class="sourceLineNo">310</span><a id="line.310">        /**</a>
+<span class="sourceLineNo">311</span><a id="line.311">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">312</span><a id="line.312">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">313</span><a id="line.313">         * @generated</a>
+<span class="sourceLineNo">314</span><a id="line.314">         */</a>
+<span class="sourceLineNo">315</span><a id="line.315">        @Override</a>
+<span class="sourceLineNo">316</span><a id="line.316">        public EAttribute getStylesheetReference_Target() {</a>
+<span class="sourceLineNo">317</span><a id="line.317">                return (EAttribute)stylesheetReferenceEClass.getEStructuralFeatures().get(0);</a>
+<span class="sourceLineNo">318</span><a id="line.318">        }</a>
+<span class="sourceLineNo">319</span><a id="line.319"></a>
+<span class="sourceLineNo">320</span><a id="line.320">        /**</a>
+<span class="sourceLineNo">321</span><a id="line.321">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">322</span><a id="line.322">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">323</span><a id="line.323">         * @generated</a>
+<span class="sourceLineNo">324</span><a id="line.324">         */</a>
+<span class="sourceLineNo">325</span><a id="line.325">        @Override</a>
+<span class="sourceLineNo">326</span><a id="line.326">        public EClass getScript() {</a>
+<span class="sourceLineNo">327</span><a id="line.327">                return scriptEClass;</a>
+<span class="sourceLineNo">328</span><a id="line.328">        }</a>
+<span class="sourceLineNo">329</span><a id="line.329"></a>
+<span class="sourceLineNo">330</span><a id="line.330">        /**</a>
+<span class="sourceLineNo">331</span><a id="line.331">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">332</span><a id="line.332">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">333</span><a id="line.333">         * @generated</a>
+<span class="sourceLineNo">334</span><a id="line.334">         */</a>
+<span class="sourceLineNo">335</span><a id="line.335">        @Override</a>
+<span class="sourceLineNo">336</span><a id="line.336">        public EClass getScriptReference() {</a>
+<span class="sourceLineNo">337</span><a id="line.337">                return scriptReferenceEClass;</a>
+<span class="sourceLineNo">338</span><a id="line.338">        }</a>
+<span class="sourceLineNo">339</span><a id="line.339"></a>
+<span class="sourceLineNo">340</span><a id="line.340">        /**</a>
+<span class="sourceLineNo">341</span><a id="line.341">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">342</span><a id="line.342">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">343</span><a id="line.343">         * @generated</a>
+<span class="sourceLineNo">344</span><a id="line.344">         */</a>
+<span class="sourceLineNo">345</span><a id="line.345">        @Override</a>
+<span class="sourceLineNo">346</span><a id="line.346">        public EAttribute getScriptReference_Src() {</a>
+<span class="sourceLineNo">347</span><a id="line.347">                return (EAttribute)scriptReferenceEClass.getEStructuralFeatures().get(0);</a>
+<span class="sourceLineNo">348</span><a id="line.348">        }</a>
+<span class="sourceLineNo">349</span><a id="line.349"></a>
+<span class="sourceLineNo">350</span><a id="line.350">        /**</a>
+<span class="sourceLineNo">351</span><a id="line.351">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">352</span><a id="line.352">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">353</span><a id="line.353">         * @generated</a>
+<span class="sourceLineNo">354</span><a id="line.354">         */</a>
+<span class="sourceLineNo">355</span><a id="line.355">        @Override</a>
+<span class="sourceLineNo">356</span><a id="line.356">        public HtmlFactory getHtmlFactory() {</a>
+<span class="sourceLineNo">357</span><a id="line.357">                return (HtmlFactory)getEFactoryInstance();</a>
+<span class="sourceLineNo">358</span><a id="line.358">        }</a>
+<span class="sourceLineNo">359</span><a id="line.359"></a>
+<span class="sourceLineNo">360</span><a id="line.360">        /**</a>
+<span class="sourceLineNo">361</span><a id="line.361">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">362</span><a id="line.362">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">363</span><a id="line.363">         * @generated</a>
+<span class="sourceLineNo">364</span><a id="line.364">         */</a>
+<span class="sourceLineNo">365</span><a id="line.365">        private boolean isCreated = false;</a>
+<span class="sourceLineNo">366</span><a id="line.366"></a>
+<span class="sourceLineNo">367</span><a id="line.367">        /**</a>
+<span class="sourceLineNo">368</span><a id="line.368">         * Creates the meta-model objects for the package.  This method is</a>
+<span class="sourceLineNo">369</span><a id="line.369">         * guarded to have no affect on any invocation but its first.</a>
+<span class="sourceLineNo">370</span><a id="line.370">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">371</span><a id="line.371">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">372</span><a id="line.372">         * @generated</a>
+<span class="sourceLineNo">373</span><a id="line.373">         */</a>
+<span class="sourceLineNo">374</span><a id="line.374">        public void createPackageContents() {</a>
+<span class="sourceLineNo">375</span><a id="line.375">                if (isCreated) return;</a>
+<span class="sourceLineNo">376</span><a id="line.376">                isCreated = true;</a>
+<span class="sourceLineNo">377</span><a id="line.377"></a>
+<span class="sourceLineNo">378</span><a id="line.378">                // Create classes and their features</a>
+<span class="sourceLineNo">379</span><a id="line.379">                htmlElementEClass = createEClass(HTML_ELEMENT);</a>
+<span class="sourceLineNo">380</span><a id="line.380">                createEReference(htmlElementEClass, HTML_ELEMENT__ATTRIBUTES);</a>
+<span class="sourceLineNo">381</span><a id="line.381">                createEReference(htmlElementEClass, HTML_ELEMENT__CONTENT);</a>
+<span class="sourceLineNo">382</span><a id="line.382"></a>
+<span class="sourceLineNo">383</span><a id="line.383">                tagEClass = createEClass(TAG);</a>
+<span class="sourceLineNo">384</span><a id="line.384">                createEAttribute(tagEClass, TAG__NAME);</a>
+<span class="sourceLineNo">385</span><a id="line.385"></a>
+<span class="sourceLineNo">386</span><a id="line.386">                pageEClass = createEClass(PAGE);</a>
+<span class="sourceLineNo">387</span><a id="line.387">                createEReference(pageEClass, PAGE__HEAD);</a>
+<span class="sourceLineNo">388</span><a id="line.388">                createEReference(pageEClass, PAGE__BODY);</a>
+<span class="sourceLineNo">389</span><a id="line.389">                createEReference(pageEClass, PAGE__BUILDERS);</a>
+<span class="sourceLineNo">390</span><a id="line.390">                createEAttribute(pageEClass, PAGE__LANGUAGE);</a>
+<span class="sourceLineNo">391</span><a id="line.391">                createEAttribute(pageEClass, PAGE__NAME);</a>
+<span class="sourceLineNo">392</span><a id="line.392">                createEAttribute(pageEClass, PAGE__STYLESHEETS);</a>
+<span class="sourceLineNo">393</span><a id="line.393">                createEAttribute(pageEClass, PAGE__SCRIPTS);</a>
+<span class="sourceLineNo">394</span><a id="line.394"></a>
+<span class="sourceLineNo">395</span><a id="line.395">                stylesheetEClass = createEClass(STYLESHEET);</a>
+<span class="sourceLineNo">396</span><a id="line.396"></a>
+<span class="sourceLineNo">397</span><a id="line.397">                stylesheetReferenceEClass = createEClass(STYLESHEET_REFERENCE);</a>
+<span class="sourceLineNo">398</span><a id="line.398">                createEAttribute(stylesheetReferenceEClass, STYLESHEET_REFERENCE__TARGET);</a>
+<span class="sourceLineNo">399</span><a id="line.399"></a>
+<span class="sourceLineNo">400</span><a id="line.400">                scriptEClass = createEClass(SCRIPT);</a>
+<span class="sourceLineNo">401</span><a id="line.401"></a>
+<span class="sourceLineNo">402</span><a id="line.402">                scriptReferenceEClass = createEClass(SCRIPT_REFERENCE);</a>
+<span class="sourceLineNo">403</span><a id="line.403">                createEAttribute(scriptReferenceEClass, SCRIPT_REFERENCE__SRC);</a>
+<span class="sourceLineNo">404</span><a id="line.404">        }</a>
+<span class="sourceLineNo">405</span><a id="line.405"></a>
+<span class="sourceLineNo">406</span><a id="line.406">        /**</a>
+<span class="sourceLineNo">407</span><a id="line.407">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">408</span><a id="line.408">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">409</span><a id="line.409">         * @generated</a>
+<span class="sourceLineNo">410</span><a id="line.410">         */</a>
+<span class="sourceLineNo">411</span><a id="line.411">        private boolean isInitialized = false;</a>
+<span class="sourceLineNo">412</span><a id="line.412"></a>
+<span class="sourceLineNo">413</span><a id="line.413">        /**</a>
+<span class="sourceLineNo">414</span><a id="line.414">         * Complete the initialization of the package and its meta-model.  This</a>
+<span class="sourceLineNo">415</span><a id="line.415">         * method is guarded to have no affect on any invocation but its first.</a>
+<span class="sourceLineNo">416</span><a id="line.416">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">417</span><a id="line.417">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">418</span><a id="line.418">         * @generated</a>
+<span class="sourceLineNo">419</span><a id="line.419">         */</a>
+<span class="sourceLineNo">420</span><a id="line.420">        public void initializePackageContents() {</a>
+<span class="sourceLineNo">421</span><a id="line.421">                if (isInitialized) return;</a>
+<span class="sourceLineNo">422</span><a id="line.422">                isInitialized = true;</a>
+<span class="sourceLineNo">423</span><a id="line.423"></a>
+<span class="sourceLineNo">424</span><a id="line.424">                // Initialize package</a>
+<span class="sourceLineNo">425</span><a id="line.425">                setName(eNAME);</a>
+<span class="sourceLineNo">426</span><a id="line.426">                setNsPrefix(eNS_PREFIX);</a>
+<span class="sourceLineNo">427</span><a id="line.427">                setNsURI(eNS_URI);</a>
+<span class="sourceLineNo">428</span><a id="line.428"></a>
+<span class="sourceLineNo">429</span><a id="line.429">                // Obtain other dependent packages</a>
+<span class="sourceLineNo">430</span><a id="line.430">                NcorePackage theNcorePackage = (NcorePackage)EPackage.Registry.INSTANCE.getEPackage(NcorePackage.eNS_URI);</a>
+<span class="sourceLineNo">431</span><a id="line.431">                ExecPackage theExecPackage = (ExecPackage)EPackage.Registry.INSTANCE.getEPackage(ExecPackage.eNS_URI);</a>
+<span class="sourceLineNo">432</span><a id="line.432">                ContentPackage theContentPackage = (ContentPackage)EPackage.Registry.INSTANCE.getEPackage(ContentPackage.eNS_URI);</a>
+<span class="sourceLineNo">433</span><a id="line.433"></a>
+<span class="sourceLineNo">434</span><a id="line.434">                // Create type parameters</a>
+<span class="sourceLineNo">435</span><a id="line.435"></a>
+<span class="sourceLineNo">436</span><a id="line.436">                // Set bounds for type parameters</a>
+<span class="sourceLineNo">437</span><a id="line.437"></a>
+<span class="sourceLineNo">438</span><a id="line.438">                // Add supertypes to classes</a>
+<span class="sourceLineNo">439</span><a id="line.439">                htmlElementEClass.getESuperTypes().add(theNcorePackage.getModelElement());</a>
+<span class="sourceLineNo">440</span><a id="line.440">                tagEClass.getESuperTypes().add(this.getHtmlElement());</a>
+<span class="sourceLineNo">441</span><a id="line.441">                pageEClass.getESuperTypes().add(theNcorePackage.getModelElement());</a>
+<span class="sourceLineNo">442</span><a id="line.442">                stylesheetEClass.getESuperTypes().add(theContentPackage.getFilter());</a>
+<span class="sourceLineNo">443</span><a id="line.443">                stylesheetReferenceEClass.getESuperTypes().add(theNcorePackage.getModelElement());</a>
+<span class="sourceLineNo">444</span><a id="line.444">                scriptEClass.getESuperTypes().add(theContentPackage.getFilter());</a>
+<span class="sourceLineNo">445</span><a id="line.445">                scriptReferenceEClass.getESuperTypes().add(theNcorePackage.getModelElement());</a>
+<span class="sourceLineNo">446</span><a id="line.446"></a>
+<span class="sourceLineNo">447</span><a id="line.447">                // Initialize classes, features, and operations; add parameters</a>
+<span class="sourceLineNo">448</span><a id="line.448">                initEClass(htmlElementEClass, HtmlElement.class, "HtmlElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">449</span><a id="line.449">                initEReference(getHtmlElement_Attributes(), theExecPackage.getProperty(), null, "attributes", null, 0, -1, HtmlElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">450</span><a id="line.450">                initEReference(getHtmlElement_Content(), ecorePackage.getEObject(), null, "content", null, 0, -1, HtmlElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">451</span><a id="line.451"></a>
+<span class="sourceLineNo">452</span><a id="line.452">                initEClass(tagEClass, Tag.class, "Tag", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">453</span><a id="line.453">                initEAttribute(getTag_Name(), ecorePackage.getEString(), "name", "div", 0, 1, Tag.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">454</span><a id="line.454"></a>
+<span class="sourceLineNo">455</span><a id="line.455">                initEClass(pageEClass, Page.class, "Page", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">456</span><a id="line.456">                initEReference(getPage_Head(), ecorePackage.getEObject(), null, "head", null, 0, -1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">457</span><a id="line.457">                initEReference(getPage_Body(), ecorePackage.getEObject(), null, "body", null, 0, -1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">458</span><a id="line.458">                initEReference(getPage_Builders(), ecorePackage.getEObject(), null, "builders", null, 0, -1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">459</span><a id="line.459">                initEAttribute(getPage_Language(), ecorePackage.getEString(), "language", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">460</span><a id="line.460">                initEAttribute(getPage_Name(), ecorePackage.getEString(), "name", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">461</span><a id="line.461">                initEAttribute(getPage_Stylesheets(), ecorePackage.getEString(), "stylesheets", null, 0, -1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">462</span><a id="line.462">                initEAttribute(getPage_Scripts(), ecorePackage.getEString(), "scripts", null, 0, -1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">463</span><a id="line.463"></a>
+<span class="sourceLineNo">464</span><a id="line.464">                initEClass(stylesheetEClass, Stylesheet.class, "Stylesheet", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">465</span><a id="line.465"></a>
+<span class="sourceLineNo">466</span><a id="line.466">                initEClass(stylesheetReferenceEClass, StylesheetReference.class, "StylesheetReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">467</span><a id="line.467">                initEAttribute(getStylesheetReference_Target(), ecorePackage.getEString(), "target", null, 1, 1, StylesheetReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">468</span><a id="line.468"></a>
+<span class="sourceLineNo">469</span><a id="line.469">                initEClass(scriptEClass, Script.class, "Script", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">470</span><a id="line.470"></a>
+<span class="sourceLineNo">471</span><a id="line.471">                initEClass(scriptReferenceEClass, ScriptReference.class, "ScriptReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">472</span><a id="line.472">                initEAttribute(getScriptReference_Src(), ecorePackage.getEString(), "src", null, 1, 1, ScriptReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">473</span><a id="line.473"></a>
+<span class="sourceLineNo">474</span><a id="line.474">                // Create resource</a>
+<span class="sourceLineNo">475</span><a id="line.475">                createResource(eNS_URI);</a>
+<span class="sourceLineNo">476</span><a id="line.476"></a>
+<span class="sourceLineNo">477</span><a id="line.477">                // Create annotations</a>
+<span class="sourceLineNo">478</span><a id="line.478">                // http://www.eclipse.org/emf/2002/GenModel</a>
+<span class="sourceLineNo">479</span><a id="line.479">                createGenModelAnnotations();</a>
+<span class="sourceLineNo">480</span><a id="line.480">                // http://www.eclipse.org/emf/2002/Ecore</a>
+<span class="sourceLineNo">481</span><a id="line.481">                createEcoreAnnotations();</a>
+<span class="sourceLineNo">482</span><a id="line.482">                // urn:org.nasdanika</a>
+<span class="sourceLineNo">483</span><a id="line.483">                createUrnorgAnnotations();</a>
+<span class="sourceLineNo">484</span><a id="line.484">        }</a>
+<span class="sourceLineNo">485</span><a id="line.485"></a>
+<span class="sourceLineNo">486</span><a id="line.486">        /**</a>
+<span class="sourceLineNo">487</span><a id="line.487">         * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/GenModel&lt;/b&gt;.</a>
+<span class="sourceLineNo">488</span><a id="line.488">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">489</span><a id="line.489">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">490</span><a id="line.490">         * @generated</a>
+<span class="sourceLineNo">491</span><a id="line.491">         */</a>
+<span class="sourceLineNo">492</span><a id="line.492">        protected void createGenModelAnnotations() {</a>
+<span class="sourceLineNo">493</span><a id="line.493">                String source = "http://www.eclipse.org/emf/2002/GenModel";</a>
+<span class="sourceLineNo">494</span><a id="line.494">                addAnnotation</a>
+<span class="sourceLineNo">495</span><a id="line.495">                  (this,</a>
+<span class="sourceLineNo">496</span><a id="line.496">                   source,</a>
+<span class="sourceLineNo">497</span><a id="line.497">                   new String[] {</a>
+<span class="sourceLineNo">498</span><a id="line.498">                           "documentation", "HTML model"</a>
+<span class="sourceLineNo">499</span><a id="line.499">                   });</a>
+<span class="sourceLineNo">500</span><a id="line.500">                addAnnotation</a>
+<span class="sourceLineNo">501</span><a id="line.501">                  (htmlElementEClass,</a>
+<span class="sourceLineNo">502</span><a id="line.502">                   source,</a>
+<span class="sourceLineNo">503</span><a id="line.503">                   new String[] {</a>
+<span class="sourceLineNo">504</span><a id="line.504">                           "documentation", "Base class for other HTML and bootstrap elements. "</a>
+<span class="sourceLineNo">505</span><a id="line.505">                   });</a>
+<span class="sourceLineNo">506</span><a id="line.506">                addAnnotation</a>
+<span class="sourceLineNo">507</span><a id="line.507">                  (getHtmlElement_Attributes(),</a>
+<span class="sourceLineNo">508</span><a id="line.508">                   source,</a>
+<span class="sourceLineNo">509</span><a id="line.509">                   new String[] {</a>
+<span class="sourceLineNo">510</span><a id="line.510">                           "documentation", "Tag attributes.\n\n## Interpolation\n\nAttribute values are interpolated, i.e. tokens in the form of ``${{token name[|default value]}}`` are replaced with the contextual values or default values, if any. Examples:\n\n* ``${my-style}`` - Token without a default value.\n* ``${font-weight|bold}`` - Token with a default value.\n\n## Regular attributes\n\nFor all top-level entries except ``class``, ``style``, and ``data`` attribute value is produced by converting the value to string for scalars and to JSON string for lists and maps. \nFor attributes which do not start with ``data-`` a warning is issued if the value is not a scalar, i.e. a list or a map.\n\n## Class\n\nFor class attribute its value is formed by concantenating elements using space as a separator. If elements are hierarchical then class name is formed by concatenation with a dash (``-``) as a separator.\n\n## Data\n\nIf value of ``data`` attbibute is a map then keys of that map get concatenated with ``data`` using dash (``-``) as a separator, them same applies to nested maps. Non-map values become attribute values - scalars are converted to string, lists are converted to JSON string.\n\n## Style\n\nStyle can be defined as a string, list or map. If style is defined as a list, all list values are concatenated with a space as a separator - it is a convent way for long unstructured definitions.\n\nIf style value is a map then the value and its contained map values are processed in the following fashion:\n\n* Keys are concatenated with dash as a separator.\n* List values are contcatenated wtih space as a separator.\n"</a>
+<span class="sourceLineNo">511</span><a id="line.511">                   });</a>
+<span class="sourceLineNo">512</span><a id="line.512">                addAnnotation</a>
+<span class="sourceLineNo">513</span><a id="line.513">                  (getHtmlElement_Content(),</a>
+<span class="sourceLineNo">514</span><a id="line.514">                   source,</a>
+<span class="sourceLineNo">515</span><a id="line.515">                   new String[] {</a>
+<span class="sourceLineNo">516</span><a id="line.516">                           "documentation", "Container content. \n\nContent elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content."</a>
+<span class="sourceLineNo">517</span><a id="line.517">                   });</a>
+<span class="sourceLineNo">518</span><a id="line.518">                addAnnotation</a>
+<span class="sourceLineNo">519</span><a id="line.519">                  (tagEClass,</a>
+<span class="sourceLineNo">520</span><a id="line.520">                   source,</a>
+<span class="sourceLineNo">521</span><a id="line.521">                   new String[] {</a>
+<span class="sourceLineNo">522</span><a id="line.522">                           "documentation", "HTML Tag"</a>
+<span class="sourceLineNo">523</span><a id="line.523">                   });</a>
+<span class="sourceLineNo">524</span><a id="line.524">                addAnnotation</a>
+<span class="sourceLineNo">525</span><a id="line.525">                  (getTag_Name(),</a>
+<span class="sourceLineNo">526</span><a id="line.526">                   source,</a>
+<span class="sourceLineNo">527</span><a id="line.527">                   new String[] {</a>
+<span class="sourceLineNo">528</span><a id="line.528">                           "documentation", "Tag name."</a>
+<span class="sourceLineNo">529</span><a id="line.529">                   });</a>
+<span class="sourceLineNo">530</span><a id="line.530">                addAnnotation</a>
+<span class="sourceLineNo">531</span><a id="line.531">                  (pageEClass,</a>
+<span class="sourceLineNo">532</span><a id="line.532">                   source,</a>
+<span class="sourceLineNo">533</span><a id="line.533">                   new String[] {</a>
+<span class="sourceLineNo">534</span><a id="line.534">                           "documentation", "HTML page. The name attribute is output as title tag in the head.\n\n[Overview video](https://www.youtube.com/watch?v=S28UszI-2g8) - in Russian."</a>
+<span class="sourceLineNo">535</span><a id="line.535">                   });</a>
+<span class="sourceLineNo">536</span><a id="line.536">                addAnnotation</a>
+<span class="sourceLineNo">537</span><a id="line.537">                  (getPage_Head(),</a>
+<span class="sourceLineNo">538</span><a id="line.538">                   source,</a>
+<span class="sourceLineNo">539</span><a id="line.539">                   new String[] {</a>
+<span class="sourceLineNo">540</span><a id="line.540">                           "documentation", "Head content."</a>
+<span class="sourceLineNo">541</span><a id="line.541">                   });</a>
+<span class="sourceLineNo">542</span><a id="line.542">                addAnnotation</a>
+<span class="sourceLineNo">543</span><a id="line.543">                  (getPage_Body(),</a>
+<span class="sourceLineNo">544</span><a id="line.544">                   source,</a>
+<span class="sourceLineNo">545</span><a id="line.545">                   new String[] {</a>
+<span class="sourceLineNo">546</span><a id="line.546">                           "documentation", "Body content."</a>
+<span class="sourceLineNo">547</span><a id="line.547">                   });</a>
+<span class="sourceLineNo">548</span><a id="line.548">                addAnnotation</a>
+<span class="sourceLineNo">549</span><a id="line.549">                  (getPage_Builders(),</a>
+<span class="sourceLineNo">550</span><a id="line.550">                   source,</a>
+<span class="sourceLineNo">551</span><a id="line.551">                   new String[] {</a>
+<span class="sourceLineNo">552</span><a id="line.552">                           "documentation", "Builders operate on an instance of ``org.nasdanika.html.HTMLPage`` created by the the page element. Builders shall be adaptable to ``org.nasdanika.common.Consumer``."</a>
+<span class="sourceLineNo">553</span><a id="line.553">                   });</a>
+<span class="sourceLineNo">554</span><a id="line.554">                addAnnotation</a>
+<span class="sourceLineNo">555</span><a id="line.555">                  (getPage_Language(),</a>
+<span class="sourceLineNo">556</span><a id="line.556">                   source,</a>
+<span class="sourceLineNo">557</span><a id="line.557">                   new String[] {</a>
+<span class="sourceLineNo">558</span><a id="line.558">                           "documentation", "Page language - ``lang`` attribute."</a>
+<span class="sourceLineNo">559</span><a id="line.559">                   });</a>
+<span class="sourceLineNo">560</span><a id="line.560">                addAnnotation</a>
+<span class="sourceLineNo">561</span><a id="line.561">                  (getPage_Stylesheets(),</a>
+<span class="sourceLineNo">562</span><a id="line.562">                   source,</a>
+<span class="sourceLineNo">563</span><a id="line.563">                   new String[] {</a>
+<span class="sourceLineNo">564</span><a id="line.564">                           "documentation", "Stylesheet URL\'s"</a>
+<span class="sourceLineNo">565</span><a id="line.565">                   });</a>
+<span class="sourceLineNo">566</span><a id="line.566">                addAnnotation</a>
+<span class="sourceLineNo">567</span><a id="line.567">                  (getPage_Scripts(),</a>
+<span class="sourceLineNo">568</span><a id="line.568">                   source,</a>
+<span class="sourceLineNo">569</span><a id="line.569">                   new String[] {</a>
+<span class="sourceLineNo">570</span><a id="line.570">                           "documentation", "Script URL\'s"</a>
+<span class="sourceLineNo">571</span><a id="line.571">                   });</a>
+<span class="sourceLineNo">572</span><a id="line.572">                addAnnotation</a>
+<span class="sourceLineNo">573</span><a id="line.573">                  (stylesheetEClass,</a>
+<span class="sourceLineNo">574</span><a id="line.574">                   source,</a>
+<span class="sourceLineNo">575</span><a id="line.575">                   new String[] {</a>
+<span class="sourceLineNo">576</span><a id="line.576">                           "documentation", "CSS stylesheet with code stored in the model element ``code`` attribute."</a>
+<span class="sourceLineNo">577</span><a id="line.577">                   });</a>
+<span class="sourceLineNo">578</span><a id="line.578">                addAnnotation</a>
+<span class="sourceLineNo">579</span><a id="line.579">                  (stylesheetReferenceEClass,</a>
+<span class="sourceLineNo">580</span><a id="line.580">                   source,</a>
+<span class="sourceLineNo">581</span><a id="line.581">                   new String[] {</a>
+<span class="sourceLineNo">582</span><a id="line.582">                           "documentation", "Reference to an external stylesheet."</a>
+<span class="sourceLineNo">583</span><a id="line.583">                   });</a>
+<span class="sourceLineNo">584</span><a id="line.584">                addAnnotation</a>
+<span class="sourceLineNo">585</span><a id="line.585">                  (getStylesheetReference_Target(),</a>
+<span class="sourceLineNo">586</span><a id="line.586">                   source,</a>
+<span class="sourceLineNo">587</span><a id="line.587">                   new String[] {</a>
+<span class="sourceLineNo">588</span><a id="line.588">                           "documentation", "Stylesheet URL."</a>
+<span class="sourceLineNo">589</span><a id="line.589">                   });</a>
+<span class="sourceLineNo">590</span><a id="line.590">                addAnnotation</a>
+<span class="sourceLineNo">591</span><a id="line.591">                  (scriptEClass,</a>
+<span class="sourceLineNo">592</span><a id="line.592">                   source,</a>
+<span class="sourceLineNo">593</span><a id="line.593">                   new String[] {</a>
+<span class="sourceLineNo">594</span><a id="line.594">                           "documentation", "Script with code stored in the model element ``source`` reference."</a>
+<span class="sourceLineNo">595</span><a id="line.595">                   });</a>
+<span class="sourceLineNo">596</span><a id="line.596">                addAnnotation</a>
+<span class="sourceLineNo">597</span><a id="line.597">                  (scriptReferenceEClass,</a>
+<span class="sourceLineNo">598</span><a id="line.598">                   source,</a>
+<span class="sourceLineNo">599</span><a id="line.599">                   new String[] {</a>
+<span class="sourceLineNo">600</span><a id="line.600">                           "documentation", "References external script."</a>
+<span class="sourceLineNo">601</span><a id="line.601">                   });</a>
+<span class="sourceLineNo">602</span><a id="line.602">                addAnnotation</a>
+<span class="sourceLineNo">603</span><a id="line.603">                  (getScriptReference_Src(),</a>
+<span class="sourceLineNo">604</span><a id="line.604">                   source,</a>
+<span class="sourceLineNo">605</span><a id="line.605">                   new String[] {</a>
+<span class="sourceLineNo">606</span><a id="line.606">                           "documentation", "Script URL."</a>
+<span class="sourceLineNo">607</span><a id="line.607">                   });</a>
+<span class="sourceLineNo">608</span><a id="line.608">        }</a>
+<span class="sourceLineNo">609</span><a id="line.609"></a>
+<span class="sourceLineNo">610</span><a id="line.610">        /**</a>
+<span class="sourceLineNo">611</span><a id="line.611">         * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/Ecore&lt;/b&gt;.</a>
+<span class="sourceLineNo">612</span><a id="line.612">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">613</span><a id="line.613">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">614</span><a id="line.614">         * @generated</a>
+<span class="sourceLineNo">615</span><a id="line.615">         */</a>
+<span class="sourceLineNo">616</span><a id="line.616">        protected void createEcoreAnnotations() {</a>
+<span class="sourceLineNo">617</span><a id="line.617">                String source = "http://www.eclipse.org/emf/2002/Ecore";</a>
+<span class="sourceLineNo">618</span><a id="line.618">                addAnnotation</a>
+<span class="sourceLineNo">619</span><a id="line.619">                  (tagEClass,</a>
+<span class="sourceLineNo">620</span><a id="line.620">                   source,</a>
+<span class="sourceLineNo">621</span><a id="line.621">                   new String[] {</a>
+<span class="sourceLineNo">622</span><a id="line.622">                           "constraints", "attributes"</a>
+<span class="sourceLineNo">623</span><a id="line.623">                   });</a>
+<span class="sourceLineNo">624</span><a id="line.624">        }</a>
+<span class="sourceLineNo">625</span><a id="line.625"></a>
+<span class="sourceLineNo">626</span><a id="line.626">        /**</a>
+<span class="sourceLineNo">627</span><a id="line.627">         * Initializes the annotations for &lt;b&gt;urn:org.nasdanika&lt;/b&gt;.</a>
+<span class="sourceLineNo">628</span><a id="line.628">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">629</span><a id="line.629">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">630</span><a id="line.630">         * @generated</a>
+<span class="sourceLineNo">631</span><a id="line.631">         */</a>
+<span class="sourceLineNo">632</span><a id="line.632">        protected void createUrnorgAnnotations() {</a>
+<span class="sourceLineNo">633</span><a id="line.633">                String source = "urn:org.nasdanika";</a>
+<span class="sourceLineNo">634</span><a id="line.634">                addAnnotation</a>
+<span class="sourceLineNo">635</span><a id="line.635">                  (getStylesheetReference_Target(),</a>
+<span class="sourceLineNo">636</span><a id="line.636">                   source,</a>
+<span class="sourceLineNo">637</span><a id="line.637">                   new String[] {</a>
+<span class="sourceLineNo">638</span><a id="line.638">                           "default-feature", "true"</a>
+<span class="sourceLineNo">639</span><a id="line.639">                   });</a>
+<span class="sourceLineNo">640</span><a id="line.640">                addAnnotation</a>
+<span class="sourceLineNo">641</span><a id="line.641">                  (getScriptReference_Src(),</a>
+<span class="sourceLineNo">642</span><a id="line.642">                   source,</a>
+<span class="sourceLineNo">643</span><a id="line.643">                   new String[] {</a>
+<span class="sourceLineNo">644</span><a id="line.644">                           "default-feature", "true"</a>
+<span class="sourceLineNo">645</span><a id="line.645">                   });</a>
+<span class="sourceLineNo">646</span><a id="line.646">        }</a>
+<span class="sourceLineNo">647</span><a id="line.647"></a>
+<span class="sourceLineNo">648</span><a id="line.648">} //HtmlPackageImpl</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre> 
+   </div> 
+  </main>  
+ </body>
+</html>

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <main role="main"> 
+   <div class="sourceContainer"> 
+    <pre><span class="sourceLineNo">001</span><a id="line.1">/**</a>
+<span class="sourceLineNo">002</span><a id="line.2"> */</a>
+<span class="sourceLineNo">003</span><a id="line.3">package org.nasdanika.engineering;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import org.eclipse.emf.common.util.EList;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.eclipse.emf.ecore.EObject;</a>
+<span class="sourceLineNo">007</span><a id="line.7"></a>
+<span class="sourceLineNo">008</span><a id="line.8">/**</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * A representation of the model object '&lt;em&gt;&lt;b&gt;Alignable&lt;/b&gt;&lt;/em&gt;'.</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * &lt;p&gt;</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * The following features are supported:</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * &lt;ul&gt;</a>
+<span class="sourceLineNo">017</span><a id="line.17"> *   &lt;li&gt;{@link org.nasdanika.engineering.Alignable#getAligns &lt;em&gt;Aligns&lt;/em&gt;}&lt;/li&gt;</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * &lt;/ul&gt;</a>
+<span class="sourceLineNo">019</span><a id="line.19"> *</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * @see org.nasdanika.engineering.EngineeringPackage#getAlignable()</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * @model interface="true" abstract="true"</a>
+<span class="sourceLineNo">022</span><a id="line.22"> *        annotation="urn:org.nasdanika documentation-reference='doc/alignable.md'"</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * @generated</a>
+<span class="sourceLineNo">024</span><a id="line.24"> */</a>
+<span class="sourceLineNo">025</span><a id="line.25">public interface Alignable extends EObject {</a>
+<span class="sourceLineNo">026</span><a id="line.26">        /**</a>
+<span class="sourceLineNo">027</span><a id="line.27">         * Returns the value of the '&lt;em&gt;&lt;b&gt;Aligns&lt;/b&gt;&lt;/em&gt;' containment reference list.</a>
+<span class="sourceLineNo">028</span><a id="line.28">         * The list contents are of type {@link org.nasdanika.engineering.Alignment}.</a>
+<span class="sourceLineNo">029</span><a id="line.29">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">030</span><a id="line.30">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">031</span><a id="line.31">         * &lt;!-- begin-model-doc --&gt;</a>
+<span class="sourceLineNo">032</span><a id="line.32">         * Aims to which this alignable aligns. E.g. a module level principle may align to organization pirinciples.</a>
+<span class="sourceLineNo">033</span><a id="line.33">         * &lt;!-- end-model-doc --&gt;</a>
+<span class="sourceLineNo">034</span><a id="line.34">         * @return the value of the '&lt;em&gt;Aligns&lt;/em&gt;' containment reference list.</a>
+<span class="sourceLineNo">035</span><a id="line.35">         * @see org.nasdanika.engineering.EngineeringPackage#getAlignable_Aligns()</a>
+<span class="sourceLineNo">036</span><a id="line.36">         * @model containment="true" keys="path"</a>
+<span class="sourceLineNo">037</span><a id="line.37">         *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true'"</a>
+<span class="sourceLineNo">038</span><a id="line.38">         * @generated</a>
+<span class="sourceLineNo">039</span><a id="line.39">         */</a>
+<span class="sourceLineNo">040</span><a id="line.40">        EList&lt;Alignment&gt; getAligns();</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">} // Alignable</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre> 
+   </div> 
+  </main>  
+ </body>
+</html>

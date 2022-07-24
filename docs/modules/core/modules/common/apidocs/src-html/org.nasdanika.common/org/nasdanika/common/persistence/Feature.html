@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <main role="main"> 
+   <div class="sourceContainer"> 
+    <pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.common.persistence;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.util.List;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.util.Map;</a>
+<span class="sourceLineNo">005</span><a id="line.5"></a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.eclipse.emf.common.util.URI;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import org.nasdanika.common.ProgressMonitor;</a>
+<span class="sourceLineNo">008</span><a id="line.8"></a>
+<span class="sourceLineNo">009</span><a id="line.9">public interface Feature&lt;T&gt; extends Marked {</a>
+<span class="sourceLineNo">010</span><a id="line.10">        </a>
+<span class="sourceLineNo">011</span><a id="line.11">        Object getKey();</a>
+<span class="sourceLineNo">012</span><a id="line.12">        T getValue();</a>
+<span class="sourceLineNo">013</span><a id="line.13">        boolean isRequired();</a>
+<span class="sourceLineNo">014</span><a id="line.14">        boolean isLoaded();</a>
+<span class="sourceLineNo">015</span><a id="line.15">        </a>
+<span class="sourceLineNo">016</span><a id="line.16">        default Object get(Map&lt;?,?&gt; data) {</a>
+<span class="sourceLineNo">017</span><a id="line.17">                return data.get(getKey());</a>
+<span class="sourceLineNo">018</span><a id="line.18">        }</a>
+<span class="sourceLineNo">019</span><a id="line.19">        </a>
+<span class="sourceLineNo">020</span><a id="line.20">        /**</a>
+<span class="sourceLineNo">021</span><a id="line.21">         * @return If true, this feature is loaded if {@link FeatureObject} configuration is not a map. E.g. HTTP call can be configured with just a URL string, i.e. URL is the default feature of HTTP Call. </a>
+<span class="sourceLineNo">022</span><a id="line.22">         */</a>
+<span class="sourceLineNo">023</span><a id="line.23">        boolean isDefault();</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">        void load(ObjectLoader loader, Map&lt;?,?&gt; source, URI base, ProgressMonitor progressMonitor, List&lt;? extends Marker&gt; markers) throws Exception;</a>
+<span class="sourceLineNo">026</span><a id="line.26">        </a>
+<span class="sourceLineNo">027</span><a id="line.27">        /**</a>
+<span class="sourceLineNo">028</span><a id="line.28">         * @return Feature description in Markdown.</a>
+<span class="sourceLineNo">029</span><a id="line.29">         */</a>
+<span class="sourceLineNo">030</span><a id="line.30">        String getDescription();        </a>
+<span class="sourceLineNo">031</span><a id="line.31">        </a>
+<span class="sourceLineNo">032</span><a id="line.32">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre> 
+   </div> 
+  </main>  
+ </body>
+</html>

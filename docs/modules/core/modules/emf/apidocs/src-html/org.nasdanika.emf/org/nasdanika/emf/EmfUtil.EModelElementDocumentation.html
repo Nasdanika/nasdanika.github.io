@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <main role="main"> 
+   <div class="sourceContainer"> 
+    <pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.emf;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.io.PrintStream;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.net.URL;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.ArrayList;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.util.Collection;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.util.Collections;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import java.util.Comparator;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import java.util.HashSet;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import java.util.List;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import java.util.Map;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.util.Set;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import java.util.function.BiConsumer;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.util.function.Function;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import java.util.function.Predicate;</a>
+<span class="sourceLineNo">016</span><a id="line.16"></a>
+<span class="sourceLineNo">017</span><a id="line.17">import org.eclipse.emf.common.util.EList;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import org.eclipse.emf.common.util.URI;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import org.eclipse.emf.ecore.EAnnotation;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import org.eclipse.emf.ecore.EAttribute;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import org.eclipse.emf.ecore.EClass;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import org.eclipse.emf.ecore.EClassifier;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import org.eclipse.emf.ecore.EGenericType;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import org.eclipse.emf.ecore.EModelElement;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import org.eclipse.emf.ecore.ENamedElement;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import org.eclipse.emf.ecore.EObject;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import org.eclipse.emf.ecore.EOperation;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import org.eclipse.emf.ecore.EParameter;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import org.eclipse.emf.ecore.EReference;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import org.eclipse.emf.ecore.EStructuralFeature;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import org.eclipse.emf.ecore.ETypeParameter;</a>
+<span class="sourceLineNo">032</span><a id="line.32">import org.eclipse.emf.ecore.resource.Resource;</a>
+<span class="sourceLineNo">033</span><a id="line.33">import org.eclipse.emf.ecore.resource.ResourceSet;</a>
+<span class="sourceLineNo">034</span><a id="line.34">import org.eclipse.emf.ecore.util.Diagnostician;</a>
+<span class="sourceLineNo">035</span><a id="line.35">import org.eclipse.emf.ecore.util.EcoreUtil;</a>
+<span class="sourceLineNo">036</span><a id="line.36">import org.nasdanika.common.BasicDiagnostic;</a>
+<span class="sourceLineNo">037</span><a id="line.37">import org.nasdanika.common.Context;</a>
+<span class="sourceLineNo">038</span><a id="line.38">import org.nasdanika.common.DefaultConverter;</a>
+<span class="sourceLineNo">039</span><a id="line.39">import org.nasdanika.common.Diagnostic;</a>
+<span class="sourceLineNo">040</span><a id="line.40">import org.nasdanika.common.Status;</a>
+<span class="sourceLineNo">041</span><a id="line.41">import org.nasdanika.common.Util;</a>
+<span class="sourceLineNo">042</span><a id="line.42">import org.nasdanika.emf.persistence.EObjectLoader;</a>
+<span class="sourceLineNo">043</span><a id="line.43">import org.nasdanika.emf.persistence.FeatureCacheAdapter;</a>
+<span class="sourceLineNo">044</span><a id="line.44">import org.nasdanika.ncore.util.NcoreUtil;</a>
+<span class="sourceLineNo">045</span><a id="line.45"></a>
+<span class="sourceLineNo">046</span><a id="line.46">public class EmfUtil {</a>
+<span class="sourceLineNo">047</span><a id="line.47"></a>
+<span class="sourceLineNo">048</span><a id="line.48">        public static final String ICON_KEY = "icon";</a>
+<span class="sourceLineNo">049</span><a id="line.49">        public static final String LABEL_KEY = "label";</a>
+<span class="sourceLineNo">050</span><a id="line.50">        </a>
+<span class="sourceLineNo">051</span><a id="line.51">        public static final Comparator&lt;ENamedElement&gt; ENAMED_ELEMENT_COMPARATOR = new Comparator&lt;ENamedElement&gt;() {</a>
+<span class="sourceLineNo">052</span><a id="line.52"></a>
+<span class="sourceLineNo">053</span><a id="line.53">                @Override</a>
+<span class="sourceLineNo">054</span><a id="line.54">                public int compare(ENamedElement a, ENamedElement b) {</a>
+<span class="sourceLineNo">055</span><a id="line.55">                        return a.getName().compareTo(b.getName());</a>
+<span class="sourceLineNo">056</span><a id="line.56">                }</a>
+<span class="sourceLineNo">057</span><a id="line.57">                </a>
+<span class="sourceLineNo">058</span><a id="line.58">        };</a>
+<span class="sourceLineNo">059</span><a id="line.59"></a>
+<span class="sourceLineNo">060</span><a id="line.60">        private EmfUtil() {</a>
+<span class="sourceLineNo">061</span><a id="line.61">                // Utility class</a>
+<span class="sourceLineNo">062</span><a id="line.62">        }</a>
+<span class="sourceLineNo">063</span><a id="line.63">                </a>
+<span class="sourceLineNo">064</span><a id="line.64">        public static String getCategory(EModelElement modelElement) {</a>
+<span class="sourceLineNo">065</span><a id="line.65">                return NcoreUtil.getNasdanikaAnnotationDetail(modelElement, "category");</a>
+<span class="sourceLineNo">066</span><a id="line.66">        }</a>
+<span class="sourceLineNo">067</span><a id="line.67"></a>
+<span class="sourceLineNo">068</span><a id="line.68">        /**</a>
+<span class="sourceLineNo">069</span><a id="line.69">         * Collects type dependencies for a given class - attribute types, eoperation return and exception types, eparameter types.</a>
+<span class="sourceLineNo">070</span><a id="line.70">         * Does not collect reference types and supertypes, as they are reported differently, but collects their generic parameter types.</a>
+<span class="sourceLineNo">071</span><a id="line.71">         * @param eClass</a>
+<span class="sourceLineNo">072</span><a id="line.72">         * @return</a>
+<span class="sourceLineNo">073</span><a id="line.73">         */</a>
+<span class="sourceLineNo">074</span><a id="line.74">        public static Collection&lt;EClassifier&gt; collectTypeDependencies(EClass eClass) {</a>
+<span class="sourceLineNo">075</span><a id="line.75">                Collection&lt;EClassifier&gt; collector = new HashSet&lt;&gt;();</a>
+<span class="sourceLineNo">076</span><a id="line.76">                Predicate&lt;EGenericType&gt; predicate = new HashSet&lt;EGenericType&gt;()::add;</a>
+<span class="sourceLineNo">077</span><a id="line.77">                for (EGenericType st: eClass.getEGenericSuperTypes()) {</a>
+<span class="sourceLineNo">078</span><a id="line.78">                        collector.addAll(collectGenericTypeDependencies(st, false, predicate));</a>
+<span class="sourceLineNo">079</span><a id="line.79">                }</a>
+<span class="sourceLineNo">080</span><a id="line.80">                for (EReference ref: eClass.getEReferences()) {</a>
+<span class="sourceLineNo">081</span><a id="line.81">                        collector.addAll(collectGenericTypeDependencies(ref.getEGenericType(), false, predicate));</a>
+<span class="sourceLineNo">082</span><a id="line.82">                }               </a>
+<span class="sourceLineNo">083</span><a id="line.83">                </a>
+<span class="sourceLineNo">084</span><a id="line.84">                for (EAttribute attr: eClass.getEAttributes()) {</a>
+<span class="sourceLineNo">085</span><a id="line.85">                        collector.addAll(collectGenericTypeDependencies(attr.getEGenericType(), true, predicate));</a>
+<span class="sourceLineNo">086</span><a id="line.86">                }                                       </a>
+<span class="sourceLineNo">087</span><a id="line.87">                for (EOperation op: eClass.getEOperations()) {</a>
+<span class="sourceLineNo">088</span><a id="line.88">                        EGenericType opType = op.getEGenericType();</a>
+<span class="sourceLineNo">089</span><a id="line.89">                        if (opType != null) {</a>
+<span class="sourceLineNo">090</span><a id="line.90">                                collector.addAll(collectGenericTypeDependencies(opType, true, predicate));</a>
+<span class="sourceLineNo">091</span><a id="line.91">                        }</a>
+<span class="sourceLineNo">092</span><a id="line.92">                        for (EGenericType ge: op.getEGenericExceptions()) {</a>
+<span class="sourceLineNo">093</span><a id="line.93">                                collector.addAll(collectGenericTypeDependencies(ge, true, predicate));</a>
+<span class="sourceLineNo">094</span><a id="line.94">                        }</a>
+<span class="sourceLineNo">095</span><a id="line.95">                        for (EParameter ep: op.getEParameters()) {</a>
+<span class="sourceLineNo">096</span><a id="line.96">                                collector.addAll(collectGenericTypeDependencies(ep.getEGenericType(), true, predicate));</a>
+<span class="sourceLineNo">097</span><a id="line.97">                        }</a>
+<span class="sourceLineNo">098</span><a id="line.98">                }                                       </a>
+<span class="sourceLineNo">099</span><a id="line.99">                return collector;</a>
+<span class="sourceLineNo">100</span><a id="line.100">        }</a>
+<span class="sourceLineNo">101</span><a id="line.101">        </a>
+<span class="sourceLineNo">102</span><a id="line.102">        /**</a>
+<span class="sourceLineNo">103</span><a id="line.103">         * Collects generic type dependencies, i.e. classifiers used in generic type definition.</a>
+<span class="sourceLineNo">104</span><a id="line.104">         * @param type Generic type</a>
+<span class="sourceLineNo">105</span><a id="line.105">         * @param includeEClassifier if true, include EClassifier of the type itself. Otherwise, only EClassifiers of referenced generic types - bounds, type arguments, and type parameter.</a>
+<span class="sourceLineNo">106</span><a id="line.106">         * @return A set of {@link EClassifier}'s.</a>
+<span class="sourceLineNo">107</span><a id="line.107">         */</a>
+<span class="sourceLineNo">108</span><a id="line.108">        public static Collection&lt;EClassifier&gt; collectGenericTypeDependencies(EGenericType type, boolean includeEClassifier, Predicate&lt;EGenericType&gt; predicate) {</a>
+<span class="sourceLineNo">109</span><a id="line.109">                Set&lt;EClassifier&gt; ret = new HashSet&lt;&gt;();</a>
+<span class="sourceLineNo">110</span><a id="line.110">                if (type != null &amp;&amp; predicate.test(type)) {</a>
+<span class="sourceLineNo">111</span><a id="line.111">                        EClassifier eClassifier = type.getEClassifier();</a>
+<span class="sourceLineNo">112</span><a id="line.112">                        if (includeEClassifier &amp;&amp; eClassifier != null) {</a>
+<span class="sourceLineNo">113</span><a id="line.113">                                ret.add(eClassifier);</a>
+<span class="sourceLineNo">114</span><a id="line.114">                        }</a>
+<span class="sourceLineNo">115</span><a id="line.115">                        </a>
+<span class="sourceLineNo">116</span><a id="line.116">                        // Lower bound</a>
+<span class="sourceLineNo">117</span><a id="line.117">                        ret.addAll(collectGenericTypeDependencies(type.getELowerBound(), true, predicate));</a>
+<span class="sourceLineNo">118</span><a id="line.118">                        </a>
+<span class="sourceLineNo">119</span><a id="line.119">                        // Upper bound</a>
+<span class="sourceLineNo">120</span><a id="line.120">                        ret.addAll(collectGenericTypeDependencies(type.getEUpperBound(), true, predicate));</a>
+<span class="sourceLineNo">121</span><a id="line.121">                        </a>
+<span class="sourceLineNo">122</span><a id="line.122">                        // Type arguments</a>
+<span class="sourceLineNo">123</span><a id="line.123">                        for (EGenericType ta: type.getETypeArguments()) {</a>
+<span class="sourceLineNo">124</span><a id="line.124">                                ret.addAll(collectGenericTypeDependencies(ta, true, predicate));</a>
+<span class="sourceLineNo">125</span><a id="line.125">                        }</a>
+<span class="sourceLineNo">126</span><a id="line.126">                        </a>
+<span class="sourceLineNo">127</span><a id="line.127">                        // Type parameter</a>
+<span class="sourceLineNo">128</span><a id="line.128">                        ETypeParameter tp = type.getETypeParameter();</a>
+<span class="sourceLineNo">129</span><a id="line.129">                        if (tp != null) {</a>
+<span class="sourceLineNo">130</span><a id="line.130">                                for (EGenericType b: tp.getEBounds()) {</a>
+<span class="sourceLineNo">131</span><a id="line.131">                                        ret.addAll(collectGenericTypeDependencies(b, true, predicate));                                 </a>
+<span class="sourceLineNo">132</span><a id="line.132">                                }</a>
+<span class="sourceLineNo">133</span><a id="line.133">                        }</a>
+<span class="sourceLineNo">134</span><a id="line.134">                }</a>
+<span class="sourceLineNo">135</span><a id="line.135">                return ret;</a>
+<span class="sourceLineNo">136</span><a id="line.136">        }</a>
+<span class="sourceLineNo">137</span><a id="line.137">        </a>
+<span class="sourceLineNo">138</span><a id="line.138">        /**</a>
+<span class="sourceLineNo">139</span><a id="line.139">         * Resolves reference relative to the resource.   </a>
+<span class="sourceLineNo">140</span><a id="line.140">         * @param resource Used to resolve relative references if not null.</a>
+<span class="sourceLineNo">141</span><a id="line.141">         * @param reference Reference.</a>
+<span class="sourceLineNo">142</span><a id="line.142">         * @return</a>
+<span class="sourceLineNo">143</span><a id="line.143">         * @throws Exception</a>
+<span class="sourceLineNo">144</span><a id="line.144">         */</a>
+<span class="sourceLineNo">145</span><a id="line.145">        public static URI resolveReference(Resource resource, String reference) throws Exception {              </a>
+<span class="sourceLineNo">146</span><a id="line.146">                URI refUri = Util.isBlank(reference) ? null : URI.createURI(reference);</a>
+<span class="sourceLineNo">147</span><a id="line.147">                if (resource != null) {</a>
+<span class="sourceLineNo">148</span><a id="line.148">                        URI resUri = resource.getURI();</a>
+<span class="sourceLineNo">149</span><a id="line.149">                        if (refUri == null) {</a>
+<span class="sourceLineNo">150</span><a id="line.150">                                return resUri;</a>
+<span class="sourceLineNo">151</span><a id="line.151">                        }</a>
+<span class="sourceLineNo">152</span><a id="line.152">                        if (resUri.isHierarchical()) {</a>
+<span class="sourceLineNo">153</span><a id="line.153">                                refUri = refUri.resolve(resUri);</a>
+<span class="sourceLineNo">154</span><a id="line.154">                        }                       </a>
+<span class="sourceLineNo">155</span><a id="line.155">                }</a>
+<span class="sourceLineNo">156</span><a id="line.156">                return refUri;</a>
+<span class="sourceLineNo">157</span><a id="line.157">        }</a>
+<span class="sourceLineNo">158</span><a id="line.158">        </a>
+<span class="sourceLineNo">159</span><a id="line.159">        /**</a>
+<span class="sourceLineNo">160</span><a id="line.160">         * Provides access to documentation and its location for resolving resource references. </a>
+<span class="sourceLineNo">161</span><a id="line.161">         * @author Pavel</a>
+<span class="sourceLineNo">162</span><a id="line.162">         *</a>
+<span class="sourceLineNo">163</span><a id="line.163">         */</a>
+<span class="sourceLineNo">164</span><a id="line.164">        public interface EModelElementDocumentation {</a>
+<span class="sourceLineNo">165</span><a id="line.165">                </a>
+<span class="sourceLineNo">166</span><a id="line.166">                /**</a>
+<span class="sourceLineNo">167</span><a id="line.167">                 * @return Documentation loaded from an annotation of external resource.</a>
+<span class="sourceLineNo">168</span><a id="line.168">                 */</a>
+<span class="sourceLineNo">169</span><a id="line.169">                String getDocumentation();</a>
+<span class="sourceLineNo">170</span><a id="line.170">                </a>
+<span class="sourceLineNo">171</span><a id="line.171">                /**</a>
+<span class="sourceLineNo">172</span><a id="line.172">                 * @return URI of the model resource for documentation loaded from an annotation, URI of a resource if loaded from a resource.</a>
+<span class="sourceLineNo">173</span><a id="line.173">                 */</a>
+<span class="sourceLineNo">174</span><a id="line.174">                URI getLocation();</a>
+<span class="sourceLineNo">175</span><a id="line.175">                </a>
+<span class="sourceLineNo">176</span><a id="line.176">                static EModelElementDocumentation from(String documentation, URI location) {</a>
+<span class="sourceLineNo">177</span><a id="line.177">                        return new EModelElementDocumentation() {</a>
+<span class="sourceLineNo">178</span><a id="line.178">                                </a>
+<span class="sourceLineNo">179</span><a id="line.179">                                @Override</a>
+<span class="sourceLineNo">180</span><a id="line.180">                                public URI getLocation() {</a>
+<span class="sourceLineNo">181</span><a id="line.181">                                        return location;</a>
+<span class="sourceLineNo">182</span><a id="line.182">                                }</a>
+<span class="sourceLineNo">183</span><a id="line.183">                                </a>
+<span class="sourceLineNo">184</span><a id="line.184">                                @Override</a>
+<span class="sourceLineNo">185</span><a id="line.185">                                public String getDocumentation() {</a>
+<span class="sourceLineNo">186</span><a id="line.186">                                        return documentation;</a>
+<span class="sourceLineNo">187</span><a id="line.187">                                }</a>
+<span class="sourceLineNo">188</span><a id="line.188">                        }; </a>
+<span class="sourceLineNo">189</span><a id="line.189">                }               </a>
+<span class="sourceLineNo">190</span><a id="line.190">                </a>
+<span class="sourceLineNo">191</span><a id="line.191">        }</a>
+<span class="sourceLineNo">192</span><a id="line.192">        </a>
+<span class="sourceLineNo">193</span><a id="line.193">        /**</a>
+<span class="sourceLineNo">194</span><a id="line.194">         * Loads element documentation from a documentation resource specified in documentation-reference nasdanika (urn:org.nasdanika) annotation resolved relative to the </a>
+<span class="sourceLineNo">195</span><a id="line.195">         * model element resource. </a>
+<span class="sourceLineNo">196</span><a id="line.196">         * @param modelElement</a>
+<span class="sourceLineNo">197</span><a id="line.197">         * @return</a>
+<span class="sourceLineNo">198</span><a id="line.198">         */</a>
+<span class="sourceLineNo">199</span><a id="line.199">        public static EModelElementDocumentation getDocumentation(EModelElement modelElement) {</a>
+<span class="sourceLineNo">200</span><a id="line.200">                String modelDoc = EcoreUtil.getDocumentation(modelElement);</a>
+<span class="sourceLineNo">201</span><a id="line.201">                if (!Util.isBlank(modelDoc)) {</a>
+<span class="sourceLineNo">202</span><a id="line.202">                        Resource res = modelElement.eResource();</a>
+<span class="sourceLineNo">203</span><a id="line.203">                        return EModelElementDocumentation.from(modelDoc, res == null ? null : res.getURI());                    </a>
+<span class="sourceLineNo">204</span><a id="line.204">                }</a>
+<span class="sourceLineNo">205</span><a id="line.205">                </a>
+<span class="sourceLineNo">206</span><a id="line.206">                EAnnotation nasdanikaAnnotation = NcoreUtil.getNasdanikaAnnotation(modelElement);</a>
+<span class="sourceLineNo">207</span><a id="line.207">                if (nasdanikaAnnotation != null) {</a>
+<span class="sourceLineNo">208</span><a id="line.208">                        String docRef = nasdanikaAnnotation.getDetails().get("documentation-reference");</a>
+<span class="sourceLineNo">209</span><a id="line.209">                        if (!Util.isBlank(docRef)) {</a>
+<span class="sourceLineNo">210</span><a id="line.210">                                try {</a>
+<span class="sourceLineNo">211</span><a id="line.211">                                        URI refUri = resolveReference(modelElement.eResource(), docRef);</a>
+<span class="sourceLineNo">212</span><a id="line.212">                                        if (Util.isBlank(refUri.scheme())) {</a>
+<span class="sourceLineNo">213</span><a id="line.213">                                                return null;                    </a>
+<span class="sourceLineNo">214</span><a id="line.214">                                        }</a>
+<span class="sourceLineNo">215</span><a id="line.215"></a>
+<span class="sourceLineNo">216</span><a id="line.216">                                        String doc = DefaultConverter.INSTANCE.toString(new URL(refUri.toString()).openStream());</a>
+<span class="sourceLineNo">217</span><a id="line.217">                                        return EModelElementDocumentation.from(doc, refUri);</a>
+<span class="sourceLineNo">218</span><a id="line.218">                                } catch (Exception e) {</a>
+<span class="sourceLineNo">219</span><a id="line.219">                                        e.printStackTrace();</a>
+<span class="sourceLineNo">220</span><a id="line.220">                                        return EModelElementDocumentation.from("&lt;div class='nsd-error'&gt;Error loading documentation: " + e + "&lt;/div&gt;", null);</a>
+<span class="sourceLineNo">221</span><a id="line.221">                                }</a>
+<span class="sourceLineNo">222</span><a id="line.222">                        }</a>
+<span class="sourceLineNo">223</span><a id="line.223">                }</a>
+<span class="sourceLineNo">224</span><a id="line.224">                </a>
+<span class="sourceLineNo">225</span><a id="line.225">                return null;</a>
+<span class="sourceLineNo">226</span><a id="line.226">        }</a>
+<span class="sourceLineNo">227</span><a id="line.227">        </a>
+<span class="sourceLineNo">228</span><a id="line.228">        /**</a>
+<span class="sourceLineNo">229</span><a id="line.229">         * Loads element load documentation from load-doc annotation of or a documentation resource specified in load-doc-reference nasdanika (urn:org.nasdanika) annotation resolved relative to the </a>
+<span class="sourceLineNo">230</span><a id="line.230">         * model element resource. </a>
+<span class="sourceLineNo">231</span><a id="line.231">         * @param modelElement</a>
+<span class="sourceLineNo">232</span><a id="line.232">         * @return</a>
+<span class="sourceLineNo">233</span><a id="line.233">         */</a>
+<span class="sourceLineNo">234</span><a id="line.234">        public static EModelElementDocumentation getLoadDocumentation(EModelElement modelElement) {</a>
+<span class="sourceLineNo">235</span><a id="line.235">                EAnnotation nasdanikaAnnotation = NcoreUtil.getNasdanikaAnnotation(modelElement);</a>
+<span class="sourceLineNo">236</span><a id="line.236">                if (nasdanikaAnnotation != null) {</a>
+<span class="sourceLineNo">237</span><a id="line.237">                        String docRef = nasdanikaAnnotation.getDetails().get(EObjectLoader.LOAD_DOC_REF);</a>
+<span class="sourceLineNo">238</span><a id="line.238">                        if (!Util.isBlank(docRef)) {</a>
+<span class="sourceLineNo">239</span><a id="line.239">                                try {</a>
+<span class="sourceLineNo">240</span><a id="line.240">                                        URI refUri = resolveReference(modelElement.eResource(), docRef);</a>
+<span class="sourceLineNo">241</span><a id="line.241">                                        if (Util.isBlank(refUri.scheme())) {</a>
+<span class="sourceLineNo">242</span><a id="line.242">                                                return null;                    </a>
+<span class="sourceLineNo">243</span><a id="line.243">                                        }</a>
+<span class="sourceLineNo">244</span><a id="line.244"></a>
+<span class="sourceLineNo">245</span><a id="line.245">                                        String doc = DefaultConverter.INSTANCE.toString(new URL(refUri.toString()).openStream());</a>
+<span class="sourceLineNo">246</span><a id="line.246">                                        return EModelElementDocumentation.from(doc, refUri);</a>
+<span class="sourceLineNo">247</span><a id="line.247">                                } catch (Exception e) {</a>
+<span class="sourceLineNo">248</span><a id="line.248">                                        e.printStackTrace();</a>
+<span class="sourceLineNo">249</span><a id="line.249">                                        return EModelElementDocumentation.from("&lt;div class='nsd-error'&gt;Error loading documentation: " + e + "&lt;/div&gt;", null);</a>
+<span class="sourceLineNo">250</span><a id="line.250">                                }</a>
+<span class="sourceLineNo">251</span><a id="line.251">                        }</a>
+<span class="sourceLineNo">252</span><a id="line.252">                        </a>
+<span class="sourceLineNo">253</span><a id="line.253">                        String loadDoc = nasdanikaAnnotation.getDetails().get(EObjectLoader.LOAD_DOC);</a>
+<span class="sourceLineNo">254</span><a id="line.254">                        if (Util.isBlank(loadDoc)) {</a>
+<span class="sourceLineNo">255</span><a id="line.255">                                return null;</a>
+<span class="sourceLineNo">256</span><a id="line.256">                        }</a>
+<span class="sourceLineNo">257</span><a id="line.257">                        return new EModelElementDocumentation() {</a>
+<span class="sourceLineNo">258</span><a id="line.258">                                </a>
+<span class="sourceLineNo">259</span><a id="line.259">                                @Override</a>
+<span class="sourceLineNo">260</span><a id="line.260">                                public URI getLocation() {</a>
+<span class="sourceLineNo">261</span><a id="line.261">                                        Resource res = modelElement.eResource();</a>
+<span class="sourceLineNo">262</span><a id="line.262">                                        return res == null ? null : res.getURI();</a>
+<span class="sourceLineNo">263</span><a id="line.263">                                }</a>
+<span class="sourceLineNo">264</span><a id="line.264">                                </a>
+<span class="sourceLineNo">265</span><a id="line.265">                                @Override</a>
+<span class="sourceLineNo">266</span><a id="line.266">                                public String getDocumentation() {</a>
+<span class="sourceLineNo">267</span><a id="line.267">                                        return loadDoc;</a>
+<span class="sourceLineNo">268</span><a id="line.268">                                }</a>
+<span class="sourceLineNo">269</span><a id="line.269">                        };</a>
+<span class="sourceLineNo">270</span><a id="line.270">                }</a>
+<span class="sourceLineNo">271</span><a id="line.271">                </a>
+<span class="sourceLineNo">272</span><a id="line.272">                return null;</a>
+<span class="sourceLineNo">273</span><a id="line.273">        }</a>
+<span class="sourceLineNo">274</span><a id="line.274">        </a>
+<span class="sourceLineNo">275</span><a id="line.275">        </a>
+<span class="sourceLineNo">276</span><a id="line.276">        public static Diagnostic wrap(org.eclipse.emf.common.util.Diagnostic diagnostic) {</a>
+<span class="sourceLineNo">277</span><a id="line.277">                Status status;</a>
+<span class="sourceLineNo">278</span><a id="line.278">                switch (diagnostic.getSeverity()) {</a>
+<span class="sourceLineNo">279</span><a id="line.279">                case org.eclipse.emf.common.util.Diagnostic.CANCEL:</a>
+<span class="sourceLineNo">280</span><a id="line.280">                        status = Status.CANCEL;</a>
+<span class="sourceLineNo">281</span><a id="line.281">                        break;</a>
+<span class="sourceLineNo">282</span><a id="line.282">                case org.eclipse.emf.common.util.Diagnostic.INFO:</a>
+<span class="sourceLineNo">283</span><a id="line.283">                        status = Status.INFO;</a>
+<span class="sourceLineNo">284</span><a id="line.284">                        break;</a>
+<span class="sourceLineNo">285</span><a id="line.285">                case org.eclipse.emf.common.util.Diagnostic.OK:</a>
+<span class="sourceLineNo">286</span><a id="line.286">                        status = Status.SUCCESS;</a>
+<span class="sourceLineNo">287</span><a id="line.287">                        break;</a>
+<span class="sourceLineNo">288</span><a id="line.288">                case org.eclipse.emf.common.util.Diagnostic.WARNING:</a>
+<span class="sourceLineNo">289</span><a id="line.289">                        status = Status.WARNING;</a>
+<span class="sourceLineNo">290</span><a id="line.290">                        break;</a>
+<span class="sourceLineNo">291</span><a id="line.291">                case org.eclipse.emf.common.util.Diagnostic.ERROR:</a>
+<span class="sourceLineNo">292</span><a id="line.292">                default:</a>
+<span class="sourceLineNo">293</span><a id="line.293">                        status = Status.ERROR;</a>
+<span class="sourceLineNo">294</span><a id="line.294">                        break;</a>
+<span class="sourceLineNo">295</span><a id="line.295">                        </a>
+<span class="sourceLineNo">296</span><a id="line.296">                }</a>
+<span class="sourceLineNo">297</span><a id="line.297">                BasicDiagnostic ret = new BasicDiagnostic(status, diagnostic.getMessage(), diagnostic);</a>
+<span class="sourceLineNo">298</span><a id="line.298">                for (org.eclipse.emf.common.util.Diagnostic child: diagnostic.getChildren()) {</a>
+<span class="sourceLineNo">299</span><a id="line.299">                        ret.add(wrap(child));</a>
+<span class="sourceLineNo">300</span><a id="line.300">                }</a>
+<span class="sourceLineNo">301</span><a id="line.301">                return ret;</a>
+<span class="sourceLineNo">302</span><a id="line.302">        }</a>
+<span class="sourceLineNo">303</span><a id="line.303"></a>
+<span class="sourceLineNo">304</span><a id="line.304">        public static &lt;K, V extends EObject&gt; Map&lt;K, List&lt;V&gt;&gt; groupBy(Collection&lt;V&gt; elements, EStructuralFeature... keyFeatures) {</a>
+<span class="sourceLineNo">305</span><a id="line.305">                @SuppressWarnings("unchecked")</a>
+<span class="sourceLineNo">306</span><a id="line.306">                Function&lt;EObject,K&gt; classifier = e -&gt; {</a>
+<span class="sourceLineNo">307</span><a id="line.307">                        if (e == null) {</a>
+<span class="sourceLineNo">308</span><a id="line.308">                                return null;</a>
+<span class="sourceLineNo">309</span><a id="line.309">                        }</a>
+<span class="sourceLineNo">310</span><a id="line.310">                        if (keyFeatures.length == 1) {</a>
+<span class="sourceLineNo">311</span><a id="line.311">                                return (K) e.eGet(keyFeatures[0]);</a>
+<span class="sourceLineNo">312</span><a id="line.312">                        }</a>
+<span class="sourceLineNo">313</span><a id="line.313">                        List&lt;Object&gt; key = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">314</span><a id="line.314">                        for (EStructuralFeature keyFeature: keyFeatures) {</a>
+<span class="sourceLineNo">315</span><a id="line.315">                                key.add(e.eGet(keyFeature));</a>
+<span class="sourceLineNo">316</span><a id="line.316">                        }</a>
+<span class="sourceLineNo">317</span><a id="line.317">                        return (K) key;</a>
+<span class="sourceLineNo">318</span><a id="line.318">                };</a>
+<span class="sourceLineNo">319</span><a id="line.319">                return Util.groupBy(elements, classifier);</a>
+<span class="sourceLineNo">320</span><a id="line.320">        }</a>
+<span class="sourceLineNo">321</span><a id="line.321">        </a>
+<span class="sourceLineNo">322</span><a id="line.322">        /**</a>
+<span class="sourceLineNo">323</span><a id="line.323">         * Finds objects referencing the argument object (target) via the specified reference.</a>
+<span class="sourceLineNo">324</span><a id="line.324">         * @param &lt;T&gt;</a>
+<span class="sourceLineNo">325</span><a id="line.325">         * @param target Referenced object</a>
+<span class="sourceLineNo">326</span><a id="line.326">         * @param eReference Reference</a>
+<span class="sourceLineNo">327</span><a id="line.327">         * @return Object referencing this one via the specified reference.</a>
+<span class="sourceLineNo">328</span><a id="line.328">         */</a>
+<span class="sourceLineNo">329</span><a id="line.329">        public static &lt;T extends EObject&gt; EList&lt;T&gt; getReferrers(EObject target, EReference eReference) {</a>
+<span class="sourceLineNo">330</span><a id="line.330">                return NcoreUtil.getReferrers(target, eReference);</a>
+<span class="sourceLineNo">331</span><a id="line.331">        }</a>
+<span class="sourceLineNo">332</span><a id="line.332">        </a>
+<span class="sourceLineNo">333</span><a id="line.333">        public static void dumpDiagnostic(org.eclipse.emf.common.util.Diagnostic d, int indent, PrintStream out) {</a>
+<span class="sourceLineNo">334</span><a id="line.334">                for (int i=0; i &lt; indent; ++i) {</a>
+<span class="sourceLineNo">335</span><a id="line.335">                        out.print("    ");</a>
+<span class="sourceLineNo">336</span><a id="line.336">                }</a>
+<span class="sourceLineNo">337</span><a id="line.337">                out.println(toString(d));</a>
+<span class="sourceLineNo">338</span><a id="line.338">            if (d.getChildren() != null) {</a>
+<span class="sourceLineNo">339</span><a id="line.339">                d.getChildren().forEach(c -&gt; dumpDiagnostic(c, indent + 1, out));</a>
+<span class="sourceLineNo">340</span><a id="line.340">            }           </a>
+<span class="sourceLineNo">341</span><a id="line.341">        }</a>
+<span class="sourceLineNo">342</span><a id="line.342">        </a>
+<span class="sourceLineNo">343</span><a id="line.343">        static String toString(org.eclipse.emf.common.util.Diagnostic d) {</a>
+<span class="sourceLineNo">344</span><a id="line.344">                StringBuilder result = new StringBuilder();</a>
+<span class="sourceLineNo">345</span><a id="line.345">                switch (d.getSeverity()) {</a>
+<span class="sourceLineNo">346</span><a id="line.346">                case org.eclipse.emf.common.util.Diagnostic.OK:</a>
+<span class="sourceLineNo">347</span><a id="line.347">                        result.append("OK");</a>
+<span class="sourceLineNo">348</span><a id="line.348">                        break;</a>
+<span class="sourceLineNo">349</span><a id="line.349">                case org.eclipse.emf.common.util.Diagnostic.INFO:</a>
+<span class="sourceLineNo">350</span><a id="line.350">                        result.append("INFO");</a>
+<span class="sourceLineNo">351</span><a id="line.351">                        break;</a>
+<span class="sourceLineNo">352</span><a id="line.352">                case org.eclipse.emf.common.util.Diagnostic.WARNING:</a>
+<span class="sourceLineNo">353</span><a id="line.353">                        result.append("WARNING");</a>
+<span class="sourceLineNo">354</span><a id="line.354">                        break;</a>
+<span class="sourceLineNo">355</span><a id="line.355">                case org.eclipse.emf.common.util.Diagnostic.ERROR:</a>
+<span class="sourceLineNo">356</span><a id="line.356">                        result.append("ERROR");</a>
+<span class="sourceLineNo">357</span><a id="line.357">                        break;</a>
+<span class="sourceLineNo">358</span><a id="line.358">                case org.eclipse.emf.common.util.Diagnostic.CANCEL:</a>
+<span class="sourceLineNo">359</span><a id="line.359">                        result.append("CANCEL");</a>
+<span class="sourceLineNo">360</span><a id="line.360">                        break;</a>
+<span class="sourceLineNo">361</span><a id="line.361">                default:</a>
+<span class="sourceLineNo">362</span><a id="line.362">                        result.append(Integer.toHexString(d.getSeverity()));</a>
+<span class="sourceLineNo">363</span><a id="line.363">                        break;</a>
+<span class="sourceLineNo">364</span><a id="line.364">                }</a>
+<span class="sourceLineNo">365</span><a id="line.365"></a>
+<span class="sourceLineNo">366</span><a id="line.366">                result.append(" source=");</a>
+<span class="sourceLineNo">367</span><a id="line.367">                result.append(d.getSource());</a>
+<span class="sourceLineNo">368</span><a id="line.368"></a>
+<span class="sourceLineNo">369</span><a id="line.369">                result.append(" code=");</a>
+<span class="sourceLineNo">370</span><a id="line.370">                result.append(d.getCode());</a>
+<span class="sourceLineNo">371</span><a id="line.371"></a>
+<span class="sourceLineNo">372</span><a id="line.372">                result.append(' ');</a>
+<span class="sourceLineNo">373</span><a id="line.373">                result.append(d.getMessage());</a>
+<span class="sourceLineNo">374</span><a id="line.374"></a>
+<span class="sourceLineNo">375</span><a id="line.375">                if (d.getData() != null) {</a>
+<span class="sourceLineNo">376</span><a id="line.376">                        result.append(" data=");</a>
+<span class="sourceLineNo">377</span><a id="line.377">                        result.append(d.getData());</a>
+<span class="sourceLineNo">378</span><a id="line.378">                }</a>
+<span class="sourceLineNo">379</span><a id="line.379"></a>
+<span class="sourceLineNo">380</span><a id="line.380">                return result.toString();</a>
+<span class="sourceLineNo">381</span><a id="line.381">        }               </a>
+<span class="sourceLineNo">382</span><a id="line.382"></a>
+<span class="sourceLineNo">383</span><a id="line.383">        /**</a>
+<span class="sourceLineNo">384</span><a id="line.384">         * Resolves all proxies, clears feature caches and then diagnoses the resource set.</a>
+<span class="sourceLineNo">385</span><a id="line.385">         * @param resourceSet</a>
+<span class="sourceLineNo">386</span><a id="line.386">         * @param context</a>
+<span class="sourceLineNo">387</span><a id="line.387">         * @return</a>
+<span class="sourceLineNo">388</span><a id="line.388">         */</a>
+<span class="sourceLineNo">389</span><a id="line.389">        public static org.eclipse.emf.common.util.Diagnostic resolveClearCacheAndDiagnose(ResourceSet resourceSet, Context context) {</a>
+<span class="sourceLineNo">390</span><a id="line.390">                EcoreUtil.resolveAll(resourceSet);</a>
+<span class="sourceLineNo">391</span><a id="line.391">                resourceSet.getAllContents().forEachRemaining(notifier -&gt; notifier.eNotify(FeatureCacheAdapter.CLEAR_CACHE));</a>
+<span class="sourceLineNo">392</span><a id="line.392"></a>
+<span class="sourceLineNo">393</span><a id="line.393">                Diagnostician diagnostician = new Diagnostician();</a>
+<span class="sourceLineNo">394</span><a id="line.394">                org.eclipse.emf.common.util.BasicDiagnostic ret = new org.eclipse.emf.common.util.BasicDiagnostic();</a>
+<span class="sourceLineNo">395</span><a id="line.395">                Map&lt;Class&lt;Context&gt;, Context&gt; diagnosticContext = Collections.singletonMap(Context.class, context);</a>
+<span class="sourceLineNo">396</span><a id="line.396">                for (Resource resource: resourceSet.getResources()) {</a>
+<span class="sourceLineNo">397</span><a id="line.397">                        org.eclipse.emf.common.util.BasicDiagnostic resourceDiagnostic = new org.eclipse.emf.common.util.BasicDiagnostic(resource.getURI().toString(), 0, "Resource diagnostic", new Object[] {resource});</a>
+<span class="sourceLineNo">398</span><a id="line.398">                        for (EObject e: resource.getContents()) {</a>
+<span class="sourceLineNo">399</span><a id="line.399">                                org.eclipse.emf.common.util.Diagnostic diagnostic = diagnostician.validate(e, diagnosticContext);</a>
+<span class="sourceLineNo">400</span><a id="line.400">                                resourceDiagnostic.add(diagnostic);</a>
+<span class="sourceLineNo">401</span><a id="line.401">                        }</a>
+<span class="sourceLineNo">402</span><a id="line.402">                        ret.add(resourceDiagnostic);</a>
+<span class="sourceLineNo">403</span><a id="line.403">                }</a>
+<span class="sourceLineNo">404</span><a id="line.404">                return ret;</a>
+<span class="sourceLineNo">405</span><a id="line.405">        }</a>
+<span class="sourceLineNo">406</span><a id="line.406"></a>
+<span class="sourceLineNo">407</span><a id="line.407">        /**</a>
+<span class="sourceLineNo">408</span><a id="line.408">         * Diagnoses the resource set.</a>
+<span class="sourceLineNo">409</span><a id="line.409">         * @param resourceSet</a>
+<span class="sourceLineNo">410</span><a id="line.410">         * @param context</a>
+<span class="sourceLineNo">411</span><a id="line.411">         * @param diagnosticConsumer consumer of diagnostics.</a>
+<span class="sourceLineNo">412</span><a id="line.412">         * @return</a>
+<span class="sourceLineNo">413</span><a id="line.413">         */</a>
+<span class="sourceLineNo">414</span><a id="line.414">        public static void diagnose(ResourceSet resourceSet, Context context, BiConsumer&lt;EObject, org.eclipse.emf.common.util.Diagnostic&gt; diagnosticConsumer) {</a>
+<span class="sourceLineNo">415</span><a id="line.415">                EcoreUtil.resolveAll(resourceSet);</a>
+<span class="sourceLineNo">416</span><a id="line.416">                resourceSet.getAllContents().forEachRemaining(notifier -&gt; notifier.eNotify(FeatureCacheAdapter.CLEAR_CACHE));</a>
+<span class="sourceLineNo">417</span><a id="line.417"></a>
+<span class="sourceLineNo">418</span><a id="line.418">                Diagnostician diagnostician = new Diagnostician();</a>
+<span class="sourceLineNo">419</span><a id="line.419">                Map&lt;Class&lt;Context&gt;, Context&gt; diagnosticContext = Collections.singletonMap(Context.class, context);</a>
+<span class="sourceLineNo">420</span><a id="line.420">                for (Resource resource: resourceSet.getResources()) {</a>
+<span class="sourceLineNo">421</span><a id="line.421">                        for (EObject e: resource.getContents()) {</a>
+<span class="sourceLineNo">422</span><a id="line.422">                                diagnosticConsumer.accept(e, diagnostician.validate(e, diagnosticContext));</a>
+<span class="sourceLineNo">423</span><a id="line.423">                        }</a>
+<span class="sourceLineNo">424</span><a id="line.424">                }</a>
+<span class="sourceLineNo">425</span><a id="line.425">        }       </a>
+<span class="sourceLineNo">426</span><a id="line.426">        </a>
+<span class="sourceLineNo">427</span><a id="line.427">        /**</a>
+<span class="sourceLineNo">428</span><a id="line.428">         * Resolves URI against the base if base is not null.</a>
+<span class="sourceLineNo">429</span><a id="line.429">         * @param uri</a>
+<span class="sourceLineNo">430</span><a id="line.430">         * @param base</a>
+<span class="sourceLineNo">431</span><a id="line.431">         * @return</a>
+<span class="sourceLineNo">432</span><a id="line.432">         */</a>
+<span class="sourceLineNo">433</span><a id="line.433">        public static URI resolve(URI uri, URI base) {</a>
+<span class="sourceLineNo">434</span><a id="line.434">                return base == null ? uri : uri.resolve(base);</a>
+<span class="sourceLineNo">435</span><a id="line.435">        }</a>
+<span class="sourceLineNo">436</span><a id="line.436"></a>
+<span class="sourceLineNo">437</span><a id="line.437">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre> 
+   </div> 
+  </main>  
+ </body>
+</html>

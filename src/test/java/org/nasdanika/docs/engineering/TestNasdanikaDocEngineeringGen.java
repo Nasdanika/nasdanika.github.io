@@ -689,6 +689,7 @@ public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
 		copy(new File("../core/ncore/target/apidocs"), new File("docs/modules/core/modules/ncore/apidocs"), false, null, null);
 		copy(new File("../core/diagram/target/apidocs"), new File("docs/modules/core/modules/diagram/modules/model/apidocs"), false, null, null);
 		copy(new File("../core/diagram.gen/target/apidocs"), new File("docs/modules/core/modules/diagram/modules/gen/apidocs"), false, null, null);
+		copy(new File("../core/drawio/target/apidocs"), new File("docs/modules/core/modules/drawio/apidocs"), false, null, null);
 		copy(new File("../core/flow/target/apidocs"), new File("docs/modules/core/modules/flow/apidocs"), false, null, null);
 		copy(new File("../core/exec/target/apidocs"), new File("docs/modules/core/modules/exec/modules/model/apidocs"), false, null, null);
 		copy(new File("../core/exec.gen/target/apidocs"), new File("docs/modules/core/modules/exec/modules/gen/apidocs"), false, null, null);

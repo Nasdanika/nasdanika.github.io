@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <title>Source code</title> 
+  <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">  
+  <script src="../../../../../../../../../../../search-documents.js"></script>  
+  <script src="https://unpkg.com/lunr/lunr.js"></script>  
+  <script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script> 
+ </head> 
+ <body> 
+  <main role="main"> 
+   <div class="sourceContainer"> 
+    <pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.engineering.gen;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.util.List;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import org.eclipse.emf.ecore.ETypedElement;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.eclipse.emf.ecore.EcorePackage;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import org.nasdanika.common.Context;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import org.nasdanika.common.ProgressMonitor;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import org.nasdanika.engineering.EngineeringPackage;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import org.nasdanika.engineering.Issue;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import org.nasdanika.engineering.IssueStatus;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import org.nasdanika.html.model.app.Action;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import org.nasdanika.html.model.app.AppFactory;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import org.nasdanika.html.model.bootstrap.Table;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import org.nasdanika.ncore.NcorePackage;</a>
+<span class="sourceLineNo">016</span><a id="line.16"></a>
+<span class="sourceLineNo">017</span><a id="line.17">public class IssueStatusActionBuilder extends NamedElementActionBuilder&lt;IssueStatus&gt; {</a>
+<span class="sourceLineNo">018</span><a id="line.18">        </a>
+<span class="sourceLineNo">019</span><a id="line.19">        public IssueStatusActionBuilder(IssueStatus target, Context context) {</a>
+<span class="sourceLineNo">020</span><a id="line.20">                super(target, context);         </a>
+<span class="sourceLineNo">021</span><a id="line.21">        }</a>
+<span class="sourceLineNo">022</span><a id="line.22">        </a>
+<span class="sourceLineNo">023</span><a id="line.23">        @Override</a>
+<span class="sourceLineNo">024</span><a id="line.24">        protected List&lt;ETypedElement&gt; getProperties() {</a>
+<span class="sourceLineNo">025</span><a id="line.25">                List&lt;ETypedElement&gt; properties = super.getProperties();</a>
+<span class="sourceLineNo">026</span><a id="line.26">                properties.add(EngineeringPackage.Literals.ISSUE_STATUS__DONE);</a>
+<span class="sourceLineNo">027</span><a id="line.27">                return properties;</a>
+<span class="sourceLineNo">028</span><a id="line.28">        }</a>
+<span class="sourceLineNo">029</span><a id="line.29">                </a>
+<span class="sourceLineNo">030</span><a id="line.30">        @Override</a>
+<span class="sourceLineNo">031</span><a id="line.31">        protected void resolve(</a>
+<span class="sourceLineNo">032</span><a id="line.32">                        Action action, </a>
+<span class="sourceLineNo">033</span><a id="line.33">                        org.nasdanika.html.emf.EObjectActionResolver.Context context,</a>
+<span class="sourceLineNo">034</span><a id="line.34">                        ProgressMonitor progressMonitor) throws Exception {</a>
+<span class="sourceLineNo">035</span><a id="line.35">                super.resolve(action, context, progressMonitor);</a>
+<span class="sourceLineNo">036</span><a id="line.36">                </a>
+<span class="sourceLineNo">037</span><a id="line.37">                List&lt;Issue&gt; issues = getTarget().getIssues();</a>
+<span class="sourceLineNo">038</span><a id="line.38">                if (!issues.isEmpty()) {</a>
+<span class="sourceLineNo">039</span><a id="line.39">                        Table issuesTable = buildTable(</a>
+<span class="sourceLineNo">040</span><a id="line.40">                                        issues, </a>
+<span class="sourceLineNo">041</span><a id="line.41">                                        action, </a>
+<span class="sourceLineNo">042</span><a id="line.42">                                        EngineeringPackage.Literals.ISSUE_CATEGORY__ISSUES, </a>
+<span class="sourceLineNo">043</span><a id="line.43">                                        context, </a>
+<span class="sourceLineNo">044</span><a id="line.44">                                        progressMonitor,</a>
+<span class="sourceLineNo">045</span><a id="line.45">                                        createColumnBuilder("Issue"),</a>
+<span class="sourceLineNo">046</span><a id="line.46">                                        createColumnBuilder(EcorePackage.Literals.EOBJECT___ECONTAINER, "Module"),</a>
+<span class="sourceLineNo">047</span><a id="line.47">                                        createColumnBuilder(EngineeringPackage.Literals.ISSUE__INCREMENT),</a>
+<span class="sourceLineNo">048</span><a id="line.48">                                        createColumnBuilder(EngineeringPackage.Literals.ENDEAVOR__ASSIGNEE),</a>
+<span class="sourceLineNo">049</span><a id="line.49">                                        createColumnBuilder(NcorePackage.Literals.PERIOD__START),</a>
+<span class="sourceLineNo">050</span><a id="line.50">                                        createColumnBuilder(NcorePackage.Literals.PERIOD__END),</a>
+<span class="sourceLineNo">051</span><a id="line.51">                                        createColumnBuilder(NcorePackage.Literals.PERIOD__DURATION),</a>
+<span class="sourceLineNo">052</span><a id="line.52">                                        createColumnBuilder(EngineeringPackage.Literals.ENDEAVOR__COMPLETION));</a>
+<span class="sourceLineNo">053</span><a id="line.53">                        </a>
+<span class="sourceLineNo">054</span><a id="line.54">                        Action section = AppFactory.eINSTANCE.createAction();</a>
+<span class="sourceLineNo">055</span><a id="line.55">                        section.setText("Issues");</a>
+<span class="sourceLineNo">056</span><a id="line.56">                        section.getContent().add(issuesTable);</a>
+<span class="sourceLineNo">057</span><a id="line.57">                </a>
+<span class="sourceLineNo">058</span><a id="line.58">                        action.getSections().add(section);</a>
+<span class="sourceLineNo">059</span><a id="line.59">                }                       </a>
+<span class="sourceLineNo">060</span><a id="line.60">        }</a>
+<span class="sourceLineNo">061</span><a id="line.61">        </a>
+<span class="sourceLineNo">062</span><a id="line.62">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre> 
+   </div> 
+  </main>  
+ </body>
+</html>

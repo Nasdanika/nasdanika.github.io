@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"m":"org.nasdanika.common","l":"org.nasdanika.common"},{"m":"org.nasdanika.common","l":"org.nasdanika.common.descriptors"},{"m":"org.nasdanika.common","l":"org.nasdanika.common.persistence"},{"m":"org.nasdanika.common","l":"org.nasdanika.common.resources"}]
