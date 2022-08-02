@@ -47,17 +47,27 @@ window.nsdJsTreeSearchCallback = function(str, node) {
 <span class="sourceLineNo">002</span><a id="line.2"></a>
 <span class="sourceLineNo">003</span><a id="line.3">import java.util.Comparator;</a>
 <span class="sourceLineNo">004</span><a id="line.4"></a>
-<span class="sourceLineNo">005</span><a id="line.5">public interface ElementComparator extends Comparator&lt;Element&gt; {</a>
-<span class="sourceLineNo">006</span><a id="line.6">        </a>
-<span class="sourceLineNo">007</span><a id="line.7">        interface Factory {</a>
-<span class="sourceLineNo">008</span><a id="line.8">                </a>
-<span class="sourceLineNo">009</span><a id="line.9">                boolean isForType(String type);</a>
-<span class="sourceLineNo">010</span><a id="line.10">                </a>
-<span class="sourceLineNo">011</span><a id="line.11">                ElementComparator create(String type, String config, Element parent);</a>
-<span class="sourceLineNo">012</span><a id="line.12">                </a>
-<span class="sourceLineNo">013</span><a id="line.13">        }</a>
-<span class="sourceLineNo">014</span><a id="line.14"></a>
-<span class="sourceLineNo">015</span><a id="line.15">}</a>
+<span class="sourceLineNo">005</span><a id="line.5">/**</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * Comparator of elements.</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * @author Pavel</a>
+<span class="sourceLineNo">008</span><a id="line.8"> *</a>
+<span class="sourceLineNo">009</span><a id="line.9"> */</a>
+<span class="sourceLineNo">010</span><a id="line.10">public interface ElementComparator extends Comparator&lt;Element&gt; {</a>
+<span class="sourceLineNo">011</span><a id="line.11">        </a>
+<span class="sourceLineNo">012</span><a id="line.12">        /**</a>
+<span class="sourceLineNo">013</span><a id="line.13">         * Service interface.</a>
+<span class="sourceLineNo">014</span><a id="line.14">         * @author Pavel</a>
+<span class="sourceLineNo">015</span><a id="line.15">         *</a>
+<span class="sourceLineNo">016</span><a id="line.16">         */</a>
+<span class="sourceLineNo">017</span><a id="line.17">        interface Factory {</a>
+<span class="sourceLineNo">018</span><a id="line.18">                                </a>
+<span class="sourceLineNo">019</span><a id="line.19">                boolean isForType(String type);</a>
+<span class="sourceLineNo">020</span><a id="line.20">                </a>
+<span class="sourceLineNo">021</span><a id="line.21">                ElementComparator create(String type, String config, Element parent);</a>
+<span class="sourceLineNo">022</span><a id="line.22">                </a>
+<span class="sourceLineNo">023</span><a id="line.23">        }</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">}</a>
 
 
 

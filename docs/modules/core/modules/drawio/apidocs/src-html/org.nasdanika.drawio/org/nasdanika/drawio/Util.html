@@ -320,7 +320,7 @@ window.nsdJsTreeSearchCallback = function(str, node) {
 <span class="sourceLineNo">275</span><a id="line.275">                        Function&lt;Boolean, Supplier&lt;Point&gt;&gt; offsetGeneratorProvider) {</a>
 <span class="sourceLineNo">276</span><a id="line.276">                </a>
 <span class="sourceLineNo">277</span><a id="line.277">                org.nasdanika.drawio.Rectangle nodeGeometry = node.getGeometry();</a>
-<span class="sourceLineNo">278</span><a id="line.278">                Rectangle rectangle = new Rectangle(0, 0, nodeGeometry.getWidth(), nodeGeometry.getHeight());</a>
+<span class="sourceLineNo">278</span><a id="line.278">                Rectangle rectangle = new Rectangle(0, 0, (int) nodeGeometry.getWidth(), (int) nodeGeometry.getHeight());</a>
 <span class="sourceLineNo">279</span><a id="line.279">                List&lt;Node&gt; children = node.getElements().stream().filter(Node.class::isInstance).map(Node.class::cast).collect(Collectors.toList());</a>
 <span class="sourceLineNo">280</span><a id="line.280">                if (!children.isEmpty()) {</a>
 <span class="sourceLineNo">281</span><a id="line.281">                        Point childOffset = new Point((int) offset.getX(), (int) offset.getY() + 30);</a>
