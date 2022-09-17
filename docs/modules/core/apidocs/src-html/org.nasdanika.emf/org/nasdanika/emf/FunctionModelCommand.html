@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+
+<script src="../../../../../../../../search-documents.js"></script>
+
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script>
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.emf;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import org.eclipse.emf.ecore.EObject;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import org.nasdanika.common.CommandFactory;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import org.nasdanika.common.ConsumerFactory;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.nasdanika.common.FunctionFactory;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import org.nasdanika.common.SupplierFactory;</a>
+<span class="sourceLineNo">008</span><a id="line.8"></a>
+<span class="sourceLineNo">009</span><a id="line.9">/**</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * Base class for commands which adapt models to {@link FunctionFactory} and then combine input supplier with function and output consumer to execute.</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * @author Pavel</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *</a>
+<span class="sourceLineNo">013</span><a id="line.13"> */</a>
+<span class="sourceLineNo">014</span><a id="line.14">public abstract class FunctionModelCommand&lt;T,R&gt; extends AdapterModelCommand&lt;EObject,FunctionFactory&lt;T,R&gt;&gt; {</a>
+<span class="sourceLineNo">015</span><a id="line.15"></a>
+<span class="sourceLineNo">016</span><a id="line.16">        @SuppressWarnings({ "unchecked", "rawtypes" })</a>
+<span class="sourceLineNo">017</span><a id="line.17">        @Override</a>
+<span class="sourceLineNo">018</span><a id="line.18">        protected Class&lt;FunctionFactory&lt;T,R&gt;&gt; getAdapterType() {</a>
+<span class="sourceLineNo">019</span><a id="line.19">                return (Class) FunctionFactory.class;</a>
+<span class="sourceLineNo">020</span><a id="line.20">        }</a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">        @Override</a>
+<span class="sourceLineNo">023</span><a id="line.23">        protected CommandFactory createCommandFactory(FunctionFactory&lt;T,R&gt; adapter) {</a>
+<span class="sourceLineNo">024</span><a id="line.24">                return createInputSupplierFactory().then(adapter).then(createOutputConsumerFactory());</a>
+<span class="sourceLineNo">025</span><a id="line.25">        }</a>
+<span class="sourceLineNo">026</span><a id="line.26">        </a>
+<span class="sourceLineNo">027</span><a id="line.27">        /**</a>
+<span class="sourceLineNo">028</span><a id="line.28">         * @return Factory for input supplier to combine with function and output consumer to create a command.</a>
+<span class="sourceLineNo">029</span><a id="line.29">         */</a>
+<span class="sourceLineNo">030</span><a id="line.30">        protected abstract SupplierFactory&lt;T&gt; createInputSupplierFactory();</a>
+<span class="sourceLineNo">031</span><a id="line.31">        </a>
+<span class="sourceLineNo">032</span><a id="line.32">        /**</a>
+<span class="sourceLineNo">033</span><a id="line.33">         * @return Factory for output consumer to combine with input supplier and function to create a command.</a>
+<span class="sourceLineNo">034</span><a id="line.34">         */</a>
+<span class="sourceLineNo">035</span><a id="line.35">        protected abstract ConsumerFactory&lt;? super R&gt; createOutputConsumerFactory();</a>
+<span class="sourceLineNo">036</span><a id="line.36"></a>
+<span class="sourceLineNo">037</span><a id="line.37">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

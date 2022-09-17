@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+
+<script src="../../../../../../../../search-documents.js"></script>
+
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script>
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.common;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">/**</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * @author Pavel Vlasov</a>
+<span class="sourceLineNo">005</span><a id="line.5"> *</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * @param &lt;T&gt;</a>
+<span class="sourceLineNo">007</span><a id="line.7"> */</a>
+<span class="sourceLineNo">008</span><a id="line.8">public interface ConsumerFactory&lt;T&gt; extends ExecutionParticipantFactory&lt;Consumer&lt;T&gt;&gt; {</a>
+<span class="sourceLineNo">009</span><a id="line.9">        </a>
+<span class="sourceLineNo">010</span><a id="line.10">        /**</a>
+<span class="sourceLineNo">011</span><a id="line.11">         * Provides {@link ConsumerFactory} for a specific type.</a>
+<span class="sourceLineNo">012</span><a id="line.12">         * @author Pavel</a>
+<span class="sourceLineNo">013</span><a id="line.13">         *</a>
+<span class="sourceLineNo">014</span><a id="line.14">         */</a>
+<span class="sourceLineNo">015</span><a id="line.15">        interface Provider {</a>
+<span class="sourceLineNo">016</span><a id="line.16">                &lt;T&gt; ConsumerFactory&lt;T&gt; getFactory(Class&lt;T&gt; type);</a>
+<span class="sourceLineNo">017</span><a id="line.17">        }</a>
+<span class="sourceLineNo">018</span><a id="line.18">        </a>
+<span class="sourceLineNo">019</span><a id="line.19">        default FunctionFactory&lt;T,T&gt; asFunctionFactory() {</a>
+<span class="sourceLineNo">020</span><a id="line.20">                return new FunctionFactory&lt;T, T&gt;() {</a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">                        @Override</a>
+<span class="sourceLineNo">023</span><a id="line.23">                        public Function&lt;T, T&gt; create(Context context) {</a>
+<span class="sourceLineNo">024</span><a id="line.24">                                return ConsumerFactory.this.create(context).asFunction();</a>
+<span class="sourceLineNo">025</span><a id="line.25">                        }</a>
+<span class="sourceLineNo">026</span><a id="line.26">                        </a>
+<span class="sourceLineNo">027</span><a id="line.27">                };</a>
+<span class="sourceLineNo">028</span><a id="line.28">        }</a>
+<span class="sourceLineNo">029</span><a id="line.29">        </a>
+<span class="sourceLineNo">030</span><a id="line.30">        default &lt;R&gt; FunctionFactory&lt;BiSupplier&lt;T,R&gt;,R&gt; asBiSupplierFunctionFactory() {</a>
+<span class="sourceLineNo">031</span><a id="line.31">                return new FunctionFactory&lt;BiSupplier&lt;T,R&gt;, R&gt;() {</a>
+<span class="sourceLineNo">032</span><a id="line.32"></a>
+<span class="sourceLineNo">033</span><a id="line.33">                        @Override</a>
+<span class="sourceLineNo">034</span><a id="line.34">                        public Function&lt;BiSupplier&lt;T,R&gt;, R&gt; create(Context context) {</a>
+<span class="sourceLineNo">035</span><a id="line.35">                                return ConsumerFactory.this.create(context).asBiSupplierFunction();</a>
+<span class="sourceLineNo">036</span><a id="line.36">                        }</a>
+<span class="sourceLineNo">037</span><a id="line.37">                        </a>
+<span class="sourceLineNo">038</span><a id="line.38">                };</a>
+<span class="sourceLineNo">039</span><a id="line.39">        }</a>
+<span class="sourceLineNo">040</span><a id="line.40">        </a>
+<span class="sourceLineNo">041</span><a id="line.41">        /**</a>
+<span class="sourceLineNo">042</span><a id="line.42">         * @param contextSupplierFactory Factory which creates a context to be passed to this factory to create supplier.</a>
+<span class="sourceLineNo">043</span><a id="line.43">         * @return Consumer factory which creates a context using the context supplier factory and then uses that context and this factory to create a function.</a>
+<span class="sourceLineNo">044</span><a id="line.44">         */</a>
+<span class="sourceLineNo">045</span><a id="line.45">        default ConsumerFactory&lt;T&gt; contextify(SupplierFactory&lt;Context&gt; contextSupplierFactory) {</a>
+<span class="sourceLineNo">046</span><a id="line.46">                return new ConsumerFactory&lt;T&gt;() {</a>
+<span class="sourceLineNo">047</span><a id="line.47"></a>
+<span class="sourceLineNo">048</span><a id="line.48">                        @Override</a>
+<span class="sourceLineNo">049</span><a id="line.49">                        public Consumer&lt;T&gt; create(Context context) {</a>
+<span class="sourceLineNo">050</span><a id="line.50">                                return new ContextifiedExecutionParticipant.ContextifiedConsumer&lt;T&gt;(contextSupplierFactory.create(context), ConsumerFactory.this);</a>
+<span class="sourceLineNo">051</span><a id="line.51">                        }</a>
+<span class="sourceLineNo">052</span><a id="line.52">                        </a>
+<span class="sourceLineNo">053</span><a id="line.53">                };</a>
+<span class="sourceLineNo">054</span><a id="line.54">        }</a>
+<span class="sourceLineNo">055</span><a id="line.55">        </a>
+<span class="sourceLineNo">056</span><a id="line.56">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+
+<script src="../../../../../../../../search-documents.js"></script>
+
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script>
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.drawio;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.io.IOException;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.io.InputStream;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.io.OutputStream;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.io.OutputStreamWriter;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.io.Writer;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import java.nio.charset.StandardCharsets;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import java.util.Map;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import java.util.stream.Stream;</a>
+<span class="sourceLineNo">011</span><a id="line.11"></a>
+<span class="sourceLineNo">012</span><a id="line.12">import javax.xml.parsers.ParserConfigurationException;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import javax.xml.transform.TransformerException;</a>
+<span class="sourceLineNo">014</span><a id="line.14"></a>
+<span class="sourceLineNo">015</span><a id="line.15">import org.eclipse.emf.common.util.URI;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import org.nasdanika.common.NasdanikaException;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import org.nasdanika.graph.processor.GraphProcessorResource;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import org.nasdanika.graph.processor.ProcessorFactory;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import org.xml.sax.SAXException;</a>
+<span class="sourceLineNo">020</span><a id="line.20"></a>
+<span class="sourceLineNo">021</span><a id="line.21">/**</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * Loads EMF classes from Drawio documents. </a>
+<span class="sourceLineNo">023</span><a id="line.23"> * Saving is supported via {@link UpdateAdapter}. All contents is iterated and for each element with UpdateAdapter the adapter's update method is invoked.</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * The load logic is responsible for attaching adapters to model elements. </a>
+<span class="sourceLineNo">025</span><a id="line.25"> * @author Pavel</a>
+<span class="sourceLineNo">026</span><a id="line.26"> *</a>
+<span class="sourceLineNo">027</span><a id="line.27"> */</a>
+<span class="sourceLineNo">028</span><a id="line.28">public abstract class DrawioResource&lt;P&gt; extends GraphProcessorResource&lt;P&gt; {</a>
+<span class="sourceLineNo">029</span><a id="line.29">        </a>
+<span class="sourceLineNo">030</span><a id="line.30">        protected Document document;</a>
+<span class="sourceLineNo">031</span><a id="line.31">        </a>
+<span class="sourceLineNo">032</span><a id="line.32">        public DrawioResource(URI uri, ProcessorFactory&lt;P, ?, ?&gt; processorFactory) {</a>
+<span class="sourceLineNo">033</span><a id="line.33">                super(uri, processorFactory);</a>
+<span class="sourceLineNo">034</span><a id="line.34">        }</a>
+<span class="sourceLineNo">035</span><a id="line.35">        </a>
+<span class="sourceLineNo">036</span><a id="line.36">        @Override</a>
+<span class="sourceLineNo">037</span><a id="line.37">        protected Stream&lt;org.nasdanika.graph.Element&gt; loadElements(InputStream inputStream, Map&lt;?, ?&gt; options)  throws IOException {</a>
+<span class="sourceLineNo">038</span><a id="line.38">                try {</a>
+<span class="sourceLineNo">039</span><a id="line.39">                        document = loadDocument(inputStream);</a>
+<span class="sourceLineNo">040</span><a id="line.40">                        return Stream.of(document);</a>
+<span class="sourceLineNo">041</span><a id="line.41">                } catch (ParserConfigurationException | SAXException e) {</a>
+<span class="sourceLineNo">042</span><a id="line.42">                        throw new NasdanikaException(e);</a>
+<span class="sourceLineNo">043</span><a id="line.43">                }</a>
+<span class="sourceLineNo">044</span><a id="line.44">        }</a>
+<span class="sourceLineNo">045</span><a id="line.45"></a>
+<span class="sourceLineNo">046</span><a id="line.46">        protected Document loadDocument(InputStream inputStream) throws IOException, ParserConfigurationException, SAXException {</a>
+<span class="sourceLineNo">047</span><a id="line.47">                return Document.load(inputStream, getURI());</a>
+<span class="sourceLineNo">048</span><a id="line.48">        }</a>
+<span class="sourceLineNo">049</span><a id="line.49"></a>
+<span class="sourceLineNo">050</span><a id="line.50">        @Override</a>
+<span class="sourceLineNo">051</span><a id="line.51">        protected void doSave(OutputStream outputStream, Map&lt;?, ?&gt; options) throws IOException {</a>
+<span class="sourceLineNo">052</span><a id="line.52">                if (document == null) {</a>
+<span class="sourceLineNo">053</span><a id="line.53">                        try {</a>
+<span class="sourceLineNo">054</span><a id="line.54">                                document = Document.create(false, getURI());</a>
+<span class="sourceLineNo">055</span><a id="line.55">                        } catch (ParserConfigurationException e) {</a>
+<span class="sourceLineNo">056</span><a id="line.56">                                throw new NasdanikaException(e);</a>
+<span class="sourceLineNo">057</span><a id="line.57">                        }</a>
+<span class="sourceLineNo">058</span><a id="line.58">                }</a>
+<span class="sourceLineNo">059</span><a id="line.59">                update(document);</a>
+<span class="sourceLineNo">060</span><a id="line.60">                try (Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {</a>
+<span class="sourceLineNo">061</span><a id="line.61">                        try {</a>
+<span class="sourceLineNo">062</span><a id="line.62">                                writer.write(document.save(null));</a>
+<span class="sourceLineNo">063</span><a id="line.63">                        } catch (TransformerException e) {</a>
+<span class="sourceLineNo">064</span><a id="line.64">                                throw new NasdanikaException(e);</a>
+<span class="sourceLineNo">065</span><a id="line.65">                        }</a>
+<span class="sourceLineNo">066</span><a id="line.66">                }</a>
+<span class="sourceLineNo">067</span><a id="line.67">        }</a>
+<span class="sourceLineNo">068</span><a id="line.68"></a>
+<span class="sourceLineNo">069</span><a id="line.69">        /**</a>
+<span class="sourceLineNo">070</span><a id="line.70">         * Override to update document with model data.</a>
+<span class="sourceLineNo">071</span><a id="line.71">         * @param document Document to update. It may be a previously loaded document or a new empty document for new resources.</a>
+<span class="sourceLineNo">072</span><a id="line.72">         */</a>
+<span class="sourceLineNo">073</span><a id="line.73">        protected void update(Document document) {}</a>
+<span class="sourceLineNo">074</span><a id="line.74">        </a>
+<span class="sourceLineNo">075</span><a id="line.75">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

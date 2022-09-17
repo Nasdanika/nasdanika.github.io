@@ -1,5 +1,9 @@
 This page provides an overview of Nasdanika products.
 
+```drawio-resource
+./nasdanika.drawio
+```
+
 The primary target audience of the Nasdanika product line are Java developers who use Maven.
 
 The main _theme_ can be expressed as "Efficient knowledge capture and dissemination" 
@@ -210,7 +214,6 @@ This section provides a brief overview of Nasdanika products and their modules.
     * [EMF](modules/core/modules/emf/index.html) - classes for working with Ecore models, e.g. classes for loading models from YAML files.
     * [Exec](modules/core/modules/exec/index.html) - Ecore models and adapters to execution model participants to build code generators and to load model content from different sources.
     * [Flow](modules/core/modules/flow/index.html) - Ecore flow model to capture customer journeys/business processes. 
-    * [mxgraph](modules/core/modules/mxgraph/index.html) - Maven jar packaging of mxgraph sources. It is used to generate diagrams.net diagrams.
     * [Ncore](modules/core/modules/ncore/index.html) - Ecore model containing common classes used/extended in other models.
 * [HTML](modules/html/index.html) - Java API's and models for generating HTML
     * [Bootstrap](modules/html/modules/bootstrap/index.html) - Fluent Java API to generate [Bootstrap 4](https://getbootstrap.com/docs/4.6/getting-started/introduction/) markup.

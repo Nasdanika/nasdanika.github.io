@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+
+<script src="../../../../../../../../search-documents.js"></script>
+
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script>
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">/**</a>
+<span class="sourceLineNo">002</span><a id="line.2"> */</a>
+<span class="sourceLineNo">003</span><a id="line.3">package org.nasdanika.flow;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import org.eclipse.emf.common.util.EMap;</a>
+<span class="sourceLineNo">006</span><a id="line.6"></a>
+<span class="sourceLineNo">007</span><a id="line.7">/**</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * A representation of the model object '&lt;em&gt;&lt;b&gt;Flow&lt;/b&gt;&lt;/em&gt;'.</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">011</span><a id="line.11"> *</a>
+<span class="sourceLineNo">012</span><a id="line.12"> * &lt;p&gt;</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * The following features are supported:</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * &lt;ul&gt;</a>
+<span class="sourceLineNo">016</span><a id="line.16"> *   &lt;li&gt;{@link org.nasdanika.flow.Flow#getElements &lt;em&gt;Elements&lt;/em&gt;}&lt;/li&gt;</a>
+<span class="sourceLineNo">017</span><a id="line.17"> *   &lt;li&gt;{@link org.nasdanika.flow.Flow#isPartition &lt;em&gt;Partition&lt;/em&gt;}&lt;/li&gt;</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * &lt;/ul&gt;</a>
+<span class="sourceLineNo">019</span><a id="line.19"> *</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * @see org.nasdanika.flow.FlowPackage#getFlow()</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * @model annotation="urn:org.nasdanika documentation-reference='doc/flow.md' load-doc-reference='doc/flow-load-doc.md'"</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * @generated</a>
+<span class="sourceLineNo">023</span><a id="line.23"> */</a>
+<span class="sourceLineNo">024</span><a id="line.24">public interface Flow extends Activity&lt;Flow&gt; {</a>
+<span class="sourceLineNo">025</span><a id="line.25">        /**</a>
+<span class="sourceLineNo">026</span><a id="line.26">         * Returns the value of the '&lt;em&gt;&lt;b&gt;Elements&lt;/b&gt;&lt;/em&gt;' map.</a>
+<span class="sourceLineNo">027</span><a id="line.27">         * The key is of type {@link java.lang.String},</a>
+<span class="sourceLineNo">028</span><a id="line.28">         * and the value is of type {@link org.nasdanika.flow.FlowElement&lt;?&gt;},</a>
+<span class="sourceLineNo">029</span><a id="line.29">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">030</span><a id="line.30">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">031</span><a id="line.31">         * &lt;!-- begin-model-doc --&gt;</a>
+<span class="sourceLineNo">032</span><a id="line.32">         * Elements of this flow.</a>
+<span class="sourceLineNo">033</span><a id="line.33">         * &lt;!-- end-model-doc --&gt;</a>
+<span class="sourceLineNo">034</span><a id="line.34">         * @return the value of the '&lt;em&gt;Elements&lt;/em&gt;' map.</a>
+<span class="sourceLineNo">035</span><a id="line.35">         * @see org.nasdanika.flow.FlowPackage#getFlow_Elements()</a>
+<span class="sourceLineNo">036</span><a id="line.36">         * @model mapType="org.nasdanika.flow.FlowElementEntry&amp;lt;org.eclipse.emf.ecore.EString, org.nasdanika.flow.FlowElement&amp;lt;?&amp;gt;&amp;gt;"</a>
+<span class="sourceLineNo">037</span><a id="line.37">         * @generated</a>
+<span class="sourceLineNo">038</span><a id="line.38">         */</a>
+<span class="sourceLineNo">039</span><a id="line.39">        EMap&lt;String, FlowElement&lt;?&gt;&gt; getElements();</a>
+<span class="sourceLineNo">040</span><a id="line.40"></a>
+<span class="sourceLineNo">041</span><a id="line.41">        /**</a>
+<span class="sourceLineNo">042</span><a id="line.42">         * Returns the value of the '&lt;em&gt;&lt;b&gt;Partition&lt;/b&gt;&lt;/em&gt;' attribute.</a>
+<span class="sourceLineNo">043</span><a id="line.43">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">044</span><a id="line.44">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * &lt;!-- begin-model-doc --&gt;</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * If true, this flow shall be displayed as a partition on the parent flow diagram.</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * &lt;!-- end-model-doc --&gt;</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * @return the value of the '&lt;em&gt;Partition&lt;/em&gt;' attribute.</a>
+<span class="sourceLineNo">049</span><a id="line.49">         * @see #setPartition(boolean)</a>
+<span class="sourceLineNo">050</span><a id="line.50">         * @see org.nasdanika.flow.FlowPackage#getFlow_Partition()</a>
+<span class="sourceLineNo">051</span><a id="line.51">         * @model</a>
+<span class="sourceLineNo">052</span><a id="line.52">         * @generated</a>
+<span class="sourceLineNo">053</span><a id="line.53">         */</a>
+<span class="sourceLineNo">054</span><a id="line.54">        boolean isPartition();</a>
+<span class="sourceLineNo">055</span><a id="line.55"></a>
+<span class="sourceLineNo">056</span><a id="line.56">        /**</a>
+<span class="sourceLineNo">057</span><a id="line.57">         * Sets the value of the '{@link org.nasdanika.flow.Flow#isPartition &lt;em&gt;Partition&lt;/em&gt;}' attribute.</a>
+<span class="sourceLineNo">058</span><a id="line.58">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">059</span><a id="line.59">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">060</span><a id="line.60">         * @param value the new value of the '&lt;em&gt;Partition&lt;/em&gt;' attribute.</a>
+<span class="sourceLineNo">061</span><a id="line.61">         * @see #isPartition()</a>
+<span class="sourceLineNo">062</span><a id="line.62">         * @generated</a>
+<span class="sourceLineNo">063</span><a id="line.63">         */</a>
+<span class="sourceLineNo">064</span><a id="line.64">        void setPartition(boolean value);</a>
+<span class="sourceLineNo">065</span><a id="line.65"></a>
+<span class="sourceLineNo">066</span><a id="line.66">} // Flow</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

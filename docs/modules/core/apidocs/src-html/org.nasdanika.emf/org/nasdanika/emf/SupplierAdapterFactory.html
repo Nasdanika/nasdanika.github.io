@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+
+<script src="../../../../../../../../search-documents.js"></script>
+
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script>
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.emf;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.util.function.Supplier;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import org.eclipse.emf.common.notify.Notifier;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.eclipse.emf.ecore.EClass;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import org.eclipse.emf.ecore.EcorePackage;</a>
+<span class="sourceLineNo">008</span><a id="line.8"></a>
+<span class="sourceLineNo">009</span><a id="line.9">/**</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * Adapter factory delegating to {@link Supplier}, which can be a constructor.</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * @author Pavel Vlasov</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *</a>
+<span class="sourceLineNo">013</span><a id="line.13"> */</a>
+<span class="sourceLineNo">014</span><a id="line.14">public class SupplierAdapterFactory&lt;T&gt; extends DelegatingAdapterFactory&lt;T&gt; {</a>
+<span class="sourceLineNo">015</span><a id="line.15">        </a>
+<span class="sourceLineNo">016</span><a id="line.16">        private Supplier&lt;T&gt; supplier;</a>
+<span class="sourceLineNo">017</span><a id="line.17">        </a>
+<span class="sourceLineNo">018</span><a id="line.18">        public SupplierAdapterFactory(Class&lt;T&gt; type, ClassLoader proxyClassLoader, Supplier&lt;T&gt; supplier) {</a>
+<span class="sourceLineNo">019</span><a id="line.19">                this(EcorePackage.Literals.EOBJECT, type, proxyClassLoader, supplier);</a>
+<span class="sourceLineNo">020</span><a id="line.20">        }       </a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">        public SupplierAdapterFactory(EClass eClass, Class&lt;T&gt; type, ClassLoader proxyClassLoader, Supplier&lt;T&gt; supplier) {</a>
+<span class="sourceLineNo">023</span><a id="line.23">                super(eClass, type, proxyClassLoader);</a>
+<span class="sourceLineNo">024</span><a id="line.24">                this.supplier = supplier;</a>
+<span class="sourceLineNo">025</span><a id="line.25">        }</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">        @Override</a>
+<span class="sourceLineNo">028</span><a id="line.28">        protected T doCreateAdapter(Notifier target) {</a>
+<span class="sourceLineNo">029</span><a id="line.29">                return supplier.get();</a>
+<span class="sourceLineNo">030</span><a id="line.30">        }       </a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

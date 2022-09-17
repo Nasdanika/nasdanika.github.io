@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"org.nasdanika.diagram.gen","l":"DrawioGenerator"},{"p":"org.nasdanika.diagram.gen","l":"Generator"},{"p":"org.nasdanika.diagram.gen","l":"PlantumlGenerator"}]

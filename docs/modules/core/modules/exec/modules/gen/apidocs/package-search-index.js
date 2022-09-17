@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"m":"org.nasdanika.exec.gen","l":"org.nasdanika.exec.gen"},{"m":"org.nasdanika.exec.gen","l":"org.nasdanika.exec.gen.content"},{"m":"org.nasdanika.exec.gen","l":"org.nasdanika.exec.gen.resources"}]

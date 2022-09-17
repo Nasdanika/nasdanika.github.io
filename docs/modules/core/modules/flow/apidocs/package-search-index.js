@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"m":"org.nasdanika.flow","l":"org.nasdanika.flow"},{"m":"org.nasdanika.flow","l":"org.nasdanika.flow.impl"},{"m":"org.nasdanika.flow","l":"org.nasdanika.flow.util"}]

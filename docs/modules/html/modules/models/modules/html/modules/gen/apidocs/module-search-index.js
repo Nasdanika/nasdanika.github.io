@@ -1,1 +1,0 @@
-moduleSearchIndex = [{"l":"org.nasdanika.html.model.html.gen"}]

@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+
+<script src="../../../../../../../../../search-documents.js"></script>
+
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<script>
+// Script for full-text search of JsTree
+
+window.nsdJsTreeSearchCallback = function(str, node) { 
+    var sf = new $.vakata.search(str, true, { caseSensitive : false, fuzzy : false }); 
+    if (sf.search(node.text).isMatch) {
+		return true;
+	} 
+    let searchResult = this.search(str); 
+    for (const sr in searchResult) {
+        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+            return true;
+        } 
+    } 
+    return false; 
+}.bind(lunr(function () {
+			  this.ref('id');
+			  this.field('title');
+			  this.field('content');
+
+			  for (const key in searchDocuments) {
+				  let doc = searchDocuments[key];
+				this.add({
+					id: doc['action-uuid'],
+					title: doc.title,
+					path: doc.path,
+					content: doc.content
+				});  
+			  }
+			}));
+</script>
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.emf.persistence;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.util.HashMap;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.util.HashSet;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.List;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.util.Map;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.util.Map.Entry;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import java.util.Set;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import java.util.function.BiFunction;</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">import org.eclipse.emf.common.util.URI;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import org.eclipse.emf.ecore.EAnnotation;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import org.eclipse.emf.ecore.EAttribute;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import org.eclipse.emf.ecore.EClass;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import org.eclipse.emf.ecore.EClassifier;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import org.eclipse.emf.ecore.EFactory;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import org.eclipse.emf.ecore.ENamedElement;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import org.eclipse.emf.ecore.EObject;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import org.eclipse.emf.ecore.EPackage;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import org.eclipse.emf.ecore.EReference;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import org.eclipse.emf.ecore.EStructuralFeature;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import org.eclipse.emf.ecore.InternalEObject;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import org.eclipse.emf.ecore.resource.ResourceSet;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import org.nasdanika.common.BiSupplier;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import org.nasdanika.common.Context;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import org.nasdanika.common.ProgressMonitor;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import org.nasdanika.common.Supplier;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import org.nasdanika.common.SupplierFactory;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import org.nasdanika.common.Util;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import org.nasdanika.persistence.ContextLoadable;</a>
+<span class="sourceLineNo">032</span><a id="line.32">import org.nasdanika.persistence.DispatchingLoader;</a>
+<span class="sourceLineNo">033</span><a id="line.33">import org.nasdanika.persistence.LoadTracker;</a>
+<span class="sourceLineNo">034</span><a id="line.34">import org.nasdanika.persistence.Loadable;</a>
+<span class="sourceLineNo">035</span><a id="line.35">import org.nasdanika.persistence.Marker;</a>
+<span class="sourceLineNo">036</span><a id="line.36">import org.nasdanika.persistence.ObjectLoader;</a>
+<span class="sourceLineNo">037</span><a id="line.37">import org.nasdanika.ncore.Marked;</a>
+<span class="sourceLineNo">038</span><a id="line.38">import org.nasdanika.ncore.NcoreFactory;</a>
+<span class="sourceLineNo">039</span><a id="line.39">import org.nasdanika.ncore.util.NcoreUtil;</a>
+<span class="sourceLineNo">040</span><a id="line.40">import org.yaml.snakeyaml.Yaml;</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">public class EObjectLoader extends DispatchingLoader {</a>
+<span class="sourceLineNo">043</span><a id="line.43">        </a>
+<span class="sourceLineNo">044</span><a id="line.44">        /**</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * If proxy URI is prefixed with ./ then the URI is not resolved relative to the context resource at the load time.</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * Rather the prefix is removed and a URI created from the tail is passed to the proxy object to be used</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * at proxy resolution time. </a>
+<span class="sourceLineNo">048</span><a id="line.48">         */</a>
+<span class="sourceLineNo">049</span><a id="line.49">        public static final String LATE_PROXY_RESOLUTION_URI_PREFIX = "./";     </a>
+<span class="sourceLineNo">050</span><a id="line.50">        </a>
+<span class="sourceLineNo">051</span><a id="line.51">        static final String HREF_KEY = "href";</a>
+<span class="sourceLineNo">052</span><a id="line.52"></a>
+<span class="sourceLineNo">053</span><a id="line.53">        /**</a>
+<span class="sourceLineNo">054</span><a id="line.54">         * Use this annotation to customize load keys. Use feature-key annotation for features to also customize containment path calculation.</a>
+<span class="sourceLineNo">055</span><a id="line.55">         */</a>
+<span class="sourceLineNo">056</span><a id="line.56">        public static final String LOAD_KEY = "load-key";</a>
+<span class="sourceLineNo">057</span><a id="line.57">        </a>
+<span class="sourceLineNo">058</span><a id="line.58">        /**</a>
+<span class="sourceLineNo">059</span><a id="line.59">         * Information about how element is loaded in markdown. For {@link EStructuralFeature}s overrides feature documentation if present.  </a>
+<span class="sourceLineNo">060</span><a id="line.60">         */</a>
+<span class="sourceLineNo">061</span><a id="line.61">        public static final String LOAD_DOC = "load-doc";</a>
+<span class="sourceLineNo">062</span><a id="line.62">        </a>
+<span class="sourceLineNo">063</span><a id="line.63">        /**</a>
+<span class="sourceLineNo">064</span><a id="line.64">         * Reference to a resource with information about how element is loaded in markdown. For {@link EStructuralFeature}s overrides feature documentation if present.  </a>
+<span class="sourceLineNo">065</span><a id="line.65">         */</a>
+<span class="sourceLineNo">066</span><a id="line.66">        public static final String LOAD_DOC_REF = "load-doc-reference";</a>
+<span class="sourceLineNo">067</span><a id="line.67">        </a>
+<span class="sourceLineNo">068</span><a id="line.68">        /**</a>
+<span class="sourceLineNo">069</span><a id="line.69">         * If this Nasdanika annotation details is set to "true" on a {@link EStructuralFeature} and configuration object is not a map</a>
+<span class="sourceLineNo">070</span><a id="line.70">         * then the configuration object is loaded into this feature. </a>
+<span class="sourceLineNo">071</span><a id="line.71">         */</a>
+<span class="sourceLineNo">072</span><a id="line.72">        public static final String IS_DEFAULT_FEATURE = "default-feature";</a>
+<span class="sourceLineNo">073</span><a id="line.73">        </a>
+<span class="sourceLineNo">074</span><a id="line.74">        /**</a>
+<span class="sourceLineNo">075</span><a id="line.75">         * {@link EReference} annotation with a name of value feature as a value. </a>
+<span class="sourceLineNo">076</span><a id="line.76">         * Value feature is loaded with the configuration map value for reference with eKeys. </a>
+<span class="sourceLineNo">077</span><a id="line.77">         * If this annotation is not set then the object itself is loaded with the value. </a>
+<span class="sourceLineNo">078</span><a id="line.78">         */</a>
+<span class="sourceLineNo">079</span><a id="line.79">        public static final String VALUE_FEATURE = "value-feature";</a>
+<span class="sourceLineNo">080</span><a id="line.80">        </a>
+<span class="sourceLineNo">081</span><a id="line.81">        /**</a>
+<span class="sourceLineNo">082</span><a id="line.82">         * If this Nasdanika annotation details is set to "true" on a {@link EAttribute} and configuration object is a {@link String}</a>
+<span class="sourceLineNo">083</span><a id="line.83">         * then the configuration object is resolved relative to the model resource {@link URI} (base). </a>
+<span class="sourceLineNo">084</span><a id="line.84">         */</a>
+<span class="sourceLineNo">085</span><a id="line.85">        public static final String IS_RESOLVE_URI = "resolve-uri";</a>
+<span class="sourceLineNo">086</span><a id="line.86">        </a>
+<span class="sourceLineNo">087</span><a id="line.87">        /**</a>
+<span class="sourceLineNo">088</span><a id="line.88">         * This annotation allows to override element types for homogenous references.</a>
+<span class="sourceLineNo">089</span><a id="line.89">         * The value shall be a YAML map of reference names to types. If entry value is a string it is treated as a class name from the same</a>
+<span class="sourceLineNo">090</span><a id="line.90">         * {@link EPackage} as the annotated {@link EClass}. If it is a map then it shall contain &lt;code&gt;ns-uri&lt;/code&gt; and &lt;code&gt;name&lt;/code&gt; keys.</a>
+<span class="sourceLineNo">091</span><a id="line.91">         * EClass is looked up in the loader's {@link ResourceSet} package registry.</a>
+<span class="sourceLineNo">092</span><a id="line.92">         */</a>
+<span class="sourceLineNo">093</span><a id="line.93">        public static final String REFERENCE_TYPES = "reference-types";</a>
+<span class="sourceLineNo">094</span><a id="line.94">        </a>
+<span class="sourceLineNo">095</span><a id="line.95">        /**</a>
+<span class="sourceLineNo">096</span><a id="line.96">         * This annotation allows to customize element types for homogenous references based on configuration element type</a>
+<span class="sourceLineNo">097</span><a id="line.97">         * The value shall be a YAML map of configuration types (string, map, list, number, boolean) to reference types. </a>
+<span class="sourceLineNo">098</span><a id="line.98">         * If entry value is a string it is treated as a class name from the same</a>
+<span class="sourceLineNo">099</span><a id="line.99">         * {@link EPackage} as the annotated {@link EReference}'s {@link EClass}. </a>
+<span class="sourceLineNo">100</span><a id="line.100">         * If it is a map then it shall contain &lt;code&gt;ns-uri&lt;/code&gt; and &lt;code&gt;name&lt;/code&gt; keys.</a>
+<span class="sourceLineNo">101</span><a id="line.101">         * EClass is looked up in the loader's {@link ResourceSet} package registry.</a>
+<span class="sourceLineNo">102</span><a id="line.102">         */</a>
+<span class="sourceLineNo">103</span><a id="line.103">        public static final String REFERENCE_TYPE = "reference-type";</a>
+<span class="sourceLineNo">104</span><a id="line.104">        </a>
+<span class="sourceLineNo">105</span><a id="line.105">        /**</a>
+<span class="sourceLineNo">106</span><a id="line.106">         * This annotation allows to load keys for features.</a>
+<span class="sourceLineNo">107</span><a id="line.107">         * The value shall be a YAML map of feature names to keys. If entry value is a string it is treated as a key name.</a>
+<span class="sourceLineNo">108</span><a id="line.108">         */</a>
+<span class="sourceLineNo">109</span><a id="line.109">        public static final String LOAD_KEYS = "load-keys";</a>
+<span class="sourceLineNo">110</span><a id="line.110">        </a>
+<span class="sourceLineNo">111</span><a id="line.111">        private ThreadLocal&lt;java.util.function.Function&lt;EClass, EObject&gt;&gt; threadConstructor = new ThreadLocal&lt;java.util.function.Function&lt;EClass,EObject&gt;&gt;();</a>
+<span class="sourceLineNo">112</span><a id="line.112">        </a>
+<span class="sourceLineNo">113</span><a id="line.113">        /**</a>
+<span class="sourceLineNo">114</span><a id="line.114">         * Sets thread constructor for creation of </a>
+<span class="sourceLineNo">115</span><a id="line.115">         * @param constructor</a>
+<span class="sourceLineNo">116</span><a id="line.116">         */</a>
+<span class="sourceLineNo">117</span><a id="line.117">        public void setThreadConstructor(java.util.function.Function&lt;EClass, EObject&gt; constructor) {</a>
+<span class="sourceLineNo">118</span><a id="line.118">                threadConstructor.set(constructor);</a>
+<span class="sourceLineNo">119</span><a id="line.119">        }</a>
+<span class="sourceLineNo">120</span><a id="line.120">        </a>
+<span class="sourceLineNo">121</span><a id="line.121">        /**</a>
+<span class="sourceLineNo">122</span><a id="line.122">         * </a>
+<span class="sourceLineNo">123</span><a id="line.123">         * @param eClass</a>
+<span class="sourceLineNo">124</span><a id="line.124">         * @param feature</a>
+<span class="sourceLineNo">125</span><a id="line.125">         * @return Features in the argument class the argument feature is exclusive with.</a>
+<span class="sourceLineNo">126</span><a id="line.126">         */</a>
+<span class="sourceLineNo">127</span><a id="line.127">        public static Object[] getExclusiveWith(EClass eClass, EStructuralFeature feature, BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider) {</a>
+<span class="sourceLineNo">128</span><a id="line.128">                Set&lt;String&gt; ret = new HashSet&lt;&gt;();</a>
+<span class="sourceLineNo">129</span><a id="line.129">                for (EStructuralFeature sf: eClass.getEAllStructuralFeatures()) {</a>
+<span class="sourceLineNo">130</span><a id="line.130">                        String exclusiveWithStr = NcoreUtil.getNasdanikaAnnotationDetail(sf, "exclusive-with"); // A space-separated list of load keys which are mutually exclusive with the annotated feature.</a>
+<span class="sourceLineNo">131</span><a id="line.131">                        if (!Util.isBlank(exclusiveWithStr)) {</a>
+<span class="sourceLineNo">132</span><a id="line.132">                                for (String ew: exclusiveWithStr.split("\\s")) {</a>
+<span class="sourceLineNo">133</span><a id="line.133">                                        if (sf == feature) {</a>
+<span class="sourceLineNo">134</span><a id="line.134">                                                ret.add(ew);</a>
+<span class="sourceLineNo">135</span><a id="line.135">                                        } else if (ew.equals(keyProvider.apply(eClass, feature))) {</a>
+<span class="sourceLineNo">136</span><a id="line.136">                                                ret.add(keyProvider.apply(eClass, sf));</a>
+<span class="sourceLineNo">137</span><a id="line.137">                                        }</a>
+<span class="sourceLineNo">138</span><a id="line.138">                                        </a>
+<span class="sourceLineNo">139</span><a id="line.139">                                }</a>
+<span class="sourceLineNo">140</span><a id="line.140">                        }</a>
+<span class="sourceLineNo">141</span><a id="line.141">                }</a>
+<span class="sourceLineNo">142</span><a id="line.142"></a>
+<span class="sourceLineNo">143</span><a id="line.143">                return ret.toArray();</a>
+<span class="sourceLineNo">144</span><a id="line.144">        }</a>
+<span class="sourceLineNo">145</span><a id="line.145">        </a>
+<span class="sourceLineNo">146</span><a id="line.146">        /**</a>
+<span class="sourceLineNo">147</span><a id="line.147">         * If true, feature is loaded even if it not changeable, but it is not injected into the object.</a>
+<span class="sourceLineNo">148</span><a id="line.148">         * In this case the getter can access loaded value using {@link LoadTracker} adapter get() method.</a>
+<span class="sourceLineNo">149</span><a id="line.149">         */</a>
+<span class="sourceLineNo">150</span><a id="line.150">        public static final String IS_COMPUTED = "computed";</a>
+<span class="sourceLineNo">151</span><a id="line.151">        </a>
+<span class="sourceLineNo">152</span><a id="line.152">        public static boolean isDefaultFeature(EClass eClass, EStructuralFeature feature) {</a>
+<span class="sourceLineNo">153</span><a id="line.153">                if ("true".equals(NcoreUtil.getNasdanikaAnnotationDetail(feature, IS_DEFAULT_FEATURE))) {</a>
+<span class="sourceLineNo">154</span><a id="line.154">                        return true;</a>
+<span class="sourceLineNo">155</span><a id="line.155">                }</a>
+<span class="sourceLineNo">156</span><a id="line.156">                String dfName = NcoreUtil.getNasdanikaAnnotationDetail(eClass, IS_DEFAULT_FEATURE);</a>
+<span class="sourceLineNo">157</span><a id="line.157">                if (!Util.isBlank(dfName)) {</a>
+<span class="sourceLineNo">158</span><a id="line.158">                        return feature.getName().equals(dfName);</a>
+<span class="sourceLineNo">159</span><a id="line.159">                }</a>
+<span class="sourceLineNo">160</span><a id="line.160">                for (EClass st: eClass.getEAllSuperTypes()) {</a>
+<span class="sourceLineNo">161</span><a id="line.161">                        dfName = NcoreUtil.getNasdanikaAnnotationDetail(st, IS_DEFAULT_FEATURE);</a>
+<span class="sourceLineNo">162</span><a id="line.162">                        if (!Util.isBlank(dfName)) {</a>
+<span class="sourceLineNo">163</span><a id="line.163">                                return feature.getName().equals(dfName);</a>
+<span class="sourceLineNo">164</span><a id="line.164">                        }                       </a>
+<span class="sourceLineNo">165</span><a id="line.165">                }</a>
+<span class="sourceLineNo">166</span><a id="line.166">                return false;</a>
+<span class="sourceLineNo">167</span><a id="line.167">        }</a>
+<span class="sourceLineNo">168</span><a id="line.168">        </a>
+<span class="sourceLineNo">169</span><a id="line.169">        public static String getValueFeature(EReference eReference) {</a>
+<span class="sourceLineNo">170</span><a id="line.170">                return NcoreUtil.getNasdanikaAnnotationDetail(eReference, VALUE_FEATURE);</a>
+<span class="sourceLineNo">171</span><a id="line.171">        }       </a>
+<span class="sourceLineNo">172</span><a id="line.172">        </a>
+<span class="sourceLineNo">173</span><a id="line.173">        /**</a>
+<span class="sourceLineNo">174</span><a id="line.174">         * If this Nasdanika annotation details is set to "false" on a {@link EStructuralFeature} or {@link EClass} then this feature or class is not loaded from configuration. </a>
+<span class="sourceLineNo">175</span><a id="line.175">         */</a>
+<span class="sourceLineNo">176</span><a id="line.176">        public static final String IS_LOADABLE = "loadable";</a>
+<span class="sourceLineNo">177</span><a id="line.177">        </a>
+<span class="sourceLineNo">178</span><a id="line.178">        /**</a>
+<span class="sourceLineNo">179</span><a id="line.179">         * If this Nasdanika annotation details is set to "true" on a {@link EReference} with a concrete element type then reference element(s) are loaded using the reference type</a>
+<span class="sourceLineNo">180</span><a id="line.180">         * and they shall be a maps of features as opposed of a map of type to a map of features.</a>
+<span class="sourceLineNo">181</span><a id="line.181">         */</a>
+<span class="sourceLineNo">182</span><a id="line.182">        public static final String IS_HOMOGENOUS = "homogenous";</a>
+<span class="sourceLineNo">183</span><a id="line.183">        </a>
+<span class="sourceLineNo">184</span><a id="line.184">        /**</a>
+<span class="sourceLineNo">185</span><a id="line.185">         * If this Nasdanika annotation details is set to "true" on a homogenous {@link EReference} then string values are treated as default features, not as object references. </a>
+<span class="sourceLineNo">186</span><a id="line.186">         */</a>
+<span class="sourceLineNo">187</span><a id="line.187">        public static final String IS_STRICT_CONTAINMENT = "strict-containment";</a>
+<span class="sourceLineNo">188</span><a id="line.188">        </a>
+<span class="sourceLineNo">189</span><a id="line.189">        /**</a>
+<span class="sourceLineNo">190</span><a id="line.190">         * Default implementation of load key provider - gets load key from the Nasdanika annotation (urn:org.nasdanika) &lt;code&gt;load-key&lt;/code&gt; details if it is present.</a>
+<span class="sourceLineNo">191</span><a id="line.191">         * For features delegates to {@link NcoreUtil} getFeatureKey.</a>
+<span class="sourceLineNo">192</span><a id="line.192">         * Otherwise converts {@link ENamedElement} element name from camel case to lower-cased kebab case. E.g. firstName is converted first-name.</a>
+<span class="sourceLineNo">193</span><a id="line.193">         */</a>
+<span class="sourceLineNo">194</span><a id="line.194">        public static final BiFunction&lt;EClass,ENamedElement,String&gt; LOAD_KEY_PROVIDER = (eClass,ne) -&gt; {</a>
+<span class="sourceLineNo">195</span><a id="line.195">                EAnnotation na = NcoreUtil.getNasdanikaAnnotation(ne);</a>
+<span class="sourceLineNo">196</span><a id="line.196">                if (na != null) {</a>
+<span class="sourceLineNo">197</span><a id="line.197">                        if (na.getDetails().containsKey(IS_LOADABLE) &amp;&amp; "false".equals(na.getDetails().get(IS_LOADABLE))) {</a>
+<span class="sourceLineNo">198</span><a id="line.198">                                return null;</a>
+<span class="sourceLineNo">199</span><a id="line.199">                        }</a>
+<span class="sourceLineNo">200</span><a id="line.200">                        if (na.getDetails().containsKey(LOAD_KEY)) {</a>
+<span class="sourceLineNo">201</span><a id="line.201">                                return na.getDetails().get(LOAD_KEY);</a>
+<span class="sourceLineNo">202</span><a id="line.202">                        }</a>
+<span class="sourceLineNo">203</span><a id="line.203">                }</a>
+<span class="sourceLineNo">204</span><a id="line.204"></a>
+<span class="sourceLineNo">205</span><a id="line.205">                if (eClass != null &amp;&amp; ne instanceof EStructuralFeature) {</a>
+<span class="sourceLineNo">206</span><a id="line.206">                        EStructuralFeature feature = (EStructuralFeature) ne;</a>
+<span class="sourceLineNo">207</span><a id="line.207">                        String loadKey = getLoadKey(eClass, feature);           </a>
+<span class="sourceLineNo">208</span><a id="line.208">                        return loadKey == null ? NcoreUtil.getFeatureKey(eClass, feature) : loadKey;</a>
+<span class="sourceLineNo">209</span><a id="line.209">                }</a>
+<span class="sourceLineNo">210</span><a id="line.210">                </a>
+<span class="sourceLineNo">211</span><a id="line.211">                return Util.camelToKebab(ne.getName());</a>
+<span class="sourceLineNo">212</span><a id="line.212">        };</a>
+<span class="sourceLineNo">213</span><a id="line.213">        </a>
+<span class="sourceLineNo">214</span><a id="line.214">        private BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider;</a>
+<span class="sourceLineNo">215</span><a id="line.215">        </a>
+<span class="sourceLineNo">216</span><a id="line.216">        private class EPackageEntry {</a>
+<span class="sourceLineNo">217</span><a id="line.217"></a>
+<span class="sourceLineNo">218</span><a id="line.218">                EPackage ePackage;</a>
+<span class="sourceLineNo">219</span><a id="line.219">                </a>
+<span class="sourceLineNo">220</span><a id="line.220">                BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider;</a>
+<span class="sourceLineNo">221</span><a id="line.221">                                </a>
+<span class="sourceLineNo">222</span><a id="line.222">                EPackageEntry(EPackage ePackage, BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider) {</a>
+<span class="sourceLineNo">223</span><a id="line.223">                        this.ePackage = ePackage;</a>
+<span class="sourceLineNo">224</span><a id="line.224">                        this.keyProvider = keyProvider == null ? LOAD_KEY_PROVIDER : keyProvider;</a>
+<span class="sourceLineNo">225</span><a id="line.225">                }</a>
+<span class="sourceLineNo">226</span><a id="line.226">                </a>
+<span class="sourceLineNo">227</span><a id="line.227">        }</a>
+<span class="sourceLineNo">228</span><a id="line.228">        </a>
+<span class="sourceLineNo">229</span><a id="line.229">        private Map&lt;String,EPackageEntry&gt; registry = new HashMap&lt;&gt;();</a>
+<span class="sourceLineNo">230</span><a id="line.230"></a>
+<span class="sourceLineNo">231</span><a id="line.231">        private ResourceSet resourceSet;</a>
+<span class="sourceLineNo">232</span><a id="line.232"></a>
+<span class="sourceLineNo">233</span><a id="line.233">        public EObjectLoader(ObjectLoader chain, BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider, EPackage... ePackages) {</a>
+<span class="sourceLineNo">234</span><a id="line.234">                super(chain);</a>
+<span class="sourceLineNo">235</span><a id="line.235">                this.keyProvider = keyProvider == null ? LOAD_KEY_PROVIDER : keyProvider;</a>
+<span class="sourceLineNo">236</span><a id="line.236">                for (EPackage ePackage: ePackages) {</a>
+<span class="sourceLineNo">237</span><a id="line.237">                        register(ePackage);</a>
+<span class="sourceLineNo">238</span><a id="line.238">                }</a>
+<span class="sourceLineNo">239</span><a id="line.239">        }</a>
+<span class="sourceLineNo">240</span><a id="line.240">        </a>
+<span class="sourceLineNo">241</span><a id="line.241">        public MarkerFactory getMarkerFactory() {</a>
+<span class="sourceLineNo">242</span><a id="line.242">                return markerFactory;</a>
+<span class="sourceLineNo">243</span><a id="line.243">        }</a>
+<span class="sourceLineNo">244</span><a id="line.244">        </a>
+<span class="sourceLineNo">245</span><a id="line.245">        public void setMarkerFactory(MarkerFactory markerFactory) {</a>
+<span class="sourceLineNo">246</span><a id="line.246">                this.markerFactory = markerFactory;</a>
+<span class="sourceLineNo">247</span><a id="line.247">        }</a>
+<span class="sourceLineNo">248</span><a id="line.248">        </a>
+<span class="sourceLineNo">249</span><a id="line.249">        private MarkerFactory markerFactory = (location, progressMonitor) -&gt; {</a>
+<span class="sourceLineNo">250</span><a id="line.250">                org.nasdanika.ncore.Marker marker = NcoreFactory.eINSTANCE.createMarker();</a>
+<span class="sourceLineNo">251</span><a id="line.251">                marker.setLocation(location);</a>
+<span class="sourceLineNo">252</span><a id="line.252">                return marker;</a>
+<span class="sourceLineNo">253</span><a id="line.253">        };</a>
+<span class="sourceLineNo">254</span><a id="line.254">        </a>
+<span class="sourceLineNo">255</span><a id="line.255">        public EObjectLoader(EPackage... ePackages) {</a>
+<span class="sourceLineNo">256</span><a id="line.256">                this(null, null, ePackages);</a>
+<span class="sourceLineNo">257</span><a id="line.257">        }</a>
+<span class="sourceLineNo">258</span><a id="line.258"></a>
+<span class="sourceLineNo">259</span><a id="line.259">        public EObjectLoader(ObjectLoader chain, BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider, ResourceSet resourceSet) {</a>
+<span class="sourceLineNo">260</span><a id="line.260">                this(chain, keyProvider, resourceSet.getPackageRegistry().values().toArray(new EPackage[0]));</a>
+<span class="sourceLineNo">261</span><a id="line.261">                this.resourceSet = resourceSet;</a>
+<span class="sourceLineNo">262</span><a id="line.262">        }</a>
+<span class="sourceLineNo">263</span><a id="line.263">        </a>
+<span class="sourceLineNo">264</span><a id="line.264">        public EObjectLoader(ResourceSet resourceSet) {</a>
+<span class="sourceLineNo">265</span><a id="line.265">                this(null, null, resourceSet);</a>
+<span class="sourceLineNo">266</span><a id="line.266">        }</a>
+<span class="sourceLineNo">267</span><a id="line.267">        </a>
+<span class="sourceLineNo">268</span><a id="line.268">        public void register(EPackage ePackage, BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider) {</a>
+<span class="sourceLineNo">269</span><a id="line.269">                if (keyProvider == null) {</a>
+<span class="sourceLineNo">270</span><a id="line.270">                        keyProvider = this.keyProvider;</a>
+<span class="sourceLineNo">271</span><a id="line.271">                }</a>
+<span class="sourceLineNo">272</span><a id="line.272">                String packageKey = keyProvider.apply(null, ePackage);</a>
+<span class="sourceLineNo">273</span><a id="line.273">                if (packageKey != null) {</a>
+<span class="sourceLineNo">274</span><a id="line.274">                        registry.put(packageKey + "-", new EPackageEntry(ePackage, keyProvider == null ? this.keyProvider : keyProvider));</a>
+<span class="sourceLineNo">275</span><a id="line.275">                }</a>
+<span class="sourceLineNo">276</span><a id="line.276">        }</a>
+<span class="sourceLineNo">277</span><a id="line.277">        </a>
+<span class="sourceLineNo">278</span><a id="line.278">        public void register(EPackage ePackage) {</a>
+<span class="sourceLineNo">279</span><a id="line.279">                register(ePackage, null);</a>
+<span class="sourceLineNo">280</span><a id="line.280">        }</a>
+<span class="sourceLineNo">281</span><a id="line.281"></a>
+<span class="sourceLineNo">282</span><a id="line.282">        /**</a>
+<span class="sourceLineNo">283</span><a id="line.283">         * Creates a new EObject from a prototype. </a>
+<span class="sourceLineNo">284</span><a id="line.284">         * @param loader</a>
+<span class="sourceLineNo">285</span><a id="line.285">         * @param type</a>
+<span class="sourceLineNo">286</span><a id="line.286">         * @param config</a>
+<span class="sourceLineNo">287</span><a id="line.287">         * @param prototype Prototype EObject, can be null.</a>
+<span class="sourceLineNo">288</span><a id="line.288">         * @param base</a>
+<span class="sourceLineNo">289</span><a id="line.289">         * @param progressMonitor</a>
+<span class="sourceLineNo">290</span><a id="line.290">         * @param marker</a>
+<span class="sourceLineNo">291</span><a id="line.291">         * @return</a>
+<span class="sourceLineNo">292</span><a id="line.292">         */</a>
+<span class="sourceLineNo">293</span><a id="line.293">        public Object create(ObjectLoader loader, String type, Object config, java.util.function.Function&lt;EClass, EObject&gt; constructor, URI base, ProgressMonitor progressMonitor, List&lt;? extends Marker&gt; markers) {</a>
+<span class="sourceLineNo">294</span><a id="line.294">                BiSupplier&lt;EClass,BiFunction&lt;EClass,ENamedElement,String&gt;&gt; result = resolveEClass(type);</a>
+<span class="sourceLineNo">295</span><a id="line.295">                if (result != null) {</a>
+<span class="sourceLineNo">296</span><a id="line.296">                        return create(loader, result.getFirst(), config, base, progressMonitor, markers, result.getSecond(), constructor);</a>
+<span class="sourceLineNo">297</span><a id="line.297">                }</a>
+<span class="sourceLineNo">298</span><a id="line.298">                </a>
+<span class="sourceLineNo">299</span><a id="line.299">                return super.create(loader, type, config, base, progressMonitor, markers);</a>
+<span class="sourceLineNo">300</span><a id="line.300">        }</a>
+<span class="sourceLineNo">301</span><a id="line.301">        </a>
+<span class="sourceLineNo">302</span><a id="line.302">        /**</a>
+<span class="sourceLineNo">303</span><a id="line.303">         * Creates an object by calling create() which takes constructor and passing thread constructor to it.</a>
+<span class="sourceLineNo">304</span><a id="line.304">         */</a>
+<span class="sourceLineNo">305</span><a id="line.305">        @Override</a>
+<span class="sourceLineNo">306</span><a id="line.306">        public Object create(ObjectLoader loader, String type, Object config, URI base, ProgressMonitor progressMonitor, List&lt;? extends Marker&gt; markers) {</a>
+<span class="sourceLineNo">307</span><a id="line.307">                return create(loader, type, config, threadConstructor.get(), base, progressMonitor, markers);</a>
+<span class="sourceLineNo">308</span><a id="line.308">        }       </a>
+<span class="sourceLineNo">309</span><a id="line.309">        </a>
+<span class="sourceLineNo">310</span><a id="line.310">        /**</a>
+<span class="sourceLineNo">311</span><a id="line.311">         * Resolves EClass and key provider from type name.</a>
+<span class="sourceLineNo">312</span><a id="line.312">         * @param type</a>
+<span class="sourceLineNo">313</span><a id="line.313">         * @return</a>
+<span class="sourceLineNo">314</span><a id="line.314">         */</a>
+<span class="sourceLineNo">315</span><a id="line.315">        public BiSupplier&lt;EClass,BiFunction&lt;EClass,ENamedElement,String&gt;&gt; resolveEClass(String type) {          </a>
+<span class="sourceLineNo">316</span><a id="line.316">                for (Entry&lt;String, EPackageEntry&gt; re: registry.entrySet()) {</a>
+<span class="sourceLineNo">317</span><a id="line.317">                        if (type.startsWith(re.getKey())) {</a>
+<span class="sourceLineNo">318</span><a id="line.318">                                EPackageEntry ePackageEntry = re.getValue();</a>
+<span class="sourceLineNo">319</span><a id="line.319">                                for (EClassifier eClassifier: ePackageEntry.ePackage.getEClassifiers()) {</a>
+<span class="sourceLineNo">320</span><a id="line.320">                                        if (eClassifier instanceof EClass &amp;&amp; "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(eClassifier, IS_LOADABLE, "true"))) {</a>
+<span class="sourceLineNo">321</span><a id="line.321">                                                String eClassifierKey = ePackageEntry.keyProvider.apply(null, eClassifier);</a>
+<span class="sourceLineNo">322</span><a id="line.322">                                                if (eClassifierKey != null &amp;&amp; type.equals(re.getKey() + eClassifierKey)) {</a>
+<span class="sourceLineNo">323</span><a id="line.323">                                                        return new BiSupplier&lt;EClass, BiFunction&lt;EClass,ENamedElement,String&gt;&gt;() {</a>
+<span class="sourceLineNo">324</span><a id="line.324"></a>
+<span class="sourceLineNo">325</span><a id="line.325">                                                                @Override</a>
+<span class="sourceLineNo">326</span><a id="line.326">                                                                public EClass getFirst() {</a>
+<span class="sourceLineNo">327</span><a id="line.327">                                                                        return (EClass) eClassifier;</a>
+<span class="sourceLineNo">328</span><a id="line.328">                                                                }</a>
+<span class="sourceLineNo">329</span><a id="line.329"></a>
+<span class="sourceLineNo">330</span><a id="line.330">                                                                @Override</a>
+<span class="sourceLineNo">331</span><a id="line.331">                                                                public BiFunction&lt;EClass,ENamedElement, String&gt; getSecond() {</a>
+<span class="sourceLineNo">332</span><a id="line.332">                                                                        return ePackageEntry.keyProvider;</a>
+<span class="sourceLineNo">333</span><a id="line.333">                                                                }</a>
+<span class="sourceLineNo">334</span><a id="line.334">                                                        }; </a>
+<span class="sourceLineNo">335</span><a id="line.335">                                                }</a>
+<span class="sourceLineNo">336</span><a id="line.336">                                        }</a>
+<span class="sourceLineNo">337</span><a id="line.337">                                }</a>
+<span class="sourceLineNo">338</span><a id="line.338">                        }</a>
+<span class="sourceLineNo">339</span><a id="line.339">                }</a>
+<span class="sourceLineNo">340</span><a id="line.340">                return null;            </a>
+<span class="sourceLineNo">341</span><a id="line.341">        }</a>
+<span class="sourceLineNo">342</span><a id="line.342">        </a>
+<span class="sourceLineNo">343</span><a id="line.343">        /**</a>
+<span class="sourceLineNo">344</span><a id="line.344">         * Creates an instance of EClass or a supplier factory</a>
+<span class="sourceLineNo">345</span><a id="line.345">         * @param loader</a>
+<span class="sourceLineNo">346</span><a id="line.346">         * @param eClass</a>
+<span class="sourceLineNo">347</span><a id="line.347">         * @param config</a>
+<span class="sourceLineNo">348</span><a id="line.348">         * @param base</a>
+<span class="sourceLineNo">349</span><a id="line.349">         * @param progressMonitor</a>
+<span class="sourceLineNo">350</span><a id="line.350">         * @param marker</a>
+<span class="sourceLineNo">351</span><a id="line.351">         * @param ePackageEntry</a>
+<span class="sourceLineNo">352</span><a id="line.352">         * @param eClassifier</a>
+<span class="sourceLineNo">353</span><a id="line.353">         * @return</a>
+<span class="sourceLineNo">354</span><a id="line.354">         */</a>
+<span class="sourceLineNo">355</span><a id="line.355">        public Object create(</a>
+<span class="sourceLineNo">356</span><a id="line.356">                        ObjectLoader loader, </a>
+<span class="sourceLineNo">357</span><a id="line.357">                        EClass eClass, </a>
+<span class="sourceLineNo">358</span><a id="line.358">                        Object config, </a>
+<span class="sourceLineNo">359</span><a id="line.359">                        URI base, </a>
+<span class="sourceLineNo">360</span><a id="line.360">                        ProgressMonitor progressMonitor, </a>
+<span class="sourceLineNo">361</span><a id="line.361">                        List&lt;? extends Marker&gt; markers, </a>
+<span class="sourceLineNo">362</span><a id="line.362">                        BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider,</a>
+<span class="sourceLineNo">363</span><a id="line.363">                        java.util.function.Function&lt;EClass, EObject&gt; constructor) {</a>
+<span class="sourceLineNo">364</span><a id="line.364">                </a>
+<span class="sourceLineNo">365</span><a id="line.365">                // Nulls are nulls</a>
+<span class="sourceLineNo">366</span><a id="line.366">                if (config == null) {</a>
+<span class="sourceLineNo">367</span><a id="line.367">                        return null;</a>
+<span class="sourceLineNo">368</span><a id="line.368">                }</a>
+<span class="sourceLineNo">369</span><a id="line.369">                </a>
+<span class="sourceLineNo">370</span><a id="line.370">                // Proxy</a>
+<span class="sourceLineNo">371</span><a id="line.371">                Object proxy = createProxy(eClass, config, base, markers, progressMonitor);</a>
+<span class="sourceLineNo">372</span><a id="line.372">                if (proxy != null) {</a>
+<span class="sourceLineNo">373</span><a id="line.373">                        return proxy;</a>
+<span class="sourceLineNo">374</span><a id="line.374">                }</a>
+<span class="sourceLineNo">375</span><a id="line.375">                </a>
+<span class="sourceLineNo">376</span><a id="line.376">                Class&lt;?&gt; instanceClass = eClass.getInstanceClass();</a>
+<span class="sourceLineNo">377</span><a id="line.377">                EFactory factory = eClass.getEPackage().getEFactoryInstance();</a>
+<span class="sourceLineNo">378</span><a id="line.378">                </a>
+<span class="sourceLineNo">379</span><a id="line.379">                if (Loadable.class.isAssignableFrom(instanceClass)) {</a>
+<span class="sourceLineNo">380</span><a id="line.380">                        EObject eObject = factory.create(eClass);</a>
+<span class="sourceLineNo">381</span><a id="line.381">                        ((Loadable) eObject).load(loader, config, base, progressMonitor, markers);</a>
+<span class="sourceLineNo">382</span><a id="line.382">                        return eObject;</a>
+<span class="sourceLineNo">383</span><a id="line.383">                }</a>
+<span class="sourceLineNo">384</span><a id="line.384">                if (ContextLoadable.class.isAssignableFrom(instanceClass)) {</a>
+<span class="sourceLineNo">385</span><a id="line.385">                        return new SupplierFactory&lt;EObject&gt;() {</a>
+<span class="sourceLineNo">386</span><a id="line.386"></a>
+<span class="sourceLineNo">387</span><a id="line.387">                                @Override</a>
+<span class="sourceLineNo">388</span><a id="line.388">                                public Supplier&lt;EObject&gt; create(Context context) {</a>
+<span class="sourceLineNo">389</span><a id="line.389">                                        return new Supplier&lt;EObject&gt;() {</a>
+<span class="sourceLineNo">390</span><a id="line.390"></a>
+<span class="sourceLineNo">391</span><a id="line.391">                                                @Override</a>
+<span class="sourceLineNo">392</span><a id="line.392">                                                public double size() {</a>
+<span class="sourceLineNo">393</span><a id="line.393">                                                        return 1;</a>
+<span class="sourceLineNo">394</span><a id="line.394">                                                }</a>
+<span class="sourceLineNo">395</span><a id="line.395"></a>
+<span class="sourceLineNo">396</span><a id="line.396">                                                @Override</a>
+<span class="sourceLineNo">397</span><a id="line.397">                                                public String name() {</a>
+<span class="sourceLineNo">398</span><a id="line.398">                                                        return "Creating " + eClass.getName();</a>
+<span class="sourceLineNo">399</span><a id="line.399">                                                }</a>
+<span class="sourceLineNo">400</span><a id="line.400"></a>
+<span class="sourceLineNo">401</span><a id="line.401">                                                @Override</a>
+<span class="sourceLineNo">402</span><a id="line.402">                                                public EObject execute(ProgressMonitor pm) {</a>
+<span class="sourceLineNo">403</span><a id="line.403">                                                        EObject eObject = factory.create(eClass);</a>
+<span class="sourceLineNo">404</span><a id="line.404">                                                        ((ContextLoadable) eObject).load(context, loader, config, base, pm, markers);</a>
+<span class="sourceLineNo">405</span><a id="line.405">                                                        return eObject;</a>
+<span class="sourceLineNo">406</span><a id="line.406">                                                }</a>
+<span class="sourceLineNo">407</span><a id="line.407">                                                </a>
+<span class="sourceLineNo">408</span><a id="line.408">                                        };</a>
+<span class="sourceLineNo">409</span><a id="line.409">                                }                                                                       </a>
+<span class="sourceLineNo">410</span><a id="line.410">                        };</a>
+<span class="sourceLineNo">411</span><a id="line.411">                }                                                       </a>
+<span class="sourceLineNo">412</span><a id="line.412">                EObjectSupplierFactory eObjectSupplierFactory = createEObjectSupplierFactory(eClass, keyProvider, constructor);</a>
+<span class="sourceLineNo">413</span><a id="line.413">                eObjectSupplierFactory.load(loader, config, base, progressMonitor, markers);</a>
+<span class="sourceLineNo">414</span><a id="line.414">                return eObjectSupplierFactory;</a>
+<span class="sourceLineNo">415</span><a id="line.415">        }</a>
+<span class="sourceLineNo">416</span><a id="line.416"></a>
+<span class="sourceLineNo">417</span><a id="line.417">        /**</a>
+<span class="sourceLineNo">418</span><a id="line.418">         * Creates a new {@link EObjectSupplierFactory}. This implementation calls EObjectSupplierFactory constructor.</a>
+<span class="sourceLineNo">419</span><a id="line.419">         * @param eClass</a>
+<span class="sourceLineNo">420</span><a id="line.420">         * @param keyProvider</a>
+<span class="sourceLineNo">421</span><a id="line.421">         * @return</a>
+<span class="sourceLineNo">422</span><a id="line.422">         */</a>
+<span class="sourceLineNo">423</span><a id="line.423">        protected EObjectSupplierFactory createEObjectSupplierFactory(</a>
+<span class="sourceLineNo">424</span><a id="line.424">                        EClass eClass,</a>
+<span class="sourceLineNo">425</span><a id="line.425">                        BiFunction&lt;EClass, ENamedElement, String&gt; keyProvider,</a>
+<span class="sourceLineNo">426</span><a id="line.426">                        java.util.function.Function&lt;EClass, EObject&gt; constructor) {             </a>
+<span class="sourceLineNo">427</span><a id="line.427">                return new EObjectSupplierFactory(this, eClass, keyProvider, constructor);</a>
+<span class="sourceLineNo">428</span><a id="line.428">        }</a>
+<span class="sourceLineNo">429</span><a id="line.429"></a>
+<span class="sourceLineNo">430</span><a id="line.430">        /**</a>
+<span class="sourceLineNo">431</span><a id="line.431">         * Creates a proxy object if config is a singleton map with "href" key.</a>
+<span class="sourceLineNo">432</span><a id="line.432">         * @param eClass</a>
+<span class="sourceLineNo">433</span><a id="line.433">         * @param config</a>
+<span class="sourceLineNo">434</span><a id="line.434">         * @param base</a>
+<span class="sourceLineNo">435</span><a id="line.435">         * @return Proxy object or null if config is not a proxy config.</a>
+<span class="sourceLineNo">436</span><a id="line.436">         */</a>
+<span class="sourceLineNo">437</span><a id="line.437">        public EObject createProxy(EClass eClass, Object config, URI base, List&lt;? extends Marker&gt; markers, ProgressMonitor progressMonitor) {</a>
+<span class="sourceLineNo">438</span><a id="line.438">                if (config instanceof Map) {</a>
+<span class="sourceLineNo">439</span><a id="line.439">                        @SuppressWarnings("unchecked")</a>
+<span class="sourceLineNo">440</span><a id="line.440">                        Map&lt;Object,Object&gt; configMap = (Map&lt;Object,Object&gt;) config;</a>
+<span class="sourceLineNo">441</span><a id="line.441">                        if (configMap.size() == 1 </a>
+<span class="sourceLineNo">442</span><a id="line.442">                                        &amp;&amp; configMap.containsKey(HREF_KEY)) {</a>
+<span class="sourceLineNo">443</span><a id="line.443">                                EObject eObject = eClass.getEPackage().getEFactoryInstance().create(eClass);</a>
+<span class="sourceLineNo">444</span><a id="line.444">                                if (eObject instanceof MinimalEObjectImpl) {</a>
+<span class="sourceLineNo">445</span><a id="line.445">                                        Object href = configMap.get(HREF_KEY);                                  </a>
+<span class="sourceLineNo">446</span><a id="line.446">                                        URI proxyURI;</a>
+<span class="sourceLineNo">447</span><a id="line.447">                                        if (href instanceof URI) {</a>
+<span class="sourceLineNo">448</span><a id="line.448">                                                proxyURI = (URI) href;</a>
+<span class="sourceLineNo">449</span><a id="line.449">                                        } else if (href instanceof String) {</a>
+<span class="sourceLineNo">450</span><a id="line.450">                                                proxyURI = URI.createURI((String) configMap.get(HREF_KEY));</a>
+<span class="sourceLineNo">451</span><a id="line.451">                                        } else {</a>
+<span class="sourceLineNo">452</span><a id="line.452">                                                return null;</a>
+<span class="sourceLineNo">453</span><a id="line.453">                                        }</a>
+<span class="sourceLineNo">454</span><a id="line.454">                                        </a>
+<span class="sourceLineNo">455</span><a id="line.455">                                        String proxyURIStr = proxyURI.toString();</a>
+<span class="sourceLineNo">456</span><a id="line.456">                                        if (proxyURIStr.startsWith(LATE_PROXY_RESOLUTION_URI_PREFIX)) {</a>
+<span class="sourceLineNo">457</span><a id="line.457">                                                proxyURI = URI.createURI(proxyURIStr.substring(LATE_PROXY_RESOLUTION_URI_PREFIX.length()));</a>
+<span class="sourceLineNo">458</span><a id="line.458">                                        } else if (base != null) {</a>
+<span class="sourceLineNo">459</span><a id="line.459">                                                proxyURI = proxyURI.resolve(base);</a>
+<span class="sourceLineNo">460</span><a id="line.460">                                        }</a>
+<span class="sourceLineNo">461</span><a id="line.461">                                        ((MinimalEObjectImpl) eObject).eSetProxyURI(proxyURI);</a>
+<span class="sourceLineNo">462</span><a id="line.462">                                        mark(eObject, markers, progressMonitor);</a>
+<span class="sourceLineNo">463</span><a id="line.463">                                        </a>
+<span class="sourceLineNo">464</span><a id="line.464">                                        return eObject;</a>
+<span class="sourceLineNo">465</span><a id="line.465">                                }</a>
+<span class="sourceLineNo">466</span><a id="line.466">                        }</a>
+<span class="sourceLineNo">467</span><a id="line.467">                }</a>
+<span class="sourceLineNo">468</span><a id="line.468">                return null;</a>
+<span class="sourceLineNo">469</span><a id="line.469">        }</a>
+<span class="sourceLineNo">470</span><a id="line.470"></a>
+<span class="sourceLineNo">471</span><a id="line.471">        /**</a>
+<span class="sourceLineNo">472</span><a id="line.472">         * If marker is not null adds marked adapter. If eObject is instance of {@link Marked} creates and sets {@link org.nasdanika.ncore.Marker}.</a>
+<span class="sourceLineNo">473</span><a id="line.473">         * @param eObject</a>
+<span class="sourceLineNo">474</span><a id="line.474">         * @param marker</a>
+<span class="sourceLineNo">475</span><a id="line.475">         */</a>
+<span class="sourceLineNo">476</span><a id="line.476">        public void mark(EObject eObject, List&lt;? extends Marker&gt; markers, ProgressMonitor progressMonitor) {</a>
+<span class="sourceLineNo">477</span><a id="line.477">                if (markers != null) {</a>
+<span class="sourceLineNo">478</span><a id="line.478">                        eObject.eAdapters().add(new MarkedAdapter(markers));</a>
+<span class="sourceLineNo">479</span><a id="line.479">                        if (eObject instanceof Marked) {                </a>
+<span class="sourceLineNo">480</span><a id="line.480">                                for (Marker marker: markers) {</a>
+<span class="sourceLineNo">481</span><a id="line.481">                                        org.nasdanika.ncore.Marker mMarker = markerFactory.createMarker(marker.getLocation(), progressMonitor);</a>
+<span class="sourceLineNo">482</span><a id="line.482">                                        mMarker.setLine(marker.getLine());</a>
+<span class="sourceLineNo">483</span><a id="line.483">                                        mMarker.setColumn(marker.getColumn());</a>
+<span class="sourceLineNo">484</span><a id="line.484">                                        ((Marked) eObject).getMarkers().add(0, mMarker);</a>
+<span class="sourceLineNo">485</span><a id="line.485">                                }</a>
+<span class="sourceLineNo">486</span><a id="line.486">                        }</a>
+<span class="sourceLineNo">487</span><a id="line.487">                }</a>
+<span class="sourceLineNo">488</span><a id="line.488">        }</a>
+<span class="sourceLineNo">489</span><a id="line.489">        </a>
+<span class="sourceLineNo">490</span><a id="line.490">        /**</a>
+<span class="sourceLineNo">491</span><a id="line.491">         * Resolves proxy using the loader's resource set.</a>
+<span class="sourceLineNo">492</span><a id="line.492">         * Does not suppress exceptions. </a>
+<span class="sourceLineNo">493</span><a id="line.493">         */</a>
+<span class="sourceLineNo">494</span><a id="line.494">        public EObject resolve(EObject proxy) {</a>
+<span class="sourceLineNo">495</span><a id="line.495">                if (!proxy.eIsProxy()) {</a>
+<span class="sourceLineNo">496</span><a id="line.496">                        return proxy;</a>
+<span class="sourceLineNo">497</span><a id="line.497">                }</a>
+<span class="sourceLineNo">498</span><a id="line.498"></a>
+<span class="sourceLineNo">499</span><a id="line.499">                URI proxyURI = ((InternalEObject) proxy).eProxyURI();</a>
+<span class="sourceLineNo">500</span><a id="line.500">                EObject ret = resourceSet.getEObject(proxyURI, true);</a>
+<span class="sourceLineNo">501</span><a id="line.501">                return ret == null || ret == proxy ? ret : resolve(ret);</a>
+<span class="sourceLineNo">502</span><a id="line.502">        }       </a>
+<span class="sourceLineNo">503</span><a id="line.503"></a>
+<span class="sourceLineNo">504</span><a id="line.504">        public ResourceSet getResourceSet() {</a>
+<span class="sourceLineNo">505</span><a id="line.505">                return resourceSet;</a>
+<span class="sourceLineNo">506</span><a id="line.506">        }</a>
+<span class="sourceLineNo">507</span><a id="line.507">        </a>
+<span class="sourceLineNo">508</span><a id="line.508">        /**</a>
+<span class="sourceLineNo">509</span><a id="line.509">         * @return Load key from &lt;code&gt;load-keys&lt;/code&gt; annotation. </a>
+<span class="sourceLineNo">510</span><a id="line.510">         */</a>
+<span class="sourceLineNo">511</span><a id="line.511">        public static String getLoadKey(EClass eClass, EStructuralFeature feature) {</a>
+<span class="sourceLineNo">512</span><a id="line.512">                for (EClass ec: NcoreUtil.lineage(eClass)) {</a>
+<span class="sourceLineNo">513</span><a id="line.513">                        String loadKeys = NcoreUtil.getNasdanikaAnnotationDetail(ec, LOAD_KEYS);</a>
+<span class="sourceLineNo">514</span><a id="line.514">                        if (!Util.isBlank(loadKeys)) {</a>
+<span class="sourceLineNo">515</span><a id="line.515">                                Yaml yaml = new Yaml();</a>
+<span class="sourceLineNo">516</span><a id="line.516">                                Map&lt;String,Object&gt; loadKeyMap = yaml.load(loadKeys);</a>
+<span class="sourceLineNo">517</span><a id="line.517">                                Object loadKey = loadKeyMap.get(feature.getName());</a>
+<span class="sourceLineNo">518</span><a id="line.518">                                if (loadKey instanceof String) {</a>
+<span class="sourceLineNo">519</span><a id="line.519">                                        return (String) loadKey;</a>
+<span class="sourceLineNo">520</span><a id="line.520">                                }</a>
+<span class="sourceLineNo">521</span><a id="line.521">                        }</a>
+<span class="sourceLineNo">522</span><a id="line.522">                }</a>
+<span class="sourceLineNo">523</span><a id="line.523">                return null;</a>
+<span class="sourceLineNo">524</span><a id="line.524">        }       </a>
+<span class="sourceLineNo">525</span><a id="line.525">        </a>
+<span class="sourceLineNo">526</span><a id="line.526">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

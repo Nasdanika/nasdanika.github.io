@@ -12,6 +12,17 @@ engineering-organization:
     - ../../html/engineering.yml
     - ../../engineering/engineering.yml
     - ../../togaf/engineering.yml
+    - engineering-product:
+        name: Demos
+        path: demos        
+        modules:
+          - engineering-product:
+              name: App Drawio
+              path: app-drawio
+              modules:
+                - ../../demo-drawio-actions/engineering.yml
+                - ../../demo-drawio-flow-actions/engineering.yml
+                - ../../demo-drawio-map/engineering.yml
   objectives:
     test-objective:
       name: Test Objective
@@ -65,98 +76,4 @@ engineering-organization:
     spa:
       name: Single-page Applications
       description: Implement dynamic behavior using Single Page Applications built with Vue and BootstrapVue, add them to static sites generated from models. Generate application input data from source models. Create backing services as needed.       
-  increments:
-    "2021":
-      name: 2021
-      start: 2021/01/01
-      end: 2022/01/01
-      children:
-        Q4:
-          name: Q4
-          start: 2021/10/01
-          end: 2022/01/01
-          children: 
-            dec:
-              name: December
-              start: 2021/12/01
-              end: 2022/01/01
-              objectives:
-                test-objective:
-                  name: Test Objective
-                  key-results:
-                    do-something:
-                      name: Do something
-    "2022":
-      name: 2022
-      start: 2022/01/01
-      end: 2023/01/01
-      children:
-        Q1:
-          name: Q1
-          start: 2022/01/01
-          end: 2022/04/01
-          children: 
-            jan:
-              name: January
-              start: 2022/01/01
-              end: 2022/02/01
-            feb:
-              name: February
-              start: 2022/02/01
-              end: 2022/03/01
-            mar:
-              name: March
-              start: 2022/03/01
-              end: 2022/04/01
-        Q2:
-          name: Q2
-          start: 2022/04/01
-          end: 2022/07/01
-          children: 
-            apr:
-              name: April
-              start: 2022/04/01
-              end: 2022/05/01
-            may:
-              name: May
-              start: 2022/05/01
-              end: 2022/06/01
-            jun:
-              name: June
-              start: 2022/06/01
-              end: 2022/07/01
-        Q3:
-          name: Q3
-          start: 2022/07/01
-          end: 2022/10/01
-          children: 
-            jul:
-              name: July
-              start: 2022/07/01
-              end: 2022/08/01
-            aug:
-              name: August
-              start: 2022/08/01
-              end: 2022/09/01
-            sep:
-              name: September
-              start: 2022/09/01
-              end: 2022/10/01
-        Q4:
-          name: Q4
-          start: 2022/10/01
-          end: 2023/01/01
-          children: 
-            oct:
-              name: October
-              start: 2022/10/01
-              end: 2022/11/01
-            nov:
-              name: November
-              start: 2022/11/01
-              end: 2022/12/01
-            dec:
-              name: December
-              start: 2022/12/01
-              end: 2023/01/01
                                     
