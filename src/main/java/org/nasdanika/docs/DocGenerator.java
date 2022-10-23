@@ -840,7 +840,7 @@ public class DocGenerator {
 		Resource containerResource = resourceSet.getResource(URI.createURI(name + ".xml").resolve(RESOURCE_MODELS_URI), true);
 	
 		File siteDir = new File("target/model-doc/site");
-		BinaryEntityContainer container = new FileSystemContainer(siteDir);
+		FileSystemContainer container = new FileSystemContainer(siteDir);
 		for (EObject eObject : containerResource.getContents()) {
 			Diagnostician diagnostician = new Diagnostician();
 			org.eclipse.emf.common.util.Diagnostic diagnostic = diagnostician.validate(eObject);

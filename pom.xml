@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nasdanika</groupId>
-	<version>2022.9.0</version>
+	<version>2022.10.0</version>
 	<artifactId>docs</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika Documentation Site</name>
@@ -12,18 +12,19 @@
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
 			<artifactId>ecore</artifactId>
-			<version>2022.9.0</version>
+			<version>2022.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.nasdanika.engineering</groupId>
 			<artifactId>gen</artifactId>
-			<version>2022.9.0</version>
+			<version>2022.10.0</version>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13.2</version>
-		</dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
+		    <version>5.9.1</version>
+		    <scope>test</scope>
+		</dependency>		
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
@@ -39,13 +40,25 @@
 		<dependency>
 		    <groupId>net.sourceforge.plantuml</groupId>
 		    <artifactId>plantuml</artifactId>
-		    <version>1.2022.6</version>
+		    <version>1.2022.8</version>
 		</dependency>				
 					
 	</dependencies>
 
 	<build>
 		<plugins>
+		        <plugin>
+		            <groupId>org.apache.maven.plugins</groupId>
+		            <artifactId>maven-surefire-plugin</artifactId>
+		            <version>3.0.0-M7</version>
+		            <dependencies>
+		                <dependency>
+		                    <groupId>org.junit.jupiter</groupId>
+		                    <artifactId>junit-jupiter-engine</artifactId>
+		                    <version>5.9.1</version>
+		                </dependency>
+		            </dependencies>
+		        </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

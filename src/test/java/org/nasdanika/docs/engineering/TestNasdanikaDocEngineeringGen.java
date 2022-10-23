@@ -1,6 +1,6 @@
 package org.nasdanika.docs.engineering;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nasdanika.docs.DocGenerator;
 
 
@@ -9,7 +9,7 @@ import org.nasdanika.docs.DocGenerator;
  * @author Pavel
  *
  */
-public class TestNasdanikaDocEngineeringGen /* extends TestBase */ {
+public class TestNasdanikaDocEngineeringGen {
 
 	@Test
 	public void generate() throws Exception {
