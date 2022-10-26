@@ -88,36 +88,45 @@ window.nsdJsTreeSearchCallback = function(str, node) {
 <span class="sourceLineNo">043</span><a id="line.43">                }</a>
 <span class="sourceLineNo">044</span><a id="line.44">        }</a>
 <span class="sourceLineNo">045</span><a id="line.45"></a>
-<span class="sourceLineNo">046</span><a id="line.46">        protected Document loadDocument(InputStream inputStream) throws IOException, ParserConfigurationException, SAXException {</a>
-<span class="sourceLineNo">047</span><a id="line.47">                return Document.load(inputStream, getURI());</a>
-<span class="sourceLineNo">048</span><a id="line.48">        }</a>
-<span class="sourceLineNo">049</span><a id="line.49"></a>
-<span class="sourceLineNo">050</span><a id="line.50">        @Override</a>
-<span class="sourceLineNo">051</span><a id="line.51">        protected void doSave(OutputStream outputStream, Map&lt;?, ?&gt; options) throws IOException {</a>
-<span class="sourceLineNo">052</span><a id="line.52">                if (document == null) {</a>
-<span class="sourceLineNo">053</span><a id="line.53">                        try {</a>
-<span class="sourceLineNo">054</span><a id="line.54">                                document = Document.create(false, getURI());</a>
-<span class="sourceLineNo">055</span><a id="line.55">                        } catch (ParserConfigurationException e) {</a>
-<span class="sourceLineNo">056</span><a id="line.56">                                throw new NasdanikaException(e);</a>
-<span class="sourceLineNo">057</span><a id="line.57">                        }</a>
-<span class="sourceLineNo">058</span><a id="line.58">                }</a>
-<span class="sourceLineNo">059</span><a id="line.59">                update(document);</a>
-<span class="sourceLineNo">060</span><a id="line.60">                try (Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {</a>
-<span class="sourceLineNo">061</span><a id="line.61">                        try {</a>
-<span class="sourceLineNo">062</span><a id="line.62">                                writer.write(document.save(null));</a>
-<span class="sourceLineNo">063</span><a id="line.63">                        } catch (TransformerException e) {</a>
-<span class="sourceLineNo">064</span><a id="line.64">                                throw new NasdanikaException(e);</a>
-<span class="sourceLineNo">065</span><a id="line.65">                        }</a>
-<span class="sourceLineNo">066</span><a id="line.66">                }</a>
-<span class="sourceLineNo">067</span><a id="line.67">        }</a>
-<span class="sourceLineNo">068</span><a id="line.68"></a>
-<span class="sourceLineNo">069</span><a id="line.69">        /**</a>
-<span class="sourceLineNo">070</span><a id="line.70">         * Override to update document with model data.</a>
-<span class="sourceLineNo">071</span><a id="line.71">         * @param document Document to update. It may be a previously loaded document or a new empty document for new resources.</a>
-<span class="sourceLineNo">072</span><a id="line.72">         */</a>
-<span class="sourceLineNo">073</span><a id="line.73">        protected void update(Document document) {}</a>
-<span class="sourceLineNo">074</span><a id="line.74">        </a>
-<span class="sourceLineNo">075</span><a id="line.75">}</a>
+<span class="sourceLineNo">046</span><a id="line.46">        /**</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * Loads document from an {@link InputStream}. This implementation calls Document.load().</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * Override to implement document pre-processing, e.g. token replacement.</a>
+<span class="sourceLineNo">049</span><a id="line.49">         * @param inputStream</a>
+<span class="sourceLineNo">050</span><a id="line.50">         * @return</a>
+<span class="sourceLineNo">051</span><a id="line.51">         * @throws IOException</a>
+<span class="sourceLineNo">052</span><a id="line.52">         * @throws ParserConfigurationException</a>
+<span class="sourceLineNo">053</span><a id="line.53">         * @throws SAXException</a>
+<span class="sourceLineNo">054</span><a id="line.54">         */</a>
+<span class="sourceLineNo">055</span><a id="line.55">        protected Document loadDocument(InputStream inputStream) throws IOException, ParserConfigurationException, SAXException {</a>
+<span class="sourceLineNo">056</span><a id="line.56">                return Document.load(inputStream, getURI());</a>
+<span class="sourceLineNo">057</span><a id="line.57">        }</a>
+<span class="sourceLineNo">058</span><a id="line.58"></a>
+<span class="sourceLineNo">059</span><a id="line.59">        @Override</a>
+<span class="sourceLineNo">060</span><a id="line.60">        protected void doSave(OutputStream outputStream, Map&lt;?, ?&gt; options) throws IOException {</a>
+<span class="sourceLineNo">061</span><a id="line.61">                if (document == null) {</a>
+<span class="sourceLineNo">062</span><a id="line.62">                        try {</a>
+<span class="sourceLineNo">063</span><a id="line.63">                                document = Document.create(false, getURI());</a>
+<span class="sourceLineNo">064</span><a id="line.64">                        } catch (ParserConfigurationException e) {</a>
+<span class="sourceLineNo">065</span><a id="line.65">                                throw new NasdanikaException(e);</a>
+<span class="sourceLineNo">066</span><a id="line.66">                        }</a>
+<span class="sourceLineNo">067</span><a id="line.67">                }</a>
+<span class="sourceLineNo">068</span><a id="line.68">                update(document);</a>
+<span class="sourceLineNo">069</span><a id="line.69">                try (Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {</a>
+<span class="sourceLineNo">070</span><a id="line.70">                        try {</a>
+<span class="sourceLineNo">071</span><a id="line.71">                                writer.write(document.save(null));</a>
+<span class="sourceLineNo">072</span><a id="line.72">                        } catch (TransformerException e) {</a>
+<span class="sourceLineNo">073</span><a id="line.73">                                throw new NasdanikaException(e);</a>
+<span class="sourceLineNo">074</span><a id="line.74">                        }</a>
+<span class="sourceLineNo">075</span><a id="line.75">                }</a>
+<span class="sourceLineNo">076</span><a id="line.76">        }</a>
+<span class="sourceLineNo">077</span><a id="line.77"></a>
+<span class="sourceLineNo">078</span><a id="line.78">        /**</a>
+<span class="sourceLineNo">079</span><a id="line.79">         * Override to update document with model data.</a>
+<span class="sourceLineNo">080</span><a id="line.80">         * @param document Document to update. It may be a previously loaded document or a new empty document for new resources.</a>
+<span class="sourceLineNo">081</span><a id="line.81">         */</a>
+<span class="sourceLineNo">082</span><a id="line.82">        protected void update(Document document) {}</a>
+<span class="sourceLineNo">083</span><a id="line.83">        </a>
+<span class="sourceLineNo">084</span><a id="line.84">}</a>
 
 
 

@@ -45,15 +45,20 @@ window.nsdJsTreeSearchCallback = function(str, node) {
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.drawio;</a>
 <span class="sourceLineNo">002</span><a id="line.2"></a>
-<span class="sourceLineNo">003</span><a id="line.3">public interface Connection extends LayerElement, org.nasdanika.graph.Connection {</a>
-<span class="sourceLineNo">004</span><a id="line.4">        </a>
-<span class="sourceLineNo">005</span><a id="line.5">        @Override</a>
-<span class="sourceLineNo">006</span><a id="line.6">        Node getSource();</a>
-<span class="sourceLineNo">007</span><a id="line.7">        </a>
-<span class="sourceLineNo">008</span><a id="line.8">        @Override</a>
-<span class="sourceLineNo">009</span><a id="line.9">        Node getTarget();</a>
-<span class="sourceLineNo">010</span><a id="line.10"></a>
-<span class="sourceLineNo">011</span><a id="line.11">}</a>
+<span class="sourceLineNo">003</span><a id="line.3">/**</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * Connection between two nodes. Both source and target can be null.</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * @author Pavel</a>
+<span class="sourceLineNo">006</span><a id="line.6"> *</a>
+<span class="sourceLineNo">007</span><a id="line.7"> */</a>
+<span class="sourceLineNo">008</span><a id="line.8">public interface Connection extends LayerElement, org.nasdanika.graph.Connection {</a>
+<span class="sourceLineNo">009</span><a id="line.9">        </a>
+<span class="sourceLineNo">010</span><a id="line.10">        @Override</a>
+<span class="sourceLineNo">011</span><a id="line.11">        Node getSource();</a>
+<span class="sourceLineNo">012</span><a id="line.12">        </a>
+<span class="sourceLineNo">013</span><a id="line.13">        @Override</a>
+<span class="sourceLineNo">014</span><a id="line.14">        Node getTarget();</a>
+<span class="sourceLineNo">015</span><a id="line.15"></a>
+<span class="sourceLineNo">016</span><a id="line.16">}</a>
 
 
 

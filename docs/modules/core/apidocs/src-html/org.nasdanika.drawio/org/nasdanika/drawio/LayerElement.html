@@ -45,21 +45,30 @@ window.nsdJsTreeSearchCallback = function(str, node) {
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.drawio;</a>
 <span class="sourceLineNo">002</span><a id="line.2"></a>
-<span class="sourceLineNo">003</span><a id="line.3">public interface LayerElement extends ModelElement {</a>
-<span class="sourceLineNo">004</span><a id="line.4">        </a>
-<span class="sourceLineNo">005</span><a id="line.5">        default Layer getLayer() {</a>
-<span class="sourceLineNo">006</span><a id="line.6">                ModelElement parent = getParent();</a>
-<span class="sourceLineNo">007</span><a id="line.7">                if (parent instanceof Layer) {</a>
-<span class="sourceLineNo">008</span><a id="line.8">                        return (Layer) parent;</a>
-<span class="sourceLineNo">009</span><a id="line.9">                }</a>
-<span class="sourceLineNo">010</span><a id="line.10">                if (parent instanceof LayerElement) {</a>
-<span class="sourceLineNo">011</span><a id="line.11">                        return ((LayerElement) parent).getLayer();</a>
-<span class="sourceLineNo">012</span><a id="line.12">                }</a>
-<span class="sourceLineNo">013</span><a id="line.13">                        </a>
-<span class="sourceLineNo">014</span><a id="line.14">                return null;    </a>
-<span class="sourceLineNo">015</span><a id="line.15">        }</a>
-<span class="sourceLineNo">016</span><a id="line.16"></a>
-<span class="sourceLineNo">017</span><a id="line.17">}</a>
+<span class="sourceLineNo">003</span><a id="line.3">/**</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * Layer element - {@link Node} or {@link Connection}</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * @author Pavel</a>
+<span class="sourceLineNo">006</span><a id="line.6"> *</a>
+<span class="sourceLineNo">007</span><a id="line.7"> */</a>
+<span class="sourceLineNo">008</span><a id="line.8">public interface LayerElement extends ModelElement {</a>
+<span class="sourceLineNo">009</span><a id="line.9">        </a>
+<span class="sourceLineNo">010</span><a id="line.10">        /**</a>
+<span class="sourceLineNo">011</span><a id="line.11">         * Containing layer.</a>
+<span class="sourceLineNo">012</span><a id="line.12">         * @return</a>
+<span class="sourceLineNo">013</span><a id="line.13">         */</a>
+<span class="sourceLineNo">014</span><a id="line.14">        default Layer getLayer() {</a>
+<span class="sourceLineNo">015</span><a id="line.15">                ModelElement parent = getParent();</a>
+<span class="sourceLineNo">016</span><a id="line.16">                if (parent instanceof Layer) {</a>
+<span class="sourceLineNo">017</span><a id="line.17">                        return (Layer) parent;</a>
+<span class="sourceLineNo">018</span><a id="line.18">                }</a>
+<span class="sourceLineNo">019</span><a id="line.19">                if (parent instanceof LayerElement) {</a>
+<span class="sourceLineNo">020</span><a id="line.20">                        return ((LayerElement) parent).getLayer();</a>
+<span class="sourceLineNo">021</span><a id="line.21">                }</a>
+<span class="sourceLineNo">022</span><a id="line.22">                        </a>
+<span class="sourceLineNo">023</span><a id="line.23">                return null;    </a>
+<span class="sourceLineNo">024</span><a id="line.24">        }</a>
+<span class="sourceLineNo">025</span><a id="line.25"></a>
+<span class="sourceLineNo">026</span><a id="line.26">}</a>
 
 
 

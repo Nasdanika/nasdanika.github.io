@@ -212,7 +212,11 @@ public class DocGenerator {
 			
 			@Override
 			public boolean isSupported(String dialect) {
-				return DiagramGenerator.UML_DIALECT.equals(dialect);
+				return DiagramGenerator.UML_DIALECT.equals(dialect)
+						|| DiagramGenerator.GANTT_DIALECT.equals(dialect)
+						|| DiagramGenerator.MINDMAP_DIALECT.equals(dialect)
+						|| DiagramGenerator.SALT_DIALECT.equals(dialect)
+						|| DiagramGenerator.WBS_DIALECT.equals(dialect);
 			}
 			
 			@Override
@@ -330,12 +334,7 @@ public class DocGenerator {
 			return Hex.encodeHexString(ePackage.getNsURI().getBytes(StandardCharsets.UTF_8));
 		};
 		
-		MutableContext mutableContext = context.fork();
-		
-		DiagramGenerator diagramGenerator = createDiagramGenerator(progressMonitor);
-		mutableContext.register(DiagramGenerator.class, diagramGenerator);//DiagramGenerator.createClient(new URL("http://localhost:8090/spring-exec/api/v1/exec/diagram/")));
-		
-		ecoreModelsResourceSet.getAdapterFactories().add(new EcoreActionSupplierAdapterFactory(mutableContext, getEPackagePath, org.nasdanika.common.Util.createNasdanikaJavadocResolver(new File(".."), progressMonitor)) {
+		ecoreModelsResourceSet.getAdapterFactories().add(new EcoreActionSupplierAdapterFactory(context, getEPackagePath, org.nasdanika.common.Util.createNasdanikaJavadocResolver(new File(".."), progressMonitor)) {
 			
 			@Override
 			protected String getDiagramDialect() {
@@ -1003,6 +1002,9 @@ public class DocGenerator {
 		
 		MutableContext context = Context.EMPTY_CONTEXT.fork();
 		context.put("javadoc", org.nasdanika.common.Util.createJavadocPropertyComputer(nasdanikaResolver));
+		
+		DiagramGenerator diagramGenerator = createDiagramGenerator(progressMonitor);
+		context.register(DiagramGenerator.class, diagramGenerator);//DiagramGenerator.createClient(new URL("http://localhost:8090/spring-exec/api/v1/exec/diagram/")));
 		
 		long start = System.currentTimeMillis();
 		generateEcoreActionModel(context, progressMonitor);
