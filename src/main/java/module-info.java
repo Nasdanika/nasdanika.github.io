@@ -9,7 +9,6 @@ module org.nasdanika.docs {
 	requires plantuml;
 	
 	// Models	
-	requires org.nasdanika.diagram;
 	requires org.nasdanika.exec;
 	requires org.nasdanika.ncore;
 	requires org.nasdanika.flow;

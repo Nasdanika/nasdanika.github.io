@@ -66,12 +66,10 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.common.SupplierFactory;
-import org.nasdanika.diagram.DiagramPackage;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.emf.persistence.FeatureCacheAdapter;
-import org.nasdanika.emf.persistence.YamlResourceFactory;
 import org.nasdanika.engineering.EngineeringPackage;
 import org.nasdanika.engineering.gen.EngineeringActionProviderAdapterFactory;
 import org.nasdanika.engineering.journey.JourneyPackage;
@@ -102,7 +100,7 @@ import org.nasdanika.html.model.app.gen.NavigationPanelConsumerFactoryAdapter;
 import org.nasdanika.html.model.app.gen.PageContentProvider;
 import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.app.util.ActionProvider;
-import org.nasdanika.html.model.app.util.AppYamlSupplier;
+import org.nasdanika.html.model.app.util.AppObjectLoaderSupplier;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.html.model.html.gen.ContentConsumer;
@@ -300,9 +298,6 @@ public class DocGenerator {
 			if (isSameURI(ePackage, FlowPackage.eINSTANCE)) {
 				return "core/modules/flow";
 			}
-			if (isSameURI(ePackage, DiagramPackage.eINSTANCE)) {
-				return "core/modules/diagram/modules/model";
-			}
 
 			if (isSameURI(ePackage, AppPackage.eINSTANCE)) {
 				return "html/modules/models/modules/app/modules/model";
@@ -347,8 +342,6 @@ public class DocGenerator {
 			@Override
 			protected Object getEPackage(String nsURI) {
 				switch (nsURI) {
-				case DiagramPackage.eNS_URI:
-					return DiagramPackage.eINSTANCE;
 				case ExecPackage.eNS_URI:
 					return ExecPackage.eINSTANCE;
 				case ContentPackage.eNS_URI:
@@ -609,7 +602,7 @@ public class DocGenerator {
 				
 		// Diagnosing loaded resources. 
 		try {
-			return Objects.requireNonNull(org.nasdanika.common.Util.call(new AppYamlSupplier(resourceURI, context), progressMonitor, diagnosticConsumer), "Loaded null from " + resource);
+			return Objects.requireNonNull(org.nasdanika.common.Util.call(new AppObjectLoaderSupplier(resourceURI, context), progressMonitor, diagnosticConsumer), "Loaded null from " + resource);
 		} catch (DiagnosticException e) {
 			System.err.println("******************************");
 			System.err.println("*      Diagnostic failed     *");
@@ -969,11 +962,19 @@ public class DocGenerator {
 		Map<String, Object> extensionToFactoryMap = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap();
 		extensionToFactoryMap.put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		
-		YamlResourceFactory yamlResourceFactory = new YamlResourceFactory(new EObjectLoader(null, null, resourceSet), context, progressMonitor);
+		org.nasdanika.persistence.ObjectLoader objectLoader = new EObjectLoader(null, null, resourceSet);
+		
+		org.nasdanika.persistence.ObjectLoaderResourceFactory yamlResourceFactory = new org.nasdanika.persistence.ObjectLoaderResourceFactory() {
+			
+			@Override
+			protected org.nasdanika.persistence.ObjectLoader getObjectLoader(Resource resource) {
+				return objectLoader;
+			}
+			
+		};
 		extensionToFactoryMap.put("yml", yamlResourceFactory);
 	
 		resourceSet.getPackageRegistry().put(NcorePackage.eNS_URI, NcorePackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(DiagramPackage.eNS_URI, DiagramPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(ExecPackage.eNS_URI, ExecPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(ContentPackage.eNS_URI, ContentPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(ResourcesPackage.eNS_URI, ResourcesPackage.eINSTANCE);
