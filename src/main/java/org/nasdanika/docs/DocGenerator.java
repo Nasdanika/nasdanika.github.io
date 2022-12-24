@@ -26,7 +26,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -35,14 +34,12 @@ import java.util.stream.Stream;
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.codegen.ecore.genmodel.GenModel;
 import org.eclipse.emf.codegen.ecore.genmodel.GenPackage;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.ECollections;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -64,16 +61,10 @@ import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.NullProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
-import org.nasdanika.common.Supplier;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.emf.EObjectAdaptable;
-import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.emf.persistence.FeatureCacheAdapter;
-import org.nasdanika.engineering.EngineeringPackage;
-import org.nasdanika.engineering.gen.EngineeringActionProviderAdapterFactory;
-import org.nasdanika.engineering.journey.JourneyPackage;
-import org.nasdanika.engineering.util.EngineeringYamlSupplier;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.ContentPackage;
@@ -81,11 +72,9 @@ import org.nasdanika.exec.resources.Container;
 import org.nasdanika.exec.resources.ReconcileAction;
 import org.nasdanika.exec.resources.ResourcesFactory;
 import org.nasdanika.exec.resources.ResourcesPackage;
-import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.html.ecore.EcoreActionSupplier;
 import org.nasdanika.html.ecore.EcoreActionSupplierAdapterFactory;
 import org.nasdanika.html.ecore.GenModelResourceSet;
-import org.nasdanika.html.emf.EObjectActionResolver;
 import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
 import org.nasdanika.html.model.app.Action;
@@ -95,11 +84,11 @@ import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.gen.ActionContentProvider;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
+import org.nasdanika.html.model.app.gen.LabelJsTreeNodeSupplierFactoryAdapter;
 import org.nasdanika.html.model.app.gen.LinkJsTreeNodeSupplierFactoryAdapter;
 import org.nasdanika.html.model.app.gen.NavigationPanelConsumerFactoryAdapter;
 import org.nasdanika.html.model.app.gen.PageContentProvider;
 import org.nasdanika.html.model.app.gen.Util;
-import org.nasdanika.html.model.app.util.ActionProvider;
 import org.nasdanika.html.model.app.util.AppObjectLoaderSupplier;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
@@ -119,86 +108,10 @@ import net.sourceforge.plantuml.SourceStringReader;
 
 public class DocGenerator {
 	private static final File GENERATED_MODELS_BASE_DIR = new File("target/model-doc");
-	private static final File ENGINEERING_MODELS_DIR = new File(GENERATED_MODELS_BASE_DIR, "models");
 	private static final File ACTION_MODELS_DIR = new File(GENERATED_MODELS_BASE_DIR, "actions");
 	private static final File RESOURCE_MODELS_DIR = new File(GENERATED_MODELS_BASE_DIR, "resources");
 	
-	private static final URI ENGINEERING_MODELS_URI = URI.createFileURI(ENGINEERING_MODELS_DIR.getAbsolutePath() + "/");	
-	private static final URI ACTION_MODELS_URI = URI.createFileURI(ACTION_MODELS_DIR.getAbsolutePath() + "/");	
 	private static final URI RESOURCE_MODELS_URI = URI.createFileURI(RESOURCE_MODELS_DIR.getAbsolutePath() + "/");	
-	
-	/**
-	 * Loads a model from YAML, creates a copy and stores to XMI.
-	 * @param name
-	 * @param progressMonitor
-	 * @throws Exception
-	 */
-	protected void generateEngineeringModel(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
-		URI resourceURI = URI.createFileURI(new File("engineering/" + name + ".yml").getAbsolutePath());
-		@SuppressWarnings("resource")
-		Supplier<EObject> engineeringSupplier = new EngineeringYamlSupplier(resourceURI, context);
-		org.nasdanika.common.Consumer<EObject> engineeringConsumer = new org.nasdanika.common.Consumer<EObject>() {
-
-			@Override
-			public double size() {
-				return 1;
-			}
-
-			@Override
-			public String name() {
-				return "Saving loaded engineering model";
-			}
-
-			@Override
-			public void execute(EObject obj, ProgressMonitor progressMonitor) {
-				EObject copy = EcoreUtil.copy(obj);
-				ResourceSet resourceSet = new NcoreResourceSet();
-				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-				
-				org.eclipse.emf.ecore.resource.Resource instanceModelResource = resourceSet.createResource(URI.createURI(name + ".xml").resolve(ENGINEERING_MODELS_URI));
-				instanceModelResource.getContents().add(copy);
-				
-				org.eclipse.emf.common.util.Diagnostic copyDiagnostic = org.nasdanika.emf.EmfUtil.resolveClearCacheAndDiagnose(resourceSet, context);
-				int severity = copyDiagnostic.getSeverity();
-				if (severity != org.eclipse.emf.common.util.Diagnostic.OK) {
-					EmfUtil.dumpDiagnostic(copyDiagnostic, 2, System.err);
-					throw new ExecutionException(new org.eclipse.emf.common.util.DiagnosticException(copyDiagnostic));
-				}
-				try {
-					instanceModelResource.save(null);
-				} catch (IOException e) {
-					throw new ExecutionException(e, this);
-				}
-			}
-			
-		};
-		
-		try {
-			org.nasdanika.common.Diagnostic diagnostic = org.nasdanika.common.Util.call(engineeringSupplier.then(engineeringConsumer), progressMonitor);
-			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
-				System.err.println("***********************");
-				System.err.println("*      Diagnostic     *");
-				System.err.println("***********************");
-				diagnostic.dump(System.err, 4, Status.FAIL, Status.ERROR);
-			}
-			if (diagnostic.getStatus() != Status.SUCCESS) {
-				throw new DiagnosticException(diagnostic);
-			}
-			
-			if (diagnostic.getStatus() == Status.WARNING || diagnostic.getStatus() == Status.ERROR) {
-				System.err.println("***********************");
-				System.err.println("*      Diagnostic     *");
-				System.err.println("***********************");
-				diagnostic.dump(System.err, 4, Status.ERROR, Status.WARNING);
-			}
-		} catch (DiagnosticException e) {
-			System.err.println("******************************");
-			System.err.println("*      Diagnostic failed     *");
-			System.err.println("******************************");
-			e.getDiagnostic().dump(System.err, 4, Status.FAIL);
-			throw e;
-		}
-	}
 	
 	private DiagramGenerator createDiagramGenerator(ProgressMonitor progressMonitor) {
 //		FileSystemContainer output = new FileSystemContainer(new File("target\\diagram-cache"));
@@ -295,9 +208,6 @@ public class DocGenerator {
 			if (isSameURI(ePackage, ExecPackage.eINSTANCE)) {
 				return "core/modules/exec/modules/model";
 			}
-			if (isSameURI(ePackage, FlowPackage.eINSTANCE)) {
-				return "core/modules/flow";
-			}
 
 			if (isSameURI(ePackage, AppPackage.eINSTANCE)) {
 				return "html/modules/models/modules/app/modules/model";
@@ -308,11 +218,9 @@ public class DocGenerator {
 			if (isSameURI(ePackage, HtmlPackage.eINSTANCE)) {
 				return "html/modules/models/modules/html/modules/model";
 			}
-
-			if (isSameURI(ePackage, EngineeringPackage.eINSTANCE)) {
-				return "engineering/modules/model";
-			}
 			
+			// TODO - NASDAF
+
 			for (int i = 0; i < Integer.MAX_VALUE; ++i) {
 				String path = i == 0 ? ePackage.getName() : ePackage.getName() + "_" + i;
 				if (pathMap.containsKey(path)) {
@@ -348,8 +256,6 @@ public class DocGenerator {
 					return ContentPackage.eINSTANCE;
 				case ResourcesPackage.eNS_URI:
 					return ResourcesPackage.eINSTANCE;
-				case FlowPackage.eNS_URI:
-					return FlowPackage.eINSTANCE;
 				case NcorePackage.eNS_URI:
 					return NcorePackage.eINSTANCE;
 				
@@ -359,11 +265,9 @@ public class DocGenerator {
 					return BootstrapPackage.eINSTANCE;
 				case AppPackage.eNS_URI:
 					return AppPackage.eINSTANCE;
+					
+				// TODO - NASDAF	
 				
-				case EngineeringPackage.eNS_URI:
-					return EngineeringPackage.eINSTANCE;
-				case JourneyPackage.eNS_URI:
-					return JourneyPackage.eINSTANCE;
 				default:
 					return super.getEPackage(nsURI);
 				}
@@ -374,16 +278,14 @@ public class DocGenerator {
 		// Physical location relative to the projects (git) root folder -> logical (workspace) name 
 		Map<String,String> bundleMap = new LinkedHashMap<>();
 		
-		bundleMap.put("core/diagram", "org.nasdanika.diagram");
 		bundleMap.put("core/exec", "org.nasdanika.exec");
-		bundleMap.put("core/flow", "org.nasdanika.flow");
 		bundleMap.put("core/ncore", "org.nasdanika.ncore");
 				
 		bundleMap.put("html/model/app", "org.nasdanika.html.model.app");
 		bundleMap.put("html/model/bootstrap", "org.nasdanika.html.model.bootstrap");
 		bundleMap.put("html/model/html", "org.nasdanika.html.model.html");
-		
-		bundleMap.put("engineering/model", "org.nasdanika.engineering");
+
+		// TODO - NASDAF
 	
 		File modelDir = new File("target/models").getAbsoluteFile();
 		modelDir.mkdirs();
@@ -405,11 +307,6 @@ public class DocGenerator {
 			});			
 			copy(new File(sourceDir, "doc"), new File(targetDir, "doc"), true, null);
 		}		
-		
-//		// Ecore genmodel
-//		URL eCoreGenmodelURL = getClass().getResource("/model/Ecore.genmodel");
-//		URI eCoreGenmodelURI = URI.createURI(eCoreGenmodelURL.toString());
-//		ecoreModelsResourceSet.getResource(eCoreGenmodelURI, true);
 		
 		// Loading resources to the resource set.
 		for (URI uri: modelToActionModelMap.keySet()) {
@@ -497,100 +394,6 @@ public class DocGenerator {
 			}
 		}
 	}	
-		
-	/**
-	 * Loads instance model from previously generated XMI, diagnoses, generates action model.
-	 * @throws Exception
-	 */
-	public Map<EObject,Action>  generateActionModel(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
-		ResourceSet instanceModelsResourceSet = createResourceSet(context, progressMonitor);
-		Resource instanceModelResource = instanceModelsResourceSet.getResource(URI.createURI(name + ".xml").resolve(ENGINEERING_MODELS_URI), true);
-
-		org.eclipse.emf.common.util.Diagnostic instanceDiagnostic = org.nasdanika.emf.EmfUtil.resolveClearCacheAndDiagnose(instanceModelsResourceSet, context);
-		int severity = instanceDiagnostic.getSeverity();
-		if (severity != org.eclipse.emf.common.util.Diagnostic.OK) {
-			EmfUtil.dumpDiagnostic(instanceDiagnostic, 2, System.err);
-			throw new org.eclipse.emf.common.util.DiagnosticException(instanceDiagnostic);
-		}
-		
-		instanceModelsResourceSet.getAdapterFactories().add(new EngineeringActionProviderAdapterFactory(context) {
-			
-			private void collect(Notifier target, org.eclipse.emf.common.util.Diagnostic source, Collection<org.eclipse.emf.common.util.Diagnostic> accumulator) {
-				List<?> data = source.getData();
-				if (source.getChildren().isEmpty()
-						&& source.getSeverity() > org.eclipse.emf.common.util.Diagnostic.OK 
-						&& data != null 
-						&& data.size() == 1 
-						&& data.get(0) == target) {
-					accumulator.add(source);
-				}
-				for (org.eclipse.emf.common.util.Diagnostic child: source.getChildren()) {
-					collect(target, child, accumulator);
-				}
-			}
-			
-			protected Collection<org.eclipse.emf.common.util.Diagnostic> getDiagnostic(Notifier target) {
-				Collection<org.eclipse.emf.common.util.Diagnostic> ret = new ArrayList<>();
-				collect(target, instanceDiagnostic, ret);
-				return ret;
-			}
-			
-			private void collect(Notifier target, EStructuralFeature feature, org.eclipse.emf.common.util.Diagnostic source, Collection<org.eclipse.emf.common.util.Diagnostic> accumulator) {
-				List<?> data = source.getData();
-				if (source.getChildren().isEmpty() 
-						&& source.getSeverity() > org.eclipse.emf.common.util.Diagnostic.OK 
-						&& data != null 
-						&& data.size() > 1 
-						&& data.get(0) == target 
-						&& data.get(1) == feature) {
-					accumulator.add(source);
-				}
-				for (org.eclipse.emf.common.util.Diagnostic child: source.getChildren()) {
-					collect(target, feature, child, accumulator);
-				}
-			}
-
-			protected Collection<org.eclipse.emf.common.util.Diagnostic> getFeatureDiagnostic(Notifier target, EStructuralFeature feature) {
-				Collection<org.eclipse.emf.common.util.Diagnostic> ret = new ArrayList<>();
-				collect(target, feature, instanceDiagnostic, ret);
-				return ret;
-			}
-			
-		});
-		
-		ResourceSet actionModelsResourceSet = createResourceSet(context, progressMonitor);
-		actionModelsResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-		
-		org.eclipse.emf.ecore.resource.Resource actionModelResource = actionModelsResourceSet.createResource(URI.createURI(name + ".xml").resolve(ACTION_MODELS_URI));
-		
-		Map<EObject,Action> registry = new HashMap<>();
-		EObject instance = instanceModelResource.getContents().get(0);
-		Action rootAction = EObjectAdaptable.adaptTo(instance, ActionProvider.class).execute(registry::put, progressMonitor);
-		Context uriResolverContext = Context.singleton(Context.BASE_URI_PROPERTY, URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/"));
-		BiFunction<Label, URI, URI> uriResolver = org.nasdanika.html.model.app.util.Util.uriResolver(rootAction, uriResolverContext);
-		Adapter resolver = EcoreUtil.getExistingAdapter(rootAction, EObjectActionResolver.class);
-		if (resolver instanceof EObjectActionResolver) {														
-			org.nasdanika.html.emf.EObjectActionResolver.Context resolverContext = new org.nasdanika.html.emf.EObjectActionResolver.Context() {
-
-				@Override
-				public Action getAction(EObject semanticElement) {
-					return registry.get(semanticElement);
-				}
-
-				@Override
-				public URI resolve(Action action, URI base) {
-					return uriResolver.apply(action, base);
-				}
-				
-			};
-			((EObjectActionResolver) resolver).execute(resolverContext, progressMonitor);
-		}
-		actionModelResource.getContents().add(rootAction);
-
-		actionModelResource.save(null);
-		
-		return registry;
-	}
 	
 	protected EObject loadObject(
 			String resource, 
@@ -616,7 +419,7 @@ public class DocGenerator {
 	 * Generates a resource model from an action model.
 	 * @throws Exception
 	 */
-	public void generateResourceModel(String name, Map<EObject, Action> registry, Context context, ProgressMonitor progressMonitor) throws Exception {
+	public void generateResourceModel(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
 		java.util.function.Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
 			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
 				System.err.println("***********************");
@@ -630,7 +433,7 @@ public class DocGenerator {
 		};
 		
 		Context modelContext = Context.singleton("model-name", name);
-		String actionsResource = "engineering/actions.yml";
+		String actionsResource = "model/nasdanika.yml";
 		Action root = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
 		root.eResource().getResourceSet().getAdapterFactories().add(new AppAdapterFactory());
 		
@@ -643,7 +446,7 @@ public class DocGenerator {
 		Resource modelResource = resourceSet.createResource(URI.createURI(name + ".xml").resolve(RESOURCE_MODELS_URI));
 		modelResource.getContents().add(container);
 		
-		String pageTemplateResource = "engineering/page-template.yml";
+		String pageTemplateResource = "model/page-template.yml";
 		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) Objects.requireNonNull(loadObject(pageTemplateResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + pageTemplateResource);
 		
 		File contentDir = new File(RESOURCE_MODELS_DIR, "content");
@@ -656,34 +459,44 @@ public class DocGenerator {
 				// TODO - actions from action prototype, e.g. Ecore doc actions, to the tree.
 				
 				JsTreeFactory jsTreeFactory = context.get(JsTreeFactory.class, JsTreeFactory.INSTANCE);
-				Map<EObject, JsTreeNode> nodeMap = new HashMap<>();
-				for (Entry<EObject, Action> re: registry.entrySet()) {
-					Action treeAction = re.getValue();
-					
-					Link link = AppFactory.eINSTANCE.createLink();
-					String treeActionText = treeAction.getText();
-					int maxLength = 50;
-					link.setText(treeActionText.length() > maxLength ? treeActionText.substring(0, maxLength) + "..." : treeActionText);
-					link.setIcon(treeAction.getIcon());
-					
-					URI bURI = uriResolver.apply(action, (URI) null);
-					URI tURI = uriResolver.apply(treeAction, bURI);
-					link.setLocation(tURI.toString());
-					LinkJsTreeNodeSupplierFactoryAdapter<Link> adapter = new LinkJsTreeNodeSupplierFactoryAdapter<>(link);
-					
-					try {
-						JsTreeNode jsTreeNode = adapter.create(ctx).execute(progressMonitor);
-						jsTreeNode.attribute(Util.DATA_NSD_ACTION_UUID_ATTRIBUTE, treeAction.getUuid());
-						nodeMap.put(re.getKey(), jsTreeNode);
-					} catch (Exception e) {
-						throw new NasdanikaException(e);
+				Map<Action, JsTreeNode> actionMap = new HashMap<>();
+				TreeIterator<EObject> ait = root.eAllContents();
+				while (ait.hasNext()) {
+					EObject next = ait.next();
+					if (next instanceof Action) {
+						Action treeAction = (Action) next;
+
+						URI bURI = uriResolver.apply(action, (URI) null);
+						URI tURI = uriResolver.apply(treeAction, bURI);
+						
+						Label label = tURI == null ? AppFactory.eINSTANCE.createLabel() : AppFactory.eINSTANCE.createLink();
+						String treeActionText = treeAction.getText();
+						int maxLength = 50;
+						label.setText(treeActionText.length() > maxLength ? treeActionText.substring(0, maxLength) + "..." : treeActionText);
+						label.setIcon(treeAction.getIcon());
+						
+						LabelJsTreeNodeSupplierFactoryAdapter<?> adapter;
+						if (label instanceof Link) {
+							((Link) label).setLocation(tURI.toString());
+							adapter = new LinkJsTreeNodeSupplierFactoryAdapter<Link>((Link) label);
+						} else {
+							adapter = new LabelJsTreeNodeSupplierFactoryAdapter<Label>(label);							
+						}
+						
+						try {
+							JsTreeNode jsTreeNode = adapter.create(ctx).execute(progressMonitor);
+							jsTreeNode.attribute(Util.DATA_NSD_ACTION_UUID_ATTRIBUTE, treeAction.getUuid());
+							actionMap.put(treeAction, jsTreeNode);
+						} catch (Exception e) {
+							throw new NasdanikaException(e);
+						}
 					}
 				}
 				
-				Map<EObject, JsTreeNode> roots = new HashMap<>(nodeMap);
+				Map<Action, JsTreeNode> roots = new HashMap<>(actionMap);
 				
 				Map<EObject,Map<String,List<JsTreeNode>>> refMap = new HashMap<>();
-				for (EObject eObj: new ArrayList<>(nodeMap.keySet())) {
+				for (EObject eObj: new ArrayList<>(actionMap.keySet())) {
 					Map<String,List<JsTreeNode>> rMap = new TreeMap<>();					
 					for (EReference eRef: eObj.eClass().getEAllReferences()) {
 						if (eRef.isContainment()) {
@@ -705,7 +518,7 @@ public class DocGenerator {
 					}
 				}
 				
-				for (Entry<EObject, JsTreeNode> ne: nodeMap.entrySet()) {
+				for (Entry<Action, JsTreeNode> ne: actionMap.entrySet()) {
 					Map<String, List<JsTreeNode>> refs = refMap.get(ne.getKey());
 					if (refs != null) {
 						for (Entry<String, List<JsTreeNode>> ref: refs.entrySet()) {
@@ -817,7 +630,7 @@ public class DocGenerator {
 	private void copyJavaDoc() throws Exception {
 		copy(new File("../core/target/site/apidocs"), new File("docs/modules/core/apidocs"), false, null, null);		
 		copy(new File("../html/target/site/apidocs"), new File("docs/modules/html/apidocs"), false, null, null);	
-		copy(new File("../engineering/target/site/apidocs"), new File("docs/modules/engineering/apidocs"), false, null, null);	
+		// TODO - NASDAF
 	}
 	
 	/**
@@ -947,7 +760,7 @@ public class DocGenerator {
 		head.append(System.lineSeparator() + "<script src=\"" + relativeSearchScriptURI + "\"></script>" + System.lineSeparator());
 		head.append(System.lineSeparator() + "<script src=\"https://unpkg.com/lunr/lunr.js\"></script>" + System.lineSeparator());
 				
-		try (InputStream in = new FileInputStream("engineering/search.js")) {
+		try (InputStream in = new FileInputStream("model/search.js")) {
 			head.append(System.lineSeparator() + "<script>" + System.lineSeparator() + DefaultConverter.INSTANCE.toString(in) + System.lineSeparator() + "</script>" + System.lineSeparator());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -981,19 +794,17 @@ public class DocGenerator {
 		resourceSet.getPackageRegistry().put(HtmlPackage.eNS_URI, HtmlPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(BootstrapPackage.eNS_URI, BootstrapPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(AppPackage.eNS_URI, AppPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(FlowPackage.eNS_URI, FlowPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(EngineeringPackage.eNS_URI, EngineeringPackage.eINSTANCE);
+		
+		// TODO - NASDAF
 		
 //		resourceSet.getAdapterFactories().add(new AppAdapterFactory())				
 		return resourceSet;
 	}
 	
 	public void generate() throws Exception {
-		delete(ENGINEERING_MODELS_DIR);
 		delete(ACTION_MODELS_DIR);
 		delete(RESOURCE_MODELS_DIR);
 		
-		ENGINEERING_MODELS_DIR.mkdirs();
 		ACTION_MODELS_DIR.mkdirs();
 		RESOURCE_MODELS_DIR.mkdirs();
 
@@ -1008,7 +819,7 @@ public class DocGenerator {
 		context.register(DiagramGenerator.class, diagramGenerator);//DiagramGenerator.createClient(new URL("http://localhost:8090/spring-exec/api/v1/exec/diagram/")));
 		
 		long start = System.currentTimeMillis();
-		generateEcoreActionModel(context, progressMonitor);
+//		generateEcoreActionModel(context, progressMonitor);
 		System.out.println("\tGenerated ecore action model in " + (System.currentTimeMillis() - start) + " milliseconds");
 		start = System.currentTimeMillis();
 		
@@ -1023,16 +834,8 @@ public class DocGenerator {
 	private void generateSite(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
 		System.out.println("Generating site: " + name);
 		
-		long start = System.currentTimeMillis();
-		generateEngineeringModel(name, context, progressMonitor);
-		System.out.println("\tGenerated instance model in " + (System.currentTimeMillis() - start) + " milliseconds");
-		start = System.currentTimeMillis();
-		
-		Map<EObject, Action> registry = generateActionModel(name, context, progressMonitor);
-		System.out.println("\tGenerated action model in " + (System.currentTimeMillis() - start) + " milliseconds");
-		start = System.currentTimeMillis();
-		
-		generateResourceModel(name, registry, context, progressMonitor);
+		long start = System.currentTimeMillis();		
+		generateResourceModel(name, context, progressMonitor);
 		System.out.println("\tGenerated resource model in " + (System.currentTimeMillis() - start) + " milliseconds");
 		start = System.currentTimeMillis();
 		
