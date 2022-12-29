@@ -2,11 +2,8 @@ package org.nasdanika.docs;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -14,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,8 +21,7 @@ import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -47,8 +42,6 @@ import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.json.JSONObject;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DefaultConverter;
@@ -63,7 +56,6 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.emf.EObjectAdaptable;
-import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.emf.persistence.FeatureCacheAdapter;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.content.ContentFactory;
@@ -94,13 +86,10 @@ import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.html.model.html.gen.ContentConsumer;
 import org.nasdanika.ncore.NcorePackage;
-import org.nasdanika.ncore.util.NcoreResourceSet;
 import org.nasdanika.resources.BinaryEntityContainer;
 import org.nasdanika.resources.FileSystemContainer;
 
 import com.redfin.sitemapgenerator.ChangeFreq;
-import com.redfin.sitemapgenerator.WebSitemapGenerator;
-import com.redfin.sitemapgenerator.WebSitemapUrl;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
@@ -291,7 +280,7 @@ public class DocGenerator {
 		modelDir.mkdirs();
 		
 		File modelDocActionsDir = new File("target/model-doc/actions").getAbsoluteFile();
-		delete(modelDocActionsDir);
+		org.nasdanika.common.Util.delete(modelDocActionsDir);
 		modelDocActionsDir.mkdirs();
 		
 		Map<URI,File> modelToActionModelMap = new LinkedHashMap<>();
@@ -300,12 +289,12 @@ public class DocGenerator {
 		for (Entry<String, String> be: bundleMap.entrySet()) {					
 			File sourceDir = new File(projectsRoot, be.getKey());
 			File targetDir = new File(modelDir, be.getValue());
-			copy(new File(sourceDir, "model"), new File(targetDir, "model"), true, (source, target) -> {
+			org.nasdanika.common.Util.copy(new File(sourceDir, "model"), new File(targetDir, "model"), true, (source, target) -> {
 				if (target.getName().endsWith(".genmodel")) {
 					modelToActionModelMap.put(URI.createFileURI(target.getAbsolutePath()), new File(modelDocActionsDir, target.getName() + ".xml"));
 				}
 			});			
-			copy(new File(sourceDir, "doc"), new File(targetDir, "doc"), true, null);
+			org.nasdanika.common.Util.copy(new File(sourceDir, "doc"), new File(targetDir, "doc"), true, null);
 		}		
 		
 		// Loading resources to the resource set.
@@ -337,83 +326,6 @@ public class DocGenerator {
 			actionModelResource.save(null);
 		}		
 	}
-		
-	public static void copy(File source, File target, boolean cleanTarget, BiConsumer<File,File> listener) throws IOException {
-		if (cleanTarget && target.isDirectory()) {
-			delete(target.listFiles());
-		}
-		if (source.isDirectory()) {
-			target.mkdirs();
-			for (File sc: source.listFiles()) {
-				copy(sc, new File(target, sc.getName()), false, listener);
-			}
-		} else if (source.isFile()) {
-			Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);			
-			if (listener != null) {
-				listener.accept(source, target);
-			}
-		}
-	}
-	
-	public static void delete(File... files) {
-		for (File file: files) {
-			if (file.exists()) {
-				if (file.isDirectory()) {
-					delete(file.listFiles());
-				}
-				file.delete();
-			}
-		}
-	}
-		
-	public static void copy(File source, File target, boolean cleanTarget, Predicate<String> cleanPredicate, BiConsumer<File,File> listener) throws IOException {
-		if (cleanTarget && target.isDirectory()) {
-			delete(null, cleanPredicate, target.listFiles());
-		}
-		if (source.isDirectory()) {
-			target.mkdirs();
-			for (File sc: source.listFiles()) {
-				copy(sc, new File(target, sc.getName()), false, listener);
-			}
-		} else if (source.isFile()) {
-			Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);			
-			if (listener != null) {
-				listener.accept(source, target);
-			}
-		}
-	}
-	
-	public static void delete(String path, Predicate<String> deletePredicate, File... files) {
-		for (File file: files) {
-			String filePath = path == null ? file.getName() : path + "/" + file.getName();
-			if (file.exists() && (deletePredicate == null || deletePredicate.test(filePath))) {
-				if (file.isDirectory()) {
-					delete(filePath, deletePredicate, file.listFiles());
-				}
-				file.delete();
-			}
-		}
-	}	
-	
-	protected EObject loadObject(
-			String resource, 
-			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer,
-			Context context,
-			ProgressMonitor progressMonitor) throws Exception {
-		
-		URI resourceURI = URI.createFileURI(new File(resource).getAbsolutePath());
-				
-		// Diagnosing loaded resources. 
-		try {
-			return Objects.requireNonNull(org.nasdanika.common.Util.call(new AppObjectLoaderSupplier(resourceURI, context), progressMonitor, diagnosticConsumer), "Loaded null from " + resource);
-		} catch (DiagnosticException e) {
-			System.err.println("******************************");
-			System.err.println("*      Diagnostic failed     *");
-			System.err.println("******************************");
-			e.getDiagnostic().dump(System.err, 4, Status.FAIL);
-			throw e;
-		}		
-	}
 	
 	/**
 	 * Generates a resource model from an action model.
@@ -434,7 +346,7 @@ public class DocGenerator {
 		
 		Context modelContext = Context.singleton("model-name", name);
 		String actionsResource = "model/nasdanika.yml";
-		Action root = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
+		Action root = (Action) Objects.requireNonNull(AppObjectLoaderSupplier.loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
 		root.eResource().getResourceSet().getAdapterFactories().add(new AppAdapterFactory());
 		
 		Container container = ResourcesFactory.eINSTANCE.createContainer();
@@ -447,7 +359,7 @@ public class DocGenerator {
 		modelResource.getContents().add(container);
 		
 		String pageTemplateResource = "model/page-template.yml";
-		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) Objects.requireNonNull(loadObject(pageTemplateResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + pageTemplateResource);
+		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) Objects.requireNonNull(AppObjectLoaderSupplier.loadObject(pageTemplateResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + pageTemplateResource);
 		
 		File contentDir = new File(RESOURCE_MODELS_DIR, "content");
 		contentDir.mkdirs();
@@ -628,8 +540,8 @@ public class DocGenerator {
 	}
 	
 	private void copyJavaDoc() throws Exception {
-		copy(new File("../core/target/site/apidocs"), new File("docs/modules/core/apidocs"), false, null, null);		
-		copy(new File("../html/target/site/apidocs"), new File("docs/modules/html/apidocs"), false, null, null);	
+		org.nasdanika.common.Util.copy(new File("../core/target/site/apidocs"), new File("docs/modules/core/apidocs"), false, null, null);		
+		org.nasdanika.common.Util.copy(new File("../html/target/site/apidocs"), new File("docs/modules/html/apidocs"), false, null, null);	
 		// TODO - NASDAF
 	}
 	
@@ -638,7 +550,7 @@ public class DocGenerator {
 	 * @throws Exception
 	 */
 	public void generateContainer(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
-		ResourceSet resourceSet = createResourceSet(context, progressMonitor);
+		ResourceSet resourceSet = Util.createResourceSet(progressMonitor);
 		
 		resourceSet.getAdapterFactories().add(new AppAdapterFactory());
 				
@@ -680,7 +592,7 @@ public class DocGenerator {
 		};
 
 		File docsDir = new File("docs");
-		copy(new File(siteDir, "nasdanika"), docsDir, true, cleanPredicate, null);
+		org.nasdanika.common.Util.copy(new File(siteDir, "nasdanika"), docsDir, true, cleanPredicate, null);
 		
 		copyJavaDoc();
 		
@@ -688,122 +600,41 @@ public class DocGenerator {
 	}
 
 	private void generateSitemapAndSearch(File docsDir) throws IOException {
+		BiPredicate<File, String> searchPredicate = (file, path) -> path.endsWith(".html") && (
+				!"search.html".equals(path)
+				&& !"all-issues.html".equals(path)
+				&& !"issues.html".equals(path)
+				&& !"assignments.html".equals(path)
+				&& !path.endsWith("/all-issues.html")
+				&& !path.endsWith("/issues.html")
+				&& !path.endsWith("/assignments.html")
+				&& !path.endsWith("-load-specification.html")
+				&& !path.endsWith("-all-operations.html")
+				&& !path.endsWith("-all-attributes.html")
+				&& !path.endsWith("-all-references.html")
+				&& !path.endsWith("-all-supertypes.html"));
+		
 		int[] problems = { 0 };
 		
-		// Site map and search index
-		JSONObject searchDocuments = new JSONObject();		
-		String domain = "https://docs.nasdanika.org";
-		WebSitemapGenerator wsg = new WebSitemapGenerator(domain, docsDir);
-		BiConsumer<File, String> listener = new BiConsumer<File, String>() {
-			
-			@Override
-			public void accept(File file, String path) {
-				if (path.endsWith(".html")) {
-					try {
-						WebSitemapUrl url = new WebSitemapUrl.Options(domain + "/" + path)
-							    .lastMod(new Date(file.lastModified())).changeFreq(ChangeFreq.WEEKLY).build();
-						wsg.addUrl(url); 
-					} catch (MalformedURLException e) {
-						throw new NasdanikaException(e);
-					}
-					
-					// Excluding search.html and aggregator pages which contain information present elsewhere
-					if (!"search.html".equals(path)
-							&& !"all-issues.html".equals(path)
-							&& !"issues.html".equals(path)
-							&& !"assignments.html".equals(path)
-							&& !path.endsWith("/all-issues.html")
-							&& !path.endsWith("/issues.html")
-							&& !path.endsWith("/assignments.html")
-							&& !path.endsWith("-load-specification.html")
-							&& !path.endsWith("-all-operations.html")
-							&& !path.endsWith("-all-attributes.html")
-							&& !path.endsWith("-all-references.html")
-							&& !path.endsWith("-all-supertypes.html")) {
-
-						try {
-							Predicate<String> predicate = org.nasdanika.html.model.app.gen.Util.createRelativeLinkPredicate(file, docsDir);						
-							Consumer<? super Element> inspector = org.nasdanika.html.model.app.gen.Util.createInspector(predicate, error -> {
-								System.err.println("[" + path +"] " + error);
-								++problems[0];
-							});
-							
-							JSONObject searchDocument = org.nasdanika.html.model.app.gen.Util.createSearchDocument(path, file, inspector, DocGenerator.this::configureSearch);
-							if (searchDocument != null) {
-								searchDocuments.put(path, searchDocument);
-							}
-						} catch (IOException e) {
-							throw new NasdanikaException(e);
-						}
-					}
-				}
-			}
-		};
-		org.nasdanika.common.Util.walk(null, listener, docsDir.listFiles());
-		wsg.write();	
-
-		try (FileWriter writer = new FileWriter(new File(docsDir, "search-documents.js"))) {
-			writer.write("var searchDocuments = " + searchDocuments);
-		}
+		Util.generateSitemapAndSearch(
+				docsDir, 
+				"https://docs.nasdanika.org", 
+				(file, path) -> path.endsWith(".html"), 
+				ChangeFreq.WEEKLY, 
+				searchPredicate, 
+				(path, error) -> {
+					System.err.println("[" + path +"] " + error);
+					++problems[0];
+				});
 		
 		if (problems[0] != 76) {
 			throw new ExecutionException("There are problems with pages: " + problems[0]);
 		};
 	}
 	
-	protected boolean configureSearch(String path, Document doc) {
-		Element head = doc.head();
-		URI base = URI.createURI("temp://" + UUID.randomUUID() + "/");
-		URI searchScriptURI = URI.createURI("search-documents.js").resolve(base);
-		URI thisURI = URI.createURI(path).resolve(base);
-		URI relativeSearchScriptURI = searchScriptURI.deresolve(thisURI, true, true, true);
-		head.append(System.lineSeparator() + "<script src=\"" + relativeSearchScriptURI + "\"></script>" + System.lineSeparator());
-		head.append(System.lineSeparator() + "<script src=\"https://unpkg.com/lunr/lunr.js\"></script>" + System.lineSeparator());
-				
-		try (InputStream in = new FileInputStream("model/search.js")) {
-			head.append(System.lineSeparator() + "<script>" + System.lineSeparator() + DefaultConverter.INSTANCE.toString(in) + System.lineSeparator() + "</script>" + System.lineSeparator());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return true;
-	}
-	
-	protected ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
-		// Load model from XMI
-		ResourceSet resourceSet = new NcoreResourceSet();
-		Map<String, Object> extensionToFactoryMap = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap();
-		extensionToFactoryMap.put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-		
-		org.nasdanika.persistence.ObjectLoader objectLoader = new EObjectLoader(null, null, resourceSet);
-		
-		org.nasdanika.persistence.ObjectLoaderResourceFactory yamlResourceFactory = new org.nasdanika.persistence.ObjectLoaderResourceFactory() {
-			
-			@Override
-			protected org.nasdanika.persistence.ObjectLoader getObjectLoader(Resource resource) {
-				return objectLoader;
-			}
-			
-		};
-		extensionToFactoryMap.put("yml", yamlResourceFactory);
-	
-		resourceSet.getPackageRegistry().put(NcorePackage.eNS_URI, NcorePackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(ExecPackage.eNS_URI, ExecPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(ContentPackage.eNS_URI, ContentPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(ResourcesPackage.eNS_URI, ResourcesPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(HtmlPackage.eNS_URI, HtmlPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(BootstrapPackage.eNS_URI, BootstrapPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(AppPackage.eNS_URI, AppPackage.eINSTANCE);
-		
-		// TODO - NASDAF
-		
-//		resourceSet.getAdapterFactories().add(new AppAdapterFactory())				
-		return resourceSet;
-	}
-	
 	public void generate() throws Exception {
-		delete(ACTION_MODELS_DIR);
-		delete(RESOURCE_MODELS_DIR);
+		org.nasdanika.common.Util.delete(ACTION_MODELS_DIR);
+		org.nasdanika.common.Util.delete(RESOURCE_MODELS_DIR);
 		
 		ACTION_MODELS_DIR.mkdirs();
 		RESOURCE_MODELS_DIR.mkdirs();

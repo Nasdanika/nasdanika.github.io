@@ -4,7 +4,6 @@ module org.nasdanika.docs {
 	requires org.apache.commons.codec;
 	requires org.eclipse.emf.codegen.ecore;
 	requires org.eclipse.emf.ecore.xmi;
-	requires sitemapgen4j;
 	requires plantuml;
 	
 	// Models	
