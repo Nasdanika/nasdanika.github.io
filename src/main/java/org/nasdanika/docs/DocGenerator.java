@@ -38,11 +38,9 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.json.JSONObject;
-import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.Diagnostic;
@@ -86,7 +84,6 @@ import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.html.model.html.gen.ContentConsumer;
 import org.nasdanika.ncore.NcorePackage;
-import org.nasdanika.resources.BinaryEntityContainer;
 import org.nasdanika.resources.FileSystemContainer;
 
 import com.redfin.sitemapgenerator.ChangeFreq;
@@ -550,41 +547,13 @@ public class DocGenerator {
 	 * @throws Exception
 	 */
 	public void generateContainer(String name, Context context, ProgressMonitor progressMonitor) throws Exception {
-		ResourceSet resourceSet = Util.createResourceSet(progressMonitor);
-		
-		resourceSet.getAdapterFactories().add(new AppAdapterFactory());
-				
-		Resource containerResource = resourceSet.getResource(URI.createURI(name + ".xml").resolve(RESOURCE_MODELS_URI), true);
-	
 		File siteDir = new File("target/model-doc/site");
-		FileSystemContainer container = new FileSystemContainer(siteDir);
-		for (EObject eObject : containerResource.getContents()) {
-			Diagnostician diagnostician = new Diagnostician();
-			org.eclipse.emf.common.util.Diagnostic diagnostic = diagnostician.validate(eObject);
-			if (diagnostic.getSeverity() == org.eclipse.emf.common.util.Diagnostic.ERROR) {
-				throw new org.eclipse.emf.common.util.DiagnosticException(diagnostic);
-			};
-			// Diagnosing loaded resources. 
-			try {
-				ConsumerFactory<BinaryEntityContainer> consumerFactory = Objects.requireNonNull(EObjectAdaptable.adaptToConsumerFactory(eObject, BinaryEntityContainer.class), "Cannot adapt to ConsumerFactory");
-				Diagnostic callDiagnostic = org.nasdanika.common.Util.call(consumerFactory.create(context), container, progressMonitor);
-				if (callDiagnostic.getStatus() == Status.FAIL || callDiagnostic.getStatus() == Status.ERROR) {
-					System.err.println("***********************");
-					System.err.println("*      Diagnostic     *");
-					System.err.println("***********************");
-					callDiagnostic.dump(System.err, 4, Status.FAIL, Status.ERROR);
-				}
-				if (callDiagnostic.getStatus() != Status.SUCCESS) {
-					throw new DiagnosticException(callDiagnostic);
-				};
-			} catch (DiagnosticException e) {
-				System.err.println("******************************");
-				System.err.println("*      Diagnostic failed     *");
-				System.err.println("******************************");
-				e.getDiagnostic().dump(System.err, 4, Status.FAIL);
-				throw e;
-			}
-		}
+		
+		Util.generateContainer(
+				URI.createURI(name + ".xml").resolve(RESOURCE_MODELS_URI), 
+				new FileSystemContainer(siteDir), 
+				context, 
+				progressMonitor);
 		
 		// Cleanup docs, keep CNAME, favicon.ico, and images directory. Copy from target/model-doc/site/nasdanika
 		Predicate<String> cleanPredicate = path -> {
@@ -595,11 +564,7 @@ public class DocGenerator {
 		org.nasdanika.common.Util.copy(new File(siteDir, "nasdanika"), docsDir, true, cleanPredicate, null);
 		
 		copyJavaDoc();
-		
-		generateSitemapAndSearch(docsDir);
-	}
 
-	private void generateSitemapAndSearch(File docsDir) throws IOException {
 		BiPredicate<File, String> searchPredicate = (file, path) -> path.endsWith(".html") && (
 				!"search.html".equals(path)
 				&& !"all-issues.html".equals(path)
