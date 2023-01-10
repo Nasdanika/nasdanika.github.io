@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nasdanika</groupId>
-	<version>2022.12.0</version>
+	<version>2023.1.0</version>
 	<artifactId>docs</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika Documentation Site</name>
@@ -12,7 +12,7 @@
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
 			<artifactId>ecore</artifactId>
-			<version>2022.12.0</version>
+			<version>2023.1.0</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
@@ -30,7 +30,7 @@
 		<dependency>
 		    <groupId>net.sourceforge.plantuml</groupId>
 		    <artifactId>plantuml</artifactId>
-		    <version>1.2022.8</version>
+		    <version>1.2022.14</version>
 		</dependency>				
 					
 	</dependencies>

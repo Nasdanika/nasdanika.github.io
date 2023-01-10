@@ -23,8 +23,9 @@ app-action:
                 - app-label:
                     text: Drawio
                     children:
-                      - app-label:
+                      - app-action:
                           text: App
+                          location: demos/app/index.html
                           children:
                             - app-link:
                                 text: Actions

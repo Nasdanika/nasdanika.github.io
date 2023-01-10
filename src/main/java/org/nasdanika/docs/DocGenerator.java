@@ -504,7 +504,7 @@ public class DocGenerator {
 				org.nasdanika.exec.content.Resource pageResource = ContentFactory.eINSTANCE.createResource();
 				pageResource.setLocation("pages/" + page.getUuid() + ".html");
 				System.out.println("[Page content] " + page.getName() + " -> " + pageResource.getLocation());
-				return pageResource;
+				return ECollections.singletonEList(pageResource);
 			} catch (IOException e) {
 				throw new NasdanikaException(e);
 			}
