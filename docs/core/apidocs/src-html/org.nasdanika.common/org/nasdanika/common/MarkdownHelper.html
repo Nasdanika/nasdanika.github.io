@@ -1,0 +1,431 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.common;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.util.Base64;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.util.HashMap;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.Map;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.util.Map.Entry;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.util.UUID;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import java.util.regex.Matcher;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import java.util.regex.Pattern;</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">import org.apache.commons.text.StringEscapeUtils;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import org.eclipse.emf.common.util.URI;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import org.jsoup.Jsoup;</a>
+<span class="sourceLineNo">014</span><a id="line.14"></a>
+<span class="sourceLineNo">015</span><a id="line.15">import com.vladsch.flexmark.html.HtmlRenderer;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import com.vladsch.flexmark.parser.Parser;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import com.vladsch.flexmark.profile.pegdown.Extensions;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import com.vladsch.flexmark.profile.pegdown.PegdownOptionsAdapter;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import com.vladsch.flexmark.util.ast.Document;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import com.vladsch.flexmark.util.data.DataHolder;</a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">/**</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * Helper class to generate HTML from markdown. Use INSTANCE for default behavior and subclass to customize.</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * @author Pavel</a>
+<span class="sourceLineNo">025</span><a id="line.25"> *</a>
+<span class="sourceLineNo">026</span><a id="line.26"> */</a>
+<span class="sourceLineNo">027</span><a id="line.27">public class MarkdownHelper {</a>
+<span class="sourceLineNo">028</span><a id="line.28">        </a>
+<span class="sourceLineNo">029</span><a id="line.29">        /**</a>
+<span class="sourceLineNo">030</span><a id="line.30">         * Shared instance with default configuration.</a>
+<span class="sourceLineNo">031</span><a id="line.31">         */</a>
+<span class="sourceLineNo">032</span><a id="line.32">        public static final MarkdownHelper INSTANCE = new MarkdownHelper();</a>
+<span class="sourceLineNo">033</span><a id="line.33">        </a>
+<span class="sourceLineNo">034</span><a id="line.34">        /**</a>
+<span class="sourceLineNo">035</span><a id="line.35">         * Subclass to customize by overriding protected methods.</a>
+<span class="sourceLineNo">036</span><a id="line.36">         */</a>
+<span class="sourceLineNo">037</span><a id="line.37">        protected MarkdownHelper() {</a>
+<span class="sourceLineNo">038</span><a id="line.38">                </a>
+<span class="sourceLineNo">039</span><a id="line.39">        }</a>
+<span class="sourceLineNo">040</span><a id="line.40"></a>
+<span class="sourceLineNo">041</span><a id="line.41">        /**</a>
+<span class="sourceLineNo">042</span><a id="line.42">         * CDN URL of the Github Markdown CSS (https://github.com/sindresorhus/github-markdown-css)</a>
+<span class="sourceLineNo">043</span><a id="line.43">         */</a>
+<span class="sourceLineNo">044</span><a id="line.44">        public static final String GITHUB_MARKDOWN_CSS_CDN = "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.css";</a>
+<span class="sourceLineNo">045</span><a id="line.45">        </a>
+<span class="sourceLineNo">046</span><a id="line.46">        public static final String HIGHLIGHT_JS_CSS_CDN = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/default.min.css";</a>
+<span class="sourceLineNo">047</span><a id="line.47">        public static final String HIGHLIGHT_JS_SCRIPT_CDN = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js";</a>
+<span class="sourceLineNo">048</span><a id="line.48">        public static final String HIGHLIGHT_JS_INIT_SCRIPT = "hljs.initHighlightingOnLoad();";</a>
+<span class="sourceLineNo">049</span><a id="line.49">                </a>
+<span class="sourceLineNo">050</span><a id="line.50">        public static final int MIN_FIRST_SENTENCE_LENGTH = 20;</a>
+<span class="sourceLineNo">051</span><a id="line.51">        public static final int MAX_FIRST_SENTENCE_LENGTH = 250;        </a>
+<span class="sourceLineNo">052</span><a id="line.52">        public static final String[] ABBREVIATIONS = { "e.g.", "i.e.", "etc." };</a>
+<span class="sourceLineNo">053</span><a id="line.53">                </a>
+<span class="sourceLineNo">054</span><a id="line.54">        private static final String START_UML_BLOCK = "```uml";</a>
+<span class="sourceLineNo">055</span><a id="line.55">        private static final String START_UML_RESOURCE_BLOCK = "```uml-resource";</a>
+<span class="sourceLineNo">056</span><a id="line.56">        private static final Pattern START_UML_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_UML_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">057</span><a id="line.57">        private static final Pattern START_UML_RESOURCE_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_UML_RESOURCE_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">058</span><a id="line.58"></a>
+<span class="sourceLineNo">059</span><a id="line.59">        private static final String START_WIREFRAME_BLOCK = "```wireframe";</a>
+<span class="sourceLineNo">060</span><a id="line.60">        private static final String START_WIREFRAME_RESOURCE_BLOCK = "```wireframe-resource";</a>
+<span class="sourceLineNo">061</span><a id="line.61">        private static final Pattern START_WIREFRAME_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_WIREFRAME_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">062</span><a id="line.62">        private static final Pattern START_WIREFRAME_RESOURCE_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_WIREFRAME_RESOURCE_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">063</span><a id="line.63"></a>
+<span class="sourceLineNo">064</span><a id="line.64">        private static final String START_GANTT_BLOCK = "```gantt";</a>
+<span class="sourceLineNo">065</span><a id="line.65">        private static final String START_GANTT_RESOURCE_BLOCK = "```gantt-resource";</a>
+<span class="sourceLineNo">066</span><a id="line.66">        private static final Pattern START_GANTT_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_GANTT_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">067</span><a id="line.67">        private static final Pattern START_GANTT_RESOURCE_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_GANTT_RESOURCE_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">068</span><a id="line.68"></a>
+<span class="sourceLineNo">069</span><a id="line.69">        private static final String START_MINDMAP_BLOCK = "```mindmap";</a>
+<span class="sourceLineNo">070</span><a id="line.70">        private static final String START_MINDMAP_RESOURCE_BLOCK = "```mindmap-resource";</a>
+<span class="sourceLineNo">071</span><a id="line.71">        private static final Pattern START_MINDMAP_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_MINDMAP_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">072</span><a id="line.72">        private static final Pattern START_MINDMAP_RESOURCE_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_MINDMAP_RESOURCE_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">073</span><a id="line.73"></a>
+<span class="sourceLineNo">074</span><a id="line.74">        private static final String START_WBS_BLOCK = "```wbs";</a>
+<span class="sourceLineNo">075</span><a id="line.75">        private static final String START_WBS_RESOURCE_BLOCK = "```wbs-resource";</a>
+<span class="sourceLineNo">076</span><a id="line.76">        private static final Pattern START_WBS_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_WBS_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">077</span><a id="line.77">        private static final Pattern START_WBS_RESOURCE_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_WBS_RESOURCE_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">078</span><a id="line.78">        </a>
+<span class="sourceLineNo">079</span><a id="line.79">        private static final String START_DRAWIO_BLOCK = "```drawio";</a>
+<span class="sourceLineNo">080</span><a id="line.80">        private static final String START_DRAWIO_RESOURCE_BLOCK = "```drawio-resource";</a>
+<span class="sourceLineNo">081</span><a id="line.81">        private static final Pattern START_DRAWIO_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_DRAWIO_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">082</span><a id="line.82">        private static final Pattern START_DRAWIO_RESOURCE_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_DRAWIO_RESOURCE_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">083</span><a id="line.83">        </a>
+<span class="sourceLineNo">084</span><a id="line.84">        private static final String START_MERMAID_BLOCK = "```mermaid";</a>
+<span class="sourceLineNo">085</span><a id="line.85">        private static final String START_MERMAID_RESOURCE_BLOCK = "```mermaid-resource";</a>
+<span class="sourceLineNo">086</span><a id="line.86">        private static final Pattern START_MERMAID_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_MERMAID_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">087</span><a id="line.87">        private static final Pattern START_MERMAID_RESOURCE_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_MERMAID_RESOURCE_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">088</span><a id="line.88">        </a>
+<span class="sourceLineNo">089</span><a id="line.89">        private static final String START_PNG_BLOCK = "```png";</a>
+<span class="sourceLineNo">090</span><a id="line.90">        private static final String START_PNG_RESOURCE_BLOCK = "```png-resource";</a>
+<span class="sourceLineNo">091</span><a id="line.91">        private static final Pattern START_PNG_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_PNG_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">092</span><a id="line.92">        private static final Pattern START_PNG_RESOURCE_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_PNG_RESOURCE_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">093</span><a id="line.93">        </a>
+<span class="sourceLineNo">094</span><a id="line.94">        private static final String START_JPEG_BLOCK = "```jpeg";</a>
+<span class="sourceLineNo">095</span><a id="line.95">        private static final String START_JPEG_RESOURCE_BLOCK = "```jpeg-resource";</a>
+<span class="sourceLineNo">096</span><a id="line.96">        private static final Pattern START_JPEG_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_JPEG_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">097</span><a id="line.97">        private static final Pattern START_JPEG_RESOURCE_PATTERN = Pattern.compile("\\R(\\s)*\\R"+START_JPEG_RESOURCE_BLOCK+"(\\s)*\\R");</a>
+<span class="sourceLineNo">098</span><a id="line.98"></a>
+<span class="sourceLineNo">099</span><a id="line.99">        private static final String FENCED_BLOCK = "```";</a>
+<span class="sourceLineNo">100</span><a id="line.100">        private static final Pattern FENCED_BLOCK_PATTERN = Pattern.compile("\\R"+FENCED_BLOCK+"(\\s)*((\\R(\\s)*\\R)|$)");     </a>
+<span class="sourceLineNo">101</span><a id="line.101"></a>
+<span class="sourceLineNo">102</span><a id="line.102">        protected String[] getAbbreviations() {</a>
+<span class="sourceLineNo">103</span><a id="line.103">                return ABBREVIATIONS;</a>
+<span class="sourceLineNo">104</span><a id="line.104">        }       </a>
+<span class="sourceLineNo">105</span><a id="line.105">        </a>
+<span class="sourceLineNo">106</span><a id="line.106">        protected String nextToken() {</a>
+<span class="sourceLineNo">107</span><a id="line.107">                return "fenced_block_token_"+UUID.randomUUID().toString().replace("-", "_");</a>
+<span class="sourceLineNo">108</span><a id="line.108">        }</a>
+<span class="sourceLineNo">109</span><a id="line.109">        </a>
+<span class="sourceLineNo">110</span><a id="line.110">        protected DiagramGenerator getDiagramGenerator() {</a>
+<span class="sourceLineNo">111</span><a id="line.111">                return DiagramGenerator.INSTANCE;</a>
+<span class="sourceLineNo">112</span><a id="line.112">        }</a>
+<span class="sourceLineNo">113</span><a id="line.113">                </a>
+<span class="sourceLineNo">114</span><a id="line.114">        /**</a>
+<span class="sourceLineNo">115</span><a id="line.115">         * @param markdown Markdown to pre-process</a>
+<span class="sourceLineNo">116</span><a id="line.116">         * @param replacements Accumulator of post-processing replacements token -&amp;gt; HTML to replace the token with.</a>
+<span class="sourceLineNo">117</span><a id="line.117">         * @return</a>
+<span class="sourceLineNo">118</span><a id="line.118">         */</a>
+<span class="sourceLineNo">119</span><a id="line.119">        protected String preProcessMarkdown(String markdown, Map&lt;String,String&gt; replacements) {</a>
+<span class="sourceLineNo">120</span><a id="line.120">                if (isProcessFendedBlocks()) {</a>
+<span class="sourceLineNo">121</span><a id="line.121">                        String ret = processFencedBlocks(markdown, DiagramGenerator.UML_DIALECT, START_UML_PATTERN, replacements, false);</a>
+<span class="sourceLineNo">122</span><a id="line.122">                        ret = processFencedBlocks(ret, DiagramGenerator.SALT_DIALECT, START_WIREFRAME_PATTERN, replacements, false);</a>
+<span class="sourceLineNo">123</span><a id="line.123">                        ret = processFencedBlocks(ret, DiagramGenerator.GANTT_DIALECT, START_GANTT_PATTERN, replacements, false);</a>
+<span class="sourceLineNo">124</span><a id="line.124">                        ret = processFencedBlocks(ret, DiagramGenerator.MINDMAP_DIALECT, START_MINDMAP_PATTERN, replacements, false);</a>
+<span class="sourceLineNo">125</span><a id="line.125">                        ret = processFencedBlocks(ret, DiagramGenerator.WBS_DIALECT, START_WBS_PATTERN, replacements, false);</a>
+<span class="sourceLineNo">126</span><a id="line.126">                        ret = processFencedBlocks(ret, DiagramGenerator.DRAWIO_DIALECT, START_DRAWIO_PATTERN, replacements, false);</a>
+<span class="sourceLineNo">127</span><a id="line.127">                        ret = processFencedBlocks(ret, DiagramGenerator.MERMAID_DIALECT, START_MERMAID_PATTERN, replacements, false);</a>
+<span class="sourceLineNo">128</span><a id="line.128">                        ret = processFencedBlocks(ret, null, START_PNG_PATTERN, replacements, false);</a>
+<span class="sourceLineNo">129</span><a id="line.129">                        ret = processFencedBlocks(ret, null, START_JPEG_PATTERN, replacements, false);</a>
+<span class="sourceLineNo">130</span><a id="line.130">                                        </a>
+<span class="sourceLineNo">131</span><a id="line.131">                        ret = processFencedBlocks(ret, DiagramGenerator.UML_DIALECT, START_UML_RESOURCE_PATTERN, replacements, true);</a>
+<span class="sourceLineNo">132</span><a id="line.132">                        ret = processFencedBlocks(ret, DiagramGenerator.SALT_DIALECT, START_WIREFRAME_RESOURCE_PATTERN, replacements, true);</a>
+<span class="sourceLineNo">133</span><a id="line.133">                        ret = processFencedBlocks(ret, DiagramGenerator.GANTT_DIALECT, START_GANTT_RESOURCE_PATTERN, replacements, true);</a>
+<span class="sourceLineNo">134</span><a id="line.134">                        ret = processFencedBlocks(ret, DiagramGenerator.MINDMAP_DIALECT, START_MINDMAP_RESOURCE_PATTERN, replacements, true);</a>
+<span class="sourceLineNo">135</span><a id="line.135">                        ret = processFencedBlocks(ret, DiagramGenerator.WBS_DIALECT, START_WBS_RESOURCE_PATTERN, replacements, true);</a>
+<span class="sourceLineNo">136</span><a id="line.136">                        ret = processFencedBlocks(ret, DiagramGenerator.DRAWIO_DIALECT, START_DRAWIO_RESOURCE_PATTERN, replacements, true);</a>
+<span class="sourceLineNo">137</span><a id="line.137">                        ret = processFencedBlocks(ret, DiagramGenerator.MERMAID_DIALECT, START_MERMAID_RESOURCE_PATTERN, replacements, true);</a>
+<span class="sourceLineNo">138</span><a id="line.138">                        ret = processFencedBlocks(ret, null, START_PNG_RESOURCE_PATTERN, replacements, true);</a>
+<span class="sourceLineNo">139</span><a id="line.139">                        ret = processFencedBlocks(ret, null, START_JPEG_RESOURCE_PATTERN, replacements, true);</a>
+<span class="sourceLineNo">140</span><a id="line.140">                                        </a>
+<span class="sourceLineNo">141</span><a id="line.141">                        return ret;             </a>
+<span class="sourceLineNo">142</span><a id="line.142">                }</a>
+<span class="sourceLineNo">143</span><a id="line.143">                                </a>
+<span class="sourceLineNo">144</span><a id="line.144">                return markdown;</a>
+<span class="sourceLineNo">145</span><a id="line.145">        }</a>
+<span class="sourceLineNo">146</span><a id="line.146"></a>
+<span class="sourceLineNo">147</span><a id="line.147">        /**</a>
+<span class="sourceLineNo">148</span><a id="line.148">         * </a>
+<span class="sourceLineNo">149</span><a id="line.149">         * @param input</a>
+<span class="sourceLineNo">150</span><a id="line.150">         * @param dialect</a>
+<span class="sourceLineNo">151</span><a id="line.151">         * @param startPattern</a>
+<span class="sourceLineNo">152</span><a id="line.152">         * @param replacements</a>
+<span class="sourceLineNo">153</span><a id="line.153">         * @param resource Indicates that spec is a URL of a resource resolved relative to the URL returned by getResourceBase(). The URL supports &lt;code&gt;classpath&lt;/code&gt; schema for classloader resources.</a>
+<span class="sourceLineNo">154</span><a id="line.154">         * @return</a>
+<span class="sourceLineNo">155</span><a id="line.155">         */</a>
+<span class="sourceLineNo">156</span><a id="line.156">        private String processFencedBlocks(String input, String dialect, Pattern startPattern, Map&lt;String,String&gt; replacements, boolean resource) {</a>
+<span class="sourceLineNo">157</span><a id="line.157">                StringBuilder output = new StringBuilder();</a>
+<span class="sourceLineNo">158</span><a id="line.158">                Matcher startMatcher = startPattern.matcher(input);</a>
+<span class="sourceLineNo">159</span><a id="line.159">                int i = 0;</a>
+<span class="sourceLineNo">160</span><a id="line.160">                while (startMatcher.find()) {</a>
+<span class="sourceLineNo">161</span><a id="line.161">                    int startMatcherStart = startMatcher.start();</a>
+<span class="sourceLineNo">162</span><a id="line.162">                    if (startMatcherStart &gt; i) { // Need to reproduce a situation when i is greater than startMatcherStart</a>
+<span class="sourceLineNo">163</span><a id="line.163">                                int startMatcherEnd = startMatcher.end();</a>
+<span class="sourceLineNo">164</span><a id="line.164">                                String endMatcherContent = input.substring(startMatcherEnd);</a>
+<span class="sourceLineNo">165</span><a id="line.165">                                Matcher endMatcher = FENCED_BLOCK_PATTERN.matcher(endMatcherContent);                   </a>
+<span class="sourceLineNo">166</span><a id="line.166">                                if (endMatcher.find()) {</a>
+<span class="sourceLineNo">167</span><a id="line.167">                                        output.append(input.substring(i, startMatcherStart));</a>
+<span class="sourceLineNo">168</span><a id="line.168">                                        String bareSpec = processSpec(dialect, endMatcherContent.substring(0, endMatcher.start())) ;</a>
+<span class="sourceLineNo">169</span><a id="line.169">                                        String match = endMatcherContent.substring(endMatcher.start(), endMatcher.end());</a>
+<span class="sourceLineNo">170</span><a id="line.170">                                    i = startMatcherEnd + endMatcher.start() + match.indexOf("```") + 3; // Just the closing back-ticks, no space or new line characters.</a>
+<span class="sourceLineNo">171</span><a id="line.171">                                        </a>
+<span class="sourceLineNo">172</span><a id="line.172">                                        if (resource) {                                 </a>
+<span class="sourceLineNo">173</span><a id="line.173">                                                try {           </a>
+<span class="sourceLineNo">174</span><a id="line.174">                                                        URI resourceURI = URI.createURI(bareSpec);</a>
+<span class="sourceLineNo">175</span><a id="line.175">                                                        URI resourceBase = getResourceBase();</a>
+<span class="sourceLineNo">176</span><a id="line.176">                                                        if (resourceBase != null &amp;&amp; !resourceBase.isRelative() &amp;&amp; resourceBase.isHierarchical()) {</a>
+<span class="sourceLineNo">177</span><a id="line.177">                                                                resourceURI = resourceURI.resolve(resourceBase);</a>
+<span class="sourceLineNo">178</span><a id="line.178">                                                        }</a>
+<span class="sourceLineNo">179</span><a id="line.179">                                                        bareSpec = loadResource(resourceURI, dialect == null);</a>
+<span class="sourceLineNo">180</span><a id="line.180">                                                } catch (Exception e) {                                 </a>
+<span class="sourceLineNo">181</span><a id="line.181">                                                        output</a>
+<span class="sourceLineNo">182</span><a id="line.182">                                                                .append(System.lineSeparator())</a>
+<span class="sourceLineNo">183</span><a id="line.183">                                                                .append("&lt;div class=\"nsd-error\"&gt;").append(System.lineSeparator())</a>
+<span class="sourceLineNo">184</span><a id="line.184">                                                                .append("Error loading resource " + bareSpec + ": " + e) </a>
+<span class="sourceLineNo">185</span><a id="line.185">                                                                .append(System.lineSeparator()).append("&lt;/div&gt;")</a>
+<span class="sourceLineNo">186</span><a id="line.186">                                                                .append(System.lineSeparator());</a>
+<span class="sourceLineNo">187</span><a id="line.187">                                                        bareSpec = null;</a>
+<span class="sourceLineNo">188</span><a id="line.188">                                                }</a>
+<span class="sourceLineNo">189</span><a id="line.189">                                        }</a>
+<span class="sourceLineNo">190</span><a id="line.190">                                        </a>
+<span class="sourceLineNo">191</span><a id="line.191">                                        if (bareSpec != null) {</a>
+<span class="sourceLineNo">192</span><a id="line.192">                                                String escapedBareSpec = escapeDiagramSpec(dialect, bareSpec);</a>
+<span class="sourceLineNo">193</span><a id="line.193">                                                </a>
+<span class="sourceLineNo">194</span><a id="line.194">                                                StringBuilder replacementBuilder = new StringBuilder();</a>
+<span class="sourceLineNo">195</span><a id="line.195">                                                if (!Util.isBlank(escapedBareSpec)) {</a>
+<span class="sourceLineNo">196</span><a id="line.196">                                                        replacementBuilder</a>
+<span class="sourceLineNo">197</span><a id="line.197">                                                                .append(System.lineSeparator())</a>
+<span class="sourceLineNo">198</span><a id="line.198">                                                                .append("&lt;div style='display:none;white-space:pre-wrap' title='Diagram escaped spec for search'&gt;").append(System.lineSeparator())</a>
+<span class="sourceLineNo">199</span><a id="line.199">                                                                .append(escapedBareSpec).append(System.lineSeparator()) </a>
+<span class="sourceLineNo">200</span><a id="line.200">                                                                .append("&lt;/div&gt; ").append(System.lineSeparator());</a>
+<span class="sourceLineNo">201</span><a id="line.201">                                                }</a>
+<span class="sourceLineNo">202</span><a id="line.202">                                                </a>
+<span class="sourceLineNo">203</span><a id="line.203">                                                try {</a>
+<span class="sourceLineNo">204</span><a id="line.204">                                                        String token = nextToken();</a>
+<span class="sourceLineNo">205</span><a id="line.205">                                                        </a>
+<span class="sourceLineNo">206</span><a id="line.206">                                                        if (dialect == null) {</a>
+<span class="sourceLineNo">207</span><a id="line.207">                                                                replacementBuilder.append("&lt;img src=\"data:image/");</a>
+<span class="sourceLineNo">208</span><a id="line.208">                                                                if (startPattern == START_PNG_PATTERN || startPattern == START_PNG_RESOURCE_PATTERN) {</a>
+<span class="sourceLineNo">209</span><a id="line.209">                                                                        replacementBuilder.append("png");</a>
+<span class="sourceLineNo">210</span><a id="line.210">                                                                } else if (startPattern == START_JPEG_PATTERN || startPattern == START_JPEG_RESOURCE_PATTERN) {</a>
+<span class="sourceLineNo">211</span><a id="line.211">                                                                        replacementBuilder.append("jpeg");</a>
+<span class="sourceLineNo">212</span><a id="line.212">                                                                }</a>
+<span class="sourceLineNo">213</span><a id="line.213">                                                                replacementBuilder</a>
+<span class="sourceLineNo">214</span><a id="line.214">                                                                        .append(";base64, ")</a>
+<span class="sourceLineNo">215</span><a id="line.215">                                                                        .append(bareSpec)</a>
+<span class="sourceLineNo">216</span><a id="line.216">                                                                        .append("\"/&gt;")</a>
+<span class="sourceLineNo">217</span><a id="line.217">                                                                        .append(System.lineSeparator());</a>
+<span class="sourceLineNo">218</span><a id="line.218">                                                        } else {</a>
+<span class="sourceLineNo">219</span><a id="line.219">                                                                replacementBuilder</a>
+<span class="sourceLineNo">220</span><a id="line.220">                                                                        .append(getDiagramGenerator().generateDiagram(bareSpec, dialect))</a>
+<span class="sourceLineNo">221</span><a id="line.221">                                                                        .append(System.lineSeparator());</a>
+<span class="sourceLineNo">222</span><a id="line.222">                                                        }</a>
+<span class="sourceLineNo">223</span><a id="line.223">                                                        </a>
+<span class="sourceLineNo">224</span><a id="line.224">                                                        replacements.put(token, replacementBuilder.toString());</a>
+<span class="sourceLineNo">225</span><a id="line.225">                                                        output</a>
+<span class="sourceLineNo">226</span><a id="line.226">                                                                .append(System.lineSeparator())</a>
+<span class="sourceLineNo">227</span><a id="line.227">                                                                .append(System.lineSeparator())</a>
+<span class="sourceLineNo">228</span><a id="line.228">                                                                .append(token)</a>
+<span class="sourceLineNo">229</span><a id="line.229">                                                                .append(System.lineSeparator())</a>
+<span class="sourceLineNo">230</span><a id="line.230">                                                                .append(System.lineSeparator());</a>
+<span class="sourceLineNo">231</span><a id="line.231">                                                } catch (Exception e) {</a>
+<span class="sourceLineNo">232</span><a id="line.232">                                                        output.append("&lt;div class=\"nsd-error\"&gt;Error during diagram rendering: " + e + "&lt;/div&gt;");</a>
+<span class="sourceLineNo">233</span><a id="line.233">                                                }</a>
+<span class="sourceLineNo">234</span><a id="line.234">                                        }                               </a>
+<span class="sourceLineNo">235</span><a id="line.235">                                }</a>
+<span class="sourceLineNo">236</span><a id="line.236">                    }</a>
+<span class="sourceLineNo">237</span><a id="line.237">                }</a>
+<span class="sourceLineNo">238</span><a id="line.238">                output.append(input.substring(i, input.length()));</a>
+<span class="sourceLineNo">239</span><a id="line.239">                return output.toString();</a>
+<span class="sourceLineNo">240</span><a id="line.240">        }</a>
+<span class="sourceLineNo">241</span><a id="line.241">        </a>
+<span class="sourceLineNo">242</span><a id="line.242">        /**</a>
+<span class="sourceLineNo">243</span><a id="line.243">         * Override to process bare spec.</a>
+<span class="sourceLineNo">244</span><a id="line.244">         * @param dialect</a>
+<span class="sourceLineNo">245</span><a id="line.245">         * @param bareSpec</a>
+<span class="sourceLineNo">246</span><a id="line.246">         * @return</a>
+<span class="sourceLineNo">247</span><a id="line.247">         */</a>
+<span class="sourceLineNo">248</span><a id="line.248">        protected String processSpec(String dialect, String bareSpec) {</a>
+<span class="sourceLineNo">249</span><a id="line.249">                return bareSpec;</a>
+<span class="sourceLineNo">250</span><a id="line.250">        }</a>
+<span class="sourceLineNo">251</span><a id="line.251"></a>
+<span class="sourceLineNo">252</span><a id="line.252">        protected String escapeDiagramSpec(String dialect, String bareSpec) {</a>
+<span class="sourceLineNo">253</span><a id="line.253">                if (dialect == null) {</a>
+<span class="sourceLineNo">254</span><a id="line.254">                        return null; // For PNG and JPEG</a>
+<span class="sourceLineNo">255</span><a id="line.255">                }</a>
+<span class="sourceLineNo">256</span><a id="line.256">                if (DiagramGenerator.DRAWIO_DIALECT.equals(dialect)) {</a>
+<span class="sourceLineNo">257</span><a id="line.257">                        // TODO - Extract text from XML, return null for now.</a>
+<span class="sourceLineNo">258</span><a id="line.258">                        // Not needed with Nasdanika search - it extracts text from Drawio diagrams.</a>
+<span class="sourceLineNo">259</span><a id="line.259">                        return null;</a>
+<span class="sourceLineNo">260</span><a id="line.260">                }</a>
+<span class="sourceLineNo">261</span><a id="line.261">                if (DiagramGenerator.MERMAID_DIALECT.equals(dialect)) {</a>
+<span class="sourceLineNo">262</span><a id="line.262">                        // No need - spec is available as plain text. </a>
+<span class="sourceLineNo">263</span><a id="line.263">                        return null;</a>
+<span class="sourceLineNo">264</span><a id="line.264">                }</a>
+<span class="sourceLineNo">265</span><a id="line.265">                return StringEscapeUtils.escapeHtml4(bareSpec).trim();</a>
+<span class="sourceLineNo">266</span><a id="line.266">        }</a>
+<span class="sourceLineNo">267</span><a id="line.267">        </a>
+<span class="sourceLineNo">268</span><a id="line.268">        protected ClassLoader getResourceClassLoader() {</a>
+<span class="sourceLineNo">269</span><a id="line.269">                return getClass().getClassLoader();</a>
+<span class="sourceLineNo">270</span><a id="line.270">        }</a>
+<span class="sourceLineNo">271</span><a id="line.271">        </a>
+<span class="sourceLineNo">272</span><a id="line.272">        /**</a>
+<span class="sourceLineNo">273</span><a id="line.273">         * Loads resource and optionally encodes it to Base64.</a>
+<span class="sourceLineNo">274</span><a id="line.274">         * @param resource</a>
+<span class="sourceLineNo">275</span><a id="line.275">         * @param encode</a>
+<span class="sourceLineNo">276</span><a id="line.276">         * @return</a>
+<span class="sourceLineNo">277</span><a id="line.277">         */</a>
+<span class="sourceLineNo">278</span><a id="line.278">        protected String loadResource(URI resource, boolean encode) throws Exception {</a>
+<span class="sourceLineNo">279</span><a id="line.279">                if (encode) {</a>
+<span class="sourceLineNo">280</span><a id="line.280">                        byte[] bytes = DefaultConverter.INSTANCE.toByteArray(resource);</a>
+<span class="sourceLineNo">281</span><a id="line.281">                        return Base64.getEncoder().encodeToString(bytes);</a>
+<span class="sourceLineNo">282</span><a id="line.282">                }</a>
+<span class="sourceLineNo">283</span><a id="line.283">                return DefaultConverter.INSTANCE.stringContent(resource);</a>
+<span class="sourceLineNo">284</span><a id="line.284">        }</a>
+<span class="sourceLineNo">285</span><a id="line.285"></a>
+<span class="sourceLineNo">286</span><a id="line.286">        /**</a>
+<span class="sourceLineNo">287</span><a id="line.287">         * Override to return base URL for resolving resource references in UML resource blocks.</a>
+<span class="sourceLineNo">288</span><a id="line.288">         * @return</a>
+<span class="sourceLineNo">289</span><a id="line.289">         */</a>
+<span class="sourceLineNo">290</span><a id="line.290">        protected URI getResourceBase() {</a>
+<span class="sourceLineNo">291</span><a id="line.291">                return null;</a>
+<span class="sourceLineNo">292</span><a id="line.292">        }</a>
+<span class="sourceLineNo">293</span><a id="line.293">        </a>
+<span class="sourceLineNo">294</span><a id="line.294">        protected boolean isProcessFendedBlocks() {</a>
+<span class="sourceLineNo">295</span><a id="line.295">                return true;</a>
+<span class="sourceLineNo">296</span><a id="line.296">        }</a>
+<span class="sourceLineNo">297</span><a id="line.297">                </a>
+<span class="sourceLineNo">298</span><a id="line.298">        protected DataHolder getFlexmarkOptions() {</a>
+<span class="sourceLineNo">299</span><a id="line.299">            return PegdownOptionsAdapter.flexmarkOptions(</a>
+<span class="sourceLineNo">300</span><a id="line.300">                        Extensions.FOOTNOTES </a>
+<span class="sourceLineNo">301</span><a id="line.301">                        | Extensions.SUBSCRIPT </a>
+<span class="sourceLineNo">302</span><a id="line.302">                        | Extensions.STRIKETHROUGH </a>
+<span class="sourceLineNo">303</span><a id="line.303">                        | Extensions.SUPERSCRIPT </a>
+<span class="sourceLineNo">304</span><a id="line.304">                        | Extensions.TOC </a>
+<span class="sourceLineNo">305</span><a id="line.305">                        | (Extensions.ALL ^ Extensions.HARDWRAPS ^ Extensions.SUPPRESS_HTML_BLOCKS ^ Extensions.SUPPRESS_INLINE_HTML ^ Extensions.SUPPRESS_ALL_HTML));</a>
+<span class="sourceLineNo">306</span><a id="line.306">        }       </a>
+<span class="sourceLineNo">307</span><a id="line.307">        </a>
+<span class="sourceLineNo">308</span><a id="line.308">        protected Parser createMarkdownParser() {</a>
+<span class="sourceLineNo">309</span><a id="line.309">                return Parser.builder(getFlexmarkOptions()).build();</a>
+<span class="sourceLineNo">310</span><a id="line.310">        }</a>
+<span class="sourceLineNo">311</span><a id="line.311">                </a>
+<span class="sourceLineNo">312</span><a id="line.312">        protected HtmlRenderer createMarkdownHtmlRenderer() {</a>
+<span class="sourceLineNo">313</span><a id="line.313">                return HtmlRenderer.builder(getFlexmarkOptions()).build();</a>
+<span class="sourceLineNo">314</span><a id="line.314">        }</a>
+<span class="sourceLineNo">315</span><a id="line.315">                        </a>
+<span class="sourceLineNo">316</span><a id="line.316">        public String markdownToHtml(String markdown) {</a>
+<span class="sourceLineNo">317</span><a id="line.317">                if (Util.isBlank(markdown)) {</a>
+<span class="sourceLineNo">318</span><a id="line.318">                        return "";</a>
+<span class="sourceLineNo">319</span><a id="line.319">                }</a>
+<span class="sourceLineNo">320</span><a id="line.320">                Map&lt;String,String&gt; replacements = new HashMap&lt;&gt;();</a>
+<span class="sourceLineNo">321</span><a id="line.321">                Document document = createMarkdownParser().parse(preProcessMarkdown(markdown, replacements));</a>
+<span class="sourceLineNo">322</span><a id="line.322">                String html = createMarkdownHtmlRenderer().render(document);</a>
+<span class="sourceLineNo">323</span><a id="line.323">                for (Entry&lt;String, String&gt; te: replacements.entrySet()) {</a>
+<span class="sourceLineNo">324</span><a id="line.324">                        html = html.replace(te.getKey(), te.getValue());</a>
+<span class="sourceLineNo">325</span><a id="line.325">                }</a>
+<span class="sourceLineNo">326</span><a id="line.326">                return html;</a>
+<span class="sourceLineNo">327</span><a id="line.327">        }</a>
+<span class="sourceLineNo">328</span><a id="line.328">        </a>
+<span class="sourceLineNo">329</span><a id="line.329">        /**</a>
+<span class="sourceLineNo">330</span><a id="line.330">         * Converts markdown to HTML, converts HTML to plain text and then extracts the first sentence.</a>
+<span class="sourceLineNo">331</span><a id="line.331">         * @param markdown</a>
+<span class="sourceLineNo">332</span><a id="line.332">         * @return</a>
+<span class="sourceLineNo">333</span><a id="line.333">         */</a>
+<span class="sourceLineNo">334</span><a id="line.334">        public String firstPlainTextSentence(String markdown) {</a>
+<span class="sourceLineNo">335</span><a id="line.335">                return firstSentence(Jsoup.parse(markdownToHtml(markdown)).text());             </a>
+<span class="sourceLineNo">336</span><a id="line.336">        }</a>
+<span class="sourceLineNo">337</span><a id="line.337">        </a>
+<span class="sourceLineNo">338</span><a id="line.338">        /**</a>
+<span class="sourceLineNo">339</span><a id="line.339">         * Extracts first sentence from text</a>
+<span class="sourceLineNo">340</span><a id="line.340">         * @param context</a>
+<span class="sourceLineNo">341</span><a id="line.341">         * @param text</a>
+<span class="sourceLineNo">342</span><a id="line.342">         * @return</a>
+<span class="sourceLineNo">343</span><a id="line.343">         * @throws Exception</a>
+<span class="sourceLineNo">344</span><a id="line.344">         */</a>
+<span class="sourceLineNo">345</span><a id="line.345">        public String firstSentence(String text) {</a>
+<span class="sourceLineNo">346</span><a id="line.346">                return Util.firstSentence(text, getMinFirstSentenceLength(), getMaxFirstSentenceLength(), getAbbreviations());</a>
+<span class="sourceLineNo">347</span><a id="line.347">        }</a>
+<span class="sourceLineNo">348</span><a id="line.348">        </a>
+<span class="sourceLineNo">349</span><a id="line.349">        protected int getMinFirstSentenceLength() {</a>
+<span class="sourceLineNo">350</span><a id="line.350">                return MIN_FIRST_SENTENCE_LENGTH;</a>
+<span class="sourceLineNo">351</span><a id="line.351">        }</a>
+<span class="sourceLineNo">352</span><a id="line.352">        </a>
+<span class="sourceLineNo">353</span><a id="line.353">        protected int getMaxFirstSentenceLength() {</a>
+<span class="sourceLineNo">354</span><a id="line.354">                return MAX_FIRST_SENTENCE_LENGTH;</a>
+<span class="sourceLineNo">355</span><a id="line.355">        }</a>
+<span class="sourceLineNo">356</span><a id="line.356"></a>
+<span class="sourceLineNo">357</span><a id="line.357">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

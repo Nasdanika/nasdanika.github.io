@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.graph.processor;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import static java.lang.annotation.ElementType.METHOD;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import static java.lang.annotation.RetentionPolicy.RUNTIME;</a>
+<span class="sourceLineNo">005</span><a id="line.5"></a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.lang.annotation.Retention;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.lang.annotation.Target;</a>
+<span class="sourceLineNo">008</span><a id="line.8"></a>
+<span class="sourceLineNo">009</span><a id="line.9">import org.nasdanika.graph.Element;</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">/**</a>
+<span class="sourceLineNo">012</span><a id="line.12"> * Annotation for a method creating an {@link Element} processor.</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * The method shall have zero or one parameter. In the second case the parameter type shall be assignable from </a>
+<span class="sourceLineNo">014</span><a id="line.14"> * {@link ProcessorConfig} or its subclasses - {@link NodeProcessorConfig} or {@link ConnectionProcessorConfig}.</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * An annotated method may return an object or null. In the first case the returned object may be introspected to wire handlers and endpoints </a>
+<span class="sourceLineNo">016</span><a id="line.16"> * to methods and fields with annotations.</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * @author Pavel</a>
+<span class="sourceLineNo">018</span><a id="line.18"> *</a>
+<span class="sourceLineNo">019</span><a id="line.19"> */</a>
+<span class="sourceLineNo">020</span><a id="line.20">@Retention(RUNTIME)</a>
+<span class="sourceLineNo">021</span><a id="line.21">@Target(METHOD)</a>
+<span class="sourceLineNo">022</span><a id="line.22">public @interface Processor {</a>
+<span class="sourceLineNo">023</span><a id="line.23">        </a>
+<span class="sourceLineNo">024</span><a id="line.24">        /**</a>
+<span class="sourceLineNo">025</span><a id="line.25">         * If not blank, the value shall be a &lt;a href="https://docs.spring.io/spring-framework/docs/5.3.22/reference/html/core.html#expressions"&gt;Spring boolean expression&lt;/a&gt;</a>
+<span class="sourceLineNo">026</span><a id="line.26">         * which is evaluated in the context of an element. </a>
+<span class="sourceLineNo">027</span><a id="line.27">         * @return</a>
+<span class="sourceLineNo">028</span><a id="line.28">         */</a>
+<span class="sourceLineNo">029</span><a id="line.29">        String value() default "";</a>
+<span class="sourceLineNo">030</span><a id="line.30">        </a>
+<span class="sourceLineNo">031</span><a id="line.31">        /**</a>
+<span class="sourceLineNo">032</span><a id="line.32">         * @return {@link IntrospectionLevel}, DECLARED by default.</a>
+<span class="sourceLineNo">033</span><a id="line.33">         */</a>
+<span class="sourceLineNo">034</span><a id="line.34">        IntrospectionLevel introspect() default IntrospectionLevel.DECLARED;</a>
+<span class="sourceLineNo">035</span><a id="line.35">        </a>
+<span class="sourceLineNo">036</span><a id="line.36">        /**</a>
+<span class="sourceLineNo">037</span><a id="line.37">         * Matching priority. Defaults to 0. Higher priorities are matched before lower priorities.</a>
+<span class="sourceLineNo">038</span><a id="line.38">         * @return</a>
+<span class="sourceLineNo">039</span><a id="line.39">         */</a>
+<span class="sourceLineNo">040</span><a id="line.40">        int priority() default 0;</a>
+<span class="sourceLineNo">041</span><a id="line.41">        </a>
+<span class="sourceLineNo">042</span><a id="line.42">        Class&lt;Element&gt; type() default Element.class; </a>
+<span class="sourceLineNo">043</span><a id="line.43">        </a>
+<span class="sourceLineNo">044</span><a id="line.44">        /**</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * @return If true, handlers and endpoints wired to annotated methods and fields are removed from {@link ProcessorConfig} returned from {@link ProcessorInfo}.getConfig().</a>
+<span class="sourceLineNo">046</span><a id="line.46">         */</a>
+<span class="sourceLineNo">047</span><a id="line.47">        boolean hideWired() default true;</a>
+<span class="sourceLineNo">048</span><a id="line.48"></a>
+<span class="sourceLineNo">049</span><a id="line.49">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

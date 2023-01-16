@@ -1,1 +1,0 @@
-moduleSearchIndex = [{"l":"org.nasdanika.egineering.gen"},{"l":"org.nasdanika.engineering"}]

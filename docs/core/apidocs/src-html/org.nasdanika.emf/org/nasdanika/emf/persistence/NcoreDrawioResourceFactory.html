@@ -1,0 +1,331 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.emf.persistence;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.io.IOException;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.util.ArrayList;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.Collection;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.util.Collections;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.util.List;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import java.util.Map;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import java.util.stream.Collectors;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import java.util.stream.Stream;</a>
+<span class="sourceLineNo">011</span><a id="line.11"></a>
+<span class="sourceLineNo">012</span><a id="line.12">import javax.xml.transform.TransformerException;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">import org.eclipse.emf.common.util.URI;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import org.eclipse.emf.ecore.EObject;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import org.eclipse.emf.ecore.resource.Resource;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import org.eclipse.emf.ecore.resource.ResourceSet;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import org.jsoup.Jsoup;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import org.nasdanika.common.NasdanikaException;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import org.nasdanika.common.ProgressMonitor;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import org.nasdanika.common.Util;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import org.nasdanika.drawio.Document;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import org.nasdanika.drawio.ModelElement;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import org.nasdanika.drawio.emf.DrawioEObjectFactory;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import org.nasdanika.drawio.emf.DrawioResource;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import org.nasdanika.graph.Element;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import org.nasdanika.graph.processor.ProcessorConfig;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import org.nasdanika.graph.processor.ProcessorInfo;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import org.nasdanika.graph.processor.emf.AbstractEObjectFactoryProcessorResource;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import org.nasdanika.graph.processor.emf.SemanticProcessor;</a>
+<span class="sourceLineNo">032</span><a id="line.32">import org.nasdanika.ncore.Documented;</a>
+<span class="sourceLineNo">033</span><a id="line.33">import org.nasdanika.ncore.Marked;</a>
+<span class="sourceLineNo">034</span><a id="line.34">import org.nasdanika.ncore.NamedElement;</a>
+<span class="sourceLineNo">035</span><a id="line.35">import org.nasdanika.ncore.NcorePackage;</a>
+<span class="sourceLineNo">036</span><a id="line.36">import org.nasdanika.ncore.util.NcoreUtil;</a>
+<span class="sourceLineNo">037</span><a id="line.37"></a>
+<span class="sourceLineNo">038</span><a id="line.38">/**</a>
+<span class="sourceLineNo">039</span><a id="line.39"> * This factory uses {@link DrawioResource} with {@link DrawioEObjectFactory}. </a>
+<span class="sourceLineNo">040</span><a id="line.40"> * It injects name, description, and markers in configureSemanticElement(). It </a>
+<span class="sourceLineNo">041</span><a id="line.41"> * @author Pavel</a>
+<span class="sourceLineNo">042</span><a id="line.42"> *</a>
+<span class="sourceLineNo">043</span><a id="line.43"> * @param &lt;T&gt;</a>
+<span class="sourceLineNo">044</span><a id="line.44"> */</a>
+<span class="sourceLineNo">045</span><a id="line.45">public abstract class NcoreDrawioResourceFactory&lt;T extends EObject&gt; extends ResourceFactoryImpl {</a>
+<span class="sourceLineNo">046</span><a id="line.46">        </a>
+<span class="sourceLineNo">047</span><a id="line.47">        private class NcoreDrawioResource extends DrawioResource&lt;SemanticProcessor&lt;T&gt;, T&gt; implements AbstractEObjectFactoryProcessorResource&lt;T&gt; {</a>
+<span class="sourceLineNo">048</span><a id="line.48"></a>
+<span class="sourceLineNo">049</span><a id="line.49">                private DrawioEObjectFactory&lt;T, SemanticProcessor&lt;T&gt;&gt; processorFactory;</a>
+<span class="sourceLineNo">050</span><a id="line.50">                private ProgressMonitor progressMonitor;</a>
+<span class="sourceLineNo">051</span><a id="line.51"></a>
+<span class="sourceLineNo">052</span><a id="line.52">                protected NcoreDrawioResource(URI uri, DrawioEObjectFactory&lt;T, SemanticProcessor&lt;T&gt;&gt; processorFactory, ProgressMonitor progressMonitor) {</a>
+<span class="sourceLineNo">053</span><a id="line.53">                        super(uri);</a>
+<span class="sourceLineNo">054</span><a id="line.54">                        this.processorFactory = processorFactory;</a>
+<span class="sourceLineNo">055</span><a id="line.55">                        this.progressMonitor = progressMonitor;</a>
+<span class="sourceLineNo">056</span><a id="line.56">                }</a>
+<span class="sourceLineNo">057</span><a id="line.57"></a>
+<span class="sourceLineNo">058</span><a id="line.58">                @SuppressWarnings("unchecked")</a>
+<span class="sourceLineNo">059</span><a id="line.59">                @Override</a>
+<span class="sourceLineNo">060</span><a id="line.60">                public void setParent(T parent) {</a>
+<span class="sourceLineNo">061</span><a id="line.61">                        for (EObject root: new ArrayList&lt;&gt;(getContents())) {</a>
+<span class="sourceLineNo">062</span><a id="line.62">                                processorFactory.setParent((T) root, parent, getProgressMonitor());</a>
+<span class="sourceLineNo">063</span><a id="line.63">                        }</a>
+<span class="sourceLineNo">064</span><a id="line.64">                }</a>
+<span class="sourceLineNo">065</span><a id="line.65"></a>
+<span class="sourceLineNo">066</span><a id="line.66">                @Override</a>
+<span class="sourceLineNo">067</span><a id="line.67">                protected DrawioEObjectFactory&lt;T, SemanticProcessor&lt;T&gt;&gt; getProcessorFactory() {</a>
+<span class="sourceLineNo">068</span><a id="line.68">                        return processorFactory;</a>
+<span class="sourceLineNo">069</span><a id="line.69">                }</a>
+<span class="sourceLineNo">070</span><a id="line.70">                </a>
+<span class="sourceLineNo">071</span><a id="line.71">                @Override</a>
+<span class="sourceLineNo">072</span><a id="line.72">                protected ProgressMonitor getProgressMonitor() {</a>
+<span class="sourceLineNo">073</span><a id="line.73">                        return progressMonitor;</a>
+<span class="sourceLineNo">074</span><a id="line.74">                };</a>
+<span class="sourceLineNo">075</span><a id="line.75">                </a>
+<span class="sourceLineNo">076</span><a id="line.76">        }</a>
+<span class="sourceLineNo">077</span><a id="line.77">        </a>
+<span class="sourceLineNo">078</span><a id="line.78">        @Override</a>
+<span class="sourceLineNo">079</span><a id="line.79">        public Resource createResource(URI uri) {</a>
+<span class="sourceLineNo">080</span><a id="line.80">                return new NcoreDrawioResource(uri, createProcessorFactory(uri), getProgressMonitor(uri));</a>
+<span class="sourceLineNo">081</span><a id="line.81">        }</a>
+<span class="sourceLineNo">082</span><a id="line.82">                </a>
+<span class="sourceLineNo">083</span><a id="line.83">        protected DrawioEObjectFactory&lt;T, SemanticProcessor&lt;T&gt;&gt; createProcessorFactory(URI uri) {</a>
+<span class="sourceLineNo">084</span><a id="line.84">                return new DrawioEObjectFactory&lt;T, SemanticProcessor&lt;T&gt;&gt;() {</a>
+<span class="sourceLineNo">085</span><a id="line.85"></a>
+<span class="sourceLineNo">086</span><a id="line.86">                        @Override</a>
+<span class="sourceLineNo">087</span><a id="line.87">                        protected ResourceSet getResourceSet() {</a>
+<span class="sourceLineNo">088</span><a id="line.88">                                return NcoreDrawioResourceFactory.this.getResourceSet();</a>
+<span class="sourceLineNo">089</span><a id="line.89">                        }</a>
+<span class="sourceLineNo">090</span><a id="line.90"></a>
+<span class="sourceLineNo">091</span><a id="line.91">                        @Override</a>
+<span class="sourceLineNo">092</span><a id="line.92">                        protected SemanticProcessor&lt;T&gt; createProcessor(ProcessorConfig&lt;SemanticProcessor&lt;T&gt;&gt; config, Collection&lt;T&gt; semanticElements, ProgressMonitor progressMonitor) {</a>
+<span class="sourceLineNo">093</span><a id="line.93">                                return NcoreDrawioResourceFactory.this.createProcessor(uri, config, semanticElements, progressMonitor);</a>
+<span class="sourceLineNo">094</span><a id="line.94">                        }</a>
+<span class="sourceLineNo">095</span><a id="line.95"></a>
+<span class="sourceLineNo">096</span><a id="line.96">                        @Override</a>
+<span class="sourceLineNo">097</span><a id="line.97">                        protected URI getBaseURI() {</a>
+<span class="sourceLineNo">098</span><a id="line.98">                                return uri;</a>
+<span class="sourceLineNo">099</span><a id="line.99">                        }</a>
+<span class="sourceLineNo">100</span><a id="line.100">                        </a>
+<span class="sourceLineNo">101</span><a id="line.101">                        @Override</a>
+<span class="sourceLineNo">102</span><a id="line.102">                        protected Collection&lt;T&gt; createSemanticElements(ProcessorConfig&lt;SemanticProcessor&lt;T&gt;&gt; config, ProgressMonitor progressMonitor) {</a>
+<span class="sourceLineNo">103</span><a id="line.103">                                Collection&lt;T&gt; semanticElements = super.createSemanticElements(config, progressMonitor);</a>
+<span class="sourceLineNo">104</span><a id="line.104">                                Collection&lt;T&gt; configuredSemanticElements = NcoreDrawioResourceFactory.this.configureSemanticElements(uri, config, semanticElements, progressMonitor);</a>
+<span class="sourceLineNo">105</span><a id="line.105">                                return configuredSemanticElements;</a>
+<span class="sourceLineNo">106</span><a id="line.106">                        }</a>
+<span class="sourceLineNo">107</span><a id="line.107">                        </a>
+<span class="sourceLineNo">108</span><a id="line.108">                        /**</a>
+<span class="sourceLineNo">109</span><a id="line.109">                         * Checking for failures, injecting representations after all processors have been created. </a>
+<span class="sourceLineNo">110</span><a id="line.110">                         */</a>
+<span class="sourceLineNo">111</span><a id="line.111">                        @Override</a>
+<span class="sourceLineNo">112</span><a id="line.112">                        public Map&lt;Element, ProcessorInfo&lt;SemanticProcessor&lt;T&gt;&gt;&gt; createProcessors(Stream&lt;? extends Element&gt; elements, ProgressMonitor progressMonitor) {</a>
+<span class="sourceLineNo">113</span><a id="line.113">                                Map&lt;Element, ProcessorInfo&lt;SemanticProcessor&lt;T&gt;&gt;&gt; registry = super.createProcessors(elements, progressMonitor);</a>
+<span class="sourceLineNo">114</span><a id="line.114">                                </a>
+<span class="sourceLineNo">115</span><a id="line.115">                                List&lt;Throwable&gt; failures = registry.values().stream().flatMap(pi -&gt; pi.getFailures().stream()).collect(Collectors.toList());</a>
+<span class="sourceLineNo">116</span><a id="line.116">                                if (!failures.isEmpty()) {</a>
+<span class="sourceLineNo">117</span><a id="line.117">                                        NasdanikaException ne = new NasdanikaException("Theres's been " + failures.size() +  " failures during processor creation: " + failures);</a>
+<span class="sourceLineNo">118</span><a id="line.118">                                        for (Throwable failure: failures) {</a>
+<span class="sourceLineNo">119</span><a id="line.119">                                                ne.addSuppressed(failure);</a>
+<span class="sourceLineNo">120</span><a id="line.120">                                        }</a>
+<span class="sourceLineNo">121</span><a id="line.121">                                        throw ne;</a>
+<span class="sourceLineNo">122</span><a id="line.122">                                }                               </a>
+<span class="sourceLineNo">123</span><a id="line.123">                                </a>
+<span class="sourceLineNo">124</span><a id="line.124">                                String representationPropertyName = getRepresentationPropertyName(uri);</a>
+<span class="sourceLineNo">125</span><a id="line.125">                                                                </a>
+<span class="sourceLineNo">126</span><a id="line.126">                                registry.entrySet().forEach(re -&gt; configureRegistryEntry(re.getKey(), re.getValue(), getPropertyValue(re.getKey(), representationPropertyName)));</a>
+<span class="sourceLineNo">127</span><a id="line.127">                                return registry;</a>
+<span class="sourceLineNo">128</span><a id="line.128">                        }</a>
+<span class="sourceLineNo">129</span><a id="line.129">                        </a>
+<span class="sourceLineNo">130</span><a id="line.130">                };</a>
+<span class="sourceLineNo">131</span><a id="line.131">        }</a>
+<span class="sourceLineNo">132</span><a id="line.132"></a>
+<span class="sourceLineNo">133</span><a id="line.133">        /**</a>
+<span class="sourceLineNo">134</span><a id="line.134">         * Injects encoded document into semantic elements of model elements with representation property.</a>
+<span class="sourceLineNo">135</span><a id="line.135">         * Sorts references.</a>
+<span class="sourceLineNo">136</span><a id="line.136">         * @param element</a>
+<span class="sourceLineNo">137</span><a id="line.137">         * @param info</a>
+<span class="sourceLineNo">138</span><a id="line.138">         */</a>
+<span class="sourceLineNo">139</span><a id="line.139">        protected void configureRegistryEntry(Element element, ProcessorInfo&lt;SemanticProcessor&lt;T&gt;&gt; info, String representationKey) {</a>
+<span class="sourceLineNo">140</span><a id="line.140">                if (info != null &amp;&amp; !Util.isBlank(representationKey)) {</a>
+<span class="sourceLineNo">141</span><a id="line.141">                        SemanticProcessor&lt;T&gt; processor = info.getProcessor();</a>
+<span class="sourceLineNo">142</span><a id="line.142">                        if (processor != null &amp;&amp; element instanceof ModelElement) {</a>
+<span class="sourceLineNo">143</span><a id="line.143">                                Collection&lt;T&gt; semanticElements = processor.getSemanticElements();</a>
+<span class="sourceLineNo">144</span><a id="line.144">                                if (semanticElements != null &amp;&amp; !semanticElements.isEmpty()) {</a>
+<span class="sourceLineNo">145</span><a id="line.145">                                        for (T semanticElement: semanticElements) {</a>
+<span class="sourceLineNo">146</span><a id="line.146">                                                if (semanticElement instanceof org.nasdanika.ncore.ModelElement) {</a>
+<span class="sourceLineNo">147</span><a id="line.147">                                                        Document document = ((ModelElement) element).getModel().getPage().getDocument();</a>
+<span class="sourceLineNo">148</span><a id="line.148">                                                        try {</a>
+<span class="sourceLineNo">149</span><a id="line.149">                                                                ((org.nasdanika.ncore.ModelElement) semanticElement).getRepresentations().put(representationKey, document.toDataURI(true).toString());</a>
+<span class="sourceLineNo">150</span><a id="line.150">                                                        } catch (TransformerException | IOException e) {</a>
+<span class="sourceLineNo">151</span><a id="line.151">                                                                throw new NasdanikaException("Error encoding document: " + e, e);</a>
+<span class="sourceLineNo">152</span><a id="line.152">                                                        }</a>
+<span class="sourceLineNo">153</span><a id="line.153">                                                }</a>
+<span class="sourceLineNo">154</span><a id="line.154">                                        }</a>
+<span class="sourceLineNo">155</span><a id="line.155">                                }</a>
+<span class="sourceLineNo">156</span><a id="line.156">                        }</a>
+<span class="sourceLineNo">157</span><a id="line.157">                }</a>
+<span class="sourceLineNo">158</span><a id="line.158">                </a>
+<span class="sourceLineNo">159</span><a id="line.159">                // TODO - sort - YAML map of references to comparators. Comparator either String - comparator name or a map - name to configuration. </a>
+<span class="sourceLineNo">160</span><a id="line.160">                // Use ECollections to sort. Expression (SPEL) comparator.</a>
+<span class="sourceLineNo">161</span><a id="line.161"></a>
+<span class="sourceLineNo">162</span><a id="line.162">        }</a>
+<span class="sourceLineNo">163</span><a id="line.163">        </a>
+<span class="sourceLineNo">164</span><a id="line.164">        protected abstract ResourceSet getResourceSet();</a>
+<span class="sourceLineNo">165</span><a id="line.165">        </a>
+<span class="sourceLineNo">166</span><a id="line.166">        protected abstract ProgressMonitor getProgressMonitor(URI uri);</a>
+<span class="sourceLineNo">167</span><a id="line.167">        </a>
+<span class="sourceLineNo">168</span><a id="line.168">        protected SemanticProcessor&lt;T&gt; createProcessor(URI uri, ProcessorConfig&lt;SemanticProcessor&lt;T&gt;&gt; config, Collection&lt;T&gt; semanticElements, ProgressMonitor progressMonitor) {                </a>
+<span class="sourceLineNo">169</span><a id="line.169">                if (semanticElements == null || semanticElements.isEmpty()) {</a>
+<span class="sourceLineNo">170</span><a id="line.170">                        return null; // For pass-through to parent.</a>
+<span class="sourceLineNo">171</span><a id="line.171">                }</a>
+<span class="sourceLineNo">172</span><a id="line.172">                </a>
+<span class="sourceLineNo">173</span><a id="line.173">                // To avoid concurrent modification exception for situations when processor is backed by a resource and semantic elements get reparented and move out of the resource. </a>
+<span class="sourceLineNo">174</span><a id="line.174">                Collection&lt;T&gt; semanticElementsSnapshot = Collections.unmodifiableCollection(new ArrayList&lt;&gt;(semanticElements));</a>
+<span class="sourceLineNo">175</span><a id="line.175">                </a>
+<span class="sourceLineNo">176</span><a id="line.176">                return new SemanticProcessor&lt;T&gt;() {</a>
+<span class="sourceLineNo">177</span><a id="line.177"></a>
+<span class="sourceLineNo">178</span><a id="line.178">                        @Override</a>
+<span class="sourceLineNo">179</span><a id="line.179">                        public Collection&lt;T&gt; getSemanticElements() {</a>
+<span class="sourceLineNo">180</span><a id="line.180">                                return semanticElementsSnapshot;</a>
+<span class="sourceLineNo">181</span><a id="line.181">                        }</a>
+<span class="sourceLineNo">182</span><a id="line.182">                        </a>
+<span class="sourceLineNo">183</span><a id="line.183">                };</a>
+<span class="sourceLineNo">184</span><a id="line.184">        }       </a>
+<span class="sourceLineNo">185</span><a id="line.185"></a>
+<span class="sourceLineNo">186</span><a id="line.186">        protected MarkerFactory getMarkerFactory() {</a>
+<span class="sourceLineNo">187</span><a id="line.187">                return MarkerFactory.INSTANCE;</a>
+<span class="sourceLineNo">188</span><a id="line.188">        }</a>
+<span class="sourceLineNo">189</span><a id="line.189">                </a>
+<span class="sourceLineNo">190</span><a id="line.190">        protected Collection&lt;T&gt; configureSemanticElements(</a>
+<span class="sourceLineNo">191</span><a id="line.191">                        URI uri,</a>
+<span class="sourceLineNo">192</span><a id="line.192">                        ProcessorConfig&lt;SemanticProcessor&lt;T&gt;&gt; config, </a>
+<span class="sourceLineNo">193</span><a id="line.193">                        Collection&lt;T&gt; semanticElements, </a>
+<span class="sourceLineNo">194</span><a id="line.194">                        ProgressMonitor progressMonitor) {</a>
+<span class="sourceLineNo">195</span><a id="line.195"></a>
+<span class="sourceLineNo">196</span><a id="line.196">                if (config == null) {</a>
+<span class="sourceLineNo">197</span><a id="line.197">                        return semanticElements;</a>
+<span class="sourceLineNo">198</span><a id="line.198">                }</a>
+<span class="sourceLineNo">199</span><a id="line.199">                Element element = config.getElement();</a>
+<span class="sourceLineNo">200</span><a id="line.200">                if (semanticElements == null) {</a>
+<span class="sourceLineNo">201</span><a id="line.201">                        return semanticElements;</a>
+<span class="sourceLineNo">202</span><a id="line.202">                }</a>
+<span class="sourceLineNo">203</span><a id="line.203">                for (T semanticElement: semanticElements) {</a>
+<span class="sourceLineNo">204</span><a id="line.204">                        if (uri != null &amp;&amp; semanticElement instanceof Marked &amp;&amp; element instanceof Marked) {</a>
+<span class="sourceLineNo">205</span><a id="line.205">                                for (org.nasdanika.persistence.Marker elementMarker: ((Marked) element).getMarkers()) {</a>
+<span class="sourceLineNo">206</span><a id="line.206">                                        org.nasdanika.ncore.Marker marker = getMarkerFactory().createMarker(elementMarker.getLocation(), progressMonitor);</a>
+<span class="sourceLineNo">207</span><a id="line.207">                                        marker.setPosition(elementMarker.getPosition());</a>
+<span class="sourceLineNo">208</span><a id="line.208">                                        ((Marked) semanticElement).getMarkers().add(marker);</a>
+<span class="sourceLineNo">209</span><a id="line.209">                                }</a>
+<span class="sourceLineNo">210</span><a id="line.210">                        }</a>
+<span class="sourceLineNo">211</span><a id="line.211">                        </a>
+<span class="sourceLineNo">212</span><a id="line.212">                        if (element instanceof ModelElement) {</a>
+<span class="sourceLineNo">213</span><a id="line.213">                                ModelElement modelElement = (ModelElement) element;</a>
+<span class="sourceLineNo">214</span><a id="line.214">                                String tooltip = modelElement.getTooltip();</a>
+<span class="sourceLineNo">215</span><a id="line.215">                                if (!Util.isBlank(tooltip)) {</a>
+<span class="sourceLineNo">216</span><a id="line.216">                                        if (semanticElement instanceof org.nasdanika.ncore.ModelElement &amp;&amp; !semanticElement.eIsSet(NcorePackage.Literals.MODEL_ELEMENT__DESCRIPTION)) {</a>
+<span class="sourceLineNo">217</span><a id="line.217">                                                String firstTooltipSentence = org.nasdanika.common.Util.firstPlainTextSentence(tooltip, 50, 250);</a>
+<span class="sourceLineNo">218</span><a id="line.218">                                                ((org.nasdanika.ncore.ModelElement) semanticElement).setDescription(firstTooltipSentence);                                              </a>
+<span class="sourceLineNo">219</span><a id="line.219">                                        }</a>
+<span class="sourceLineNo">220</span><a id="line.220">                                        if (semanticElement instanceof Documented &amp;&amp; ((Documented) semanticElement).getDocumentation().isEmpty()) {</a>
+<span class="sourceLineNo">221</span><a id="line.221">                                                ((Documented) semanticElement).getDocumentation().add(NcoreUtil.wrapString("&lt;pre style='white-space:pre-wrap'&gt;" + System.lineSeparator() + tooltip + System.lineSeparator() + "&lt;/pre&gt;"));</a>
+<span class="sourceLineNo">222</span><a id="line.222">                                        }</a>
+<span class="sourceLineNo">223</span><a id="line.223">                                }</a>
+<span class="sourceLineNo">224</span><a id="line.224">                                </a>
+<span class="sourceLineNo">225</span><a id="line.225">                                String label = modelElement.getLabel();</a>
+<span class="sourceLineNo">226</span><a id="line.226">                                if (!Util.isBlank(label) &amp;&amp; semanticElement instanceof NamedElement &amp;&amp; !semanticElement.eIsSet(NcorePackage.Literals.NAMED_ELEMENT__NAME)) {</a>
+<span class="sourceLineNo">227</span><a id="line.227">                                        ((NamedElement) semanticElement).setName(Jsoup.parse(label).text());                            </a>
+<span class="sourceLineNo">228</span><a id="line.228">                                }</a>
+<span class="sourceLineNo">229</span><a id="line.229">                                </a>
+<span class="sourceLineNo">230</span><a id="line.230">                                String id = modelElement.getId();</a>
+<span class="sourceLineNo">231</span><a id="line.231">                                if (!Util.isBlank(id) &amp;&amp; semanticElement instanceof org.nasdanika.ncore.Composite &amp;&amp; !semanticElement.eIsSet(NcorePackage.Literals.COMPOSITE__ID)) {</a>
+<span class="sourceLineNo">232</span><a id="line.232">                                        ((org.nasdanika.ncore.Composite) semanticElement).setId(id);                            </a>
+<span class="sourceLineNo">233</span><a id="line.233">                                }</a>
+<span class="sourceLineNo">234</span><a id="line.234">                                </a>
+<span class="sourceLineNo">235</span><a id="line.235">                                if (semanticElement instanceof org.nasdanika.ncore.ModelElement) {</a>
+<span class="sourceLineNo">236</span><a id="line.236">                                        String semanticUuid = ((org.nasdanika.ncore.ModelElement) semanticElement).getUuid();</a>
+<span class="sourceLineNo">237</span><a id="line.237">                                        if (!Util.isBlank(semanticUuid)) {</a>
+<span class="sourceLineNo">238</span><a id="line.238">                                                modelElement.setProperty("semantic-uuid", semanticUuid);</a>
+<span class="sourceLineNo">239</span><a id="line.239">                                        }</a>
+<span class="sourceLineNo">240</span><a id="line.240">                                }</a>
+<span class="sourceLineNo">241</span><a id="line.241">                        }</a>
+<span class="sourceLineNo">242</span><a id="line.242">                        </a>
+<span class="sourceLineNo">243</span><a id="line.243">                }</a>
+<span class="sourceLineNo">244</span><a id="line.244">                </a>
+<span class="sourceLineNo">245</span><a id="line.245">                return semanticElements;                </a>
+<span class="sourceLineNo">246</span><a id="line.246">        }</a>
+<span class="sourceLineNo">247</span><a id="line.247">        </a>
+<span class="sourceLineNo">248</span><a id="line.248">        /**</a>
+<span class="sourceLineNo">249</span><a id="line.249">         * If this property is set and the semantic element is {@link org.nasdanika.ncore.ModelElement} then {@link Document} is encoded and stored into the representation with the specified name.</a>
+<span class="sourceLineNo">250</span><a id="line.250">         * @param uri Resource {@link URI}</a>
+<span class="sourceLineNo">251</span><a id="line.251">         * @return</a>
+<span class="sourceLineNo">252</span><a id="line.252">         */</a>
+<span class="sourceLineNo">253</span><a id="line.253">        protected String getRepresentationPropertyName(URI uri) {</a>
+<span class="sourceLineNo">254</span><a id="line.254">                return "representation";</a>
+<span class="sourceLineNo">255</span><a id="line.255">        }</a>
+<span class="sourceLineNo">256</span><a id="line.256"></a>
+<span class="sourceLineNo">257</span><a id="line.257">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

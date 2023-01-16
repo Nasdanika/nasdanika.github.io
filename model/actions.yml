@@ -1,0 +1,83 @@
+app-action:
+  icon: https://docs.nasdanika.org/images/nasdanika-logo.png
+  text: Nasdanika
+  location: https://www.nasdanika.org 
+  tooltip: Root action
+  children:
+    - app-action:
+        text: Nasdanika
+        location: ${base-uri}index.html
+        content:
+          content-markdown:
+            style: true
+            source:
+              content-resource: nasdanika.md
+        children:
+          - ../../core/actions.yml              
+          - ../../html/actions.yml              
+          - ../../architecture-framework/actions.yml
+          - ../../plantuml-diagram-generator/actions.yml
+          - app-label:
+              text: Demos
+              children:
+                - app-link:
+                    text: Action Site
+                    location: https://docs.nasdanika.org/demo-action-site/                                             
+                - app-label:
+                    text: Drawio
+                    children:
+                      - app-label:
+                          text: App
+                          children:
+                            - app-link:
+                                text: Actions
+                                location: https://docs.nasdanika.org/demo-drawio-actions/              
+                            - app-link:
+                                text: Flow
+                                location: https://docs.nasdanika.org/demo-drawio-flow-actions/              
+                            - app-link:
+                                text: Map
+                                location: https://docs.nasdanika.org/demo-drawio-map/
+                      - app-link:
+                          text: Semantic Mapping
+                          location: https://docs.nasdanika.org/demo-drawio-semantic-mapping/                                             
+                - app-label:
+                    text: C4 Model
+                    children:
+                      - app-link:
+                          text: PlantUML
+                          location: https://docs.nasdanika.org/demo-c4-plantuml/      
+                      - app-link:
+                          text: Drawio actions
+                          location: https://docs.nasdanika.org/demo-c4-drawio-actions/
+    - app-action:
+        location: ${base-uri}search.html
+        icon: fas fa-search
+        text: Search
+        content:
+          content-interpolator:
+            source:
+              content-resource: search.html
+    - app-action:
+        location: ${base-uri}semantic-map.html
+        text: Semantic map
+        content:
+          content-interpolator:
+            source:
+              content-resource: semantic-map.html
+  navigation:
+    - app-action:
+        text: Source
+        icon: fab fa-github
+        location: https://github.com/Nasdanika/nasdanika.github.io/  
+    - app-action:
+        text: Support
+        icon: far fa-life-ring
+        location: ${base-uri}support.html
+        content:
+          content-markdown:
+            style: true
+            source:
+              content-resource: support.md
+          
+                                    

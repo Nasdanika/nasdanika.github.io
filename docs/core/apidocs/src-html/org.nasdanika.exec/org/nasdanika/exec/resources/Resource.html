@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">/**</a>
+<span class="sourceLineNo">002</span><a id="line.2"> */</a>
+<span class="sourceLineNo">003</span><a id="line.3">package org.nasdanika.exec.resources;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import org.eclipse.emf.common.util.EList;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.eclipse.emf.ecore.EObject;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import org.nasdanika.ncore.ModelElement;</a>
+<span class="sourceLineNo">008</span><a id="line.8"></a>
+<span class="sourceLineNo">009</span><a id="line.9">/**</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * A representation of the model object '&lt;em&gt;&lt;b&gt;Resource&lt;/b&gt;&lt;/em&gt;'.</a>
+<span class="sourceLineNo">012</span><a id="line.12"> * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * &lt;p&gt;</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * The following features are supported:</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * &lt;ul&gt;</a>
+<span class="sourceLineNo">018</span><a id="line.18"> *   &lt;li&gt;{@link org.nasdanika.exec.resources.Resource#getName &lt;em&gt;Name&lt;/em&gt;}&lt;/li&gt;</a>
+<span class="sourceLineNo">019</span><a id="line.19"> *   &lt;li&gt;{@link org.nasdanika.exec.resources.Resource#getContents &lt;em&gt;Contents&lt;/em&gt;}&lt;/li&gt;</a>
+<span class="sourceLineNo">020</span><a id="line.20"> *   &lt;li&gt;{@link org.nasdanika.exec.resources.Resource#getReconcileAction &lt;em&gt;Reconcile Action&lt;/em&gt;}&lt;/li&gt;</a>
+<span class="sourceLineNo">021</span><a id="line.21"> *   &lt;li&gt;{@link org.nasdanika.exec.resources.Resource#getMerger &lt;em&gt;Merger&lt;/em&gt;}&lt;/li&gt;</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * &lt;/ul&gt;</a>
+<span class="sourceLineNo">023</span><a id="line.23"> *</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * @see org.nasdanika.exec.resources.ResourcesPackage#getResource()</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * @model annotation="urn:org.nasdanika documentation-reference='doc/resources/resource.md'"</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * @generated</a>
+<span class="sourceLineNo">027</span><a id="line.27"> */</a>
+<span class="sourceLineNo">028</span><a id="line.28">public interface Resource extends ModelElement {</a>
+<span class="sourceLineNo">029</span><a id="line.29">        </a>
+<span class="sourceLineNo">030</span><a id="line.30">        public static final String SEPARATOR = "/";</a>
+<span class="sourceLineNo">031</span><a id="line.31">        </a>
+<span class="sourceLineNo">032</span><a id="line.32">        /**</a>
+<span class="sourceLineNo">033</span><a id="line.33">         * Returns the value of the '&lt;em&gt;&lt;b&gt;Name&lt;/b&gt;&lt;/em&gt;' attribute.</a>
+<span class="sourceLineNo">034</span><a id="line.34">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">035</span><a id="line.35">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">036</span><a id="line.36">         * &lt;!-- begin-model-doc --&gt;</a>
+<span class="sourceLineNo">037</span><a id="line.37">         * Resource name. Interpolated.</a>
+<span class="sourceLineNo">038</span><a id="line.38">         * &lt;!-- end-model-doc --&gt;</a>
+<span class="sourceLineNo">039</span><a id="line.39">         * @return the value of the '&lt;em&gt;Name&lt;/em&gt;' attribute.</a>
+<span class="sourceLineNo">040</span><a id="line.40">         * @see #setName(String)</a>
+<span class="sourceLineNo">041</span><a id="line.41">         * @see org.nasdanika.exec.resources.ResourcesPackage#getResource_Name()</a>
+<span class="sourceLineNo">042</span><a id="line.42">         * @model required="true"</a>
+<span class="sourceLineNo">043</span><a id="line.43">         * @generated</a>
+<span class="sourceLineNo">044</span><a id="line.44">         */</a>
+<span class="sourceLineNo">045</span><a id="line.45">        String getName();</a>
+<span class="sourceLineNo">046</span><a id="line.46"></a>
+<span class="sourceLineNo">047</span><a id="line.47">        /**</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * Sets the value of the '{@link org.nasdanika.exec.resources.Resource#getName &lt;em&gt;Name&lt;/em&gt;}' attribute.</a>
+<span class="sourceLineNo">049</span><a id="line.49">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">050</span><a id="line.50">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">051</span><a id="line.51">         * @param value the new value of the '&lt;em&gt;Name&lt;/em&gt;' attribute.</a>
+<span class="sourceLineNo">052</span><a id="line.52">         * @see #getName()</a>
+<span class="sourceLineNo">053</span><a id="line.53">         * @generated</a>
+<span class="sourceLineNo">054</span><a id="line.54">         */</a>
+<span class="sourceLineNo">055</span><a id="line.55">        void setName(String value);</a>
+<span class="sourceLineNo">056</span><a id="line.56"></a>
+<span class="sourceLineNo">057</span><a id="line.57">        /**</a>
+<span class="sourceLineNo">058</span><a id="line.58">         * Returns the value of the '&lt;em&gt;&lt;b&gt;Contents&lt;/b&gt;&lt;/em&gt;' containment reference list.</a>
+<span class="sourceLineNo">059</span><a id="line.59">         * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.</a>
+<span class="sourceLineNo">060</span><a id="line.60">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">061</span><a id="line.61">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">062</span><a id="line.62">         * &lt;!-- begin-model-doc --&gt;</a>
+<span class="sourceLineNo">063</span><a id="line.63">         * Resource contents. File contents elements are adapted to ``SupplierFactory`` and produced ``InputStream``s are contcatenated. Container contents elements are adapted to ConsumerFactory and the container is passed to their ``execute`` method.</a>
+<span class="sourceLineNo">064</span><a id="line.64">         * &lt;!-- end-model-doc --&gt;</a>
+<span class="sourceLineNo">065</span><a id="line.65">         * @return the value of the '&lt;em&gt;Contents&lt;/em&gt;' containment reference list.</a>
+<span class="sourceLineNo">066</span><a id="line.66">         * @see org.nasdanika.exec.resources.ResourcesPackage#getResource_Contents()</a>
+<span class="sourceLineNo">067</span><a id="line.67">         * @model containment="true"</a>
+<span class="sourceLineNo">068</span><a id="line.68">         * @generated</a>
+<span class="sourceLineNo">069</span><a id="line.69">         */</a>
+<span class="sourceLineNo">070</span><a id="line.70">        EList&lt;EObject&gt; getContents();</a>
+<span class="sourceLineNo">071</span><a id="line.71"></a>
+<span class="sourceLineNo">072</span><a id="line.72">        /**</a>
+<span class="sourceLineNo">073</span><a id="line.73">         * Returns the value of the '&lt;em&gt;&lt;b&gt;Reconcile Action&lt;/b&gt;&lt;/em&gt;' attribute.</a>
+<span class="sourceLineNo">074</span><a id="line.74">         * The default value is &lt;code&gt;"Overwrite"&lt;/code&gt;.</a>
+<span class="sourceLineNo">075</span><a id="line.75">         * The literals are from the enumeration {@link org.nasdanika.exec.resources.ReconcileAction}.</a>
+<span class="sourceLineNo">076</span><a id="line.76">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">077</span><a id="line.77">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">078</span><a id="line.78">         * &lt;!-- begin-model-doc --&gt;</a>
+<span class="sourceLineNo">079</span><a id="line.79">         * Reconcile action - what to do if a resource with the same name already exists. Defalut is ``Overwrite``.</a>
+<span class="sourceLineNo">080</span><a id="line.80">         * &lt;!-- end-model-doc --&gt;</a>
+<span class="sourceLineNo">081</span><a id="line.81">         * @return the value of the '&lt;em&gt;Reconcile Action&lt;/em&gt;' attribute.</a>
+<span class="sourceLineNo">082</span><a id="line.82">         * @see org.nasdanika.exec.resources.ReconcileAction</a>
+<span class="sourceLineNo">083</span><a id="line.83">         * @see #setReconcileAction(ReconcileAction)</a>
+<span class="sourceLineNo">084</span><a id="line.84">         * @see org.nasdanika.exec.resources.ResourcesPackage#getResource_ReconcileAction()</a>
+<span class="sourceLineNo">085</span><a id="line.85">         * @model default="Overwrite"</a>
+<span class="sourceLineNo">086</span><a id="line.86">         * @generated</a>
+<span class="sourceLineNo">087</span><a id="line.87">         */</a>
+<span class="sourceLineNo">088</span><a id="line.88">        ReconcileAction getReconcileAction();</a>
+<span class="sourceLineNo">089</span><a id="line.89"></a>
+<span class="sourceLineNo">090</span><a id="line.90">        /**</a>
+<span class="sourceLineNo">091</span><a id="line.91">         * Sets the value of the '{@link org.nasdanika.exec.resources.Resource#getReconcileAction &lt;em&gt;Reconcile Action&lt;/em&gt;}' attribute.</a>
+<span class="sourceLineNo">092</span><a id="line.92">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">093</span><a id="line.93">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">094</span><a id="line.94">         * @param value the new value of the '&lt;em&gt;Reconcile Action&lt;/em&gt;' attribute.</a>
+<span class="sourceLineNo">095</span><a id="line.95">         * @see org.nasdanika.exec.resources.ReconcileAction</a>
+<span class="sourceLineNo">096</span><a id="line.96">         * @see #getReconcileAction()</a>
+<span class="sourceLineNo">097</span><a id="line.97">         * @generated</a>
+<span class="sourceLineNo">098</span><a id="line.98">         */</a>
+<span class="sourceLineNo">099</span><a id="line.99">        void setReconcileAction(ReconcileAction value);</a>
+<span class="sourceLineNo">100</span><a id="line.100"></a>
+<span class="sourceLineNo">101</span><a id="line.101">        /**</a>
+<span class="sourceLineNo">102</span><a id="line.102">         * Returns the value of the '&lt;em&gt;&lt;b&gt;Merger&lt;/b&gt;&lt;/em&gt;' containment reference.</a>
+<span class="sourceLineNo">103</span><a id="line.103">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">104</span><a id="line.104">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">105</span><a id="line.105">         * &lt;!-- begin-model-doc --&gt;</a>
+<span class="sourceLineNo">106</span><a id="line.106">         * Merger for ``Merge`` reconcile action. Adapted to ``org.nasdanika.common.resources.Merger`` to execute actual merge.</a>
+<span class="sourceLineNo">107</span><a id="line.107">         * &lt;!-- end-model-doc --&gt;</a>
+<span class="sourceLineNo">108</span><a id="line.108">         * @return the value of the '&lt;em&gt;Merger&lt;/em&gt;' containment reference.</a>
+<span class="sourceLineNo">109</span><a id="line.109">         * @see #setMerger(EObject)</a>
+<span class="sourceLineNo">110</span><a id="line.110">         * @see org.nasdanika.exec.resources.ResourcesPackage#getResource_Merger()</a>
+<span class="sourceLineNo">111</span><a id="line.111">         * @model containment="true"</a>
+<span class="sourceLineNo">112</span><a id="line.112">         * @generated</a>
+<span class="sourceLineNo">113</span><a id="line.113">         */</a>
+<span class="sourceLineNo">114</span><a id="line.114">        EObject getMerger();</a>
+<span class="sourceLineNo">115</span><a id="line.115"></a>
+<span class="sourceLineNo">116</span><a id="line.116">        /**</a>
+<span class="sourceLineNo">117</span><a id="line.117">         * Sets the value of the '{@link org.nasdanika.exec.resources.Resource#getMerger &lt;em&gt;Merger&lt;/em&gt;}' containment reference.</a>
+<span class="sourceLineNo">118</span><a id="line.118">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">119</span><a id="line.119">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">120</span><a id="line.120">         * @param value the new value of the '&lt;em&gt;Merger&lt;/em&gt;' containment reference.</a>
+<span class="sourceLineNo">121</span><a id="line.121">         * @see #getMerger()</a>
+<span class="sourceLineNo">122</span><a id="line.122">         * @generated</a>
+<span class="sourceLineNo">123</span><a id="line.123">         */</a>
+<span class="sourceLineNo">124</span><a id="line.124">        void setMerger(EObject value);</a>
+<span class="sourceLineNo">125</span><a id="line.125"></a>
+<span class="sourceLineNo">126</span><a id="line.126">} // Resource</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>
