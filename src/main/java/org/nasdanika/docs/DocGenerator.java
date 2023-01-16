@@ -348,13 +348,17 @@ public class DocGenerator {
 				new File("docs"), 
 				new File("target/action-site"), 
 				false);
-				
+			
+		int errorCount = 0;
 		for (Entry<String, Collection<String>> ee: errors.entrySet()) {
 			System.err.println(ee.getKey());
 			for (String error: ee.getValue()) {
 				System.err.println("\t" + error);
+				++errorCount;
 			}
 		}
+		
+		System.out.println("There are " + errorCount + " site errors");
 		
 		copyJavaDoc();		
 	}
