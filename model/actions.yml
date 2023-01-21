@@ -57,14 +57,14 @@ app-action:
         content:
           content-interpolator:
             source:
-              content-resource: search.html
+              content-resource: classpath://org/nasdanika/html/model/app/gen/search.html
     - app-action:
         location: ${base-uri}semantic-map.html
         text: Semantic map
         content:
           content-interpolator:
             source:
-              content-resource: semantic-map.html
+              content-resource: classpath://org/nasdanika/html/model/app/gen/semantic-map.html
   navigation:
     - app-action:
         text: Source
