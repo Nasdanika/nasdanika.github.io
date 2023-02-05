@@ -294,6 +294,7 @@ public class DocGenerator {
 		
 		MutableContext context = Context.EMPTY_CONTEXT.fork();
 		context.put("javadoc", org.nasdanika.common.Util.createJavadocPropertyComputer(nasdanikaResolver));
+		context.register(ClassLoader.class, getClass().getClassLoader());
 		
 		DiagramGenerator diagramGenerator = createDiagramGenerator(progressMonitor);
 		context.register(DiagramGenerator.class, diagramGenerator);//DiagramGenerator.createClient(new URL("http://localhost:8090/spring-exec/api/v1/exec/diagram/")));
