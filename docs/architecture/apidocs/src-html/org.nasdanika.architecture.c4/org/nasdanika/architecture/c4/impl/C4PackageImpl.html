@@ -1,0 +1,872 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">/**</a>
+<span class="sourceLineNo">002</span><a id="line.2"> */</a>
+<span class="sourceLineNo">003</span><a id="line.3">package org.nasdanika.architecture.c4.impl;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import org.eclipse.emf.ecore.EAttribute;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.eclipse.emf.ecore.EClass;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import org.eclipse.emf.ecore.EPackage;</a>
+<span class="sourceLineNo">008</span><a id="line.8"></a>
+<span class="sourceLineNo">009</span><a id="line.9">import org.eclipse.emf.ecore.EReference;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import org.eclipse.emf.ecore.impl.EPackageImpl;</a>
+<span class="sourceLineNo">011</span><a id="line.11"></a>
+<span class="sourceLineNo">012</span><a id="line.12">import org.nasdanika.architecture.c4.C4Factory;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import org.nasdanika.architecture.c4.C4Package;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import org.nasdanika.architecture.c4.CodeElement;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import org.nasdanika.architecture.c4.Component;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import org.nasdanika.architecture.c4.Node;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import org.nasdanika.architecture.c4.Person;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import org.nasdanika.architecture.c4.Relationship;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import org.nasdanika.architecture.c4.Technology;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import org.nasdanika.architecture.c4.TechnologyConsumer;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import org.nasdanika.architecture.c4.TechnologyProduct;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import org.nasdanika.architecture.c4.TechnologyVersion;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import org.nasdanika.architecture.core.CorePackage;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import org.nasdanika.ncore.NcorePackage;</a>
+<span class="sourceLineNo">025</span><a id="line.25"></a>
+<span class="sourceLineNo">026</span><a id="line.26">/**</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * An implementation of the model &lt;b&gt;Package&lt;/b&gt;.</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * @generated</a>
+<span class="sourceLineNo">031</span><a id="line.31"> */</a>
+<span class="sourceLineNo">032</span><a id="line.32">public class C4PackageImpl extends EPackageImpl implements C4Package {</a>
+<span class="sourceLineNo">033</span><a id="line.33">        /**</a>
+<span class="sourceLineNo">034</span><a id="line.34">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">035</span><a id="line.35">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">036</span><a id="line.36">         * @generated</a>
+<span class="sourceLineNo">037</span><a id="line.37">         */</a>
+<span class="sourceLineNo">038</span><a id="line.38">        private EClass technologyEClass = null;</a>
+<span class="sourceLineNo">039</span><a id="line.39">        /**</a>
+<span class="sourceLineNo">040</span><a id="line.40">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">041</span><a id="line.41">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">042</span><a id="line.42">         * @generated</a>
+<span class="sourceLineNo">043</span><a id="line.43">         */</a>
+<span class="sourceLineNo">044</span><a id="line.44">        private EClass technologyProductEClass = null;</a>
+<span class="sourceLineNo">045</span><a id="line.45">        /**</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * @generated</a>
+<span class="sourceLineNo">049</span><a id="line.49">         */</a>
+<span class="sourceLineNo">050</span><a id="line.50">        private EClass technologyVersionEClass = null;</a>
+<span class="sourceLineNo">051</span><a id="line.51">        /**</a>
+<span class="sourceLineNo">052</span><a id="line.52">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">053</span><a id="line.53">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">054</span><a id="line.54">         * @generated</a>
+<span class="sourceLineNo">055</span><a id="line.55">         */</a>
+<span class="sourceLineNo">056</span><a id="line.56">        private EClass technologyConsumerEClass = null;</a>
+<span class="sourceLineNo">057</span><a id="line.57">        /**</a>
+<span class="sourceLineNo">058</span><a id="line.58">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">059</span><a id="line.59">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">060</span><a id="line.60">         * @generated</a>
+<span class="sourceLineNo">061</span><a id="line.61">         */</a>
+<span class="sourceLineNo">062</span><a id="line.62">        private EClass nodeEClass = null;</a>
+<span class="sourceLineNo">063</span><a id="line.63">        /**</a>
+<span class="sourceLineNo">064</span><a id="line.64">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">065</span><a id="line.65">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">066</span><a id="line.66">         * @generated</a>
+<span class="sourceLineNo">067</span><a id="line.67">         */</a>
+<span class="sourceLineNo">068</span><a id="line.68">        private EClass relationshipEClass = null;</a>
+<span class="sourceLineNo">069</span><a id="line.69"></a>
+<span class="sourceLineNo">070</span><a id="line.70">        /**</a>
+<span class="sourceLineNo">071</span><a id="line.71">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">072</span><a id="line.72">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">073</span><a id="line.73">         * @generated</a>
+<span class="sourceLineNo">074</span><a id="line.74">         */</a>
+<span class="sourceLineNo">075</span><a id="line.75">        private EClass personEClass = null;</a>
+<span class="sourceLineNo">076</span><a id="line.76">        /**</a>
+<span class="sourceLineNo">077</span><a id="line.77">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">078</span><a id="line.78">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">079</span><a id="line.79">         * @generated</a>
+<span class="sourceLineNo">080</span><a id="line.80">         */</a>
+<span class="sourceLineNo">081</span><a id="line.81">        private EClass systemEClass = null;</a>
+<span class="sourceLineNo">082</span><a id="line.82">        /**</a>
+<span class="sourceLineNo">083</span><a id="line.83">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">084</span><a id="line.84">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">085</span><a id="line.85">         * @generated</a>
+<span class="sourceLineNo">086</span><a id="line.86">         */</a>
+<span class="sourceLineNo">087</span><a id="line.87">        private EClass containerEClass = null;</a>
+<span class="sourceLineNo">088</span><a id="line.88">        /**</a>
+<span class="sourceLineNo">089</span><a id="line.89">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">090</span><a id="line.90">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">091</span><a id="line.91">         * @generated</a>
+<span class="sourceLineNo">092</span><a id="line.92">         */</a>
+<span class="sourceLineNo">093</span><a id="line.93">        private EClass componentEClass = null;</a>
+<span class="sourceLineNo">094</span><a id="line.94">        /**</a>
+<span class="sourceLineNo">095</span><a id="line.95">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">096</span><a id="line.96">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">097</span><a id="line.97">         * @generated</a>
+<span class="sourceLineNo">098</span><a id="line.98">         */</a>
+<span class="sourceLineNo">099</span><a id="line.99">        private EClass moduleEClass = null;</a>
+<span class="sourceLineNo">100</span><a id="line.100">        /**</a>
+<span class="sourceLineNo">101</span><a id="line.101">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">102</span><a id="line.102">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">103</span><a id="line.103">         * @generated</a>
+<span class="sourceLineNo">104</span><a id="line.104">         */</a>
+<span class="sourceLineNo">105</span><a id="line.105">        private EClass codeElementEClass = null;</a>
+<span class="sourceLineNo">106</span><a id="line.106"></a>
+<span class="sourceLineNo">107</span><a id="line.107">        /**</a>
+<span class="sourceLineNo">108</span><a id="line.108">         * Creates an instance of the model &lt;b&gt;Package&lt;/b&gt;, registered with</a>
+<span class="sourceLineNo">109</span><a id="line.109">         * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package</a>
+<span class="sourceLineNo">110</span><a id="line.110">         * package URI value.</a>
+<span class="sourceLineNo">111</span><a id="line.111">         * &lt;p&gt;Note: the correct way to create the package is via the static</a>
+<span class="sourceLineNo">112</span><a id="line.112">         * factory method {@link #init init()}, which also performs</a>
+<span class="sourceLineNo">113</span><a id="line.113">         * initialization of the package, or returns the registered package,</a>
+<span class="sourceLineNo">114</span><a id="line.114">         * if one already exists.</a>
+<span class="sourceLineNo">115</span><a id="line.115">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">116</span><a id="line.116">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">117</span><a id="line.117">         * @see org.eclipse.emf.ecore.EPackage.Registry</a>
+<span class="sourceLineNo">118</span><a id="line.118">         * @see org.nasdanika.architecture.c4.C4Package#eNS_URI</a>
+<span class="sourceLineNo">119</span><a id="line.119">         * @see #init()</a>
+<span class="sourceLineNo">120</span><a id="line.120">         * @generated</a>
+<span class="sourceLineNo">121</span><a id="line.121">         */</a>
+<span class="sourceLineNo">122</span><a id="line.122">        private C4PackageImpl() {</a>
+<span class="sourceLineNo">123</span><a id="line.123">                super(eNS_URI, C4Factory.eINSTANCE);</a>
+<span class="sourceLineNo">124</span><a id="line.124">        }</a>
+<span class="sourceLineNo">125</span><a id="line.125">        /**</a>
+<span class="sourceLineNo">126</span><a id="line.126">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">127</span><a id="line.127">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">128</span><a id="line.128">         * @generated</a>
+<span class="sourceLineNo">129</span><a id="line.129">         */</a>
+<span class="sourceLineNo">130</span><a id="line.130">        private static boolean isInited = false;</a>
+<span class="sourceLineNo">131</span><a id="line.131"></a>
+<span class="sourceLineNo">132</span><a id="line.132">        /**</a>
+<span class="sourceLineNo">133</span><a id="line.133">         * Creates, registers, and initializes the &lt;b&gt;Package&lt;/b&gt; for this model, and for any others upon which it depends.</a>
+<span class="sourceLineNo">134</span><a id="line.134">         *</a>
+<span class="sourceLineNo">135</span><a id="line.135">         * &lt;p&gt;This method is used to initialize {@link C4Package#eINSTANCE} when that field is accessed.</a>
+<span class="sourceLineNo">136</span><a id="line.136">         * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.</a>
+<span class="sourceLineNo">137</span><a id="line.137">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">138</span><a id="line.138">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">139</span><a id="line.139">         * @see #eNS_URI</a>
+<span class="sourceLineNo">140</span><a id="line.140">         * @see #createPackageContents()</a>
+<span class="sourceLineNo">141</span><a id="line.141">         * @see #initializePackageContents()</a>
+<span class="sourceLineNo">142</span><a id="line.142">         * @generated</a>
+<span class="sourceLineNo">143</span><a id="line.143">         */</a>
+<span class="sourceLineNo">144</span><a id="line.144">        public static C4Package init() {</a>
+<span class="sourceLineNo">145</span><a id="line.145">                if (isInited) return (C4Package)EPackage.Registry.INSTANCE.getEPackage(C4Package.eNS_URI);</a>
+<span class="sourceLineNo">146</span><a id="line.146"></a>
+<span class="sourceLineNo">147</span><a id="line.147">                // Obtain or create and register package</a>
+<span class="sourceLineNo">148</span><a id="line.148">                Object registeredC4Package = EPackage.Registry.INSTANCE.get(eNS_URI);</a>
+<span class="sourceLineNo">149</span><a id="line.149">                C4PackageImpl theC4Package = registeredC4Package instanceof C4PackageImpl ? (C4PackageImpl)registeredC4Package : new C4PackageImpl();</a>
+<span class="sourceLineNo">150</span><a id="line.150"></a>
+<span class="sourceLineNo">151</span><a id="line.151">                isInited = true;</a>
+<span class="sourceLineNo">152</span><a id="line.152"></a>
+<span class="sourceLineNo">153</span><a id="line.153">                // Initialize simple dependencies</a>
+<span class="sourceLineNo">154</span><a id="line.154">                CorePackage.eINSTANCE.eClass();</a>
+<span class="sourceLineNo">155</span><a id="line.155">                NcorePackage.eINSTANCE.eClass();</a>
+<span class="sourceLineNo">156</span><a id="line.156"></a>
+<span class="sourceLineNo">157</span><a id="line.157">                // Create package meta-data objects</a>
+<span class="sourceLineNo">158</span><a id="line.158">                theC4Package.createPackageContents();</a>
+<span class="sourceLineNo">159</span><a id="line.159"></a>
+<span class="sourceLineNo">160</span><a id="line.160">                // Initialize created meta-data</a>
+<span class="sourceLineNo">161</span><a id="line.161">                theC4Package.initializePackageContents();</a>
+<span class="sourceLineNo">162</span><a id="line.162"></a>
+<span class="sourceLineNo">163</span><a id="line.163">                // Mark meta-data to indicate it can't be changed</a>
+<span class="sourceLineNo">164</span><a id="line.164">                theC4Package.freeze();</a>
+<span class="sourceLineNo">165</span><a id="line.165"></a>
+<span class="sourceLineNo">166</span><a id="line.166">                // Update the registry and return the package</a>
+<span class="sourceLineNo">167</span><a id="line.167">                EPackage.Registry.INSTANCE.put(C4Package.eNS_URI, theC4Package);</a>
+<span class="sourceLineNo">168</span><a id="line.168">                return theC4Package;</a>
+<span class="sourceLineNo">169</span><a id="line.169">        }</a>
+<span class="sourceLineNo">170</span><a id="line.170"></a>
+<span class="sourceLineNo">171</span><a id="line.171">        /**</a>
+<span class="sourceLineNo">172</span><a id="line.172">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">173</span><a id="line.173">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">174</span><a id="line.174">         * @generated</a>
+<span class="sourceLineNo">175</span><a id="line.175">         */</a>
+<span class="sourceLineNo">176</span><a id="line.176">        @Override</a>
+<span class="sourceLineNo">177</span><a id="line.177">        public EClass getTechnology() {</a>
+<span class="sourceLineNo">178</span><a id="line.178">                return technologyEClass;</a>
+<span class="sourceLineNo">179</span><a id="line.179">        }</a>
+<span class="sourceLineNo">180</span><a id="line.180"></a>
+<span class="sourceLineNo">181</span><a id="line.181">        /**</a>
+<span class="sourceLineNo">182</span><a id="line.182">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">183</span><a id="line.183">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">184</span><a id="line.184">         * @generated</a>
+<span class="sourceLineNo">185</span><a id="line.185">         */</a>
+<span class="sourceLineNo">186</span><a id="line.186">        @Override</a>
+<span class="sourceLineNo">187</span><a id="line.187">        public EReference getTechnology_Uses() {</a>
+<span class="sourceLineNo">188</span><a id="line.188">                return (EReference)technologyEClass.getEStructuralFeatures().get(0);</a>
+<span class="sourceLineNo">189</span><a id="line.189">        }</a>
+<span class="sourceLineNo">190</span><a id="line.190"></a>
+<span class="sourceLineNo">191</span><a id="line.191">        /**</a>
+<span class="sourceLineNo">192</span><a id="line.192">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">193</span><a id="line.193">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">194</span><a id="line.194">         * @generated</a>
+<span class="sourceLineNo">195</span><a id="line.195">         */</a>
+<span class="sourceLineNo">196</span><a id="line.196">        @Override</a>
+<span class="sourceLineNo">197</span><a id="line.197">        public EClass getTechnologyProduct() {</a>
+<span class="sourceLineNo">198</span><a id="line.198">                return technologyProductEClass;</a>
+<span class="sourceLineNo">199</span><a id="line.199">        }</a>
+<span class="sourceLineNo">200</span><a id="line.200"></a>
+<span class="sourceLineNo">201</span><a id="line.201">        /**</a>
+<span class="sourceLineNo">202</span><a id="line.202">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">203</span><a id="line.203">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">204</span><a id="line.204">         * @generated</a>
+<span class="sourceLineNo">205</span><a id="line.205">         */</a>
+<span class="sourceLineNo">206</span><a id="line.206">        @Override</a>
+<span class="sourceLineNo">207</span><a id="line.207">        public EReference getTechnologyProduct_Versions() {</a>
+<span class="sourceLineNo">208</span><a id="line.208">                return (EReference)technologyProductEClass.getEStructuralFeatures().get(0);</a>
+<span class="sourceLineNo">209</span><a id="line.209">        }</a>
+<span class="sourceLineNo">210</span><a id="line.210"></a>
+<span class="sourceLineNo">211</span><a id="line.211">        /**</a>
+<span class="sourceLineNo">212</span><a id="line.212">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">213</span><a id="line.213">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">214</span><a id="line.214">         * @generated</a>
+<span class="sourceLineNo">215</span><a id="line.215">         */</a>
+<span class="sourceLineNo">216</span><a id="line.216">        @Override</a>
+<span class="sourceLineNo">217</span><a id="line.217">        public EClass getTechnologyVersion() {</a>
+<span class="sourceLineNo">218</span><a id="line.218">                return technologyVersionEClass;</a>
+<span class="sourceLineNo">219</span><a id="line.219">        }</a>
+<span class="sourceLineNo">220</span><a id="line.220"></a>
+<span class="sourceLineNo">221</span><a id="line.221">        /**</a>
+<span class="sourceLineNo">222</span><a id="line.222">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">223</span><a id="line.223">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">224</span><a id="line.224">         * @generated</a>
+<span class="sourceLineNo">225</span><a id="line.225">         */</a>
+<span class="sourceLineNo">226</span><a id="line.226">        @Override</a>
+<span class="sourceLineNo">227</span><a id="line.227">        public EClass getTechnologyConsumer() {</a>
+<span class="sourceLineNo">228</span><a id="line.228">                return technologyConsumerEClass;</a>
+<span class="sourceLineNo">229</span><a id="line.229">        }</a>
+<span class="sourceLineNo">230</span><a id="line.230"></a>
+<span class="sourceLineNo">231</span><a id="line.231">        /**</a>
+<span class="sourceLineNo">232</span><a id="line.232">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">233</span><a id="line.233">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">234</span><a id="line.234">         * @generated</a>
+<span class="sourceLineNo">235</span><a id="line.235">         */</a>
+<span class="sourceLineNo">236</span><a id="line.236">        @Override</a>
+<span class="sourceLineNo">237</span><a id="line.237">        public EReference getTechnologyConsumer_Technology() {</a>
+<span class="sourceLineNo">238</span><a id="line.238">                return (EReference)technologyConsumerEClass.getEStructuralFeatures().get(0);</a>
+<span class="sourceLineNo">239</span><a id="line.239">        }</a>
+<span class="sourceLineNo">240</span><a id="line.240"></a>
+<span class="sourceLineNo">241</span><a id="line.241">        /**</a>
+<span class="sourceLineNo">242</span><a id="line.242">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">243</span><a id="line.243">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">244</span><a id="line.244">         * @generated</a>
+<span class="sourceLineNo">245</span><a id="line.245">         */</a>
+<span class="sourceLineNo">246</span><a id="line.246">        @Override</a>
+<span class="sourceLineNo">247</span><a id="line.247">        public EClass getNode() {</a>
+<span class="sourceLineNo">248</span><a id="line.248">                return nodeEClass;</a>
+<span class="sourceLineNo">249</span><a id="line.249">        }</a>
+<span class="sourceLineNo">250</span><a id="line.250"></a>
+<span class="sourceLineNo">251</span><a id="line.251">        /**</a>
+<span class="sourceLineNo">252</span><a id="line.252">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">253</span><a id="line.253">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">254</span><a id="line.254">         * @generated</a>
+<span class="sourceLineNo">255</span><a id="line.255">         */</a>
+<span class="sourceLineNo">256</span><a id="line.256">        @Override</a>
+<span class="sourceLineNo">257</span><a id="line.257">        public EReference getNode_OutgoingRelationships() {</a>
+<span class="sourceLineNo">258</span><a id="line.258">                return (EReference)nodeEClass.getEStructuralFeatures().get(0);</a>
+<span class="sourceLineNo">259</span><a id="line.259">        }</a>
+<span class="sourceLineNo">260</span><a id="line.260"></a>
+<span class="sourceLineNo">261</span><a id="line.261">        /**</a>
+<span class="sourceLineNo">262</span><a id="line.262">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">263</span><a id="line.263">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">264</span><a id="line.264">         * @generated</a>
+<span class="sourceLineNo">265</span><a id="line.265">         */</a>
+<span class="sourceLineNo">266</span><a id="line.266">        @Override</a>
+<span class="sourceLineNo">267</span><a id="line.267">        public EReference getNode_IncomingRelationships() {</a>
+<span class="sourceLineNo">268</span><a id="line.268">                return (EReference)nodeEClass.getEStructuralFeatures().get(1);</a>
+<span class="sourceLineNo">269</span><a id="line.269">        }</a>
+<span class="sourceLineNo">270</span><a id="line.270"></a>
+<span class="sourceLineNo">271</span><a id="line.271">        /**</a>
+<span class="sourceLineNo">272</span><a id="line.272">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">273</span><a id="line.273">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">274</span><a id="line.274">         * @generated</a>
+<span class="sourceLineNo">275</span><a id="line.275">         */</a>
+<span class="sourceLineNo">276</span><a id="line.276">        @Override</a>
+<span class="sourceLineNo">277</span><a id="line.277">        public EClass getRelationship() {</a>
+<span class="sourceLineNo">278</span><a id="line.278">                return relationshipEClass;</a>
+<span class="sourceLineNo">279</span><a id="line.279">        }</a>
+<span class="sourceLineNo">280</span><a id="line.280"></a>
+<span class="sourceLineNo">281</span><a id="line.281">        /**</a>
+<span class="sourceLineNo">282</span><a id="line.282">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">283</span><a id="line.283">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">284</span><a id="line.284">         * @generated</a>
+<span class="sourceLineNo">285</span><a id="line.285">         */</a>
+<span class="sourceLineNo">286</span><a id="line.286">        @Override</a>
+<span class="sourceLineNo">287</span><a id="line.287">        public EReference getRelationship_Target() {</a>
+<span class="sourceLineNo">288</span><a id="line.288">                return (EReference)relationshipEClass.getEStructuralFeatures().get(0);</a>
+<span class="sourceLineNo">289</span><a id="line.289">        }</a>
+<span class="sourceLineNo">290</span><a id="line.290"></a>
+<span class="sourceLineNo">291</span><a id="line.291">        /**</a>
+<span class="sourceLineNo">292</span><a id="line.292">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">293</span><a id="line.293">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">294</span><a id="line.294">         * @generated</a>
+<span class="sourceLineNo">295</span><a id="line.295">         */</a>
+<span class="sourceLineNo">296</span><a id="line.296">        @Override</a>
+<span class="sourceLineNo">297</span><a id="line.297">        public EClass getPerson() {</a>
+<span class="sourceLineNo">298</span><a id="line.298">                return personEClass;</a>
+<span class="sourceLineNo">299</span><a id="line.299">        }</a>
+<span class="sourceLineNo">300</span><a id="line.300"></a>
+<span class="sourceLineNo">301</span><a id="line.301">        /**</a>
+<span class="sourceLineNo">302</span><a id="line.302">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">303</span><a id="line.303">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">304</span><a id="line.304">         * @generated</a>
+<span class="sourceLineNo">305</span><a id="line.305">         */</a>
+<span class="sourceLineNo">306</span><a id="line.306">        @Override</a>
+<span class="sourceLineNo">307</span><a id="line.307">        public EAttribute getPerson_External() {</a>
+<span class="sourceLineNo">308</span><a id="line.308">                return (EAttribute)personEClass.getEStructuralFeatures().get(0);</a>
+<span class="sourceLineNo">309</span><a id="line.309">        }</a>
+<span class="sourceLineNo">310</span><a id="line.310"></a>
+<span class="sourceLineNo">311</span><a id="line.311">        /**</a>
+<span class="sourceLineNo">312</span><a id="line.312">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">313</span><a id="line.313">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">314</span><a id="line.314">         * @generated</a>
+<span class="sourceLineNo">315</span><a id="line.315">         */</a>
+<span class="sourceLineNo">316</span><a id="line.316">        @Override</a>
+<span class="sourceLineNo">317</span><a id="line.317">        public EClass getSystem() {</a>
+<span class="sourceLineNo">318</span><a id="line.318">                return systemEClass;</a>
+<span class="sourceLineNo">319</span><a id="line.319">        }</a>
+<span class="sourceLineNo">320</span><a id="line.320"></a>
+<span class="sourceLineNo">321</span><a id="line.321">        /**</a>
+<span class="sourceLineNo">322</span><a id="line.322">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">323</span><a id="line.323">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">324</span><a id="line.324">         * @generated</a>
+<span class="sourceLineNo">325</span><a id="line.325">         */</a>
+<span class="sourceLineNo">326</span><a id="line.326">        @Override</a>
+<span class="sourceLineNo">327</span><a id="line.327">        public EAttribute getSystem_External() {</a>
+<span class="sourceLineNo">328</span><a id="line.328">                return (EAttribute)systemEClass.getEStructuralFeatures().get(0);</a>
+<span class="sourceLineNo">329</span><a id="line.329">        }</a>
+<span class="sourceLineNo">330</span><a id="line.330"></a>
+<span class="sourceLineNo">331</span><a id="line.331">        /**</a>
+<span class="sourceLineNo">332</span><a id="line.332">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">333</span><a id="line.333">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">334</span><a id="line.334">         * @generated</a>
+<span class="sourceLineNo">335</span><a id="line.335">         */</a>
+<span class="sourceLineNo">336</span><a id="line.336">        @Override</a>
+<span class="sourceLineNo">337</span><a id="line.337">        public EReference getSystem_Containers() {</a>
+<span class="sourceLineNo">338</span><a id="line.338">                return (EReference)systemEClass.getEStructuralFeatures().get(1);</a>
+<span class="sourceLineNo">339</span><a id="line.339">        }</a>
+<span class="sourceLineNo">340</span><a id="line.340"></a>
+<span class="sourceLineNo">341</span><a id="line.341">        /**</a>
+<span class="sourceLineNo">342</span><a id="line.342">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">343</span><a id="line.343">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">344</span><a id="line.344">         * @generated</a>
+<span class="sourceLineNo">345</span><a id="line.345">         */</a>
+<span class="sourceLineNo">346</span><a id="line.346">        @Override</a>
+<span class="sourceLineNo">347</span><a id="line.347">        public EReference getSystem_Subsystems() {</a>
+<span class="sourceLineNo">348</span><a id="line.348">                return (EReference)systemEClass.getEStructuralFeatures().get(2);</a>
+<span class="sourceLineNo">349</span><a id="line.349">        }</a>
+<span class="sourceLineNo">350</span><a id="line.350"></a>
+<span class="sourceLineNo">351</span><a id="line.351">        /**</a>
+<span class="sourceLineNo">352</span><a id="line.352">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">353</span><a id="line.353">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">354</span><a id="line.354">         * @generated</a>
+<span class="sourceLineNo">355</span><a id="line.355">         */</a>
+<span class="sourceLineNo">356</span><a id="line.356">        @Override</a>
+<span class="sourceLineNo">357</span><a id="line.357">        public EClass getContainer() {</a>
+<span class="sourceLineNo">358</span><a id="line.358">                return containerEClass;</a>
+<span class="sourceLineNo">359</span><a id="line.359">        }</a>
+<span class="sourceLineNo">360</span><a id="line.360"></a>
+<span class="sourceLineNo">361</span><a id="line.361">        /**</a>
+<span class="sourceLineNo">362</span><a id="line.362">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">363</span><a id="line.363">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">364</span><a id="line.364">         * @generated</a>
+<span class="sourceLineNo">365</span><a id="line.365">         */</a>
+<span class="sourceLineNo">366</span><a id="line.366">        @Override</a>
+<span class="sourceLineNo">367</span><a id="line.367">        public EReference getContainer_Components() {</a>
+<span class="sourceLineNo">368</span><a id="line.368">                return (EReference)containerEClass.getEStructuralFeatures().get(0);</a>
+<span class="sourceLineNo">369</span><a id="line.369">        }</a>
+<span class="sourceLineNo">370</span><a id="line.370"></a>
+<span class="sourceLineNo">371</span><a id="line.371">        /**</a>
+<span class="sourceLineNo">372</span><a id="line.372">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">373</span><a id="line.373">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">374</span><a id="line.374">         * @generated</a>
+<span class="sourceLineNo">375</span><a id="line.375">         */</a>
+<span class="sourceLineNo">376</span><a id="line.376">        @Override</a>
+<span class="sourceLineNo">377</span><a id="line.377">        public EReference getContainer_Children() {</a>
+<span class="sourceLineNo">378</span><a id="line.378">                return (EReference)containerEClass.getEStructuralFeatures().get(1);</a>
+<span class="sourceLineNo">379</span><a id="line.379">        }</a>
+<span class="sourceLineNo">380</span><a id="line.380"></a>
+<span class="sourceLineNo">381</span><a id="line.381">        /**</a>
+<span class="sourceLineNo">382</span><a id="line.382">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">383</span><a id="line.383">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">384</span><a id="line.384">         * @generated</a>
+<span class="sourceLineNo">385</span><a id="line.385">         */</a>
+<span class="sourceLineNo">386</span><a id="line.386">        @Override</a>
+<span class="sourceLineNo">387</span><a id="line.387">        public EClass getComponent() {</a>
+<span class="sourceLineNo">388</span><a id="line.388">                return componentEClass;</a>
+<span class="sourceLineNo">389</span><a id="line.389">        }</a>
+<span class="sourceLineNo">390</span><a id="line.390"></a>
+<span class="sourceLineNo">391</span><a id="line.391">        /**</a>
+<span class="sourceLineNo">392</span><a id="line.392">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">393</span><a id="line.393">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">394</span><a id="line.394">         * @generated</a>
+<span class="sourceLineNo">395</span><a id="line.395">         */</a>
+<span class="sourceLineNo">396</span><a id="line.396">        @Override</a>
+<span class="sourceLineNo">397</span><a id="line.397">        public EClass getModule() {</a>
+<span class="sourceLineNo">398</span><a id="line.398">                return moduleEClass;</a>
+<span class="sourceLineNo">399</span><a id="line.399">        }</a>
+<span class="sourceLineNo">400</span><a id="line.400"></a>
+<span class="sourceLineNo">401</span><a id="line.401">        /**</a>
+<span class="sourceLineNo">402</span><a id="line.402">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">403</span><a id="line.403">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">404</span><a id="line.404">         * @generated</a>
+<span class="sourceLineNo">405</span><a id="line.405">         */</a>
+<span class="sourceLineNo">406</span><a id="line.406">        @Override</a>
+<span class="sourceLineNo">407</span><a id="line.407">        public EReference getModule_CodeElements() {</a>
+<span class="sourceLineNo">408</span><a id="line.408">                return (EReference)moduleEClass.getEStructuralFeatures().get(0);</a>
+<span class="sourceLineNo">409</span><a id="line.409">        }</a>
+<span class="sourceLineNo">410</span><a id="line.410"></a>
+<span class="sourceLineNo">411</span><a id="line.411">        /**</a>
+<span class="sourceLineNo">412</span><a id="line.412">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">413</span><a id="line.413">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">414</span><a id="line.414">         * @generated</a>
+<span class="sourceLineNo">415</span><a id="line.415">         */</a>
+<span class="sourceLineNo">416</span><a id="line.416">        @Override</a>
+<span class="sourceLineNo">417</span><a id="line.417">        public EReference getModule_Modules() {</a>
+<span class="sourceLineNo">418</span><a id="line.418">                return (EReference)moduleEClass.getEStructuralFeatures().get(1);</a>
+<span class="sourceLineNo">419</span><a id="line.419">        }</a>
+<span class="sourceLineNo">420</span><a id="line.420"></a>
+<span class="sourceLineNo">421</span><a id="line.421">        /**</a>
+<span class="sourceLineNo">422</span><a id="line.422">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">423</span><a id="line.423">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">424</span><a id="line.424">         * @generated</a>
+<span class="sourceLineNo">425</span><a id="line.425">         */</a>
+<span class="sourceLineNo">426</span><a id="line.426">        @Override</a>
+<span class="sourceLineNo">427</span><a id="line.427">        public EClass getCodeElement() {</a>
+<span class="sourceLineNo">428</span><a id="line.428">                return codeElementEClass;</a>
+<span class="sourceLineNo">429</span><a id="line.429">        }</a>
+<span class="sourceLineNo">430</span><a id="line.430"></a>
+<span class="sourceLineNo">431</span><a id="line.431">        /**</a>
+<span class="sourceLineNo">432</span><a id="line.432">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">433</span><a id="line.433">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">434</span><a id="line.434">         * @generated</a>
+<span class="sourceLineNo">435</span><a id="line.435">         */</a>
+<span class="sourceLineNo">436</span><a id="line.436">        @Override</a>
+<span class="sourceLineNo">437</span><a id="line.437">        public C4Factory getC4Factory() {</a>
+<span class="sourceLineNo">438</span><a id="line.438">                return (C4Factory)getEFactoryInstance();</a>
+<span class="sourceLineNo">439</span><a id="line.439">        }</a>
+<span class="sourceLineNo">440</span><a id="line.440"></a>
+<span class="sourceLineNo">441</span><a id="line.441">        /**</a>
+<span class="sourceLineNo">442</span><a id="line.442">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">443</span><a id="line.443">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">444</span><a id="line.444">         * @generated</a>
+<span class="sourceLineNo">445</span><a id="line.445">         */</a>
+<span class="sourceLineNo">446</span><a id="line.446">        private boolean isCreated = false;</a>
+<span class="sourceLineNo">447</span><a id="line.447"></a>
+<span class="sourceLineNo">448</span><a id="line.448">        /**</a>
+<span class="sourceLineNo">449</span><a id="line.449">         * Creates the meta-model objects for the package.  This method is</a>
+<span class="sourceLineNo">450</span><a id="line.450">         * guarded to have no affect on any invocation but its first.</a>
+<span class="sourceLineNo">451</span><a id="line.451">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">452</span><a id="line.452">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">453</span><a id="line.453">         * @generated</a>
+<span class="sourceLineNo">454</span><a id="line.454">         */</a>
+<span class="sourceLineNo">455</span><a id="line.455">        public void createPackageContents() {</a>
+<span class="sourceLineNo">456</span><a id="line.456">                if (isCreated) return;</a>
+<span class="sourceLineNo">457</span><a id="line.457">                isCreated = true;</a>
+<span class="sourceLineNo">458</span><a id="line.458"></a>
+<span class="sourceLineNo">459</span><a id="line.459">                // Create classes and their features</a>
+<span class="sourceLineNo">460</span><a id="line.460">                technologyEClass = createEClass(TECHNOLOGY);</a>
+<span class="sourceLineNo">461</span><a id="line.461">                createEReference(technologyEClass, TECHNOLOGY__USES);</a>
+<span class="sourceLineNo">462</span><a id="line.462"></a>
+<span class="sourceLineNo">463</span><a id="line.463">                technologyProductEClass = createEClass(TECHNOLOGY_PRODUCT);</a>
+<span class="sourceLineNo">464</span><a id="line.464">                createEReference(technologyProductEClass, TECHNOLOGY_PRODUCT__VERSIONS);</a>
+<span class="sourceLineNo">465</span><a id="line.465"></a>
+<span class="sourceLineNo">466</span><a id="line.466">                technologyVersionEClass = createEClass(TECHNOLOGY_VERSION);</a>
+<span class="sourceLineNo">467</span><a id="line.467"></a>
+<span class="sourceLineNo">468</span><a id="line.468">                technologyConsumerEClass = createEClass(TECHNOLOGY_CONSUMER);</a>
+<span class="sourceLineNo">469</span><a id="line.469">                createEReference(technologyConsumerEClass, TECHNOLOGY_CONSUMER__TECHNOLOGY);</a>
+<span class="sourceLineNo">470</span><a id="line.470"></a>
+<span class="sourceLineNo">471</span><a id="line.471">                nodeEClass = createEClass(NODE);</a>
+<span class="sourceLineNo">472</span><a id="line.472">                createEReference(nodeEClass, NODE__OUTGOING_RELATIONSHIPS);</a>
+<span class="sourceLineNo">473</span><a id="line.473">                createEReference(nodeEClass, NODE__INCOMING_RELATIONSHIPS);</a>
+<span class="sourceLineNo">474</span><a id="line.474"></a>
+<span class="sourceLineNo">475</span><a id="line.475">                relationshipEClass = createEClass(RELATIONSHIP);</a>
+<span class="sourceLineNo">476</span><a id="line.476">                createEReference(relationshipEClass, RELATIONSHIP__TARGET);</a>
+<span class="sourceLineNo">477</span><a id="line.477"></a>
+<span class="sourceLineNo">478</span><a id="line.478">                personEClass = createEClass(PERSON);</a>
+<span class="sourceLineNo">479</span><a id="line.479">                createEAttribute(personEClass, PERSON__EXTERNAL);</a>
+<span class="sourceLineNo">480</span><a id="line.480"></a>
+<span class="sourceLineNo">481</span><a id="line.481">                systemEClass = createEClass(SYSTEM);</a>
+<span class="sourceLineNo">482</span><a id="line.482">                createEAttribute(systemEClass, SYSTEM__EXTERNAL);</a>
+<span class="sourceLineNo">483</span><a id="line.483">                createEReference(systemEClass, SYSTEM__CONTAINERS);</a>
+<span class="sourceLineNo">484</span><a id="line.484">                createEReference(systemEClass, SYSTEM__SUBSYSTEMS);</a>
+<span class="sourceLineNo">485</span><a id="line.485"></a>
+<span class="sourceLineNo">486</span><a id="line.486">                containerEClass = createEClass(CONTAINER);</a>
+<span class="sourceLineNo">487</span><a id="line.487">                createEReference(containerEClass, CONTAINER__COMPONENTS);</a>
+<span class="sourceLineNo">488</span><a id="line.488">                createEReference(containerEClass, CONTAINER__CHILDREN);</a>
+<span class="sourceLineNo">489</span><a id="line.489"></a>
+<span class="sourceLineNo">490</span><a id="line.490">                componentEClass = createEClass(COMPONENT);</a>
+<span class="sourceLineNo">491</span><a id="line.491"></a>
+<span class="sourceLineNo">492</span><a id="line.492">                moduleEClass = createEClass(MODULE);</a>
+<span class="sourceLineNo">493</span><a id="line.493">                createEReference(moduleEClass, MODULE__CODE_ELEMENTS);</a>
+<span class="sourceLineNo">494</span><a id="line.494">                createEReference(moduleEClass, MODULE__MODULES);</a>
+<span class="sourceLineNo">495</span><a id="line.495"></a>
+<span class="sourceLineNo">496</span><a id="line.496">                codeElementEClass = createEClass(CODE_ELEMENT);</a>
+<span class="sourceLineNo">497</span><a id="line.497">        }</a>
+<span class="sourceLineNo">498</span><a id="line.498"></a>
+<span class="sourceLineNo">499</span><a id="line.499">        /**</a>
+<span class="sourceLineNo">500</span><a id="line.500">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">501</span><a id="line.501">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">502</span><a id="line.502">         * @generated</a>
+<span class="sourceLineNo">503</span><a id="line.503">         */</a>
+<span class="sourceLineNo">504</span><a id="line.504">        private boolean isInitialized = false;</a>
+<span class="sourceLineNo">505</span><a id="line.505"></a>
+<span class="sourceLineNo">506</span><a id="line.506">        /**</a>
+<span class="sourceLineNo">507</span><a id="line.507">         * Complete the initialization of the package and its meta-model.  This</a>
+<span class="sourceLineNo">508</span><a id="line.508">         * method is guarded to have no affect on any invocation but its first.</a>
+<span class="sourceLineNo">509</span><a id="line.509">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">510</span><a id="line.510">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">511</span><a id="line.511">         * @generated</a>
+<span class="sourceLineNo">512</span><a id="line.512">         */</a>
+<span class="sourceLineNo">513</span><a id="line.513">        public void initializePackageContents() {</a>
+<span class="sourceLineNo">514</span><a id="line.514">                if (isInitialized) return;</a>
+<span class="sourceLineNo">515</span><a id="line.515">                isInitialized = true;</a>
+<span class="sourceLineNo">516</span><a id="line.516"></a>
+<span class="sourceLineNo">517</span><a id="line.517">                // Initialize package</a>
+<span class="sourceLineNo">518</span><a id="line.518">                setName(eNAME);</a>
+<span class="sourceLineNo">519</span><a id="line.519">                setNsPrefix(eNS_PREFIX);</a>
+<span class="sourceLineNo">520</span><a id="line.520">                setNsURI(eNS_URI);</a>
+<span class="sourceLineNo">521</span><a id="line.521"></a>
+<span class="sourceLineNo">522</span><a id="line.522">                // Obtain other dependent packages</a>
+<span class="sourceLineNo">523</span><a id="line.523">                CorePackage theCorePackage = (CorePackage)EPackage.Registry.INSTANCE.getEPackage(CorePackage.eNS_URI);</a>
+<span class="sourceLineNo">524</span><a id="line.524"></a>
+<span class="sourceLineNo">525</span><a id="line.525">                // Create type parameters</a>
+<span class="sourceLineNo">526</span><a id="line.526"></a>
+<span class="sourceLineNo">527</span><a id="line.527">                // Set bounds for type parameters</a>
+<span class="sourceLineNo">528</span><a id="line.528"></a>
+<span class="sourceLineNo">529</span><a id="line.529">                // Add supertypes to classes</a>
+<span class="sourceLineNo">530</span><a id="line.530">                technologyEClass.getESuperTypes().add(theCorePackage.getArchitectureElement());</a>
+<span class="sourceLineNo">531</span><a id="line.531">                technologyProductEClass.getESuperTypes().add(this.getTechnology());</a>
+<span class="sourceLineNo">532</span><a id="line.532">                technologyVersionEClass.getESuperTypes().add(this.getTechnology());</a>
+<span class="sourceLineNo">533</span><a id="line.533">                nodeEClass.getESuperTypes().add(theCorePackage.getArchitectureElement());</a>
+<span class="sourceLineNo">534</span><a id="line.534">                relationshipEClass.getESuperTypes().add(theCorePackage.getArchitectureElement());</a>
+<span class="sourceLineNo">535</span><a id="line.535">                relationshipEClass.getESuperTypes().add(this.getTechnologyConsumer());</a>
+<span class="sourceLineNo">536</span><a id="line.536">                personEClass.getESuperTypes().add(this.getNode());</a>
+<span class="sourceLineNo">537</span><a id="line.537">                systemEClass.getESuperTypes().add(this.getNode());</a>
+<span class="sourceLineNo">538</span><a id="line.538">                containerEClass.getESuperTypes().add(this.getNode());</a>
+<span class="sourceLineNo">539</span><a id="line.539">                containerEClass.getESuperTypes().add(this.getTechnologyConsumer());</a>
+<span class="sourceLineNo">540</span><a id="line.540">                componentEClass.getESuperTypes().add(this.getModule());</a>
+<span class="sourceLineNo">541</span><a id="line.541">                moduleEClass.getESuperTypes().add(this.getNode());</a>
+<span class="sourceLineNo">542</span><a id="line.542">                moduleEClass.getESuperTypes().add(this.getTechnologyConsumer());</a>
+<span class="sourceLineNo">543</span><a id="line.543">                codeElementEClass.getESuperTypes().add(this.getNode());</a>
+<span class="sourceLineNo">544</span><a id="line.544"></a>
+<span class="sourceLineNo">545</span><a id="line.545">                // Initialize classes, features, and operations; add parameters</a>
+<span class="sourceLineNo">546</span><a id="line.546">                initEClass(technologyEClass, Technology.class, "Technology", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">547</span><a id="line.547">                initEReference(getTechnology_Uses(), this.getTechnologyConsumer(), null, "uses", null, 0, -1, Technology.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">548</span><a id="line.548"></a>
+<span class="sourceLineNo">549</span><a id="line.549">                initEClass(technologyProductEClass, TechnologyProduct.class, "TechnologyProduct", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">550</span><a id="line.550">                initEReference(getTechnologyProduct_Versions(), this.getTechnologyVersion(), null, "versions", null, 0, -1, TechnologyProduct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">551</span><a id="line.551"></a>
+<span class="sourceLineNo">552</span><a id="line.552">                initEClass(technologyVersionEClass, TechnologyVersion.class, "TechnologyVersion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">553</span><a id="line.553"></a>
+<span class="sourceLineNo">554</span><a id="line.554">                initEClass(technologyConsumerEClass, TechnologyConsumer.class, "TechnologyConsumer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">555</span><a id="line.555">                initEReference(getTechnologyConsumer_Technology(), this.getTechnology(), null, "technology", null, 0, -1, TechnologyConsumer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">556</span><a id="line.556"></a>
+<span class="sourceLineNo">557</span><a id="line.557">                initEClass(nodeEClass, Node.class, "Node", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">558</span><a id="line.558">                initEReference(getNode_OutgoingRelationships(), this.getRelationship(), null, "outgoingRelationships", null, 0, -1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">559</span><a id="line.559">                getNode_OutgoingRelationships().getEKeys().add(theCorePackage.getModelElement_Id());</a>
+<span class="sourceLineNo">560</span><a id="line.560">                initEReference(getNode_IncomingRelationships(), this.getRelationship(), null, "incomingRelationships", null, 0, -1, Node.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">561</span><a id="line.561"></a>
+<span class="sourceLineNo">562</span><a id="line.562">                initEClass(relationshipEClass, Relationship.class, "Relationship", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">563</span><a id="line.563">                initEReference(getRelationship_Target(), this.getNode(), null, "target", null, 0, 1, Relationship.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">564</span><a id="line.564"></a>
+<span class="sourceLineNo">565</span><a id="line.565">                initEClass(personEClass, Person.class, "Person", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">566</span><a id="line.566">                initEAttribute(getPerson_External(), ecorePackage.getEBoolean(), "external", null, 0, 1, Person.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">567</span><a id="line.567"></a>
+<span class="sourceLineNo">568</span><a id="line.568">                initEClass(systemEClass, org.nasdanika.architecture.c4.System.class, "System", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">569</span><a id="line.569">                initEAttribute(getSystem_External(), ecorePackage.getEBoolean(), "external", null, 0, 1, org.nasdanika.architecture.c4.System.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">570</span><a id="line.570">                initEReference(getSystem_Containers(), this.getContainer(), null, "containers", null, 0, -1, org.nasdanika.architecture.c4.System.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">571</span><a id="line.571">                initEReference(getSystem_Subsystems(), this.getSystem(), null, "subsystems", null, 0, -1, org.nasdanika.architecture.c4.System.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">572</span><a id="line.572"></a>
+<span class="sourceLineNo">573</span><a id="line.573">                initEClass(containerEClass, org.nasdanika.architecture.c4.Container.class, "Container", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">574</span><a id="line.574">                initEReference(getContainer_Components(), this.getComponent(), null, "components", null, 0, -1, org.nasdanika.architecture.c4.Container.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">575</span><a id="line.575">                initEReference(getContainer_Children(), this.getContainer(), null, "children", null, 0, -1, org.nasdanika.architecture.c4.Container.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">576</span><a id="line.576"></a>
+<span class="sourceLineNo">577</span><a id="line.577">                initEClass(componentEClass, Component.class, "Component", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">578</span><a id="line.578"></a>
+<span class="sourceLineNo">579</span><a id="line.579">                initEClass(moduleEClass, org.nasdanika.architecture.c4.Module.class, "Module", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">580</span><a id="line.580">                initEReference(getModule_CodeElements(), this.getCodeElement(), null, "codeElements", null, 0, -1, org.nasdanika.architecture.c4.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">581</span><a id="line.581">                initEReference(getModule_Modules(), this.getModule(), null, "modules", null, 0, -1, org.nasdanika.architecture.c4.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</a>
+<span class="sourceLineNo">582</span><a id="line.582"></a>
+<span class="sourceLineNo">583</span><a id="line.583">                initEClass(codeElementEClass, CodeElement.class, "CodeElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</a>
+<span class="sourceLineNo">584</span><a id="line.584"></a>
+<span class="sourceLineNo">585</span><a id="line.585">                // Create resource</a>
+<span class="sourceLineNo">586</span><a id="line.586">                createResource(eNS_URI);</a>
+<span class="sourceLineNo">587</span><a id="line.587"></a>
+<span class="sourceLineNo">588</span><a id="line.588">                // Create annotations</a>
+<span class="sourceLineNo">589</span><a id="line.589">                // urn:org.nasdanika</a>
+<span class="sourceLineNo">590</span><a id="line.590">                createUrnorgAnnotations();</a>
+<span class="sourceLineNo">591</span><a id="line.591">                // http://www.eclipse.org/emf/2002/GenModel</a>
+<span class="sourceLineNo">592</span><a id="line.592">                createGenModelAnnotations();</a>
+<span class="sourceLineNo">593</span><a id="line.593">        }</a>
+<span class="sourceLineNo">594</span><a id="line.594"></a>
+<span class="sourceLineNo">595</span><a id="line.595">        /**</a>
+<span class="sourceLineNo">596</span><a id="line.596">         * Initializes the annotations for &lt;b&gt;urn:org.nasdanika&lt;/b&gt;.</a>
+<span class="sourceLineNo">597</span><a id="line.597">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">598</span><a id="line.598">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">599</span><a id="line.599">         * @generated</a>
+<span class="sourceLineNo">600</span><a id="line.600">         */</a>
+<span class="sourceLineNo">601</span><a id="line.601">        protected void createUrnorgAnnotations() {</a>
+<span class="sourceLineNo">602</span><a id="line.602">                String source = "urn:org.nasdanika";</a>
+<span class="sourceLineNo">603</span><a id="line.603">                addAnnotation</a>
+<span class="sourceLineNo">604</span><a id="line.604">                  (this,</a>
+<span class="sourceLineNo">605</span><a id="line.605">                   source,</a>
+<span class="sourceLineNo">606</span><a id="line.606">                   new String[] {</a>
+<span class="sourceLineNo">607</span><a id="line.607">                           "documentation-reference", "doc/package-summary.md"</a>
+<span class="sourceLineNo">608</span><a id="line.608">                   });</a>
+<span class="sourceLineNo">609</span><a id="line.609">                addAnnotation</a>
+<span class="sourceLineNo">610</span><a id="line.610">                  (getTechnologyProduct_Versions(),</a>
+<span class="sourceLineNo">611</span><a id="line.611">                   source,</a>
+<span class="sourceLineNo">612</span><a id="line.612">                   new String[] {</a>
+<span class="sourceLineNo">613</span><a id="line.613">                           "homogenous", "true",</a>
+<span class="sourceLineNo">614</span><a id="line.614">                           "strict-containment", "true"</a>
+<span class="sourceLineNo">615</span><a id="line.615">                   });</a>
+<span class="sourceLineNo">616</span><a id="line.616">                addAnnotation</a>
+<span class="sourceLineNo">617</span><a id="line.617">                  (getTechnologyConsumer_Technology(),</a>
+<span class="sourceLineNo">618</span><a id="line.618">                   source,</a>
+<span class="sourceLineNo">619</span><a id="line.619">                   new String[] {</a>
+<span class="sourceLineNo">620</span><a id="line.620">                           "opposite", "uses"</a>
+<span class="sourceLineNo">621</span><a id="line.621">                   });</a>
+<span class="sourceLineNo">622</span><a id="line.622">                addAnnotation</a>
+<span class="sourceLineNo">623</span><a id="line.623">                  (getNode_OutgoingRelationships(),</a>
+<span class="sourceLineNo">624</span><a id="line.624">                   source,</a>
+<span class="sourceLineNo">625</span><a id="line.625">                   new String[] {</a>
+<span class="sourceLineNo">626</span><a id="line.626">                           "homogenous", "true",</a>
+<span class="sourceLineNo">627</span><a id="line.627">                           "strict-containment", "true"</a>
+<span class="sourceLineNo">628</span><a id="line.628">                   });</a>
+<span class="sourceLineNo">629</span><a id="line.629">                addAnnotation</a>
+<span class="sourceLineNo">630</span><a id="line.630">                  (getRelationship_Target(),</a>
+<span class="sourceLineNo">631</span><a id="line.631">                   source,</a>
+<span class="sourceLineNo">632</span><a id="line.632">                   new String[] {</a>
+<span class="sourceLineNo">633</span><a id="line.633">                           "opposite", "incomingRelationships",</a>
+<span class="sourceLineNo">634</span><a id="line.634">                           "default-feature", "true"</a>
+<span class="sourceLineNo">635</span><a id="line.635">                   });</a>
+<span class="sourceLineNo">636</span><a id="line.636">                addAnnotation</a>
+<span class="sourceLineNo">637</span><a id="line.637">                  (containerEClass,</a>
+<span class="sourceLineNo">638</span><a id="line.638">                   source,</a>
+<span class="sourceLineNo">639</span><a id="line.639">                   new String[] {</a>
+<span class="sourceLineNo">640</span><a id="line.640">                           "documentation-reference", "doc/container.md"</a>
+<span class="sourceLineNo">641</span><a id="line.641">                   });</a>
+<span class="sourceLineNo">642</span><a id="line.642">                addAnnotation</a>
+<span class="sourceLineNo">643</span><a id="line.643">                  (componentEClass,</a>
+<span class="sourceLineNo">644</span><a id="line.644">                   source,</a>
+<span class="sourceLineNo">645</span><a id="line.645">                   new String[] {</a>
+<span class="sourceLineNo">646</span><a id="line.646">                           "documentation-reference", "doc/component.md"</a>
+<span class="sourceLineNo">647</span><a id="line.647">                   });</a>
+<span class="sourceLineNo">648</span><a id="line.648">        }</a>
+<span class="sourceLineNo">649</span><a id="line.649"></a>
+<span class="sourceLineNo">650</span><a id="line.650">        /**</a>
+<span class="sourceLineNo">651</span><a id="line.651">         * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/GenModel&lt;/b&gt;.</a>
+<span class="sourceLineNo">652</span><a id="line.652">         * &lt;!-- begin-user-doc --&gt;</a>
+<span class="sourceLineNo">653</span><a id="line.653">         * &lt;!-- end-user-doc --&gt;</a>
+<span class="sourceLineNo">654</span><a id="line.654">         * @generated</a>
+<span class="sourceLineNo">655</span><a id="line.655">         */</a>
+<span class="sourceLineNo">656</span><a id="line.656">        protected void createGenModelAnnotations() {</a>
+<span class="sourceLineNo">657</span><a id="line.657">                String source = "http://www.eclipse.org/emf/2002/GenModel";</a>
+<span class="sourceLineNo">658</span><a id="line.658">                addAnnotation</a>
+<span class="sourceLineNo">659</span><a id="line.659">                  (technologyEClass,</a>
+<span class="sourceLineNo">660</span><a id="line.660">                   source,</a>
+<span class="sourceLineNo">661</span><a id="line.661">                   new String[] {</a>
+<span class="sourceLineNo">662</span><a id="line.662">                           "documentation", "A class representing some technology. E.g. a software product or its version."</a>
+<span class="sourceLineNo">663</span><a id="line.663">                   });</a>
+<span class="sourceLineNo">664</span><a id="line.664">                addAnnotation</a>
+<span class="sourceLineNo">665</span><a id="line.665">                  (getTechnology_Uses(),</a>
+<span class="sourceLineNo">666</span><a id="line.666">                   source,</a>
+<span class="sourceLineNo">667</span><a id="line.667">                   new String[] {</a>
+<span class="sourceLineNo">668</span><a id="line.668">                           "documentation", "Uses of this technology - computed opposite to TechnologyConsumer.technology"</a>
+<span class="sourceLineNo">669</span><a id="line.669">                   });</a>
+<span class="sourceLineNo">670</span><a id="line.670">                addAnnotation</a>
+<span class="sourceLineNo">671</span><a id="line.671">                  (technologyProductEClass,</a>
+<span class="sourceLineNo">672</span><a id="line.672">                   source,</a>
+<span class="sourceLineNo">673</span><a id="line.673">                   new String[] {</a>
+<span class="sourceLineNo">674</span><a id="line.674">                           "documentation", "Technology product. For example, a software product like Java, or a standard like TOGAF or HTML."</a>
+<span class="sourceLineNo">675</span><a id="line.675">                   });</a>
+<span class="sourceLineNo">676</span><a id="line.676">                addAnnotation</a>
+<span class="sourceLineNo">677</span><a id="line.677">                  (technologyVersionEClass,</a>
+<span class="sourceLineNo">678</span><a id="line.678">                   source,</a>
+<span class="sourceLineNo">679</span><a id="line.679">                   new String[] {</a>
+<span class="sourceLineNo">680</span><a id="line.680">                           "documentation", "Version of a technology product. E.g. Java 17, TOGAF 10, or HTML 5."</a>
+<span class="sourceLineNo">681</span><a id="line.681">                   });</a>
+<span class="sourceLineNo">682</span><a id="line.682">                addAnnotation</a>
+<span class="sourceLineNo">683</span><a id="line.683">                  (technologyConsumerEClass,</a>
+<span class="sourceLineNo">684</span><a id="line.684">                   source,</a>
+<span class="sourceLineNo">685</span><a id="line.685">                   new String[] {</a>
+<span class="sourceLineNo">686</span><a id="line.686">                           "documentation", "Base class for classes which leverage technologies, e.g. a container or a component."</a>
+<span class="sourceLineNo">687</span><a id="line.687">                   });</a>
+<span class="sourceLineNo">688</span><a id="line.688">                addAnnotation</a>
+<span class="sourceLineNo">689</span><a id="line.689">                  (getTechnologyConsumer_Technology(),</a>
+<span class="sourceLineNo">690</span><a id="line.690">                   source,</a>
+<span class="sourceLineNo">691</span><a id="line.691">                   new String[] {</a>
+<span class="sourceLineNo">692</span><a id="line.692">                           "documentation", "Technologies used by this element"</a>
+<span class="sourceLineNo">693</span><a id="line.693">                   });</a>
+<span class="sourceLineNo">694</span><a id="line.694">                addAnnotation</a>
+<span class="sourceLineNo">695</span><a id="line.695">                  (nodeEClass,</a>
+<span class="sourceLineNo">696</span><a id="line.696">                   source,</a>
+<span class="sourceLineNo">697</span><a id="line.697">                   new String[] {</a>
+<span class="sourceLineNo">698</span><a id="line.698">                           "documentation", "Source and target of relationships"</a>
+<span class="sourceLineNo">699</span><a id="line.699">                   });</a>
+<span class="sourceLineNo">700</span><a id="line.700">                addAnnotation</a>
+<span class="sourceLineNo">701</span><a id="line.701">                  (getNode_OutgoingRelationships(),</a>
+<span class="sourceLineNo">702</span><a id="line.702">                   source,</a>
+<span class="sourceLineNo">703</span><a id="line.703">                   new String[] {</a>
+<span class="sourceLineNo">704</span><a id="line.704">                           "documentation", "Outgoing relationships"</a>
+<span class="sourceLineNo">705</span><a id="line.705">                   });</a>
+<span class="sourceLineNo">706</span><a id="line.706">                addAnnotation</a>
+<span class="sourceLineNo">707</span><a id="line.707">                  (getNode_IncomingRelationships(),</a>
+<span class="sourceLineNo">708</span><a id="line.708">                   source,</a>
+<span class="sourceLineNo">709</span><a id="line.709">                   new String[] {</a>
+<span class="sourceLineNo">710</span><a id="line.710">                           "documentation", "Incoming relationships - a computed opposite to Relationship.target"</a>
+<span class="sourceLineNo">711</span><a id="line.711">                   });</a>
+<span class="sourceLineNo">712</span><a id="line.712">                addAnnotation</a>
+<span class="sourceLineNo">713</span><a id="line.713">                  (relationshipEClass,</a>
+<span class="sourceLineNo">714</span><a id="line.714">                   source,</a>
+<span class="sourceLineNo">715</span><a id="line.715">                   new String[] {</a>
+<span class="sourceLineNo">716</span><a id="line.716">                           "documentation", "A relationship between two nodes. Relationships are contained by their source nodes and reference their targets using the target reference."</a>
+<span class="sourceLineNo">717</span><a id="line.717">                   });</a>
+<span class="sourceLineNo">718</span><a id="line.718">                addAnnotation</a>
+<span class="sourceLineNo">719</span><a id="line.719">                  (getRelationship_Target(),</a>
+<span class="sourceLineNo">720</span><a id="line.720">                   source,</a>
+<span class="sourceLineNo">721</span><a id="line.721">                   new String[] {</a>
+<span class="sourceLineNo">722</span><a id="line.722">                           "documentation", "Relationship target."</a>
+<span class="sourceLineNo">723</span><a id="line.723">                   });</a>
+<span class="sourceLineNo">724</span><a id="line.724">                addAnnotation</a>
+<span class="sourceLineNo">725</span><a id="line.725">                  (personEClass,</a>
+<span class="sourceLineNo">726</span><a id="line.726">                   source,</a>
+<span class="sourceLineNo">727</span><a id="line.727">                   new String[] {</a>
+<span class="sourceLineNo">728</span><a id="line.728">                           "documentation", "A person represents one of the human users of your software system (e.g. actors, roles, personas, etc)."</a>
+<span class="sourceLineNo">729</span><a id="line.729">                   });</a>
+<span class="sourceLineNo">730</span><a id="line.730">                addAnnotation</a>
+<span class="sourceLineNo">731</span><a id="line.731">                  (getPerson_External(),</a>
+<span class="sourceLineNo">732</span><a id="line.732">                   source,</a>
+<span class="sourceLineNo">733</span><a id="line.733">                   new String[] {</a>
+<span class="sourceLineNo">734</span><a id="line.734">                           "documentation", "If true, the person is external to the system described by the architecture. In other words it is not part of the system, but belongs to the system context/surroundings."</a>
+<span class="sourceLineNo">735</span><a id="line.735">                   });</a>
+<span class="sourceLineNo">736</span><a id="line.736">                addAnnotation</a>
+<span class="sourceLineNo">737</span><a id="line.737">                  (systemEClass,</a>
+<span class="sourceLineNo">738</span><a id="line.738">                   source,</a>
+<span class="sourceLineNo">739</span><a id="line.739">                   new String[] {</a>
+<span class="sourceLineNo">740</span><a id="line.740">                           "documentation", "A software system is the highest level of abstraction and describes something that delivers value to its users, whether they are human or not. This includes the software system you are modelling, and the other software systems upon which your software system depends (or vice versa). "</a>
+<span class="sourceLineNo">741</span><a id="line.741">                   });</a>
+<span class="sourceLineNo">742</span><a id="line.742">                addAnnotation</a>
+<span class="sourceLineNo">743</span><a id="line.743">                  (getSystem_External(),</a>
+<span class="sourceLineNo">744</span><a id="line.744">                   source,</a>
+<span class="sourceLineNo">745</span><a id="line.745">                   new String[] {</a>
+<span class="sourceLineNo">746</span><a id="line.746">                           "documentation", "If true, the system is external to the system (landscape) described by the architecture. In other words it is not part of the system (landscape), but belongs to the system context/surroundings."</a>
+<span class="sourceLineNo">747</span><a id="line.747">                   });</a>
+<span class="sourceLineNo">748</span><a id="line.748">                addAnnotation</a>
+<span class="sourceLineNo">749</span><a id="line.749">                  (getSystem_Containers(),</a>
+<span class="sourceLineNo">750</span><a id="line.750">                   source,</a>
+<span class="sourceLineNo">751</span><a id="line.751">                   new String[] {</a>
+<span class="sourceLineNo">752</span><a id="line.752">                           "documentation", "Containers consituting the system."</a>
+<span class="sourceLineNo">753</span><a id="line.753">                   });</a>
+<span class="sourceLineNo">754</span><a id="line.754">                addAnnotation</a>
+<span class="sourceLineNo">755</span><a id="line.755">                  (getSystem_Subsystems(),</a>
+<span class="sourceLineNo">756</span><a id="line.756">                   source,</a>
+<span class="sourceLineNo">757</span><a id="line.757">                   new String[] {</a>
+<span class="sourceLineNo">758</span><a id="line.758">                           "documentation", "Subsystem is a logical grouping of related containers and subsystems."</a>
+<span class="sourceLineNo">759</span><a id="line.759">                   });</a>
+<span class="sourceLineNo">760</span><a id="line.760">                addAnnotation</a>
+<span class="sourceLineNo">761</span><a id="line.761">                  (getContainer_Components(),</a>
+<span class="sourceLineNo">762</span><a id="line.762">                   source,</a>
+<span class="sourceLineNo">763</span><a id="line.763">                   new String[] {</a>
+<span class="sourceLineNo">764</span><a id="line.764">                           "documentation", "Components consituting the container."</a>
+<span class="sourceLineNo">765</span><a id="line.765">                   });</a>
+<span class="sourceLineNo">766</span><a id="line.766">                addAnnotation</a>
+<span class="sourceLineNo">767</span><a id="line.767">                  (getContainer_Children(),</a>
+<span class="sourceLineNo">768</span><a id="line.768">                   source,</a>
+<span class="sourceLineNo">769</span><a id="line.769">                   new String[] {</a>
+<span class="sourceLineNo">770</span><a id="line.770">                           "documentation", "Containers can be nested. E.g. Tomcat may be running in a Docker container and serve multiple applications."</a>
+<span class="sourceLineNo">771</span><a id="line.771">                   });</a>
+<span class="sourceLineNo">772</span><a id="line.772">                addAnnotation</a>
+<span class="sourceLineNo">773</span><a id="line.773">                  (moduleEClass,</a>
+<span class="sourceLineNo">774</span><a id="line.774">                   source,</a>
+<span class="sourceLineNo">775</span><a id="line.775">                   new String[] {</a>
+<span class="sourceLineNo">776</span><a id="line.776">                           "documentation", "Module is an implementation unit. E.g. a Java jar file/module. "</a>
+<span class="sourceLineNo">777</span><a id="line.777">                   });</a>
+<span class="sourceLineNo">778</span><a id="line.778">                addAnnotation</a>
+<span class="sourceLineNo">779</span><a id="line.779">                  (getModule_CodeElements(),</a>
+<span class="sourceLineNo">780</span><a id="line.780">                   source,</a>
+<span class="sourceLineNo">781</span><a id="line.781">                   new String[] {</a>
+<span class="sourceLineNo">782</span><a id="line.782">                           "documentation", "A component/module contains code elements."</a>
+<span class="sourceLineNo">783</span><a id="line.783">                   });</a>
+<span class="sourceLineNo">784</span><a id="line.784">                addAnnotation</a>
+<span class="sourceLineNo">785</span><a id="line.785">                  (getModule_Modules(),</a>
+<span class="sourceLineNo">786</span><a id="line.786">                   source,</a>
+<span class="sourceLineNo">787</span><a id="line.787">                   new String[] {</a>
+<span class="sourceLineNo">788</span><a id="line.788">                           "documentation", "Modules can be nested. E.g. a Maven module may contain sub-modules. A Java package may be considered a module."</a>
+<span class="sourceLineNo">789</span><a id="line.789">                   });</a>
+<span class="sourceLineNo">790</span><a id="line.790">                addAnnotation</a>
+<span class="sourceLineNo">791</span><a id="line.791">                  (codeElementEClass,</a>
+<span class="sourceLineNo">792</span><a id="line.792">                   source,</a>
+<span class="sourceLineNo">793</span><a id="line.793">                   new String[] {</a>
+<span class="sourceLineNo">794</span><a id="line.794">                           "documentation", "Classes, interfaces, objects, functions, database tables, etc"</a>
+<span class="sourceLineNo">795</span><a id="line.795">                   });</a>
+<span class="sourceLineNo">796</span><a id="line.796">        }</a>
+<span class="sourceLineNo">797</span><a id="line.797"></a>
+<span class="sourceLineNo">798</span><a id="line.798">} //C4PackageImpl</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,1 @@
+moduleSearchIndex = [{"l":"org.nasdanika.architecture.c4"},{"l":"org.nasdanika.architecture.core"}]

@@ -9,8 +9,11 @@ module org.nasdanika.docs {
 	// Models	
 	requires org.nasdanika.exec;
 	requires org.nasdanika.ncore;
+	
 	requires org.nasdanika.html.model.html;
 	requires org.nasdanika.html.model.bootstrap;
 	requires org.nasdanika.html.model.app;
+	
+	requires org.nasdanika.architecture.c4;	
 	
 }

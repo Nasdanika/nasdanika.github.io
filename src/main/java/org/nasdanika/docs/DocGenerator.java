@@ -187,6 +187,8 @@ public class DocGenerator {
 			@Override
 			protected Object getEPackage(String nsURI) {
 				switch (nsURI) {
+				
+				// Core
 				case ExecPackage.eNS_URI:
 					return ExecPackage.eINSTANCE;
 				case ContentPackage.eNS_URI:
@@ -196,6 +198,7 @@ public class DocGenerator {
 				case NcorePackage.eNS_URI:
 					return NcorePackage.eINSTANCE;
 				
+				// HTML	
 				case HtmlPackage.eNS_URI:
 					return HtmlPackage.eINSTANCE;
 				case BootstrapPackage.eNS_URI:
@@ -203,7 +206,11 @@ public class DocGenerator {
 				case AppPackage.eNS_URI:
 					return AppPackage.eINSTANCE;
 					
-				// TODO - NASDAF	
+				// Architecture	
+				case org.nasdanika.architecture.core.CorePackage.eNS_URI:
+					return org.nasdanika.architecture.core.CorePackage.eINSTANCE;
+				case org.nasdanika.architecture.c4.C4Package.eNS_URI:
+					return org.nasdanika.architecture.c4.C4Package.eINSTANCE;
 				
 				default:
 					return super.getEPackage(nsURI);
@@ -222,7 +229,8 @@ public class DocGenerator {
 		bundleMap.put("html/model/bootstrap", "org.nasdanika.html.model.bootstrap");
 		bundleMap.put("html/model/html", "org.nasdanika.html.model.html");
 
-		// TODO - NASDAF
+		bundleMap.put("architecture/core", "org.nasdanika.architecture.core");
+		bundleMap.put("architecture/c4", "org.nasdanika.architecture.c4");
 	
 		File modelDir = new File("target/models").getAbsoluteFile();
 		modelDir.mkdirs();
@@ -278,7 +286,7 @@ public class DocGenerator {
 	private void copyJavaDoc() throws Exception {
 		org.nasdanika.common.Util.copy(new File("../core/target/site/apidocs"), new File("docs/core/apidocs"), false, null, null);		
 		org.nasdanika.common.Util.copy(new File("../html/target/site/apidocs"), new File("docs/html/apidocs"), false, null, null);	
-		// TODO - NASDAF
+		org.nasdanika.common.Util.copy(new File("../architecture/target/site/apidocs"), new File("docs/architecture/apidocs"), false, null, null);	
 	}
 	
 	public void generate() throws Exception {

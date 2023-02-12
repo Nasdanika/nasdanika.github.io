@@ -1,10 +1,4 @@
 {
-    "urn:org.nasdanika.html.model.bootstrap#Column": {
-        "tooltip": "Container row column.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Column.html",
-        "text": "Column"
-    },
     "urn:org.nasdanika.html.model.bootstrap#Form": {
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "html/html/modules/models/modules/bootstrap/modules/model/Form.html",
@@ -16,45 +10,11 @@
         "location": "core/exec/core/modules/exec/modules/model/content/Text.html",
         "text": "Text"
     },
-    "urn:org.nasdanika.ncore#GitMarker": {
-        "tooltip": "Marker with Git information such as a map of remotes.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/GitMarker.html",
-        "text": "GitMarker"
-    },
     "urn:org.nasdanika.exec#Block": {
         "tooltip": "Try-catch-finally block. ",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "core/exec/core/modules/exec/modules/model/Block.html",
         "text": "Block"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Accordion": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Accordion.html",
-        "text": "Accordion"
-    },
-    "nasdanika://core/javadoc": {
-        "icon": "fab fa-java",
-        "location": "core/apidocs/index.html",
-        "text": "Javadoc"
-    },
-    "urn:org.nasdanika.ncore#EObjectProperty": {
-        "tooltip": "A named/keyed object.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/EObjectProperty.html",
-        "text": "EObjectProperty"
-    },
-    "urn:org.nasdanika.html.model.app#Action": {
-        "tooltip": "Actions form a hierarchy. ",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/app/modules/model/Action.html",
-        "text": "Action"
-    },
-    "urn:org.nasdanika.ncore#BooleanEntry": {
-        "tooltip": "EMap entry with boolean value",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/BooleanEntry.html",
-        "text": "BooleanEntry"
     },
     "urn:org.nasdanika..html.model.html#Page": {
         "tooltip": "HTML page. The name attribute is output as title tag in the head. ",
@@ -77,11 +37,11 @@
         "location": "core/ncore/ncore/gen/index.html",
         "text": "Gen"
     },
-    "urn:org.nasdanika.exec#Configurator": {
-        "tooltip": "Configurator allows to inject additional properties to the context. ",
+    "urn:org.nasdanika.architecture.core#ArchitectureElement": {
+        "tooltip": "An element of an architecture model.",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/exec/core/modules/exec/modules/model/Configurator.html",
-        "text": "Configurator"
+        "location": "architecture/core/ArchitectureElement.html",
+        "text": "ArchitectureElement"
     },
     "urn:org.nasdanika.ncore#Map": {
         "tooltip": "A set of key-value pairs.",
@@ -89,11 +49,17 @@
         "location": "core/ncore/core/modules/ncore/Map.html",
         "text": "Map"
     },
-    "urn:org.nasdanika.ncore#Reference": {
-        "tooltip": "Object reference. May be used in containment collections to point to an object contained elsewhere.",
+    "urn:org.nasdanika.architecture.core#Architecture": {
+        "tooltip": "Architecture (description) contains architecture elements and reference data such as impact types.",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/Reference.html",
-        "text": "Reference&lt;T&gt;"
+        "location": "architecture/core/Architecture.html",
+        "text": "Architecture"
+    },
+    "urn:org.nasdanika.architecture.c4#Container": {
+        "tooltip": "A container represents an application or a data store. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "architecture/c4/Container.html",
+        "text": "Container"
     },
     "urn:org.nasdanika..html.model.html#HtmlElement": {
         "tooltip": "Base class for other HTML and bootstrap elements.",
@@ -101,24 +67,19 @@
         "location": "html/html/modules/models/modules/html/modules/model/HtmlElement.html",
         "text": "HtmlElement"
     },
-    "nasdanika://html/models/app/drawio/javadoc": {
-        "icon": "fab fa-java",
-        "location": "html/apidocs/org.nasdanika.html.model.app.drawio/module-summary.html",
-        "text": "Javadoc"
-    },
     "nasdanika://html/ecore": {
         "location": "html/ecore/index.html",
         "text": "Ecore"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Tooltip": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Tooltip.html",
-        "text": "Tooltip"
     },
     "urn:org.nasdanika.html.model.bootstrap#Badge": {
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "html/html/modules/models/modules/bootstrap/modules/model/Badge.html",
         "text": "Badge"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Tooltip": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Tooltip.html",
+        "text": "Tooltip"
     },
     "urn:org.nasdanika.html.model.app": {
         "tooltip": "Nasdanika application model provides model elements for building HTML applications such as static web sites, dynamic applications, and combinations of thereof. ",
@@ -126,124 +87,25 @@
         "location": "html/html/modules/models/modules/app/modules/model/package-summary.html",
         "text": "app"
     },
-    "urn:org.nasdanika.exec.content#Resource": {
-        "tooltip": "Loads resource from a URL specified as resource value. ",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/exec/core/modules/exec/modules/model/content/Resource.html",
-        "text": "Resource"
-    },
-    "urn:org.nasdanika.exec.resources": {
-        "tooltip": "Resource classes are adapted to <a href='https://docs.nasdanika.org/core/apidocs/org.nasdanika.common/org/nasdanika/common/ConsumerFactory.html'>org.nasdanika.common.ConsumerFactory</a><org.nasdanika.common.resources.BinaryEntityContainer> to create binary entities (org.nasdanika.common.resources.BinaryEntity) such as files, directories, or zi...",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EPackage.gif",
-        "location": "core/exec/core/modules/exec/modules/model/resources/package-summary.html",
-        "text": "resources"
-    },
-    "urn:org.nasdanika.ncore#Documented": {
-        "tooltip": "Mix-in interface for classess with documentation.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EInterface.gif",
-        "location": "core/ncore/core/modules/ncore/Documented.html",
-        "text": "Documented"
-    },
     "nasdanika://core/common/children/0": {
         "location": "core/common/features/execution-model/index.html",
         "text": "Execution Model"
-    },
-    "nasdanika://core/children/3/exec/gen": {
-        "location": "core/exec/exec/gen/index.html",
-        "text": "Gen"
-    },
-    "nasdanika://html/models/app/drawio": {
-        "location": "html/app/drawio/index.html",
-        "text": "Drawio"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Row": {
-        "tooltip": "Container rows",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Row.html",
-        "text": "Row"
     },
     "urn:org.nasdanika.html.model.bootstrap#Alert": {
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "html/html/modules/models/modules/bootstrap/modules/model/Alert.html",
         "text": "Alert"
     },
+    "urn:org.nasdanika.architecture.c4#System": {
+        "tooltip": "A software system is the highest level of abstraction and describes something that delivers value to its users, whether they are human or not. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "architecture/c4/System.html",
+        "text": "System"
+    },
     "urn:org.nasdanika.html.model.app#ActionReference": {
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "html/html/modules/models/modules/app/modules/model/ActionReference.html",
         "text": "ActionReference"
-    },
-    "nasdanika://core/persistence/javadoc": {
-        "icon": "fab fa-java",
-        "location": "core/apidocs/org.nasdanika.persistence/module-summary.html",
-        "text": "Javadoc"
-    },
-    "urn:org.nasdanika.ncore#BooleanProperty": {
-        "tooltip": "A named/keyed boolean.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/BooleanProperty.html",
-        "text": "BooleanProperty"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#TableConfiguration": {
-        "tooltip": "Configuration of bootstrap table",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EInterface.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/TableConfiguration.html",
-        "text": "TableConfiguration"
-    },
-    "urn:org.nasdanika.ncore#IntegerEntry": {
-        "tooltip": "EMap entry with int value",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/IntegerEntry.html",
-        "text": "IntegerEntry"
-    },
-    "nasdanika://html/models/app/gen/maven": {
-        "location": "html/app/gen.maven/index.html",
-        "text": "Action Site Generator Maven Plugin"
-    },
-    "nasdanika://html/html": {
-        "location": "html/html/index.html",
-        "text": "HTML"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Carousel": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Carousel.html",
-        "text": "Carousel"
-    },
-    "urn:org.nasdanika.html.model.bootstrap": {
-        "tooltip": "Model of Bootstrap elements.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EPackage.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/package-summary.html",
-        "text": "bootstrap"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#ActionGroupItem": {
-        "tooltip": "Base class for action group items",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/ActionGroupItem.html",
-        "text": "ActionGroupItem"
-    },
-    "nasdanika://html/models/html/gen": {
-        "location": "html/html/gen/index.html",
-        "text": "Gen"
-    },
-    "urn:org.nasdanika.html.model.app#Page": {
-        "tooltip": "Application page consisting of several parts - header, navigation bar, navigation panel, content panel, and footer. ",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/app/modules/model/Page.html",
-        "text": "Page"
-    },
-    "nasdanika://core/emf": {
-        "location": "core/emf/index.html",
-        "text": "EMF"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Theme": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EDataType.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Theme.html",
-        "text": "Theme"
-    },
-    "urn:org.nasdanika.ncore#Period": {
-        "tooltip": "Amount of time between two time points. ",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/Period.html",
-        "text": "Period"
     },
     "nasdanika://html/models/html/gen/javadoc": {
         "icon": "fab fa-java",
@@ -255,10 +117,6 @@
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "html/html/modules/models/modules/bootstrap/modules/model/Button.html",
         "text": "Button"
-    },
-    "nasdanika://core/drawio": {
-        "location": "core/drawio/index.html",
-        "text": "Drawio"
     },
     "urn:org.nasdanika.exec.content#Filter": {
         "tooltip": "Base class for filters which take an object, adapt to <a href='https://docs.nasdanika.org/core/apidocs/org.nasdanika.common/org/nasdanika/common/SupplierFactory.html'>org.nasdanika.common.SupplierFactory</a>, obtain a stream and produce another stream from it.",
@@ -274,12 +132,6 @@
         "location": "core/graph/index.html",
         "text": "Graph"
     },
-    "urn:org.nasdanika..html.model.html#ScriptReference": {
-        "tooltip": "References external script.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/html/modules/model/ScriptReference.html",
-        "text": "ScriptReference"
-    },
     "urn:org.nasdanika.html.model.app#NavigationPanel": {
         "tooltip": "Navigation panel contains navigation items. ",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
@@ -290,44 +142,22 @@
         "location": "core/exec/index.html",
         "text": "Exec"
     },
-    "urn:org.nasdanika.exec.content#Markdown": {
-        "tooltip": "Markdown is a filter which renders Markdown to HTML. ",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/exec/core/modules/exec/modules/model/content/Markdown.html",
-        "text": "Markdown"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#LinkActionGroupItem": {
-        "tooltip": "Click on the item navigates to the link URL.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/LinkActionGroupItem.html",
-        "text": "LinkActionGroupItem"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#ButtonToolbar": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/ButtonToolbar.html",
-        "text": "ButtonToolbar"
-    },
     "urn:org.nasdanika.html.model.bootstrap#TextAlignment": {
         "icon": "https://www.nasdanika.org/resources/images/ecore/EDataType.gif",
         "location": "html/html/modules/models/modules/bootstrap/modules/model/TextAlignment.html",
         "text": "TextAlignment"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Collapse": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Collapse.html",
-        "text": "Collapse"
-    },
-    "urn:org.nasdanika.ncore#NamedElement": {
-        "tooltip": "A model element with name.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/NamedElement.html",
-        "text": "NamedElement"
     },
     "urn:org.nasdanika.html.model.bootstrap#Item": {
         "tooltip": "Base class for model elements which can be active, disabled, and have color.",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "html/html/modules/models/modules/bootstrap/modules/model/Item.html",
         "text": "Item"
+    },
+    "urn:org.nasdanika.exec#Fail": {
+        "tooltip": "Fails execution with a supplied message. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/exec/core/modules/exec/modules/model/Fail.html",
+        "text": "Fail"
     },
     "urn:org.nasdanika.ncore#Property": {
         "tooltip": "Base class for keyed values.",
@@ -340,12 +170,6 @@
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "html/html/modules/models/modules/bootstrap/modules/model/Card.html",
         "text": "Card"
-    },
-    "urn:org.nasdanika.exec#Fail": {
-        "tooltip": "Fails execution with a supplied message. ",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/exec/core/modules/exec/modules/model/Fail.html",
-        "text": "Fail"
     },
     "nasdanika://core/emf/javadoc": {
         "icon": "fab fa-java",
@@ -364,29 +188,6 @@
         "location": "core/exec/core/modules/exec/modules/model/Map.html",
         "text": "Map"
     },
-    "urn:org.nasdanika.ncore#Marker": {
-        "tooltip": "Provides information about location for a model element definition - URI, line and column numbers.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/Marker.html",
-        "text": "Marker"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Size": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EDataType.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Size.html",
-        "text": "Size"
-    },
-    "urn:org.nasdanika.ncore#Boolean": {
-        "tooltip": "Represents boolean.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/Boolean.html",
-        "text": "Boolean"
-    },
-    "urn:org.nasdanika.exec.resources#ReconcileAction": {
-        "tooltip": "Defines an action to take when a resource with the same name already exists.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EEnum.gif",
-        "location": "core/exec/core/modules/exec/modules/model/resources/ReconcileAction.html",
-        "text": "ReconcileAction"
-    },
     "urn:org.nasdanika.html.model.bootstrap#Text": {
         "tooltip": "Text styling.",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
@@ -399,48 +200,9 @@
         "location": "core/ncore/core/modules/ncore/Duration.html",
         "text": "Duration"
     },
-    "urn:org.nasdanika.exec.content": {
-        "tooltip": "Content classes are adapted to <a href='https://docs.nasdanika.org/core/apidocs/org.nasdanika.common/org/nasdanika/common/SupplierFactory.html'>org.nasdanika.common.SupplierFactory</a><java.io.InputStream> to supply content for files, HTTP Call bodies etc. in a form of input streams.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EPackage.gif",
-        "location": "core/exec/core/modules/exec/modules/model/content/package-summary.html",
-        "text": "content"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Tag": {
-        "tooltip": "HTML tag with Bootstrap appearance",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Tag.html",
-        "text": "Tag"
-    },
     "nasdanika://core": {
         "location": "core/index.html",
         "text": "Core"
-    },
-    "nasdanika://html/models/app/gen/maven/javadoc": {
-        "icon": "fab fa-java",
-        "location": "html/apidocs/org.nasdanika.html.model.app.gen.maven/module-summary.html",
-        "text": "Javadoc"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#TableRowContainer": {
-        "tooltip": "Base class for containers of rows - table, header, body, footer.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/TableRowContainer.html",
-        "text": "TableRowContainer"
-    },
-    "nasdanika://html/models/bootstrap/gen/javadoc": {
-        "icon": "fab fa-java",
-        "location": "html/apidocs/org.nasdanika.html.model.bootstrap.gen/module-summary.html",
-        "text": "Javadoc"
-    },
-    "urn:org.nasdanika.html.model.app#NavigationPanelStyle": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EEnum.gif",
-        "location": "html/html/modules/models/modules/app/modules/model/NavigationPanelStyle.html",
-        "text": "NavigationPanelStyle"
-    },
-    "urn:org.nasdanika.html.model.app#NavigationBar": {
-        "tooltip": "Navigation bar has a brand and navigation items.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/app/modules/model/NavigationBar.html",
-        "text": "NavigationBar"
     },
     "urn:org.nasdanika.ncore#Integer": {
         "tooltip": "Represents integer number.",
@@ -453,11 +215,6 @@
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "core/ncore/core/modules/ncore/ListProperty.html",
         "text": "ListProperty"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#ListGroup": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/ListGroup.html",
-        "text": "ListGroup"
     },
     "urn:org.nasdanika.html.model.bootstrap#TableSection": {
         "tooltip": "Table section - body or footer, header has its own class.",
@@ -496,28 +253,17 @@
         "location": "html/apidocs/org.nasdanika.html.model.app.gen/module-summary.html",
         "text": "Javadoc"
     },
+    "urn:org.nasdanika.architecture.c4#Relationship": {
+        "tooltip": "A relationship between two nodes. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "architecture/c4/Relationship.html",
+        "text": "Relationship"
+    },
     "urn:org.nasdanika.html.model.bootstrap#BootstrapElement": {
         "tooltip": "An HTML element with Bootstrap appearance.",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "html/html/modules/models/modules/bootstrap/modules/model/BootstrapElement.html",
         "text": "BootstrapElement"
-    },
-    "nasdanika://core/graph/javadoc": {
-        "icon": "fab fa-java",
-        "location": "core/apidocs/org.nasdanika.graph/module-summary.html",
-        "text": "Javadoc"
-    },
-    "urn:org.nasdanika.exec.resources#File": {
-        "tooltip": "File is a named container of binary contents (bytes) which can be set and retrieved as an input stream. ",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/exec/core/modules/exec/modules/model/resources/File.html",
-        "text": "File"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#ContentActionGroupItem": {
-        "tooltip": "Action Group Item with content. ",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/ContentActionGroupItem.html",
-        "text": "ContentActionGroupItem"
     },
     "urn:org.nasdanika..html.model.html#Stylesheet": {
         "tooltip": "CSS stylesheet with code stored in the model element code attribute.",
@@ -525,28 +271,16 @@
         "location": "html/html/modules/models/modules/html/modules/model/Stylesheet.html",
         "text": "Stylesheet"
     },
-    "urn:org.nasdanika.ncore#String": {
-        "tooltip": "Text/string.",
+    "urn:org.nasdanika.architecture.c4#Component": {
+        "tooltip": "The word \u201ccomponent\u201d is a hugely overloaded term in the software development industry, but in this context a component is a grouping of related functionality encapsulated behind a well-defined interface. ",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/String.html",
-        "text": "String"
-    },
-    "nasdanika://html/emf": {
-        "location": "html/emf/index.html",
-        "text": "EMF"
+        "location": "architecture/c4/Component.html",
+        "text": "Component"
     },
     "urn:org.nasdanika.html.model.bootstrap#Modal": {
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "html/html/modules/models/modules/bootstrap/modules/model/Modal.html",
         "text": "Modal"
-    },
-    "nasdanika://html/jstree": {
-        "location": "html/jstree/index.html",
-        "text": "jsTree"
-    },
-    "nasdanika://core/persistence": {
-        "location": "core/persistence/index.html",
-        "text": "Persistence"
     },
     "urn:org.nasdanika.html.model.bootstrap#TableCell": {
         "tooltip": "Table cell - regular or header.",
@@ -554,22 +288,21 @@
         "location": "html/html/modules/models/modules/bootstrap/modules/model/TableCell.html",
         "text": "TableCell"
     },
+    "nasdanika://core/persistence": {
+        "location": "core/persistence/index.html",
+        "text": "Persistence"
+    },
     "urn:org.nasdanika.html.model.app#PagePart": {
         "tooltip": "Base class for page parts.",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "html/html/modules/models/modules/app/modules/model/PagePart.html",
         "text": "PagePart"
     },
-    "urn:org.nasdanika.html.model.bootstrap#InputGroup": {
+    "urn:org.nasdanika.architecture.c4#TechnologyConsumer": {
+        "tooltip": "Base class for classes which leverage technologies, e.g. a container or a component.",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/InputGroup.html",
-        "text": "InputGroup"
-    },
-    "urn:org.nasdanika.exec": {
-        "tooltip": "Nasdanika Core Exec model classes can be used to create models for generation of resources such as files and their content. ",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EPackage.gif",
-        "location": "core/exec/core/modules/exec/modules/model/package-summary.html",
-        "text": "exec"
+        "location": "architecture/c4/TechnologyConsumer.html",
+        "text": "TechnologyConsumer"
     },
     "urn:org.nasdanika.exec#Property": {
         "tooltip": "Property is a map entry.",
@@ -577,17 +310,11 @@
         "location": "core/exec/core/modules/exec/modules/model/Property.html",
         "text": "Property"
     },
-    "urn:org.nasdanika.exec#Call": {
-        "tooltip": "Calls a Java method and returns the result. ",
+    "urn:org.nasdanika.architecture.core#Event": {
+        "tooltip": "A named document temporal with ID.",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/exec/core/modules/exec/modules/model/Call.html",
-        "text": "Call"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Border": {
-        "tooltip": "Border configuration specifies border location and color.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Border.html",
-        "text": "Border"
+        "location": "architecture/core/Event.html",
+        "text": "Event"
     },
     "nasdanika://core/common": {
         "location": "core/common/index.html",
@@ -604,12 +331,6 @@
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "html/html/modules/models/modules/app/modules/model/Label.html",
         "text": "Label"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#AppearanceEntry": {
-        "tooltip": "Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.html.model.bootstrap\\model\\doc\\appearance-entry.md (The system cannot find the path specified)",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/AppearanceEntry.html",
-        "text": "AppearanceEntry"
     },
     "urn:org.nasdanika.html.model.bootstrap#Container": {
         "tooltip": "Bootstrap layout container contains rows which in turn contain columns.",
@@ -639,34 +360,11 @@
         "location": "html/html/modules/models/modules/app/modules/model/Header.html",
         "text": "Header"
     },
-    "urn:org.nasdanika..html.model.html#Script": {
-        "tooltip": "Script with code stored in the model element source reference.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/html/modules/model/Script.html",
-        "text": "Script"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#ButtonGroup": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/ButtonGroup.html",
-        "text": "ButtonGroup"
-    },
-    "urn:org.nasdanika.ncore#Composite": {
-        "tooltip": "A simple class for building hierarchies of documented entities.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/Composite.html",
-        "text": "Composite"
-    },
     "urn:org.nasdanika.ncore#RepresentationEntry": {
         "tooltip": "Mapping of representation key to a representation resource uri. ",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "core/ncore/core/modules/ncore/RepresentationEntry.html",
         "text": "RepresentationEntry"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Table": {
-        "tooltip": "Bootstrap table",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Table.html",
-        "text": "Table"
     },
     "urn:org.nasdanika.ncore#IntegerProperty": {
         "tooltip": "A named/keyed integer.",
@@ -674,37 +372,9 @@
         "location": "core/ncore/core/modules/ncore/IntegerProperty.html",
         "text": "IntegerProperty"
     },
-    "urn:org.nasdanika.ncore#ModelElement": {
-        "tooltip": "Base class for many Nasdanika model classes.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/ModelElement.html",
-        "text": "ModelElement"
-    },
     "nasdanika://html/bootstrap": {
         "location": "html/bootstrap/index.html",
         "text": "Bootstrap"
-    },
-    "nasdanika://html/ecore/javadoc": {
-        "icon": "fab fa-java",
-        "location": "html/apidocs/org.nasdanika.html.ecore/module-summary.html",
-        "text": "Javadoc"
-    },
-    "urn:org.nasdanika.exec.resources#Resource": {
-        "tooltip": "A base class of File and Container.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/exec/core/modules/exec/modules/model/resources/Resource.html",
-        "text": "Resource"
-    },
-    "nasdanika://html/bootstrap/javadoc": {
-        "icon": "fab fa-java",
-        "location": "html/apidocs/org.nasdanika.html.bootstrap/module-summary.html",
-        "text": "Javadoc"
-    },
-    "urn:org.nasdanika.exec.resources#Container": {
-        "tooltip": "A named collection of other resources, a folder/directory. ",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/exec/core/modules/exec/modules/model/resources/Container.html",
-        "text": "Container"
     },
     "urn:org.nasdanika.ncore#StringEntry": {
         "tooltip": "EMap entry with String value",
@@ -718,6 +388,556 @@
         "location": "html/html/modules/models/modules/bootstrap/modules/model/ActionGroup.html",
         "text": "ActionGroup"
     },
+    "urn:org.nasdanika.html.model.app#Footer": {
+        "tooltip": "Footer is displayed below the navigation and content panels.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/app/modules/model/Footer.html",
+        "text": "Footer"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Color": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EDataType.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Color.html",
+        "text": "Color"
+    },
+    "urn:org.nasdanika.architecture.c4#Technology": {
+        "tooltip": "A class representing some technology. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "architecture/c4/Technology.html",
+        "text": "Technology"
+    },
+    "nasdanika://html/html/javadoc": {
+        "icon": "fab fa-java",
+        "location": "html/apidocs/org.nasdanika.html/module-summary.html",
+        "text": "Javadoc"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Spacing": {
+        "tooltip": "Spacing - padding or margin. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Spacing.html",
+        "text": "Spacing"
+    },
+    "nasdanika://html/models/bootstrap/gen": {
+        "location": "html/bootstrap/gen/index.html",
+        "text": "Gen"
+    },
+    "urn:org.nasdanika.ncore#List": {
+        "tooltip": "A list of objects.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/List.html",
+        "text": "List"
+    },
+    "nasdanika://html/jstree/javadoc": {
+        "icon": "fab fa-java",
+        "location": "html/apidocs/org.nasdanika.html.jstree/module-summary.html",
+        "text": "Javadoc"
+    },
+    "nasdanika://core/resources": {
+        "location": "core/resources/index.html",
+        "text": "Resources"
+    },
+    "urn:org.nasdanika.architecture.c4": {
+        "tooltip": "Nasdanika Architecture C4 Model contains classes as explained in the metamodel section of the C4 Model home page. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EPackage.gif",
+        "location": "architecture/c4/package-summary.html",
+        "text": "c4"
+    },
+    "urn:org.nasdanika.ncore#MapProperty": {
+        "tooltip": "A named/keyed map.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/MapProperty.html",
+        "text": "MapProperty"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Navs": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Navs.html",
+        "text": "Navs"
+    },
+    "urn:org.nasdanika.exec.content#Base64": {
+        "tooltip": "Encodes source using Base64 encoding. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/exec/core/modules/exec/modules/model/content/Base64.html",
+        "text": "Base64"
+    },
+    "urn:org.nasdanika.ncore#IMarked": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EInterface.gif",
+        "location": "core/ncore/core/modules/ncore/IMarked.html",
+        "text": "IMarked"
+    },
+    "nasdanika://core/common/javadoc": {
+        "icon": "fab fa-java",
+        "location": "core/apidocs/org.nasdanika.common/module-summary.html",
+        "text": "Javadoc"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Appearance": {
+        "tooltip": "This class is used for configuring common aspects of HTML and Bootstrap elements such as background, spacing, text, etc.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Appearance.html",
+        "text": "Appearance"
+    },
+    "urn:org.nasdanika.ncore#Adaptable": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EInterface.gif",
+        "location": "core/ncore/core/modules/ncore/Adaptable.html",
+        "text": "Adaptable"
+    },
+    "nasdanika://core/children/3/exec/gen/javadoc": {
+        "icon": "fab fa-java",
+        "location": "core/exec/exec/apidocs/org.nasdanika.exec.gen/module-summary.html",
+        "text": "Javadoc"
+    },
+    "urn:org.nasdanika.architecture.c4#TechnologyVersion": {
+        "tooltip": "Version of a technology product. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "architecture/c4/TechnologyVersion.html",
+        "text": "TechnologyVersion"
+    },
+    "urn:org.nasdanika.ncore#IMarker": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EInterface.gif",
+        "location": "core/ncore/core/modules/ncore/IMarker.html",
+        "text": "IMarker"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Dropdown": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Dropdown.html",
+        "text": "Dropdown"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Column": {
+        "tooltip": "Container row column.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Column.html",
+        "text": "Column"
+    },
+    "urn:org.nasdanika.ncore#GitMarker": {
+        "tooltip": "Marker with Git information such as a map of remotes.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/GitMarker.html",
+        "text": "GitMarker"
+    },
+    "nasdanika://core/javadoc": {
+        "icon": "fab fa-java",
+        "location": "core/apidocs/index.html",
+        "text": "Javadoc"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Accordion": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Accordion.html",
+        "text": "Accordion"
+    },
+    "urn:org.nasdanika.ncore#EObjectProperty": {
+        "tooltip": "A named/keyed object.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/EObjectProperty.html",
+        "text": "EObjectProperty"
+    },
+    "urn:org.nasdanika.html.model.app#Action": {
+        "tooltip": "Actions form a hierarchy. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/app/modules/model/Action.html",
+        "text": "Action"
+    },
+    "urn:org.nasdanika.ncore#BooleanEntry": {
+        "tooltip": "EMap entry with boolean value",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/BooleanEntry.html",
+        "text": "BooleanEntry"
+    },
+    "urn:org.nasdanika.exec#Configurator": {
+        "tooltip": "Configurator allows to inject additional properties to the context. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/exec/core/modules/exec/modules/model/Configurator.html",
+        "text": "Configurator"
+    },
+    "urn:org.nasdanika.ncore#Reference": {
+        "tooltip": "Object reference. May be used in containment collections to point to an object contained elsewhere.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/Reference.html",
+        "text": "Reference&lt;T&gt;"
+    },
+    "nasdanika://html/models/app/drawio/javadoc": {
+        "icon": "fab fa-java",
+        "location": "html/apidocs/org.nasdanika.html.model.app.drawio/module-summary.html",
+        "text": "Javadoc"
+    },
+    "urn:org.nasdanika.exec.content#Resource": {
+        "tooltip": "Loads resource from a URL specified as resource value. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/exec/core/modules/exec/modules/model/content/Resource.html",
+        "text": "Resource"
+    },
+    "urn:org.nasdanika.exec.resources": {
+        "tooltip": "Resource classes are adapted to <a href='https://docs.nasdanika.org/core/apidocs/org.nasdanika.common/org/nasdanika/common/ConsumerFactory.html'>org.nasdanika.common.ConsumerFactory</a><org.nasdanika.common.resources.BinaryEntityContainer> to create binary entities (org.nasdanika.common.resources.BinaryEntity) such as files, directories, or zi...",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EPackage.gif",
+        "location": "core/exec/core/modules/exec/modules/model/resources/package-summary.html",
+        "text": "resources"
+    },
+    "urn:org.nasdanika.ncore#Documented": {
+        "tooltip": "Mix-in interface for classess with documentation.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EInterface.gif",
+        "location": "core/ncore/core/modules/ncore/Documented.html",
+        "text": "Documented"
+    },
+    "nasdanika://core/children/3/exec/gen": {
+        "location": "core/exec/exec/gen/index.html",
+        "text": "Gen"
+    },
+    "nasdanika://html/models/app/drawio": {
+        "location": "html/app/drawio/index.html",
+        "text": "Drawio"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Row": {
+        "tooltip": "Container rows",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Row.html",
+        "text": "Row"
+    },
+    "nasdanika://core/persistence/javadoc": {
+        "icon": "fab fa-java",
+        "location": "core/apidocs/org.nasdanika.persistence/module-summary.html",
+        "text": "Javadoc"
+    },
+    "urn:org.nasdanika.ncore#BooleanProperty": {
+        "tooltip": "A named/keyed boolean.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/BooleanProperty.html",
+        "text": "BooleanProperty"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#TableConfiguration": {
+        "tooltip": "Configuration of bootstrap table",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EInterface.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/TableConfiguration.html",
+        "text": "TableConfiguration"
+    },
+    "urn:org.nasdanika.architecture.core": {
+        "tooltip": "Nasdanika Architecture core model contains definitions of the following concepts: Architecture Element - base class for elements of architecture. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EPackage.gif",
+        "location": "architecture/core/package-summary.html",
+        "text": "core"
+    },
+    "nasdanika://html/models/app/gen/maven": {
+        "location": "html/app/gen.maven/index.html",
+        "text": "Action Site Generator Maven Plugin"
+    },
+    "urn:org.nasdanika.ncore#IntegerEntry": {
+        "tooltip": "EMap entry with int value",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/IntegerEntry.html",
+        "text": "IntegerEntry"
+    },
+    "urn:org.nasdanika.architecture.c4#Module": {
+        "tooltip": "Module is an implementation unit. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "architecture/c4/Module.html",
+        "text": "Module"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Carousel": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Carousel.html",
+        "text": "Carousel"
+    },
+    "nasdanika://html/html": {
+        "location": "html/html/index.html",
+        "text": "HTML"
+    },
+    "urn:org.nasdanika.html.model.bootstrap": {
+        "tooltip": "Model of Bootstrap elements.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EPackage.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/package-summary.html",
+        "text": "bootstrap"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#ActionGroupItem": {
+        "tooltip": "Base class for action group items",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/ActionGroupItem.html",
+        "text": "ActionGroupItem"
+    },
+    "nasdanika://html/models/html/gen": {
+        "location": "html/html/gen/index.html",
+        "text": "Gen"
+    },
+    "urn:org.nasdanika.html.model.app#Page": {
+        "tooltip": "Application page consisting of several parts - header, navigation bar, navigation panel, content panel, and footer. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/app/modules/model/Page.html",
+        "text": "Page"
+    },
+    "nasdanika://core/emf": {
+        "location": "core/emf/index.html",
+        "text": "EMF"
+    },
+    "urn:org.nasdanika.ncore#Period": {
+        "tooltip": "Amount of time between two time points. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/Period.html",
+        "text": "Period"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Theme": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EDataType.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Theme.html",
+        "text": "Theme"
+    },
+    "nasdanika://core/drawio": {
+        "location": "core/drawio/index.html",
+        "text": "Drawio"
+    },
+    "urn:org.nasdanika..html.model.html#ScriptReference": {
+        "tooltip": "References external script.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/html/modules/model/ScriptReference.html",
+        "text": "ScriptReference"
+    },
+    "urn:org.nasdanika.architecture.c4#TechnologyProduct": {
+        "tooltip": "Technology product. For example, a software product like Java, or a standard like TOGAF or HTML.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "architecture/c4/TechnologyProduct.html",
+        "text": "TechnologyProduct"
+    },
+    "urn:org.nasdanika.exec.content#Markdown": {
+        "tooltip": "Markdown is a filter which renders Markdown to HTML. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/exec/core/modules/exec/modules/model/content/Markdown.html",
+        "text": "Markdown"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#LinkActionGroupItem": {
+        "tooltip": "Click on the item navigates to the link URL.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/LinkActionGroupItem.html",
+        "text": "LinkActionGroupItem"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#ButtonToolbar": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/ButtonToolbar.html",
+        "text": "ButtonToolbar"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Collapse": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Collapse.html",
+        "text": "Collapse"
+    },
+    "urn:org.nasdanika.ncore#NamedElement": {
+        "tooltip": "A model element with name.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/NamedElement.html",
+        "text": "NamedElement"
+    },
+    "urn:org.nasdanika.architecture.core#Impact": {
+        "tooltip": "Impacts of the containing increment on architecture elements. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "architecture/core/Impact.html",
+        "text": "Impact"
+    },
+    "urn:org.nasdanika.ncore#Marker": {
+        "tooltip": "Provides information about location for a model element definition - URI, line and column numbers.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/Marker.html",
+        "text": "Marker"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Size": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EDataType.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Size.html",
+        "text": "Size"
+    },
+    "urn:org.nasdanika.ncore#Boolean": {
+        "tooltip": "Represents boolean.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/Boolean.html",
+        "text": "Boolean"
+    },
+    "urn:org.nasdanika.exec.resources#ReconcileAction": {
+        "tooltip": "Defines an action to take when a resource with the same name already exists.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EEnum.gif",
+        "location": "core/exec/core/modules/exec/modules/model/resources/ReconcileAction.html",
+        "text": "ReconcileAction"
+    },
+    "urn:org.nasdanika.exec.content": {
+        "tooltip": "Content classes are adapted to <a href='https://docs.nasdanika.org/core/apidocs/org.nasdanika.common/org/nasdanika/common/SupplierFactory.html'>org.nasdanika.common.SupplierFactory</a><java.io.InputStream> to supply content for files, HTTP Call bodies etc. in a form of input streams.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EPackage.gif",
+        "location": "core/exec/core/modules/exec/modules/model/content/package-summary.html",
+        "text": "content"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Tag": {
+        "tooltip": "HTML tag with Bootstrap appearance",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Tag.html",
+        "text": "Tag"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#TableRowContainer": {
+        "tooltip": "Base class for containers of rows - table, header, body, footer.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/TableRowContainer.html",
+        "text": "TableRowContainer"
+    },
+    "nasdanika://html/models/app/gen/maven/javadoc": {
+        "icon": "fab fa-java",
+        "location": "html/apidocs/org.nasdanika.html.model.app.gen.maven/module-summary.html",
+        "text": "Javadoc"
+    },
+    "nasdanika://html/models/bootstrap/gen/javadoc": {
+        "icon": "fab fa-java",
+        "location": "html/apidocs/org.nasdanika.html.model.bootstrap.gen/module-summary.html",
+        "text": "Javadoc"
+    },
+    "urn:org.nasdanika.html.model.app#NavigationPanelStyle": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EEnum.gif",
+        "location": "html/html/modules/models/modules/app/modules/model/NavigationPanelStyle.html",
+        "text": "NavigationPanelStyle"
+    },
+    "urn:org.nasdanika.html.model.app#NavigationBar": {
+        "tooltip": "Navigation bar has a brand and navigation items.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/app/modules/model/NavigationBar.html",
+        "text": "NavigationBar"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#ListGroup": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/ListGroup.html",
+        "text": "ListGroup"
+    },
+    "urn:org.nasdanika.exec.resources#File": {
+        "tooltip": "File is a named container of binary contents (bytes) which can be set and retrieved as an input stream. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/exec/core/modules/exec/modules/model/resources/File.html",
+        "text": "File"
+    },
+    "nasdanika://core/graph/javadoc": {
+        "icon": "fab fa-java",
+        "location": "core/apidocs/org.nasdanika.graph/module-summary.html",
+        "text": "Javadoc"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#ContentActionGroupItem": {
+        "tooltip": "Action Group Item with content. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/ContentActionGroupItem.html",
+        "text": "ContentActionGroupItem"
+    },
+    "urn:org.nasdanika.ncore#String": {
+        "tooltip": "Text/string.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/String.html",
+        "text": "String"
+    },
+    "nasdanika://html/emf": {
+        "location": "html/emf/index.html",
+        "text": "EMF"
+    },
+    "nasdanika://html/jstree": {
+        "location": "html/jstree/index.html",
+        "text": "jsTree"
+    },
+    "urn:org.nasdanika.architecture.c4#Person": {
+        "tooltip": "A person represents one of the human users of your software system (e.g. actors, roles, personas, etc).",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "architecture/c4/Person.html",
+        "text": "Person"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#InputGroup": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/InputGroup.html",
+        "text": "InputGroup"
+    },
+    "urn:org.nasdanika.exec": {
+        "tooltip": "Nasdanika Core Exec model classes can be used to create models for generation of resources such as files and their content. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EPackage.gif",
+        "location": "core/exec/core/modules/exec/modules/model/package-summary.html",
+        "text": "exec"
+    },
+    "urn:org.nasdanika.exec#Call": {
+        "tooltip": "Calls a Java method and returns the result. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/exec/core/modules/exec/modules/model/Call.html",
+        "text": "Call"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Border": {
+        "tooltip": "Border configuration specifies border location and color.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Border.html",
+        "text": "Border"
+    },
+    "urn:org.nasdanika.architecture.c4#Node": {
+        "tooltip": "Source and target of relationships",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "architecture/c4/Node.html",
+        "text": "Node"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#AppearanceEntry": {
+        "tooltip": "Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.html.model.bootstrap\\model\\doc\\appearance-entry.md (The system cannot find the path specified)",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/AppearanceEntry.html",
+        "text": "AppearanceEntry"
+    },
+    "urn:org.nasdanika.architecture.core#ModelElement": {
+        "tooltip": "Named and documented element with an ID.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EInterface.gif",
+        "location": "architecture/core/ModelElement.html",
+        "text": "ModelElement"
+    },
+    "urn:org.nasdanika.architecture.core#Domain": {
+        "tooltip": "Domain is a grouping construct for architecture elements.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "architecture/core/Domain.html",
+        "text": "Domain"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#ButtonGroup": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/ButtonGroup.html",
+        "text": "ButtonGroup"
+    },
+    "urn:org.nasdanika..html.model.html#Script": {
+        "tooltip": "Script with code stored in the model element source reference.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/html/modules/model/Script.html",
+        "text": "Script"
+    },
+    "urn:org.nasdanika.ncore#Composite": {
+        "tooltip": "A simple class for building hierarchies of documented entities.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/Composite.html",
+        "text": "Composite"
+    },
+    "urn:org.nasdanika.html.model.bootstrap#Table": {
+        "tooltip": "Bootstrap table",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/Table.html",
+        "text": "Table"
+    },
+    "urn:org.nasdanika.ncore#ModelElement": {
+        "tooltip": "Base class for many Nasdanika model classes.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/ncore/core/modules/ncore/ModelElement.html",
+        "text": "ModelElement"
+    },
+    "urn:org.nasdanika.exec.resources#Resource": {
+        "tooltip": "A base class of File and Container.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/exec/core/modules/exec/modules/model/resources/Resource.html",
+        "text": "Resource"
+    },
+    "urn:org.nasdanika.architecture.core#ImpactType": {
+        "tooltip": "Impact type. E.g. add, modify, delete. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "architecture/core/ImpactType.html",
+        "text": "ImpactType"
+    },
+    "nasdanika://html/ecore/javadoc": {
+        "icon": "fab fa-java",
+        "location": "html/apidocs/org.nasdanika.html.ecore/module-summary.html",
+        "text": "Javadoc"
+    },
+    "nasdanika://html/bootstrap/javadoc": {
+        "icon": "fab fa-java",
+        "location": "html/apidocs/org.nasdanika.html.bootstrap/module-summary.html",
+        "text": "Javadoc"
+    },
+    "urn:org.nasdanika.exec.resources#Container": {
+        "tooltip": "A named collection of other resources, a folder/directory. ",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "core/exec/core/modules/exec/modules/model/resources/Container.html",
+        "text": "Container"
+    },
+    "urn:org.nasdanika.architecture.core#Increment": {
+        "tooltip": "A transition of the containing architecture element from the baseline state identified by the increment start to the target state identified by the increment end.",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "architecture/core/Increment.html",
+        "text": "Increment"
+    },
     "nasdanika://html/models/app/gen": {
         "location": "html/app/gen/index.html",
         "text": "Gen"
@@ -726,12 +946,6 @@
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "html/html/modules/models/modules/app/modules/model/Link.html",
         "text": "Link"
-    },
-    "urn:org.nasdanika.html.model.app#Footer": {
-        "tooltip": "Footer is displayed below the navigation and content panels.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/app/modules/model/Footer.html",
-        "text": "Footer"
     },
     "urn:org.nasdanika..html.model.html#Tag": {
         "tooltip": "HTML Tag",
@@ -745,27 +959,22 @@
         "location": "html/html/modules/models/modules/bootstrap/modules/model/ColumnWidth.html",
         "text": "ColumnWidth"
     },
-    "urn:org.nasdanika.html.model.bootstrap#FormGroup": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/FormGroup.html",
-        "text": "FormGroup"
-    },
     "urn:org.nasdanika.ncore#Instant": {
         "tooltip": "Instant is a single instantaneous point on the time-line. ",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EDataType.gif",
         "location": "core/ncore/core/modules/ncore/Instant.html",
         "text": "Instant"
     },
+    "urn:org.nasdanika.html.model.bootstrap#FormGroup": {
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "html/html/modules/models/modules/bootstrap/modules/model/FormGroup.html",
+        "text": "FormGroup"
+    },
     "urn:org.nasdanika.html.model.bootstrap#Page": {
         "tooltip": "HTML page with bootstrap elements in the head - meta, stylesheets, and scripts. ",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "html/html/modules/models/modules/bootstrap/modules/model/Page.html",
         "text": "Page"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Color": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EDataType.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Color.html",
-        "text": "Color"
     },
     "urn:org.nasdanika.exec#Eval": {
         "tooltip": "Evaluates JavaScript script. ",
@@ -777,6 +986,12 @@
         "icon": "https://www.nasdanika.org/resources/images/ecore/EDataType.gif",
         "location": "html/html/modules/models/modules/bootstrap/modules/model/TextWeight.html",
         "text": "TextWeight"
+    },
+    "urn:org.nasdanika.architecture.c4#CodeElement": {
+        "tooltip": "Classes, interfaces, objects, functions, database tables, etc",
+        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
+        "location": "architecture/c4/CodeElement.html",
+        "text": "CodeElement"
     },
     "urn:org.nasdanika.html.model.bootstrap#Slide": {
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
@@ -800,11 +1015,6 @@
         "location": "html/html/modules/models/modules/bootstrap/modules/model/Breakpoint.html",
         "text": "Breakpoint"
     },
-    "nasdanika://html/html/javadoc": {
-        "icon": "fab fa-java",
-        "location": "html/apidocs/org.nasdanika.html/module-summary.html",
-        "text": "Javadoc"
-    },
     "urn:org.nasdanika..html.model.html#StylesheetReference": {
         "tooltip": "Reference to an external stylesheet.",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
@@ -816,31 +1026,6 @@
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "core/ncore/core/modules/ncore/Temporal.html",
         "text": "Temporal"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Spacing": {
-        "tooltip": "Spacing - padding or margin. ",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Spacing.html",
-        "text": "Spacing"
-    },
-    "urn:org.nasdanika.ncore#List": {
-        "tooltip": "A list of objects.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/List.html",
-        "text": "List"
-    },
-    "nasdanika://html/models/bootstrap/gen": {
-        "location": "html/bootstrap/gen/index.html",
-        "text": "Gen"
-    },
-    "nasdanika://html/jstree/javadoc": {
-        "icon": "fab fa-java",
-        "location": "html/apidocs/org.nasdanika.html.jstree/module-summary.html",
-        "text": "Javadoc"
-    },
-    "nasdanika://core/resources": {
-        "location": "core/resources/index.html",
-        "text": "Resources"
     },
     "urn:org.nasdanika.html.model.app#ContentPanel": {
         "tooltip": "Content panel displays the primary page conent and can have a navigation bar and several navigation panels.",
@@ -858,17 +1043,6 @@
         "location": "html/apidocs/index.html",
         "text": "Javadoc"
     },
-    "urn:org.nasdanika.ncore#MapProperty": {
-        "tooltip": "A named/keyed map.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/ncore/core/modules/ncore/MapProperty.html",
-        "text": "MapProperty"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Navs": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Navs.html",
-        "text": "Navs"
-    },
     "urn:org.nasdanika.html.model.bootstrap#Float": {
         "tooltip": "Defines element floating - left or right - for a given breakpoint.",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
@@ -881,56 +1055,20 @@
         "location": "html/html/modules/models/modules/bootstrap/modules/model/TableHeader.html",
         "text": "TableHeader"
     },
-    "urn:org.nasdanika.ncore#IMarked": {
+    "urn:org.nasdanika.architecture.core#Facet": {
+        "tooltip": "A marker interface for classes which can be used as architecture element facets",
         "icon": "https://www.nasdanika.org/resources/images/ecore/EInterface.gif",
-        "location": "core/ncore/core/modules/ncore/IMarked.html",
-        "text": "IMarked"
-    },
-    "urn:org.nasdanika.exec.content#Base64": {
-        "tooltip": "Encodes source using Base64 encoding. ",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "core/exec/core/modules/exec/modules/model/content/Base64.html",
-        "text": "Base64"
+        "location": "architecture/core/Facet.html",
+        "text": "Facet"
     },
     "nasdanika://core/resources/javadoc": {
         "icon": "fab fa-java",
         "location": "core/apidocs/org.nasdanika.resources/module-summary.html",
         "text": "Javadoc"
     },
-    "nasdanika://core/common/javadoc": {
-        "icon": "fab fa-java",
-        "location": "core/apidocs/org.nasdanika.common/module-summary.html",
-        "text": "Javadoc"
-    },
-    "urn:org.nasdanika.ncore#Adaptable": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EInterface.gif",
-        "location": "core/ncore/core/modules/ncore/Adaptable.html",
-        "text": "Adaptable"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Appearance": {
-        "tooltip": "This class is used for configuring common aspects of HTML and Bootstrap elements such as background, spacing, text, etc.",
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Appearance.html",
-        "text": "Appearance"
-    },
-    "nasdanika://core/children/3/exec/gen/javadoc": {
-        "icon": "fab fa-java",
-        "location": "core/exec/exec/apidocs/org.nasdanika.exec.gen/module-summary.html",
-        "text": "Javadoc"
-    },
-    "urn:org.nasdanika.ncore#IMarker": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EInterface.gif",
-        "location": "core/ncore/core/modules/ncore/IMarker.html",
-        "text": "IMarker"
-    },
     "urn:org.nasdanika.html.model.bootstrap#Navbar": {
         "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
         "location": "html/html/modules/models/modules/bootstrap/modules/model/Navbar.html",
         "text": "Navbar"
-    },
-    "urn:org.nasdanika.html.model.bootstrap#Dropdown": {
-        "icon": "https://www.nasdanika.org/resources/images/ecore/EClass.gif",
-        "location": "html/html/modules/models/modules/bootstrap/modules/model/Dropdown.html",
-        "text": "Dropdown"
     }
 }
