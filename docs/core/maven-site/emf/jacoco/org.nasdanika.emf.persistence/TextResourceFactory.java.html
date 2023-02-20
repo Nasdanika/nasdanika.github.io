@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TextResourceFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika EMF</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.emf.persistence</a> &gt; <span class="el_source">TextResourceFactory.java</span></div><h1>TextResourceFactory.java</h1><pre class="source lang-java linenums">package org.nasdanika.emf.persistence;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.nasdanika.common.DefaultConverter;
+import org.nasdanika.common.URIEncodable;
+import org.nasdanika.ncore.NcoreFactory;
+
+/**
+ * Loads text files as resources with a single {@link org.nasdanika.ncore.String} object.
+ * @author Pavel
+ */
+<span class="nc" id="L24">public class TextResourceFactory extends ResourceFactoryImpl {</span>
+	
+	private class TextResource extends ResourceImpl implements URIEncodable {
+		
+<span class="nc" id="L28">		TextResource(URI uri) {</span>
+<span class="nc" id="L29">			super(uri);</span>
+<span class="nc" id="L30">		}</span>
+		
+		@Override
+		public void load(java.util.Map&lt;?,?&gt; options) throws IOException {
+<span class="nc bnc" id="L34" title="All 2 branches missed.">			if (isDataURI(getURI())) {</span>
+<span class="nc" id="L35">				String uriStr = getURI().toString();</span>
+<span class="nc" id="L36">				uriStr = uriStr.substring(&quot;data:text,&quot;.length());				</span>
+<span class="nc" id="L37">				uriStr = URLDecoder.decode(uriStr, StandardCharsets.UTF_8);</span>
+<span class="nc" id="L38">				org.nasdanika.ncore.String str = NcoreFactory.eINSTANCE.createString();</span>
+<span class="nc" id="L39">				str.setValue(uriStr);</span>
+<span class="nc" id="L40">				getContents().clear();</span>
+<span class="nc" id="L41">				getContents().add(str);</span>
+<span class="nc" id="L42">			} else {</span>
+<span class="nc" id="L43">				super.load(options);</span>
+			}			
+<span class="nc" id="L45">		}</span>
+		
+		@Override
+		protected void doLoad(InputStream inputStream, Map&lt;?, ?&gt; options) throws IOException {
+<span class="nc" id="L49">			String text = DefaultConverter.INSTANCE.toString(inputStream);</span>
+<span class="nc" id="L50">			org.nasdanika.ncore.String str = NcoreFactory.eINSTANCE.createString();</span>
+<span class="nc" id="L51">			str.setValue(text);</span>
+<span class="nc" id="L52">			getContents().clear();</span>
+<span class="nc" id="L53">			getContents().add(str);</span>
+<span class="nc" id="L54">		}</span>
+
+		@Override
+		public URI encode() {
+<span class="nc" id="L58">			StringBuilder payloadBuilder = new StringBuilder();</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">			for (EObject eObj: getContents()) {</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">				if (eObj instanceof org.nasdanika.ncore.String) {</span>
+<span class="nc" id="L61">					String text = ((org.nasdanika.ncore.String) eObj).getValue();</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">					if (text != null) {</span>
+<span class="nc" id="L63">						payloadBuilder.append(text);</span>
+					}
+<span class="nc" id="L65">				} else {</span>
+<span class="nc" id="L66">					throw new UnsupportedOperationException(&quot;Unsupported contents: &quot; + eObj);</span>
+				}
+<span class="nc" id="L68">			}</span>
+<span class="nc" id="L69">			String uriStr = &quot;data:text,&quot; + URLEncoder.encode(payloadBuilder.toString(), StandardCharsets.UTF_8);</span>
+<span class="nc" id="L70">			return URI.createURI(uriStr);</span>
+		}
+
+		@Override
+		protected void doSave(OutputStream outputStream, Map&lt;?, ?&gt; options) throws IOException {
+			try {
+<span class="nc bnc" id="L76" title="All 2 branches missed.">				for (EObject eObj: getContents()) {</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">					if (eObj instanceof org.nasdanika.ncore.String) {</span>
+<span class="nc" id="L78">						String text = ((org.nasdanika.ncore.String) eObj).getValue();</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">						if (text != null) {</span>
+<span class="nc" id="L80">							outputStream.write(text.getBytes(StandardCharsets.UTF_8));</span>
+						}
+<span class="nc" id="L82">					} else {</span>
+<span class="nc" id="L83">						throw new UnsupportedOperationException(&quot;Unsupported contents: &quot; + eObj);</span>
+					}
+<span class="nc" id="L85">				}</span>
+			} finally {
+<span class="nc" id="L87">				outputStream.close();</span>
+			}
+<span class="nc" id="L89">		}</span>
+		
+	}
+	
+	@Override
+	public Resource createResource(URI uri) {
+<span class="nc" id="L95">		return new TextResource(uri);</span>
+	}
+	
+	/**
+	 * @param uri
+	 * @return true if the argument URI is drawio data URI, i.e. is starts with data:drawio[;base64],
+	 */
+	public static boolean isDataURI(URI uri) {
+<span class="nc bnc" id="L103" title="All 6 branches missed.">		return uri != null &amp;&amp; &quot;data&quot;.equals(uri.scheme()) &amp;&amp; uri.toString().startsWith(&quot;data:text,&quot;);</span>
+	}	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

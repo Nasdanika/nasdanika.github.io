@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AngularNodeComparator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Java API for working with Drawio diagrams</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.drawio.comparators</a> &gt; <span class="el_source">AngularNodeComparator.java</span></div><h1>AngularNodeComparator.java</h1><pre class="source lang-java linenums">package org.nasdanika.drawio.comparators;
+
+import java.util.Comparator;
+import java.util.Objects;
+
+import org.nasdanika.drawio.ModelElement;
+import org.nasdanika.drawio.Node;
+import org.nasdanika.drawio.Point;
+import org.nasdanika.drawio.Rectangle;
+
+/**
+ * Sorts {@link Node}s by the angle of a line between the node center and node's logical parent center.  
+ * @author Pavel
+ *
+ */
+public class AngularNodeComparator implements Comparator&lt;Node&gt; {
+
+	public static Rectangle getAbsoluteGeometry(Node node) {
+<span class="nc" id="L19">		ModelElement parent = node.getParent();</span>
+<span class="nc bnc" id="L20" title="All 2 branches missed.">		if (parent instanceof Node) {</span>
+<span class="nc" id="L21">			Rectangle parentAbsoluteGeometry = getAbsoluteGeometry((Node) parent);</span>
+<span class="nc" id="L22">			Rectangle nodeGeometry = node.getGeometry();</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">			if (nodeGeometry == null) {</span>
+<span class="nc" id="L24">				return parentAbsoluteGeometry;</span>
+			}
+<span class="nc bnc" id="L26" title="All 2 branches missed.">			if (parentAbsoluteGeometry == null) {</span>
+<span class="nc" id="L27">				return nodeGeometry;</span>
+			}
+<span class="nc" id="L29">			return new Rectangle() {</span>
+
+				@Override
+				public org.w3c.dom.Element getElement() {
+<span class="nc" id="L33">					throw new UnsupportedOperationException();</span>
+				}
+
+				@Override
+				public double getX() {
+<span class="nc" id="L38">					return parentAbsoluteGeometry.getX() + nodeGeometry.getX();</span>
+				}
+
+				@Override
+				public double getY() {
+<span class="nc" id="L43">					return parentAbsoluteGeometry.getY() + nodeGeometry.getY();</span>
+				}
+
+				@Override
+				public void setX(double x) {
+<span class="nc" id="L48">					throw new UnsupportedOperationException();</span>
+				}
+
+				@Override
+				public void setY(double y) {
+<span class="nc" id="L53">					throw new UnsupportedOperationException();</span>
+				}
+
+				@Override
+				public void setLocation(double x, double y) {
+<span class="nc" id="L58">					throw new UnsupportedOperationException();</span>
+				}
+
+				@Override
+				public double getWidth() {
+<span class="nc" id="L63">					return nodeGeometry.getWidth();</span>
+				}
+
+				@Override
+				public double getHeight() {
+<span class="nc" id="L68">					return nodeGeometry.getHeight();</span>
+				}
+
+				@Override
+				public void setWidth(double width) {
+<span class="nc" id="L73">					throw new UnsupportedOperationException();</span>
+				}
+
+				@Override
+				public void setHeight(double height) {
+<span class="nc" id="L78">					throw new UnsupportedOperationException();</span>
+				}
+
+				@Override
+				public void setBounds(double x, double y, double width, double height) {
+<span class="nc" id="L83">					throw new UnsupportedOperationException();</span>
+				}
+				
+				@Override
+				public String toString() {
+<span class="nc" id="L88">					return super.toString() + &quot;[&quot; + getX() + &quot;, &quot; + getY() + &quot;, &quot; + getWidth() + &quot;, &quot; + getHeight() + &quot;]&quot;;</span>
+				}
+				
+			};
+		}
+<span class="nc" id="L93">		return node.getGeometry();</span>
+	}
+	
+	public static Point getCenter(Rectangle rectangle) {
+<span class="nc" id="L97">		return new Point() {</span>
+
+			@Override
+			public org.w3c.dom.Element getElement() {
+<span class="nc" id="L101">				throw new UnsupportedOperationException();</span>
+			}
+
+			@Override
+			public double getX() {
+<span class="nc" id="L106">				return rectangle.getX() + rectangle.getWidth() / 2.0;</span>
+			}
+
+			@Override
+			public double getY() {
+<span class="nc" id="L111">				return rectangle.getY() + rectangle.getHeight() / 2.0;</span>
+			}
+
+			@Override
+			public void setX(double x) {
+<span class="nc" id="L116">				throw new UnsupportedOperationException();</span>
+			}
+
+			@Override
+			public void setY(double y) {
+<span class="nc" id="L121">				throw new UnsupportedOperationException();</span>
+			}
+
+			@Override
+			public void setLocation(double x, double y) {
+<span class="nc" id="L126">				throw new UnsupportedOperationException();</span>
+			}
+			
+			@Override
+			public String toString() {
+<span class="nc" id="L131">				return super.toString() + &quot;[&quot; + getX() + &quot;, &quot; + getY() + &quot;]&quot;;</span>
+			}
+			
+		};
+	}
+	
+	/**
+	 * @param from
+	 * @param to
+	 * @return An angle for a line from the parent's center to child's center. NaN if the angle cannot be computed for some reason.
+	 */
+	public static double angle(Node from, Node to) {
+<span class="nc bnc" id="L143" title="All 4 branches missed.">		if (from == null || to == null) {</span>
+<span class="nc" id="L144">			return Double.NaN;</span>
+		}
+<span class="nc" id="L146">		Rectangle parentGeometry = getAbsoluteGeometry(from);</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (parentGeometry == null) {</span>
+<span class="nc" id="L148">			return Double.NaN;</span>
+		}		
+<span class="nc" id="L150">		Point parentCenter = getCenter(parentGeometry);</span>
+		
+<span class="nc" id="L152">		Rectangle childGeometry = getAbsoluteGeometry(to);</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		if (childGeometry == null) {</span>
+<span class="nc" id="L154">			return Double.NaN;</span>
+		}
+<span class="nc" id="L156">		Point childCenter = getCenter(childGeometry);		</span>
+<span class="nc" id="L157">		double deltaX = childCenter.getX() - parentCenter.getX();</span>
+<span class="nc" id="L158">		double deltaY = childCenter.getY() - parentCenter.getY();</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">		if (Math.abs(deltaX) &lt;= Double.MIN_VALUE) {</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">			return Math.PI * (deltaY &gt; 0 ? 1.5 : 0.5);</span>
+		}
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		if (Math.abs(deltaY) &lt;= Double.MIN_VALUE) {</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">			return deltaX &lt; 0 ? Math.PI : 0;</span>
+		}		
+<span class="nc" id="L165">		double ret = Math.atan(-deltaY / deltaX);</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">		if (deltaX &lt; 0) {</span>
+<span class="nc" id="L167">			ret += Math.PI;</span>
+		}
+<span class="nc" id="L169">		return ret;</span>
+	}
+
+	private Node parent;
+	private boolean clockwise;
+	private Double baseAngle;
+	
+	/**
+	 * 
+	 * @param parent Parent node
+	 * @param clockwise If true, the comparison is clockwise. I.e. if the base angle is 12 o'clock then a node at 2 o'clock would be greater than a node at 1 o'clock.
+	 * @param baseAngle Base angle in degrees, defaults to 90 if null.
+	 */
+<span class="nc" id="L182">	public AngularNodeComparator(Node parent, boolean clockwise, Double baseAngle) {</span>
+<span class="nc" id="L183">		this.parent = parent;</span>
+<span class="nc" id="L184">		this.clockwise = clockwise;</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">		this.baseAngle = baseAngle == null ? Math.PI / 2.0 : baseAngle;</span>
+<span class="nc" id="L186">	}</span>
+
+	@Override
+	public int compare(Node o1, Node o2) {
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		if (Objects.equals(o1, o2)) {</span>
+<span class="nc" id="L191">			return 0;</span>
+		}
+		
+<span class="nc" id="L194">		double angle1 = angle(parent, o1);</span>
+<span class="nc" id="L195">		double angle2 = angle(parent, o2);</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		if (angle1 == angle2) {</span>
+<span class="nc" id="L197">			return 0;</span>
+		}
+<span class="nc" id="L199">		double delta1 = angle1 - baseAngle;</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">		if (delta1 &lt; 0) {</span>
+<span class="nc" id="L201">			delta1 += 2.0 * Math.PI;</span>
+		}
+<span class="nc" id="L203">		double delta2 = angle2 - baseAngle;</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">		if (delta2 &lt; 0) {</span>
+<span class="nc" id="L205">			delta2 += 2.0 * Math.PI;</span>
+		}
+<span class="nc bnc" id="L207" title="All 2 branches missed.">		int cmp = delta1 &lt; delta2 ? -1 : 1;</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">		return clockwise ? -cmp : cmp;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TableCellConsumerFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Bootstrap Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.bootstrap.gen</a> &gt; <span class="el_source">TableCellConsumerFactoryAdapter.java</span></div><h1>TableCellConsumerFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.bootstrap.gen;
+
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.Function;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.bootstrap.RowContainer;
+import org.nasdanika.html.model.bootstrap.TableCell;
+
+/**
+ * Adds a cell to the consumed row.
+ * @author Pavel
+ *
+ */
+public class TableCellConsumerFactoryAdapter extends BootstrapElementConsumerFactoryAdapter&lt;org.nasdanika.html.model.bootstrap.TableCell, org.nasdanika.html.bootstrap.RowContainer.Row&gt; {
+
+	public TableCellConsumerFactoryAdapter(org.nasdanika.html.model.bootstrap.TableCell tableCell, AdapterFactory adapterFactory) {
+<span class="fc" id="L19">		super(tableCell, adapterFactory);</span>
+<span class="fc" id="L20">	}</span>
+	
+	@Override
+	protected Function&lt;HTMLElement&lt;?&gt;, HTMLElement&lt;?&gt;&gt; createConfigureFunction(Context context) {		
+<span class="fc" id="L24">		return getWrapper(context)</span>
+<span class="fc" id="L25">				.then(createTableCellFunction(context))</span>
+<span class="fc" id="L26">				.then(toHTMLElement(context))</span>
+<span class="fc" id="L27">				.then(super.createConfigureFunction(context));</span>
+	}
+	
+	/**
+	 * Takes {@link RowContainer}, creates a row, configures and returns for passing to cell consumers. 
+	 * @param context
+	 * @return Row instance to pass to cell consumers.
+	 */
+	protected Function&lt;org.nasdanika.html.bootstrap.RowContainer.Row, org.nasdanika.html.bootstrap.RowContainer.Row.Cell&gt; createTableCellFunction(Context context) {
+<span class="fc" id="L36">		return new Function&lt;org.nasdanika.html.bootstrap.RowContainer.Row, org.nasdanika.html.bootstrap.RowContainer.Row.Cell&gt;() {</span>
+	
+			@Override
+			public double size() {
+<span class="fc" id="L40">				return 1;</span>
+			}
+	
+			@Override
+			public String name() {
+<span class="fc" id="L45">				return &quot;Table cell&quot;;</span>
+			}
+
+			@Override
+			public org.nasdanika.html.bootstrap.RowContainer.Row.Cell execute(org.nasdanika.html.bootstrap.RowContainer.Row row, ProgressMonitor progressMonitor) {
+<span class="fc" id="L50">				TableCell semanticElement = getTarget();</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">				org.nasdanika.html.bootstrap.RowContainer.Row.Cell ret = semanticElement.isHeader() ? row.header() : row.cell();</span>
+<span class="fc" id="L52">				int colSpan = semanticElement.getColSpan();</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">				if (colSpan &gt; 0) {</span>
+<span class="nc" id="L54">					ret.toHTMLElement().colspan(colSpan);</span>
+				}
+<span class="fc" id="L56">				int rowSpan = semanticElement.getRowSpan();</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">				if (rowSpan &gt; 0) {</span>
+<span class="nc" id="L58">					ret.toHTMLElement().rowspan(rowSpan);</span>
+				}
+<span class="fc" id="L60">				ret.color(semanticElement.getColor());</span>
+<span class="fc" id="L61">				ret.backgroundColor(semanticElement.getColor());</span>
+<span class="fc" id="L62">				return ret;</span>
+			}
+			
+		};
+	}	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

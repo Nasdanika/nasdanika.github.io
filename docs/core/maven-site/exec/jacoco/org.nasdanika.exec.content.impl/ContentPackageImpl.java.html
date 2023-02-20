@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ContentPackageImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Execution Model</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.content.impl</a> &gt; <span class="el_source">ContentPackageImpl.java</span></div><h1>ContentPackageImpl.java</h1><pre class="source lang-java linenums">/**
+ */
+package org.nasdanika.exec.content.impl;
+
+import static org.nasdanika.exec.content.ContentPackage.RESOURCE;
+
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.impl.EPackageImpl;
+import org.nasdanika.exec.ExecPackage;
+import org.nasdanika.exec.content.Base64;
+import org.nasdanika.exec.content.ContentFactory;
+import org.nasdanika.exec.content.ContentPackage;
+import org.nasdanika.exec.content.Filter;
+import org.nasdanika.exec.content.Interpolator;
+import org.nasdanika.exec.content.Markdown;
+import org.nasdanika.exec.content.Resource;
+import org.nasdanika.exec.content.Text;
+import org.nasdanika.exec.impl.ExecPackageImpl;
+import org.nasdanika.exec.resources.ResourcesPackage;
+import org.nasdanika.exec.resources.impl.ResourcesPackageImpl;
+import org.nasdanika.ncore.NcorePackage;
+
+/**
+ * &lt;!-- begin-user-doc --&gt;
+ * An implementation of the model &lt;b&gt;Package&lt;/b&gt;.
+ * &lt;!-- end-user-doc --&gt;
+ * @generated
+ */
+public class ContentPackageImpl extends EPackageImpl implements ContentPackage {
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L38">	private EClass base64EClass = null;</span>
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L44">	private EClass resourceEClass = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L51">	private EClass textEClass = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L58">	private EClass filterEClass = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L65">	private EClass interpolatorEClass = null;</span>
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L71">	private EClass markdownEClass = null;</span>
+
+	/**
+	 * Creates an instance of the model &lt;b&gt;Package&lt;/b&gt;, registered with
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
+	 * package URI value.
+	 * &lt;p&gt;Note: the correct way to create the package is via the static
+	 * factory method {@link #init init()}, which also performs
+	 * initialization of the package, or returns the registered package,
+	 * if one already exists.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see org.eclipse.emf.ecore.EPackage.Registry
+	 * @see org.nasdanika.exec.content.ContentPackage#eNS_URI
+	 * @see #init()
+	 * @generated
+	 */
+	private ContentPackageImpl() {
+<span class="fc" id="L89">		super(eNS_URI, ContentFactory.eINSTANCE);</span>
+<span class="fc" id="L90">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L97">	private static boolean isInited = false;</span>
+
+	/**
+	 * Creates, registers, and initializes the &lt;b&gt;Package&lt;/b&gt; for this model, and for any others upon which it depends.
+	 *
+	 * &lt;p&gt;This method is used to initialize {@link ContentPackage#eINSTANCE} when that field is accessed.
+	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see #eNS_URI
+	 * @see #createPackageContents()
+	 * @see #initializePackageContents()
+	 * @generated
+	 */
+	public static ContentPackage init() {
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">		if (isInited) return (ContentPackage)EPackage.Registry.INSTANCE.getEPackage(ContentPackage.eNS_URI);</span>
+
+		// Obtain or create and register package
+<span class="fc" id="L115">		Object registeredContentPackage = EPackage.Registry.INSTANCE.get(eNS_URI);</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		ContentPackageImpl theContentPackage = registeredContentPackage instanceof ContentPackageImpl ? (ContentPackageImpl)registeredContentPackage : new ContentPackageImpl();</span>
+
+<span class="fc" id="L118">		isInited = true;</span>
+
+		// Initialize simple dependencies
+<span class="fc" id="L121">		NcorePackage.eINSTANCE.eClass();</span>
+
+		// Obtain or create and register interdependencies
+<span class="fc" id="L124">		Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ExecPackage.eNS_URI);</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		ExecPackageImpl theExecPackage = (ExecPackageImpl)(registeredPackage instanceof ExecPackageImpl ? registeredPackage : ExecPackage.eINSTANCE);</span>
+<span class="fc" id="L126">		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ResourcesPackage.eNS_URI);</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		ResourcesPackageImpl theResourcesPackage = (ResourcesPackageImpl)(registeredPackage instanceof ResourcesPackageImpl ? registeredPackage : ResourcesPackage.eINSTANCE);</span>
+
+		// Create package meta-data objects
+<span class="fc" id="L130">		theContentPackage.createPackageContents();</span>
+<span class="fc" id="L131">		theExecPackage.createPackageContents();</span>
+<span class="fc" id="L132">		theResourcesPackage.createPackageContents();</span>
+
+		// Initialize created meta-data
+<span class="fc" id="L135">		theContentPackage.initializePackageContents();</span>
+<span class="fc" id="L136">		theExecPackage.initializePackageContents();</span>
+<span class="fc" id="L137">		theResourcesPackage.initializePackageContents();</span>
+
+		// Mark meta-data to indicate it can't be changed
+<span class="fc" id="L140">		theContentPackage.freeze();</span>
+
+		// Update the registry and return the package
+<span class="fc" id="L143">		EPackage.Registry.INSTANCE.put(ContentPackage.eNS_URI, theContentPackage);</span>
+<span class="fc" id="L144">		return theContentPackage;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getBase64() {
+<span class="fc" id="L154">		return base64EClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getResource() {
+<span class="fc" id="L164">		return resourceEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getResource_Location() {
+<span class="fc" id="L174">		return (EAttribute)resourceEClass.getEStructuralFeatures().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getResource_Interpolate() {
+<span class="fc" id="L184">		return (EAttribute)resourceEClass.getEStructuralFeatures().get(1);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getText() {
+<span class="fc" id="L194">		return textEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getText_Content() {
+<span class="fc" id="L204">		return (EAttribute)textEClass.getEStructuralFeatures().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getText_Interpolate() {
+<span class="fc" id="L214">		return (EAttribute)textEClass.getEStructuralFeatures().get(1);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getFilter() {
+<span class="fc" id="L224">		return filterEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getFilter_Source() {
+<span class="fc" id="L234">		return (EReference)filterEClass.getEStructuralFeatures().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getInterpolator() {
+<span class="fc" id="L244">		return interpolatorEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getInterpolator_ProcessIncludes() {
+<span class="fc" id="L254">		return (EAttribute)interpolatorEClass.getEStructuralFeatures().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getInterpolator_Base() {
+<span class="fc" id="L264">		return (EAttribute)interpolatorEClass.getEStructuralFeatures().get(1);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getMarkdown() {
+<span class="fc" id="L274">		return markdownEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getMarkdown_Style() {
+<span class="fc" id="L284">		return (EAttribute)markdownEClass.getEStructuralFeatures().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public ContentFactory getContentFactory() {
+<span class="nc" id="L294">		return (ContentFactory)getEFactoryInstance();</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L302">	private boolean isCreated = false;</span>
+
+	/**
+	 * Creates the meta-model objects for the package.  This method is
+	 * guarded to have no affect on any invocation but its first.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	public void createPackageContents() {
+<span class="fc bfc" id="L312" title="All 2 branches covered.">		if (isCreated) return;</span>
+<span class="fc" id="L313">		isCreated = true;</span>
+
+		// Create classes and their features
+<span class="fc" id="L316">		filterEClass = createEClass(FILTER);</span>
+<span class="fc" id="L317">		createEReference(filterEClass, FILTER__SOURCE);</span>
+
+<span class="fc" id="L319">		base64EClass = createEClass(BASE64);</span>
+
+<span class="fc" id="L321">		resourceEClass = createEClass(RESOURCE);</span>
+<span class="fc" id="L322">		createEAttribute(resourceEClass, RESOURCE__LOCATION);</span>
+<span class="fc" id="L323">		createEAttribute(resourceEClass, RESOURCE__INTERPOLATE);</span>
+
+<span class="fc" id="L325">		textEClass = createEClass(TEXT);</span>
+<span class="fc" id="L326">		createEAttribute(textEClass, TEXT__CONTENT);</span>
+<span class="fc" id="L327">		createEAttribute(textEClass, TEXT__INTERPOLATE);</span>
+
+<span class="fc" id="L329">		interpolatorEClass = createEClass(INTERPOLATOR);</span>
+<span class="fc" id="L330">		createEAttribute(interpolatorEClass, INTERPOLATOR__PROCESS_INCLUDES);</span>
+<span class="fc" id="L331">		createEAttribute(interpolatorEClass, INTERPOLATOR__BASE);</span>
+
+<span class="fc" id="L333">		markdownEClass = createEClass(MARKDOWN);</span>
+<span class="fc" id="L334">		createEAttribute(markdownEClass, MARKDOWN__STYLE);</span>
+<span class="fc" id="L335">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L342">	private boolean isInitialized = false;</span>
+
+	/**
+	 * Complete the initialization of the package and its meta-model.  This
+	 * method is guarded to have no affect on any invocation but its first.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	public void initializePackageContents() {
+<span class="fc bfc" id="L352" title="All 2 branches covered.">		if (isInitialized) return;</span>
+<span class="fc" id="L353">		isInitialized = true;</span>
+
+		// Initialize package
+<span class="fc" id="L356">		setName(eNAME);</span>
+<span class="fc" id="L357">		setNsPrefix(eNS_PREFIX);</span>
+<span class="fc" id="L358">		setNsURI(eNS_URI);</span>
+
+		// Obtain other dependent packages
+<span class="fc" id="L361">		NcorePackage theNcorePackage = (NcorePackage)EPackage.Registry.INSTANCE.getEPackage(NcorePackage.eNS_URI);</span>
+
+		// Create type parameters
+
+		// Set bounds for type parameters
+
+		// Add supertypes to classes
+<span class="fc" id="L368">		filterEClass.getESuperTypes().add(theNcorePackage.getModelElement());</span>
+<span class="fc" id="L369">		base64EClass.getESuperTypes().add(this.getFilter());</span>
+<span class="fc" id="L370">		resourceEClass.getESuperTypes().add(theNcorePackage.getModelElement());</span>
+<span class="fc" id="L371">		textEClass.getESuperTypes().add(theNcorePackage.getModelElement());</span>
+<span class="fc" id="L372">		interpolatorEClass.getESuperTypes().add(this.getFilter());</span>
+<span class="fc" id="L373">		markdownEClass.getESuperTypes().add(this.getFilter());</span>
+
+		// Initialize classes, features, and operations; add parameters
+<span class="fc" id="L376">		initEClass(filterEClass, Filter.class, &quot;Filter&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+<span class="fc" id="L377">		initEReference(getFilter_Source(), ecorePackage.getEObject(), null, &quot;source&quot;, null, 1, 1, Filter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+
+<span class="fc" id="L379">		initEClass(base64EClass, Base64.class, &quot;Base64&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+
+<span class="fc" id="L381">		initEClass(resourceEClass, Resource.class, &quot;Resource&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+<span class="fc" id="L382">		initEAttribute(getResource_Location(), ecorePackage.getEString(), &quot;location&quot;, null, 1, 1, Resource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L383">		initEAttribute(getResource_Interpolate(), ecorePackage.getEBoolean(), &quot;interpolate&quot;, null, 0, 1, Resource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+
+<span class="fc" id="L385">		initEClass(textEClass, Text.class, &quot;Text&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+<span class="fc" id="L386">		initEAttribute(getText_Content(), ecorePackage.getEString(), &quot;content&quot;, null, 1, 1, Text.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L387">		initEAttribute(getText_Interpolate(), ecorePackage.getEBoolean(), &quot;interpolate&quot;, &quot;true&quot;, 0, 1, Text.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+
+<span class="fc" id="L389">		initEClass(interpolatorEClass, Interpolator.class, &quot;Interpolator&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+<span class="fc" id="L390">		initEAttribute(getInterpolator_ProcessIncludes(), ecorePackage.getEBoolean(), &quot;processIncludes&quot;, &quot;true&quot;, 0, 1, Interpolator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L391">		initEAttribute(getInterpolator_Base(), ecorePackage.getEString(), &quot;base&quot;, &quot;&quot;, 0, 1, Interpolator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+
+<span class="fc" id="L393">		initEClass(markdownEClass, Markdown.class, &quot;Markdown&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+<span class="fc" id="L394">		initEAttribute(getMarkdown_Style(), ecorePackage.getEBoolean(), &quot;style&quot;, null, 0, 1, Markdown.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+
+		// Create annotations
+		// urn:org.nasdanika
+<span class="fc" id="L398">		createUrnorgAnnotations();</span>
+		// http://www.eclipse.org/emf/2002/GenModel
+<span class="fc" id="L400">		createGenModelAnnotations();</span>
+<span class="fc" id="L401">	}</span>
+
+	/**
+	 * Initializes the annotations for &lt;b&gt;urn:org.nasdanika&lt;/b&gt;.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected void createUrnorgAnnotations() {
+<span class="fc" id="L410">		String source = &quot;urn:org.nasdanika&quot;;</span>
+<span class="fc" id="L411">		addAnnotation</span>
+<span class="fc" id="L412">		  (this,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/content/package-summary.md&quot;
+		   });
+<span class="fc" id="L417">		addAnnotation</span>
+<span class="fc" id="L418">		  (base64EClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/content/base-64.md&quot;
+		   });
+<span class="fc" id="L423">		addAnnotation</span>
+<span class="fc" id="L424">		  (resourceEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/content/resource.md&quot;
+		   });
+<span class="fc" id="L429">		addAnnotation</span>
+<span class="fc" id="L430">		  (getResource_Location(),</span>
+		   source,
+		   new String[] {
+			   &quot;default-feature&quot;, &quot;true&quot;,
+			   &quot;resolve-uri&quot;, &quot;true&quot;
+		   });
+<span class="fc" id="L436">		addAnnotation</span>
+<span class="fc" id="L437">		  (textEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/content/text.md&quot;
+		   });
+<span class="fc" id="L442">		addAnnotation</span>
+<span class="fc" id="L443">		  (getText_Content(),</span>
+		   source,
+		   new String[] {
+			   &quot;default-feature&quot;, &quot;true&quot;
+		   });
+<span class="fc" id="L448">		addAnnotation</span>
+<span class="fc" id="L449">		  (interpolatorEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;load-doc-reference&quot;, &quot;doc/content/interpolator-load-doc.md&quot;
+		   });
+<span class="fc" id="L454">		addAnnotation</span>
+<span class="fc" id="L455">		  (getInterpolator_ProcessIncludes(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/content/interpolator--process-includes.md&quot;
+		   });
+<span class="fc" id="L460">		addAnnotation</span>
+<span class="fc" id="L461">		  (getInterpolator_Base(),</span>
+		   source,
+		   new String[] {
+			   &quot;resolve-uri&quot;, &quot;true&quot;
+		   });
+<span class="fc" id="L466">		addAnnotation</span>
+<span class="fc" id="L467">		  (markdownEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/content/markdown.md&quot;
+		   });
+<span class="fc" id="L472">	}</span>
+
+	/**
+	 * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/GenModel&lt;/b&gt;.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected void createGenModelAnnotations() {
+<span class="fc" id="L481">		String source = &quot;http://www.eclipse.org/emf/2002/GenModel&quot;;</span>
+<span class="fc" id="L482">		addAnnotation</span>
+<span class="fc" id="L483">		  (filterEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Base class for filters which take an object, adapt to ${javadoc/org.nasdanika.common.SupplierFactory}&lt;InputStream&gt;, obtain a stream and produce another stream from it.&quot;
+		   });
+<span class="fc" id="L488">		addAnnotation</span>
+<span class="fc" id="L489">		  (getFilter_Source(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Source to be filtered. The source is adapted to ${javadoc/org.nasdanika.common.SupplierFactory}&lt;InputStream&gt;.&quot;
+		   });
+<span class="fc" id="L494">		addAnnotation</span>
+<span class="fc" id="L495">		  (getResource_Location(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Resource location resolved relative to the model resource location.&quot;
+		   });
+<span class="fc" id="L500">		addAnnotation</span>
+<span class="fc" id="L501">		  (getResource_Interpolate(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;If true, location is interpolated. Default is false.&quot;
+		   });
+<span class="fc" id="L506">		addAnnotation</span>
+<span class="fc" id="L507">		  (getText_Content(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Text content.&quot;
+		   });
+<span class="fc" id="L512">		addAnnotation</span>
+<span class="fc" id="L513">		  (getText_Interpolate(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;If ``true`` (default), content is interpolated.&quot;
+		   });
+<span class="fc" id="L518">		addAnnotation</span>
+<span class="fc" id="L519">		  (interpolatorEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Converts input stream to String using the context charset, which defaults to ``UTF-8``, interpolates, and converts back to input stream using the context charset.&quot;
+		   });
+<span class="fc" id="L524">		addAnnotation</span>
+<span class="fc" id="L525">		  (getInterpolator_Base(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Optional base URL for resolving include and image URL\'s. \nIf the base is blank then marker location is used as the base, if marker is present and location is not null. \nOtherwise, resource URL is used as the base. \nMarker location is the URL of a YAML resource from which interpolator specification was loaded. \nIt may be different from the resource URL if a model was loaded from YAML and then saved to XML.\n\nIf the base is not blank then it is resolved relative to the marker location if it starts with ``./`` and marker location is not null or the resource base otherwise.\n&quot;
+		   });
+<span class="fc" id="L530">	}</span>
+
+} //ContentPackageImpl
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

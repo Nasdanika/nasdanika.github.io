@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ComposedAdapterFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika EMF</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.emf</a> &gt; <span class="el_source">ComposedAdapterFactory.java</span></div><h1>ComposedAdapterFactory.java</h1><pre class="source lang-java linenums">package org.nasdanika.emf;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcorePackage;
+
+/**
+ * Composed factory delegates to its child factories. It uses inheritance ordering to delegate -
+ * delegates to factories registered for more specific classes first. If there are several factories
+ * for the same class then they are compared using factory's compare method if it implements comparable or by inheritance - more specific first.
+ * @author Pavel Vlasov
+ *
+ */
+<span class="nc" id="L26">public class ComposedAdapterFactory implements ComposeableAdapterFactory {</span>
+	
+	private ComposedAdapterFactory parentAdapterFactory;
+	
+<span class="nc" id="L30">	private Map&lt;Object,Boolean&gt; factoryForTypeCache = new ConcurrentHashMap&lt;&gt;();</span>
+
+	@Override
+	public boolean isFactoryForType(Object type) {
+<span class="nc" id="L34">		return factoryForTypeCache.computeIfAbsent(type, this::_isFactoryForType);</span>
+	}
+	
+	private boolean _isFactoryForType(Object type) {
+<span class="nc bnc" id="L38" title="All 2 branches missed.">		for (AdapterFactoryEntry c: children) {</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">			if (c.adapterFactory.isFactoryForType(type)) {</span>
+<span class="nc" id="L40">				return true;</span>
+			}
+<span class="nc" id="L42">		}</span>
+<span class="nc" id="L43">		return false;</span>
+	}
+
+	@Override
+	public Object adapt(Object object, Object type) {
+<span class="nc bnc" id="L48" title="All 2 branches missed.">		for (AdapterFactory af: match(object, type)) {</span>
+<span class="nc" id="L49">			Object ret = af.adapt(object, type);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">			if (ret != null) {</span>
+<span class="nc" id="L51">				return ret;</span>
+			}
+<span class="nc" id="L53">		}</span>
+<span class="nc" id="L54">		return null;</span>
+	}
+
+	@Override
+	public Adapter adapt(Notifier target, Object type) {
+<span class="nc bnc" id="L59" title="All 2 branches missed.">		for (AdapterFactory af: match(target, type)) {</span>
+<span class="nc" id="L60">			Adapter ret = af.adapt(target, type);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">			if (ret != null) {</span>
+<span class="nc" id="L62">				return ret;</span>
+			}
+<span class="nc" id="L64">		}</span>
+<span class="nc" id="L65">		return null;</span>
+	}
+
+	@Override
+	public Adapter adaptNew(Notifier target, Object type) {
+<span class="nc bnc" id="L70" title="All 2 branches missed.">		for (AdapterFactory af: match(target, type)) {</span>
+<span class="nc" id="L71">			Adapter ret = af.adaptNew(target, type);</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">			if (ret != null) {</span>
+<span class="nc" id="L73">				return ret;</span>
+			}
+<span class="nc" id="L75">		}</span>
+<span class="nc" id="L76">		return null;</span>
+	}
+
+	@Override
+	public void adaptAllNew(Notifier notifier) {
+<span class="nc bnc" id="L81" title="All 2 branches missed.">		for (AdapterFactory af: match(notifier, null)) {</span>
+<span class="nc" id="L82">			af.adaptAllNew(notifier);</span>
+<span class="nc" id="L83">		}</span>
+<span class="nc" id="L84">	}</span>
+
+	@Override
+	public ComposeableAdapterFactory getRootAdapterFactory() {
+<span class="nc bnc" id="L88" title="All 2 branches missed.">		return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();</span>
+	}
+
+	@Override
+	public void setParentAdapterFactory(ComposedAdapterFactory parentAdapterFactory) {
+<span class="nc" id="L93">		this.parentAdapterFactory = parentAdapterFactory;		</span>
+<span class="nc" id="L94">	}</span>
+	
+	protected List&lt;AdapterFactory&gt; match(Object obj, Object type) {
+<span class="nc" id="L97">		return children</span>
+<span class="nc" id="L98">			.stream()</span>
+<span class="nc bnc" id="L99" title="All 6 branches missed.">			.filter(ae -&gt; ae.match(obj) &amp;&amp; (type == null || ae.adapterFactory.isFactoryForType(type)))</span>
+<span class="nc" id="L100">			.sorted((a,b) -&gt; cmpDistance((EObject) obj, a.eClass, b.eClass))</span>
+<span class="nc" id="L101">			.map(ae -&gt; ae.adapterFactory)</span>
+<span class="nc" id="L102">			.collect(Collectors.toList());</span>
+	}
+	
+	protected int cmpDistance(EObject obj, EClass a, EClass b) {
+<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (a == b) {</span>
+<span class="nc" id="L107">			return 0;</span>
+		}
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		if (a.equals(b)) {</span>
+<span class="nc" id="L110">			return 0;</span>
+		}
+<span class="nc bnc" id="L112" title="All 2 branches missed.">		if (a.isSuperTypeOf(b)) {</span>
+<span class="nc" id="L113">			return 1;</span>
+		}
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (b.isSuperTypeOf(a)) {</span>
+<span class="nc" id="L116">			return -1;</span>
+		}
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (obj == null) {</span>
+<span class="nc" id="L119">			return 0; // Does not matter.</span>
+		}
+<span class="nc" id="L121">		EClass eClass = obj.eClass();</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (eClass.equals(a)) {</span>
+<span class="nc" id="L123">			return -1;</span>
+		}
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (eClass.equals(b)) {</span>
+<span class="nc" id="L126">			return 1;</span>
+		}
+<span class="nc" id="L128">		return distance(eClass, a) - distance(eClass, b);</span>
+	}
+	
+	protected int distance(EClass sub, EClass sup) {
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (sub.equals(sup)) {</span>
+<span class="nc" id="L133">			return 0;</span>
+		}
+<span class="nc" id="L135">		int ret = Integer.MAX_VALUE;</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (EClass isup: sub.getESuperTypes()) {</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">			if (isup.equals(sup)) {</span>
+<span class="nc" id="L138">				return 1;</span>
+			}
+<span class="nc bnc" id="L140" title="All 2 branches missed.">			if (sup.isSuperTypeOf(isup)) {</span>
+<span class="nc" id="L141">				ret = Math.min(ret, distance(isup, sup)); </span>
+			}
+<span class="nc" id="L143">		}</span>
+<span class="nc" id="L144">		return ret;</span>
+	}
+		
+	private class AdapterFactoryEntry {
+		
+		EClass eClass;
+		AdapterFactory adapterFactory;
+		
+<span class="nc" id="L152">		AdapterFactoryEntry(EClass eClass, AdapterFactory adapterFactory) {</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">			this.eClass = eClass == null ? EcorePackage.Literals.EOBJECT : eClass;</span>
+<span class="nc" id="L154">			this.adapterFactory = adapterFactory;</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">			if (adapterFactory instanceof ComposeableAdapterFactory) {</span>
+<span class="nc" id="L156">				((ComposeableAdapterFactory) adapterFactory).setParentAdapterFactory(ComposedAdapterFactory.this);</span>
+			}
+<span class="nc" id="L158">		}</span>
+		
+		boolean match(Object obj) {
+<span class="nc bnc" id="L161" title="All 8 branches missed.">			return obj == null || (obj instanceof EObject &amp;&amp; (eClass == null || eClass.isInstance(obj)));</span>
+		}				
+		
+	}
+	
+<span class="nc" id="L166">	private List&lt;AdapterFactoryEntry&gt; children = new ArrayList&lt;&gt;();</span>
+	
+	public void registerAdapterFactory(ComposeableAdapterFactory child) {
+<span class="nc bnc" id="L169" title="All 2 branches missed.">		for (EClass eClass: child.getEClasses()) {</span>
+<span class="nc" id="L170">			children.add(new AdapterFactoryEntry(eClass, child));			</span>
+<span class="nc" id="L171">		}</span>
+<span class="nc" id="L172">	}</span>
+
+	/**
+	 * Registers a factory for specified {@link EClass}es in the package.
+	 * If no EClasses are specified then the adapter factory is considered to be
+	 * applicable to all classes.
+	 * @param child
+	 * @param eClasses
+	 */
+	public void registerAdapterFactory(AdapterFactory child, EClass... eClasses) {
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (child instanceof ComposedAdapterFactory) {</span>
+<span class="nc" id="L183">			throw new IllegalArgumentException(&quot;Composeable adapter factories shall be registered with registerAdapterFactory(ComposeableAdapterFactory child) method to avoid ambiguity in eClasses&quot;);</span>
+		}
+<span class="nc bnc" id="L185" title="All 2 branches missed.">		if (eClasses.length == 0) {</span>
+<span class="nc" id="L186">			children.add(new AdapterFactoryEntry(null, child));</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		} else for (EClass eClass: eClasses) {</span>
+<span class="nc" id="L188">			children.add(new AdapterFactoryEntry(eClass, child));			</span>
+		}
+<span class="nc" id="L190">		factoryForTypeCache.clear();</span>
+<span class="nc" id="L191">	}</span>
+
+	@Override
+	public Collection&lt;EClass&gt; getEClasses() {
+<span class="nc" id="L195">		Set&lt;EClass&gt; ret = new HashSet&lt;&gt;();</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		for (AdapterFactoryEntry child: children) {</span>
+<span class="nc" id="L197">			ret.add(child.eClass);</span>
+<span class="nc" id="L198">		}</span>
+<span class="nc" id="L199">		return ret;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

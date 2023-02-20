@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TagSupplierFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Bootstrap Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.bootstrap.gen</a> &gt; <span class="el_source">TagSupplierFactoryAdapter.java</span></div><h1>TagSupplierFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.bootstrap.gen;
+
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.nasdanika.common.Consumer;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.Function;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.model.bootstrap.Appearance;
+
+public class TagSupplierFactoryAdapter&lt;T extends org.nasdanika.html.model.bootstrap.Tag&gt; extends org.nasdanika.html.model.html.gen.TagSupplierFactoryAdapter&lt;T&gt; {
+	
+	public TagSupplierFactoryAdapter(T tag, AdapterFactory adapterFactory) {
+<span class="fc" id="L13">		super(tag, adapterFactory);</span>
+<span class="fc" id="L14">	}</span>
+	
+	@Override
+	protected Function&lt;org.nasdanika.html.Tag, org.nasdanika.html.Tag&gt; createConfigureFunction(Context context) {
+<span class="fc" id="L18">		Appearance appearance = getTarget().getAppearance();</span>
+<span class="fc bfc" id="L19" title="All 2 branches covered.">		if (appearance == null) {</span>
+<span class="fc" id="L20">			return super.createConfigureFunction(context);</span>
+		}
+		
+<span class="fc" id="L23">		Consumer&lt;org.nasdanika.html.Tag&gt; appearanceConsumer = EObjectAdaptable.adaptToConsumerFactoryNonNull(appearance, org.nasdanika.html.Tag.class).create(context);</span>
+<span class="fc" id="L24">		return super.createConfigureFunction(context).then(appearanceConsumer.asFunction());</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

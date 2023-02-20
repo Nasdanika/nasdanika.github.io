@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PageImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Java API for working with Drawio diagrams</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.drawio.impl</a> &gt; <span class="el_source">PageImpl.java</span></div><h1>PageImpl.java</h1><pre class="source lang-java linenums">package org.nasdanika.drawio.impl;
+
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.eclipse.emf.common.util.URI;
+import org.nasdanika.drawio.Document;
+import org.nasdanika.drawio.Element;
+import org.nasdanika.drawio.Model;
+import org.nasdanika.drawio.Page;
+import org.xml.sax.SAXException;
+
+
+class PageImpl extends ElementImpl implements Page {
+	
+	static final String ATTRIBUTE_NAME = &quot;name&quot;;
+	private ModelImpl model;
+	private Document document;
+	
+<span class="fc" id="L26">	PageImpl(Document document, org.w3c.dom.Element element) throws IOException, ParserConfigurationException, SAXException {</span>
+<span class="fc" id="L27">		this.document = document;</span>
+<span class="fc" id="L28">		this.element = element;</span>
+<span class="fc" id="L29">		List&lt;org.w3c.dom.Element&gt; modelElements = DocumentImpl.getChildrenElements(element, &quot;mxGraphModel&quot;);</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">		if (modelElements.isEmpty()) {</span>
+<span class="fc" id="L31">			model = new ModelImpl(this, element.getTextContent());</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">		} else if (modelElements.size() == 1) {</span>
+<span class="fc" id="L33">			model = new ModelImpl(this, modelElements.get(0));</span>
+		} else {
+<span class="nc" id="L35">			throw new IllegalArgumentException(&quot;Expected one model element, got &quot; + modelElements.size());</span>
+		}
+<span class="fc" id="L37">	}</span>
+	
+	@Override
+	public Document getDocument() {
+<span class="fc" id="L41">		return document;</span>
+	}
+	
+	@Override
+	protected List&lt;? extends Element&gt; getChildren() {
+<span class="fc" id="L46">		return Collections.singletonList(getModel());</span>
+	}
+
+	@Override
+	public Model getModel() {
+<span class="fc" id="L51">		return model;</span>
+	}
+
+	@Override
+	public String getName() {
+<span class="fc" id="L56">		return element.getAttribute(ATTRIBUTE_NAME);</span>
+	}
+
+	@Override
+	public void setName(String name) {
+<span class="fc" id="L61">		element.setAttribute(ATTRIBUTE_NAME, name);</span>
+<span class="fc" id="L62">	}</span>
+	
+	/**
+	 * Saves as compressed if there are no mxGraphModel child elements.
+	 * @throws TransformerException
+	 * @throws IOException
+	 */
+	void save() throws TransformerException, IOException {
+<span class="nc" id="L70">		save(DocumentImpl.getChildrenElements(element, &quot;mxGraphModel&quot;).isEmpty());</span>
+<span class="nc" id="L71">	}</span>
+
+	/**
+	 * Saves any modifications. Doesn't do anything of compress null and uncompressed documents.
+	 * For compressed documents replaces texts with compressed model string
+	 * @param compress
+	 * @throws TransformerException 
+	 */
+	void save(Boolean compress) throws TransformerException, IOException {		
+<span class="fc bfc" id="L80" title="All 2 branches covered.">		if (model.getElement().getParentNode() == element) {</span>
+			// Uncompressed - no action is required is keeping it uncompressed
+<span class="fc bfc" id="L82" title="All 4 branches covered.">			if (compress != null &amp;&amp; compress) {				</span>
+				// Saving uncompressed model as compressed				
+<span class="fc" id="L84">				element.removeChild(model.getElement());</span>
+<span class="fc" id="L85">				element.setTextContent(model.compress());			    </span>
+			}						
+		} else {
+			// Compressed
+<span class="fc bfc" id="L89" title="All 4 branches covered.">			if (compress == null || compress) {</span>
+<span class="fc" id="L90">				element.setTextContent(model.compress());			    </span>
+			} else {
+<span class="fc" id="L92">				element.setTextContent(&quot;&quot;);</span>
+<span class="fc" id="L93">				org.w3c.dom.Element modelElement = model.getElement();</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">				if (modelElement.getOwnerDocument() != element.getOwnerDocument()) {</span>
+<span class="fc" id="L95">					modelElement = (org.w3c.dom.Element) element.getOwnerDocument().importNode(modelElement, true);</span>
+<span class="fc" id="L96">					element.appendChild(modelElement);</span>
+<span class="fc" id="L97">					model = new ModelImpl(this, modelElement);</span>
+				}
+			}			
+		}		
+<span class="fc" id="L101">	}	</span>
+	
+	@Override
+	public String getId() {
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		return element.hasAttribute(ATTRIBUTE_ID) ? element.getAttribute(ATTRIBUTE_ID) : null;</span>
+	}
+	
+	@Override
+	public URI getURI() {
+<span class="nc" id="L110">		URI documentURI = getDocument().getURI();</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		return documentURI == null ? URI.createURI(getId()) : documentURI.appendFragment(URLEncoder.encode(getName(), StandardCharsets.UTF_8));</span>
+	}
+		
+	@Override
+	public String toString() {
+<span class="fc" id="L116">		return super.toString() + &quot; &quot; + getName();</span>
+	}
+	
+	@Override
+	protected String getMarkerPosition() {
+<span class="nc" id="L121">		return &quot;name: &quot; + getName() + &quot;, id: &quot; + getId();</span>
+	}	
+	
+	@Override
+	protected String getMarkerLocation() {
+<span class="nc" id="L126">		return ((DocumentImpl) getDocument()).getMarkerLocation();</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

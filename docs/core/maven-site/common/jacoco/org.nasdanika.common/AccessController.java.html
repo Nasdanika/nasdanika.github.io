@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AccessController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">AccessController.java</span></div><h1>AccessController.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+import org.eclipse.emf.ecore.EOperation;
+
+/**
+ * Interface to adapt to for access decisions.
+ * @author Pavel Vlasov
+ *
+ */
+public interface AccessController extends Composeable&lt;AccessController&gt; {
+	
+	public static final String PERMISSION_READ = &quot;read&quot;;
+
+	public static final String PERMISSION_CREATE = &quot;create&quot;;
+
+	public static final String PERMISSION_DELETE = &quot;delete&quot;;
+
+	public static final String PERMISSION_UPDATE = &quot;update&quot;;
+
+	public static final String PERMISSION_EXECUTE = &quot;execute&quot;;
+
+	/**
+	 * Access controller which permits all actions.
+	 */
+<span class="nc" id="L25">	AccessController ALLOW_ALL = (action, qualifier, context) -&gt; true; </span>
+	
+	/**
+	 * Access controller which permits nothing.
+	 */
+<span class="nc" id="L30">	AccessController DENY_ALL = (action, qualifier, context) -&gt; false; </span>
+	
+	/**
+	 * Checks for a permission to perform an action for a given qualifier with a given context.
+	 * @param action Action to perform. E.g. &quot;read&quot; or &quot;execute&quot;, &quot;transfer-funds&quot;.
+	 * @param qualifier Qualifier, e.g. &quot;firstName&quot; for read or &quot;transferFunds&quot; for execute.
+	 * @param context Context for context-conditional permissions, e.g. for execute transferFunds it may contain &quot;amount&quot; key with transfer amount as a value, or more generally a map of parameter names to argument 
+	 * values for {@link EOperation}. 
+	 * @return
+	 */
+	boolean hasPermission(String action, String qualifier, Context context);
+	
+	/**
+	 * Checks for a permission to perform an action for a given qualifier with empty context.
+	 * @param action
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean hasPermission(String action, String qualifier) {
+<span class="nc" id="L49">		return hasPermission(action, qualifier, null);</span>
+	}
+	
+	/**
+	 * Checks &quot;read&quot; permissions
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean canRead(String qualifier, Context context) {
+<span class="nc" id="L58">		return hasPermission(PERMISSION_READ, qualifier, context);</span>
+	}	
+	
+	/**
+	 * Checks &quot;read&quot; permissions
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean canRead(String qualifier) {
+<span class="nc" id="L67">		return canRead(qualifier, null);</span>
+	}	
+	
+	/**
+	 * Checks &quot;create&quot; permission
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean canCreate(String qualifier, Context context) {
+<span class="nc" id="L76">		return hasPermission(PERMISSION_CREATE, qualifier, context);</span>
+	}
+	
+	/**
+	 * Checks &quot;create&quot; permissions
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean canCreate(String qualifier) {
+<span class="nc" id="L85">		return canCreate(qualifier, null);</span>
+	}	
+	
+	/**
+	 * Checks &quot;delete&quot; permission
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean canDelete(String qualifier, Context context) {
+<span class="nc" id="L94">		return hasPermission(PERMISSION_DELETE, qualifier, context);</span>
+	}
+	
+	/**
+	 * Checks &quot;delete&quot; permissions
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean canDelete(String qualifier) {
+<span class="nc" id="L103">		return canDelete(qualifier, null);</span>
+	}	
+	
+	/**
+	 * Checks &quot;update&quot; permission
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean canUpdate(String qualifier, Context context) {
+<span class="nc" id="L112">		return hasPermission(PERMISSION_UPDATE, qualifier, context);</span>
+	}
+	
+	/**
+	 * Checks &quot;update&quot; permissions
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean canUpdate(String qualifier) {
+<span class="nc" id="L121">		return canUpdate(qualifier, null);</span>
+	}	
+	
+	/**
+	 * Checks &quot;execute&quot; permission
+	 * @param qualifier
+	 * @param context
+	 * @return
+	 */
+	default boolean canExecute(String qualifier, Context context) {
+<span class="nc" id="L131">		return hasPermission(PERMISSION_EXECUTE, qualifier, context);</span>
+	}
+
+	/**
+	 * Checks &quot;execute&quot; permissions
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean canExecute(String qualifier) {
+<span class="nc" id="L140">		return canExecute(qualifier, null);</span>
+	}	
+	
+	/**
+	 * @param enclosingContext Context to fall-back to.
+	 * @return Access controller which chains the context passed to the &lt;code&gt;hasPermission(action, qualifier, context)&lt;/code&gt; with the enclosing context passed to this method. 
+	 */
+	default AccessController contextify(Context enclosingContext) {
+<span class="nc bnc" id="L148" title="All 4 branches missed.">		return enclosingContext == null ? this : (action,qualifier,context) -&gt; hasPermission(action, qualifier, context == null ? enclosingContext : context.compose(enclosingContext)); </span>
+	}
+	
+	/**
+	 * Composes with ``and()``.
+	 */
+	@Override
+	default AccessController compose(AccessController other) {
+<span class="nc" id="L156">		return and(other);</span>
+	}
+	
+	/**
+	 * @param accessControllers
+	 * @return An &quot;intersection&quot; access controller which allows a permission only if all elements allow it. In the case of an empty list all permissions are denied.
+	 */
+	default AccessController and(AccessController other) {
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		if (other == null) {</span>
+<span class="nc" id="L165">			return this;</span>
+		}
+		
+<span class="nc" id="L168">		return (action, qualifier, context) -&gt; {</span>
+<span class="nc bnc" id="L169" title="All 4 branches missed.">			return AccessController.this.hasPermission(action, qualifier, context) &amp;&amp; other.hasPermission(action, qualifier, context); </span>
+		}; 
+	}
+		
+	/**
+	 * @param accessControllers
+	 * @return A &quot;union&quot; access controller which allows a permission if any of elements allows. In the case of an empty list all permissions are denied.
+	 */
+	default AccessController or(AccessController other) {
+<span class="nc bnc" id="L178" title="All 2 branches missed.">		if (other == null) {</span>
+<span class="nc" id="L179">			return this;</span>
+		}
+		
+<span class="nc" id="L182">		return (action, qualifier, context) -&gt; {</span>
+<span class="nc bnc" id="L183" title="All 4 branches missed.">			return AccessController.this.hasPermission(action, qualifier, context) || other.hasPermission(action, qualifier, context); </span>
+		}; 
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

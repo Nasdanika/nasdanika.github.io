@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BlockSupplierFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Exec Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.gen</a> &gt; <span class="el_source">BlockSupplierFactoryAdapter.java</span></div><h1>BlockSupplierFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.exec.gen;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.ExecutionException;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Reference;
+import org.nasdanika.common.Supplier;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.Util;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.exec.Block;
+
+public class BlockSupplierFactoryAdapter extends BlockExecutionParticipantAdapter implements SupplierFactory&lt;InputStream&gt; {
+	
+	public BlockSupplierFactoryAdapter(Block block) {
+<span class="fc" id="L25">		super(block);</span>
+<span class="fc" id="L26">	}</span>
+	
+	@Override
+	public boolean isAdapterForType(Object type) {
+<span class="nc bnc" id="L30" title="All 2 branches missed.">		return type == SupplierFactory.class;</span>
+	}
+	
+	private static class BlockSupplier extends BlockExecutionParticipant&lt;Supplier&lt;InputStream&gt;&gt; implements Supplier&lt;InputStream&gt; {
+	
+		private Reference&lt;Exception&gt; eRef;
+	
+		BlockSupplier(
+				Supplier&lt;InputStream&gt; tryParticipant,
+				Supplier&lt;InputStream&gt; catchParticipant,
+				Supplier&lt;InputStream&gt; finallyParticipant,
+				Reference&lt;Exception&gt; eRef) {
+<span class="fc" id="L42">			super(tryParticipant, catchParticipant, finallyParticipant);</span>
+<span class="fc" id="L43">			this.eRef = eRef;</span>
+<span class="fc" id="L44">		}</span>
+	
+		private InputStream executeTryCatch(ProgressMonitor progressMonitor) {
+			try {
+<span class="fc" id="L48">				return tryParticipant.splitAndExecute(progressMonitor);</span>
+<span class="fc" id="L49">			} catch (Exception e) {</span>
+<span class="fc" id="L50">				tryParticipant.splitAndRollback(progressMonitor);</span>
+<span class="fc" id="L51">				eRef.set(e);</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">				if (catchParticipant == null) {</span>
+<span class="nc" id="L53">					throw e;</span>
+				}
+<span class="fc" id="L55">				return catchParticipant.splitAndExecute(progressMonitor);</span>
+			}			
+		}
+	
+		@Override
+		public InputStream execute(ProgressMonitor progressMonitor) {
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">			if (finallyParticipant == null) {</span>
+<span class="nc" id="L62">				return executeTryCatch(progressMonitor);</span>
+			} 
+			
+<span class="fc" id="L65">			InputStream tcResult = null;</span>
+<span class="fc" id="L66">			Exception ex = null;</span>
+<span class="fc" id="L67">			InputStream finallyResult = null;</span>
+			try {
+<span class="fc" id="L69">				tcResult = executeTryCatch(progressMonitor);</span>
+<span class="nc" id="L70">			} catch (Exception e) {</span>
+<span class="nc" id="L71">				ex = e;</span>
+			} finally {
+<span class="fc" id="L73">				finallyResult = finallyParticipant.splitAndExecute(progressMonitor);</span>
+			}
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">			if (ex == null) {</span>
+				try {
+<span class="fc" id="L77">					return Util.join(tcResult, finallyResult);</span>
+<span class="nc" id="L78">				} catch (IOException e) {</span>
+<span class="nc" id="L79">					throw new ExecutionException(e, this);</span>
+				}
+			}
+<span class="nc" id="L82">			throw new ExecutionException(ex, this);			</span>
+		}
+		
+	}	
+	
+	@Override
+	public Supplier&lt;InputStream&gt; create(Context context) {
+<span class="fc" id="L89">		Reference&lt;Exception&gt; eRef = new Reference&lt;Exception&gt;();</span>
+<span class="fc" id="L90">		Block target = (Block) getTarget();</span>
+		
+<span class="fc" id="L92">		Collection&lt;SupplierFactory&lt;InputStream&gt;&gt; tryBlock = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		for (EObject tbe: target.getTry()) {</span>
+<span class="fc" id="L94">			tryBlock.add(Objects.requireNonNull(EObjectAdaptable.adaptToSupplierFactory(tbe, InputStream.class), &quot;Cannot adapt to SupplierFactory: &quot; + tbe));</span>
+<span class="fc" id="L95">		}</span>
+<span class="fc" id="L96">		Supplier&lt;InputStream&gt;  trySupplier = Util.asInputStreamSupplierFactory(tryBlock).create(context);</span>
+		
+<span class="fc" id="L98">		Supplier&lt;InputStream&gt; catchSupplier = null; 		</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">		if (!target.getCatch().isEmpty()) {</span>
+<span class="fc" id="L100">			List&lt;SupplierFactory&lt;InputStream&gt;&gt; catchBlock = target.getCatch().stream().map(e -&gt; Objects.requireNonNull(EObjectAdaptable.adaptToSupplierFactory(e, InputStream.class), &quot;Cannot adapt to SupplierFactory: &quot; + e)).collect(Collectors.toList());</span>
+<span class="fc" id="L101">			catchSupplier = Util.asInputStreamSupplierFactory(catchBlock).contextify(ctx -&gt; createCatchContextSupplier(ctx, eRef)).create(context);</span>
+		}
+		
+<span class="fc" id="L104">		Supplier&lt;InputStream&gt;  finallySupplier = null;</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (!target.getFinally().isEmpty()) {</span>
+<span class="fc" id="L106">			List&lt;SupplierFactory&lt;InputStream&gt;&gt; finallyBlock = target.getFinally().stream().map(e -&gt; Objects.requireNonNull(EObjectAdaptable.adaptToSupplierFactory(e, InputStream.class), &quot;Cannot adapt to SupplierFactory: &quot; + e)).collect(Collectors.toList());</span>
+<span class="fc" id="L107">			finallySupplier = Util.asInputStreamSupplierFactory(finallyBlock).contextify(ctx -&gt; createCatchContextSupplier(ctx, eRef)).create(context);</span>
+		}		
+		
+<span class="fc" id="L110">		return new BlockSupplier(trySupplier, catchSupplier, finallySupplier, eRef);		</span>
+	}	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

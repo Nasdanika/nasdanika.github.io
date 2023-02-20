@@ -1,0 +1,1111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SiteGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Application Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.app.gen</a> &gt; <span class="el_source">SiteGenerator.java</span></div><h1>SiteGenerator.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.app.gen;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.apache.commons.text.StringEscapeUtils;
+import org.eclipse.emf.common.util.ECollections;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.DefaultConverter;
+import org.nasdanika.common.Diagnostic;
+import org.nasdanika.common.DiagnosticException;
+import org.nasdanika.common.MutableContext;
+import org.nasdanika.common.NasdanikaException;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.PropertyComputer;
+import org.nasdanika.common.Status;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.drawio.Connection;
+import org.nasdanika.drawio.Layer;
+import org.nasdanika.drawio.LayerElement;
+import org.nasdanika.drawio.Node;
+import org.nasdanika.drawio.Page;
+import org.nasdanika.drawio.comparators.LabelModelElementComparator;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.exec.content.ContentFactory;
+import org.nasdanika.exec.content.Text;
+import org.nasdanika.exec.resources.Container;
+import org.nasdanika.exec.resources.ReconcileAction;
+import org.nasdanika.exec.resources.ResourcesFactory;
+import org.nasdanika.graph.Element;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
+import org.nasdanika.html.emf.NcoreActionBuilder;
+import org.nasdanika.html.jstree.JsTreeFactory;
+import org.nasdanika.html.jstree.JsTreeNode;
+import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.Link;
+import org.nasdanika.html.model.html.gen.ContentConsumer;
+import org.nasdanika.ncore.NamedElement;
+import org.nasdanika.ncore.NcorePackage;
+import org.nasdanika.ncore.util.NcoreUtil;
+import org.nasdanika.persistence.Marker;
+import org.nasdanika.resources.FileSystemContainer;
+import org.w3c.dom.Attr;
+import org.w3c.dom.NamedNodeMap;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.DumperOptions.FlowStyle;
+import org.yaml.snakeyaml.Yaml;
+
+import com.redfin.sitemapgenerator.ChangeFreq;
+
+<span class="fc" id="L94">public class SiteGenerator {</span>
+	
+	/**
+	 * Creates a resource set for loading models.
+	 * Override to customize, e.g. register {@link EPackage}'s and adapter factories.
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
+<span class="fc" id="L103">		return Util.createResourceSet(context, progressMonitor);</span>
+	}	
+	
+	/**
+	 * Generates a resource model from an action model.
+	 * @throws IOException 
+	 * @throws Exception
+	 */
+	protected Resource generateResourceModel(
+			Action root, 
+			Map&lt;EObject, Label&gt; registry,
+			org.nasdanika.html.model.bootstrap.Page pageTemplate,
+			URI resourceURI, 
+			String containerName,
+			File resourceWorkDir,
+			BiConsumer&lt;String, String&gt; representationLinkResolutionErrorConsumer,						
+			Context context, 
+			ProgressMonitor progressMonitor) throws IOException {
+		
+<span class="fc" id="L122">		java.util.function.Consumer&lt;Diagnostic&gt; diagnosticConsumer = diagnostic -&gt; {</span>
+<span class="pc bpc" id="L123" title="2 of 4 branches missed.">			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {</span>
+<span class="nc" id="L124">				System.err.println(&quot;***********************&quot;);</span>
+<span class="nc" id="L125">				System.err.println(&quot;*      Diagnostic     *&quot;);</span>
+<span class="nc" id="L126">				System.err.println(&quot;***********************&quot;);</span>
+<span class="nc" id="L127">				diagnostic.dump(System.err, 4, Status.FAIL, Status.ERROR);</span>
+			}
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">			if (diagnostic.getStatus() != Status.SUCCESS) {</span>
+<span class="nc" id="L130">				throw new DiagnosticException(diagnostic);</span>
+			};
+<span class="fc" id="L132">		};</span>
+		
+<span class="fc" id="L134">		Container container = ResourcesFactory.eINSTANCE.createContainer();</span>
+<span class="fc" id="L135">		container.setName(containerName);</span>
+<span class="fc" id="L136">		container.setReconcileAction(ReconcileAction.OVERWRITE);</span>
+		
+<span class="fc" id="L138">		ResourceSet resourceSet = createResourceSet(context, progressMonitor);</span>
+<span class="fc" id="L139">		Resource modelResource = resourceSet.createResource(resourceURI);</span>
+<span class="fc" id="L140">		modelResource.getContents().add(container);</span>
+		
+		// Generating content file from action content 
+		
+<span class="fc" id="L144">		File pagesDir = new File(resourceWorkDir, &quot;pages&quot;);</span>
+<span class="fc" id="L145">		pagesDir.mkdirs();</span>
+		
+<span class="fc" id="L147">		JSONObject semanticMap = semanticMap(root, registry, context);</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">		if (semanticMap != null) {</span>
+<span class="fc" id="L149">			org.nasdanika.exec.resources.File semanticMapFile = container.getFile(&quot;semantic-map.json&quot;);</span>
+<span class="fc" id="L150">			Text semanticMapText = ContentFactory.eINSTANCE.createText();</span>
+<span class="fc" id="L151">			semanticMapText.setContent(semanticMap.toString(4));</span>
+<span class="fc" id="L152">			semanticMapFile.getContents().add(semanticMapText);</span>
+		}
+		
+<span class="fc" id="L155">		Util.generateSite(</span>
+				root, 
+				pageTemplate,
+				container,
+<span class="fc" id="L159">				contentProviderContext -&gt; (cAction, uriResolver, pMonitor) -&gt; getActionContent(cAction, semanticMapURIResolver(uriResolver), registry, resourceWorkDir, contentProviderContext, diagnosticConsumer, representationLinkResolutionErrorConsumer, pMonitor),</span>
+<span class="fc" id="L160">				contentProviderContext -&gt; (page, baseURI, uriResolver, pMonitor) -&gt; getPageContent(page, baseURI, semanticMapURIResolver(uriResolver), pagesDir, contentProviderContext, progressMonitor),</span>
+<span class="fc" id="L161">				Context.singleton(&quot;semantic-map&quot;, semanticMap.toString()).compose(context),</span>
+				progressMonitor);
+		
+<span class="fc" id="L164">		modelResource.save(null);</span>
+		
+		// Page model to XML conversion
+<span class="fc" id="L167">		ResourceSet pageResourceSet = new ResourceSetImpl();</span>
+<span class="fc" id="L168">		pageResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());			</span>
+<span class="fc" id="L169">		pageResourceSet.getAdapterFactories().add(new AppAdapterFactory());</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">		for (File pageFile: pagesDir.listFiles(f -&gt; f.getName().endsWith(&quot;.xml&quot;))) {</span>
+<span class="fc" id="L171">			URI pageURI = URI.createFileURI(pageFile.getCanonicalPath());</span>
+<span class="fc" id="L172">			Resource pageEResource = pageResourceSet.getResource(pageURI, true);</span>
+<span class="fc" id="L173">			SupplierFactory&lt;InputStream&gt; contentFactory = org.nasdanika.common.Util.asInputStreamSupplierFactory(pageEResource.getContents());			</span>
+<span class="fc" id="L174">			try (InputStream contentStream = org.nasdanika.common.Util.call(contentFactory.create(context), progressMonitor, diagnosticConsumer, Status.FAIL, Status.ERROR)) {</span>
+<span class="fc" id="L175">				Files.copy(contentStream, new File(pageFile.getCanonicalPath().replace(&quot;.xml&quot;, &quot;.html&quot;)).toPath(), StandardCopyOption.REPLACE_EXISTING);</span>
+<span class="fc" id="L176">				progressMonitor.worked(1, &quot;[Page xml -&gt; html] &quot; + pageFile.getName());</span>
+			}
+		}
+		
+<span class="fc" id="L180">		return modelResource;</span>
+	}
+	
+	protected BiFunction&lt;Label, URI, URI&gt; semanticMapURIResolver(BiFunction&lt;Label, URI, URI&gt; uriResolver) {		
+<span class="fc" id="L184">		return (label, base) -&gt; {</span>
+<span class="fc" id="L185">			URI ret = uriResolver.apply(label, base);</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">			return ret == null ? resolveSemanticMapping(label, base) : ret;</span>
+		};
+	}
+	
+	protected boolean isSemanticMapLink(Link link) {
+<span class="nc" id="L191">		return false;</span>
+	}
+
+	/**
+	 * Resolves URI from a semantic map (external definitions)
+	 * @param label
+	 * @param base
+	 * @return
+	 */
+	protected URI resolveSemanticMapping(Label label, URI base) {
+<span class="pc bpc" id="L201" title="1 of 4 branches missed.">		if (label instanceof Link &amp;&amp; isSemanticMapLink((Link) label)) {</span>
+<span class="fc" id="L202">			String linkLocation = ((Link) label).getLocation();</span>
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">			if (!org.nasdanika.common.Util.isBlank(linkLocation)) {</span>
+<span class="fc" id="L204">				URI locationURI = URI.createURI(linkLocation);</span>
+<span class="pc bpc" id="L205" title="2 of 4 branches missed.">				return base == null || locationURI == null ? locationURI : locationURI.deresolve(base, true, true, true);</span>
+			}
+		}
+<span class="fc" id="L208">		return null;</span>
+	}
+
+	/**
+	 * Creates a semantic map of semantic URI's to text, tooltip, and location of pages corresponding to the URI.
+	 * Override to create aggregated semantic maps.
+	 * @param root
+	 * @param registry
+	 * @param context
+	 * @return
+	 */
+	protected JSONObject semanticMap(Action root, Map&lt;EObject, Label&gt; registry, Context context) {
+		// Semantic map
+<span class="fc" id="L221">		JSONObject semanticMap = new JSONObject();		</span>
+<span class="fc" id="L222">		URI baseURI = URI.createURI(&quot;temp://&quot; + UUID.randomUUID() + &quot;/&quot; + UUID.randomUUID() + &quot;/&quot;);</span>
+<span class="fc" id="L223">		Context semanticMapContext = Context.singleton(Context.BASE_URI_PROPERTY, baseURI).compose(context);</span>
+<span class="fc" id="L224">		BiFunction&lt;Label, URI, URI&gt; uriResolver = semanticMapURIResolver(org.nasdanika.html.model.app.util.Util.uriResolver(root, semanticMapContext));				</span>
+		
+<span class="fc bfc" id="L226" title="All 2 branches covered.">		for (Entry&lt;EObject, Label&gt; re: registry.entrySet()) {</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">			for (URI uri: NcoreUtil.getUris(re.getKey())) {</span>
+<span class="fc" id="L228">				Label label = re.getValue();</span>
+<span class="fc" id="L229">				JSONObject value = new JSONObject();</span>
+<span class="fc" id="L230">				String labelText = label.getText();</span>
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">				if (!org.nasdanika.common.Util.isBlank(labelText)) {</span>
+<span class="fc" id="L232">					value.put(&quot;text&quot;, labelText);</span>
+				}
+<span class="fc" id="L234">				String labelTooltip = label.getTooltip();</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">				if (!org.nasdanika.common.Util.isBlank(labelTooltip)) {</span>
+<span class="fc" id="L236">					value.put(&quot;tooltip&quot;, labelTooltip);</span>
+				}
+<span class="fc" id="L238">				String labelIcon = label.getIcon();</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">				if (!org.nasdanika.common.Util.isBlank(labelIcon)) {</span>
+<span class="fc" id="L240">					value.put(&quot;icon&quot;, labelIcon);</span>
+				}				
+<span class="fc" id="L242">				URI linkURI = uriResolver.apply(label, baseURI);</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">				if (linkURI != null) {</span>
+<span class="fc" id="L244">					value.put(&quot;location&quot;, linkURI.toString());</span>
+				}
+<span class="fc" id="L246">				JSONObject type = new JSONObject();</span>
+<span class="fc" id="L247">				EClass labelClass = label.eClass();</span>
+<span class="fc" id="L248">				type.put(&quot;name&quot;, labelClass.getName());</span>
+<span class="fc" id="L249">				type.put(&quot;ns-uri&quot;, labelClass.getEPackage().getNsURI());</span>
+<span class="fc" id="L250">				value.put(&quot;type&quot;, type);</span>
+<span class="fc" id="L251">				semanticMap.put(uri.toString(), value);</span>
+<span class="fc" id="L252">			}</span>
+<span class="fc" id="L253">		}</span>
+<span class="fc" id="L254">		return semanticMap;</span>
+	}
+	
+	/**
+	 * Creates a file with .xml extension containing page contents resource model. Creates and returns a resource with .html extension. 
+	 * A later processing step shall convert .xml to .html 
+	 * @param page
+	 * @param baseURI
+	 * @param uriResolver
+	 * @param pagesDir
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected EList&lt;EObject&gt; getPageContent(
+			org.nasdanika.html.model.bootstrap.Page page, 
+			URI baseURI, 
+			BiFunction&lt;Label, URI, URI&gt; uriResolver,
+			File pagesDir,
+			Context contentProviderContext,
+			ProgressMonitor progressMonitor) {
+		
+		try {
+			// Saving a page to .xml and creating a reference to .html; Pages shall be processed from .xml to .html individually.
+<span class="fc" id="L277">			page.setUuid(UUID.randomUUID().toString());</span>
+			
+<span class="fc" id="L279">			ResourceSet pageResourceSet = new ResourceSetImpl();</span>
+<span class="fc" id="L280">			pageResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());			</span>
+<span class="fc" id="L281">			URI pageURI = URI.createFileURI(new File(pagesDir, page.getUuid() + &quot;.xml&quot;).getCanonicalPath());</span>
+<span class="fc" id="L282">			Resource pageEResource = pageResourceSet.createResource(pageURI);</span>
+<span class="fc" id="L283">			pageEResource.getContents().add(page);</span>
+<span class="fc" id="L284">			pageEResource.save(null);</span>
+			
+<span class="fc" id="L286">			org.nasdanika.exec.content.Resource pageResource = ContentFactory.eINSTANCE.createResource();</span>
+<span class="fc" id="L287">			pageResource.setLocation(&quot;pages/&quot; + page.getUuid() + &quot;.html&quot;);</span>
+<span class="fc" id="L288">			progressMonitor.worked(1, &quot;[Page content] &quot; + page.getName() + &quot; -&gt; &quot; + pageResource.getLocation());</span>
+<span class="fc" id="L289">			return ECollections.singletonEList(pageResource);</span>
+<span class="nc" id="L290">		} catch (IOException e) {</span>
+<span class="nc" id="L291">			throw new NasdanikaException(e);</span>
+		}		
+	}
+	
+	/**
+	 * Filters registry entries for inclusion into the search site map tree. 
+	 * This implementation returns true if a semantic element is mapped to an action or one of its descendants is mapped to an active, i.e. an intermediate node is required to put that child into the tree.
+	 * @param semanticElement
+	 * @param label
+	 * @return
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	protected boolean isSiteMapTreeNode(EObject semanticElement, Label label, Map&lt;EObject, Label&gt; registry) {
+		// Action with location
+<span class="fc bfc" id="L305" title="All 4 branches covered.">		if (label instanceof Action &amp;&amp; !org.nasdanika.common.Util.isBlank(((Action) label).getLocation())) {</span>
+<span class="fc" id="L306">			return true;</span>
+		}
+		
+<span class="fc bfc" id="L309" title="All 2 branches covered.">		for (EReference eRef: semanticElement.eClass().getEAllReferences()) {</span>
+<span class="fc bfc" id="L310" title="All 2 branches covered.">			if (isParentReference(eRef)) {</span>
+<span class="fc" id="L311">				Object eRefValue = semanticElement.eGet(eRef);</span>
+<span class="fc bfc" id="L312" title="All 4 branches covered.">				for (Object ve: eRefValue instanceof Collection ? (Collection&lt;Object&gt;) eRefValue : Collections.singletonList(eRefValue)) {</span>
+<span class="fc bfc" id="L313" title="All 4 branches covered.">					if (ve instanceof EObject &amp;&amp; isSiteMapTreeNode((EObject) ve, registry.get(ve), registry)) {</span>
+<span class="fc" id="L314">						return true;</span>
+					}
+<span class="fc" id="L316">				}</span>
+			}
+<span class="fc" id="L318">		}</span>
+				
+<span class="fc" id="L320">		return false;</span>
+	}
+	
+	/**
+	 * Computes site map tree script - context property computer
+	 * @param context
+	 * @return
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	protected String computeSiteMapTreeScript(
+			Context context, 
+			Action action, 
+			BiFunction&lt;Label, URI, URI&gt; uriResolver,
+			Map&lt;EObject, Label&gt; registry,
+			ProgressMonitor progressMonitor) {
+		// TODO - actions from action prototype, e.g. Ecore doc actions, to the tree.
+		
+<span class="fc" id="L337">		JsTreeFactory jsTreeFactory = context.get(JsTreeFactory.class, JsTreeFactory.INSTANCE);</span>
+<span class="fc" id="L338">		int maxLength = 50;</span>
+<span class="fc" id="L339">		Map&lt;EObject, JsTreeNode&gt; nodeMap = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L340" title="All 2 branches covered.">		for (Entry&lt;EObject, Label&gt; re: registry.entrySet().stream().filter(e -&gt; isSiteMapTreeNode(e.getKey(), e.getValue(), registry)).collect(Collectors.toList())) {</span>
+<span class="fc" id="L341">			Label treeLabel = re.getValue();			</span>
+<span class="fc" id="L342">			EObject key = re.getKey();</span>
+<span class="pc bpc" id="L343" title="1 of 2 branches missed.">			if (treeLabel == null) {</span>
+<span class="nc" id="L344">				JsTreeNode jsTreeNode = jsTreeFactory.jsTreeNode();</span>
+				String nodeText;
+<span class="nc bnc" id="L346" title="All 2 branches missed.">				if (key instanceof NamedElement) {</span>
+<span class="nc" id="L347">					nodeText = StringEscapeUtils.escapeHtml4(((NamedElement) key).getName());</span>
+				} else {
+<span class="nc" id="L349">					nodeText = key.eClass().getName();</span>
+				}
+<span class="nc bnc" id="L351" title="All 2 branches missed.">				if (org.nasdanika.common.Util.isBlank(nodeText)) {</span>
+<span class="nc" id="L352">					nodeText = &quot;(blank)&quot;;</span>
+				}
+<span class="nc bnc" id="L354" title="All 2 branches missed.">				jsTreeNode.text(nodeText.length() &gt; maxLength ? nodeText.substring(0, maxLength) + &quot;...&quot; : nodeText);</span>
+<span class="nc" id="L355">				nodeMap.put(key, jsTreeNode);</span>
+<span class="nc" id="L356">			} else {			</span>
+<span class="fc bfc" id="L357" title="All 2 branches covered.">				Label label = treeLabel instanceof Link ? AppFactory.eINSTANCE.createLink() : AppFactory.eINSTANCE.createLabel();</span>
+<span class="fc" id="L358">				String treeLabelText = treeLabel.getText();</span>
+<span class="fc bfc" id="L359" title="All 2 branches covered.">				if (org.nasdanika.common.Util.isBlank(treeLabelText)) {</span>
+<span class="fc" id="L360">					treeLabelText = &quot;(blank)&quot;;</span>
+				}
+<span class="pc bpc" id="L362" title="1 of 2 branches missed.">				label.setText(treeLabelText.length() &gt; maxLength ? treeLabelText.substring(0, maxLength) + &quot;...&quot; : treeLabelText);</span>
+<span class="fc" id="L363">				label.setIcon(treeLabel.getIcon());</span>
+				
+				LabelJsTreeNodeSupplierFactoryAdapter&lt;?&gt; adapter;
+<span class="fc bfc" id="L366" title="All 2 branches covered.">				if (label instanceof Link) {</span>
+<span class="fc" id="L367">					URI bURI = uriResolver.apply(action, (URI) null);</span>
+<span class="fc" id="L368">					URI tURI = uriResolver.apply(treeLabel, bURI);</span>
+<span class="fc bfc" id="L369" title="All 2 branches covered.">					if (tURI != null) {</span>
+<span class="fc" id="L370">						((Link) label).setLocation(tURI.toString());</span>
+					}
+<span class="fc" id="L372">					adapter = new LinkJsTreeNodeSupplierFactoryAdapter&lt;Link&gt;((Link) label);</span>
+<span class="fc" id="L373">				} else {</span>
+<span class="fc" id="L374">					adapter = new LabelJsTreeNodeSupplierFactoryAdapter&lt;&gt;(label);				</span>
+				}
+				
+				try {
+<span class="fc" id="L378">					JsTreeNode jsTreeNode = adapter.create(context).execute(progressMonitor);</span>
+<span class="fc" id="L379">					jsTreeNode.attribute(Util.DATA_NSD_LABEL_UUID_ATTRIBUTE, treeLabel.getUuid());</span>
+<span class="fc" id="L380">					nodeMap.put(key, jsTreeNode);</span>
+<span class="nc" id="L381">				} catch (Exception e) {</span>
+<span class="nc" id="L382">					throw new NasdanikaException(e);</span>
+<span class="fc" id="L383">				}</span>
+			}
+<span class="fc" id="L385">		}</span>
+		
+		// Organizing JsTreeNodes into a tree.
+<span class="fc" id="L388">		Map&lt;EObject, JsTreeNode&gt; roots = new HashMap&lt;&gt;(nodeMap);</span>
+		
+<span class="fc" id="L390">		Map&lt;EObject,Map&lt;String,List&lt;JsTreeNode&gt;&gt;&gt; refMap = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L391" title="All 2 branches covered.">		for (EObject eObj: new ArrayList&lt;&gt;(nodeMap.keySet())) {</span>
+<span class="fc" id="L392">			Map&lt;String,List&lt;JsTreeNode&gt;&gt; rMap = new TreeMap&lt;&gt;();					</span>
+<span class="fc bfc" id="L393" title="All 2 branches covered.">			for (EReference eRef: eObj.eClass().getEAllReferences()) {</span>
+<span class="fc bfc" id="L394" title="All 2 branches covered.">				if (isParentReference(eRef)) {</span>
+<span class="fc" id="L395">					Object eRefValue = eObj.eGet(eRef);</span>
+<span class="fc" id="L396">					List&lt;JsTreeNode&gt; refNodes = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L397" title="All 4 branches covered.">					for (Object ve: eRefValue instanceof Collection ? (Collection&lt;Object&gt;) eRefValue : Collections.singletonList(eRefValue)) {</span>
+<span class="fc" id="L398">						JsTreeNode refNode = roots.remove(ve);</span>
+<span class="fc bfc" id="L399" title="All 2 branches covered.">						if (refNode != null) {</span>
+<span class="fc" id="L400">							refNodes.add(refNode);</span>
+						}
+<span class="fc" id="L402">					}</span>
+<span class="fc bfc" id="L403" title="All 2 branches covered.">					if (!refNodes.isEmpty()) {</span>
+<span class="fc" id="L404">						rMap.put(org.nasdanika.common.Util.nameToLabel(eRef.getName()) , refNodes);</span>
+					}
+				}
+<span class="fc" id="L407">			}</span>
+<span class="fc bfc" id="L408" title="All 2 branches covered.">			if (!rMap.isEmpty()) {</span>
+<span class="fc" id="L409">				refMap.put(eObj, rMap);</span>
+			}
+<span class="fc" id="L411">		}</span>
+		
+<span class="fc bfc" id="L413" title="All 2 branches covered.">		for (Entry&lt;EObject, JsTreeNode&gt; ne: nodeMap.entrySet()) {</span>
+<span class="fc" id="L414">			Map&lt;String, List&lt;JsTreeNode&gt;&gt; refs = refMap.get(ne.getKey());</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">			if (refs != null) {</span>
+<span class="fc bfc" id="L416" title="All 2 branches covered.">				for (Entry&lt;String, List&lt;JsTreeNode&gt;&gt; ref: refs.entrySet()) {</span>
+<span class="fc" id="L417">					JsTreeNode refNode = jsTreeFactory.jsTreeNode();</span>
+<span class="fc" id="L418">					refNode.text(ref.getKey());</span>
+<span class="fc" id="L419">					refNode.children().addAll(ref.getValue());</span>
+<span class="fc" id="L420">					ne.getValue().children().add(refNode);</span>
+<span class="fc" id="L421">				}</span>
+			}
+<span class="fc" id="L423">		}</span>
+		
+<span class="fc" id="L425">		JSONObject jsTree = jsTreeFactory.buildJsTree(roots.values());</span>
+
+<span class="fc" id="L427">		List&lt;String&gt; plugins = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L428">		plugins.add(&quot;state&quot;);</span>
+<span class="fc" id="L429">		plugins.add(&quot;search&quot;);</span>
+<span class="fc" id="L430">		JSONObject searchConfig = new JSONObject();</span>
+<span class="fc" id="L431">		searchConfig.put(&quot;show_only_matches&quot;, true);</span>
+<span class="fc" id="L432">		jsTree.put(&quot;search&quot;, searchConfig);</span>
+<span class="fc" id="L433">		jsTree.put(&quot;plugins&quot;, plugins); 		</span>
+<span class="fc" id="L434">		jsTree.put(&quot;state&quot;, Collections.singletonMap(&quot;key&quot;, &quot;nsd-site-map-tree&quot;));</span>
+		
+		// Deletes selection from state
+<span class="fc" id="L437">		String filter = NavigationPanelConsumerFactoryAdapter.CLEAR_STATE_FILTER + &quot; tree.search.search_callback = (results, node) =&gt; results.split(' ').includes(node.original['data-nsd-label-uuid']);&quot;;</span>
+		
+<span class="fc" id="L439">		return jsTreeFactory.bind(&quot;#nsd-site-map-tree&quot;, jsTree, filter, null).toString();					</span>
+	}
+	
+	protected boolean isParentReference(EReference eReference) {
+<span class="pc bpc" id="L443" title="1 of 4 branches missed.">		return eReference.isContainment() || eReference == NcorePackage.Literals.REFERENCE__TARGET;</span>
+	}
+	
+	/**
+	 * Computes a table of contents for a Drawio element
+	 * @param element
+	 * @param context
+	 * @return
+	 */
+	protected Object computeTableOfContents(org.nasdanika.drawio.Element element, Context context) {
+<span class="nc" id="L453">		HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);</span>
+<span class="nc bnc" id="L454" title="All 2 branches missed.">		if (element instanceof org.nasdanika.drawio.Document) {</span>
+<span class="nc" id="L455">			List&lt;Page&gt; pages = ((org.nasdanika.drawio.Document) element).getPages();</span>
+<span class="nc bnc" id="L456" title="All 2 branches missed.">			if (pages.size() == 1) {</span>
+<span class="nc" id="L457">				return computeTableOfContents(pages.get(0), context);</span>
+			}
+<span class="nc" id="L459">			Tag ol = htmlFactory.tag(TagName.ol);</span>
+<span class="nc bnc" id="L460" title="All 2 branches missed.">			for (Page page: pages) {</span>
+<span class="nc" id="L461">				Tag li = htmlFactory.tag(TagName.li, page.getName(), computeTableOfContents(page, context));</span>
+<span class="nc" id="L462">				ol.content(li);</span>
+<span class="nc" id="L463">			}</span>
+<span class="nc" id="L464">			return ol;</span>
+		}
+		
+<span class="nc bnc" id="L467" title="All 2 branches missed.">		if (element instanceof Page) {</span>
+<span class="nc" id="L468">			List&lt;Layer&gt; layers = new ArrayList&lt;&gt;(((Page) element).getModel().getRoot().getLayers());</span>
+<span class="nc bnc" id="L469" title="All 2 branches missed.">			if (layers.size() == 1) {</span>
+<span class="nc" id="L470">				return computeTableOfContents(layers.get(0), context);</span>
+			}
+<span class="nc" id="L472">			Collections.reverse(layers);</span>
+<span class="nc" id="L473">			Tag ol = htmlFactory.tag(TagName.ol);</span>
+<span class="nc bnc" id="L474" title="All 2 branches missed.">			for (Layer layer: layers) {</span>
+<span class="nc bnc" id="L475" title="All 2 branches missed.">				if (org.nasdanika.common.Util.isBlank(layer.getLabel())) {</span>
+<span class="nc" id="L476">					ol.content(computeTableOfContents(layer, context));</span>
+				} else {
+<span class="nc" id="L478">					Tag li = htmlFactory.tag(</span>
+							TagName.li, 
+<span class="nc bnc" id="L480" title="All 4 branches missed.">							org.nasdanika.common.Util.isBlank(layer.getLink()) || layer.getLinkedPage() != null ? layer.getLabel() : htmlFactory.tag(TagName.a, layer.getLabel()).attribute(&quot;href&quot;, layer.getLink()),</span>
+<span class="nc bnc" id="L481" title="All 2 branches missed.">							org.nasdanika.common.Util.isBlank(layer.getTooltip()) ? &quot;&quot; : &quot; - &quot; + Jsoup.parse(layer.getTooltip()).text() ,</span>
+<span class="nc" id="L482">							computeTableOfContents(layer, context));</span>
+<span class="nc" id="L483">					ol.content(li);								</span>
+				}							
+<span class="nc" id="L485">			}</span>
+<span class="nc" id="L486">			return ol;</span>
+		}
+		
+<span class="nc bnc" id="L489" title="All 2 branches missed.">		if (element instanceof Layer) { // Including nodes</span>
+<span class="nc" id="L490">			List&lt;LayerElement&gt; layerElements = new ArrayList&lt;&gt;(((Layer) element).getElements());</span>
+<span class="nc" id="L491">			Collections.sort(layerElements, new LabelModelElementComparator(false));</span>
+<span class="nc bnc" id="L492" title="All 2 branches missed.">			if (element instanceof org.nasdanika.drawio.Node) {</span>
+<span class="nc" id="L493">				List&lt;LayerElement&gt; outgoingConnections = new ArrayList&lt;&gt;(((org.nasdanika.drawio.Node) element).getOutgoingConnections());</span>
+<span class="nc" id="L494">				Collections.sort(outgoingConnections, new LabelModelElementComparator(false));</span>
+<span class="nc" id="L495">				layerElements.addAll(outgoingConnections);</span>
+			}
+			
+<span class="nc" id="L498">			Tag ol = htmlFactory.tag(TagName.ol);</span>
+<span class="nc bnc" id="L499" title="All 2 branches missed.">			for (LayerElement layerElement: layerElements) {</span>
+<span class="nc bnc" id="L500" title="All 8 branches missed.">				if (layerElement instanceof org.nasdanika.drawio.Node || (layerElement instanceof Connection &amp;&amp; (((Connection) layerElement).getSource() == null || ((Connection) layerElement).getSource() == element))) {</span>
+<span class="nc bnc" id="L501" title="All 2 branches missed.">					if (org.nasdanika.common.Util.isBlank(layerElement.getLabel())) { </span>
+<span class="nc" id="L502">						ol.content(computeTableOfContents(layerElement, context));</span>
+					} else {
+<span class="nc" id="L504">						Tag li = htmlFactory.tag(</span>
+								TagName.li,
+<span class="nc bnc" id="L506" title="All 4 branches missed.">								org.nasdanika.common.Util.isBlank(layerElement.getLink()) || layerElement.getLinkedPage() != null ? Jsoup.parse(layerElement.getLabel()).text() : htmlFactory.tag(TagName.a, Jsoup.parse(layerElement.getLabel()).text()).attribute(&quot;href&quot;, layerElement.getLink()),										</span>
+<span class="nc bnc" id="L507" title="All 2 branches missed.">								org.nasdanika.common.Util.isBlank(layerElement.getTooltip()) ? &quot;&quot; : &quot; - &quot; + Jsoup.parse(layerElement.getTooltip()).text() ,</span>
+<span class="nc" id="L508">										computeTableOfContents(layerElement, context));</span>
+<span class="nc" id="L509">						ol.content(li);								</span>
+					}
+				}
+<span class="nc" id="L512">			}</span>
+<span class="nc" id="L513">			return ol;						</span>
+		}
+		
+<span class="nc" id="L516">		return null; 		</span>
+	}
+	
+	/**
+	 * Computes a table of contents for a Drawio element
+	 * @param element
+	 * @param context
+	 * @return
+	 */
+	protected String computeInfo(Action action, org.nasdanika.drawio.Element element, Context context) {
+<span class="nc" id="L526">		DumperOptions dumperOptions = new DumperOptions();</span>
+<span class="nc" id="L527">		dumperOptions.setDefaultFlowStyle(FlowStyle.BLOCK); dumperOptions.setIndent(4);</span>
+<span class="nc" id="L528">		Map&lt;String, Object&gt; infoMap = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L529">		Map&lt;String, Object&gt; actionMap = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L530" title="All 2 branches missed.">		if (!org.nasdanika.common.Util.isBlank(action.getText())) {</span>
+<span class="nc" id="L531">			actionMap.put(&quot;text&quot;, action.getText());</span>
+		}
+<span class="nc" id="L533">		List&lt;URI&gt; actionURIs = NcoreUtil.getUris(action);</span>
+<span class="nc bnc" id="L534" title="All 2 branches missed.">		if (actionURIs.size() == 1) {</span>
+<span class="nc" id="L535">			actionMap.put(&quot;uri&quot;, actionURIs.get(0).toString());</span>
+<span class="nc bnc" id="L536" title="All 2 branches missed.">		} else if (!actionURIs.isEmpty()) {</span>
+<span class="nc" id="L537">			actionMap.put(&quot;uris&quot;, actionURIs.stream().map(Object::toString).collect(Collectors.toList()));			</span>
+		}
+<span class="nc" id="L539">		EList&lt;org.nasdanika.ncore.Marker&gt; actionMarkers = action.getMarkers();</span>
+<span class="nc bnc" id="L540" title="All 4 branches missed.">		if (actionMarkers != null &amp;&amp; !actionMarkers.isEmpty()) {</span>
+<span class="nc" id="L541">			actionMap.put(&quot;markers&quot;, actionMarkers.stream().map(am -&gt; DefaultConverter.INSTANCE.toMap(am, null)).toArray());</span>
+		}
+<span class="nc" id="L543">		infoMap.put(&quot;action&quot;, actionMap);</span>
+<span class="nc" id="L544">		Map&lt;String, Object&gt; elementInfo = element.accept((el, childInfo) -&gt; this.elementInfo(el, childInfo, actionURIs));</span>
+<span class="nc bnc" id="L545" title="All 2 branches missed.">		if (elementInfo != null) {</span>
+<span class="nc" id="L546">			infoMap.put(&quot;element&quot;, elementInfo);</span>
+		}
+<span class="nc" id="L548">		StringWriter out = new StringWriter();</span>
+<span class="nc" id="L549">		try (out) {</span>
+<span class="nc" id="L550">			new Yaml(dumperOptions).dump(infoMap, out);</span>
+<span class="nc" id="L551">		} catch (Exception e) {</span>
+<span class="nc" id="L552">			return &quot;Error computing representation info: &quot; + e;			</span>
+<span class="nc" id="L553">		}		</span>
+<span class="nc" id="L554">		return out.toString();</span>
+	}
+	
+	private Map&lt;String, Object&gt; elementInfo(Element element, Map&lt;? extends Element, Map&lt;String, Object&gt;&gt; childInfo, List&lt;URI&gt; actionURIs) {
+<span class="nc" id="L558">		Map&lt;String, Object&gt; info = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L559">		info.put(&quot;type&quot;, element.getClass().getName());</span>
+<span class="nc bnc" id="L560" title="All 2 branches missed.">		if (element instanceof org.nasdanika.drawio.Element) {</span>
+<span class="nc" id="L561">			org.nasdanika.drawio.Element drawioElement = (org.nasdanika.drawio.Element) element;</span>
+<span class="nc" id="L562">			URI uri = drawioElement.getURI();</span>
+<span class="nc bnc" id="L563" title="All 2 branches missed.">			if (uri != null) {</span>
+<span class="nc" id="L564">				info.put(&quot;uri&quot;, uri.toString());</span>
+			}
+<span class="nc" id="L566">			List&lt;? extends Marker&gt; markers = drawioElement.getMarkers();</span>
+<span class="nc bnc" id="L567" title="All 4 branches missed.">			if (markers != null &amp;&amp; !markers.isEmpty()) {</span>
+<span class="nc bnc" id="L568" title="All 2 branches missed.">				info.put(&quot;markers&quot;, markers.stream().map(em -&gt; em instanceof EObject ? DefaultConverter.INSTANCE.toMap((EObject) em, null) : String.valueOf(em)).toArray());				</span>
+			}
+		}
+<span class="nc bnc" id="L571" title="All 2 branches missed.">		if (element instanceof org.nasdanika.drawio.Page) {</span>
+<span class="nc" id="L572">			org.nasdanika.drawio.Page page = (org.nasdanika.drawio.Page) element;</span>
+<span class="nc" id="L573">			String pageName = page.getName();</span>
+<span class="nc bnc" id="L574" title="All 2 branches missed.">			if (!org.nasdanika.common.Util.isBlank(pageName)) {</span>
+<span class="nc" id="L575">				info.put(&quot;name&quot;, pageName);</span>
+			}
+<span class="nc" id="L577">			String id = page.getId();</span>
+<span class="nc bnc" id="L578" title="All 2 branches missed.">			if (!org.nasdanika.common.Util.isBlank(id)) {</span>
+<span class="nc" id="L579">				info.put(&quot;id&quot;, id);</span>
+			}
+		}
+<span class="nc bnc" id="L582" title="All 2 branches missed.">		if (element instanceof org.nasdanika.drawio.ModelElement) {</span>
+<span class="nc" id="L583">			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;</span>
+<span class="nc" id="L584">			String id = modelElement.getId();</span>
+<span class="nc bnc" id="L585" title="All 2 branches missed.">			if (!org.nasdanika.common.Util.isBlank(id)) {</span>
+<span class="nc" id="L586">				info.put(&quot;id&quot;, id);</span>
+			}
+			
+<span class="nc" id="L589">			String label = modelElement.getLabel();</span>
+<span class="nc bnc" id="L590" title="All 2 branches missed.">			if (!org.nasdanika.common.Util.isBlank(label)) {</span>
+<span class="nc" id="L591">				info.put(&quot;label&quot;, label);</span>
+			}
+			
+<span class="nc" id="L594">			String tooltip = modelElement.getTooltip();</span>
+<span class="nc bnc" id="L595" title="All 2 branches missed.">			if (!org.nasdanika.common.Util.isBlank(tooltip)) {</span>
+<span class="nc" id="L596">				info.put(&quot;tooltip&quot;, tooltip);</span>
+			}
+			
+<span class="nc bnc" id="L599" title="All 2 branches missed.">			if (modelElement.isPageLink()) {</span>
+<span class="nc" id="L600">				info.put(&quot;linked-page&quot;, modelElement.getLinkedPage().toString());</span>
+			} else {
+<span class="nc" id="L602">				String link = modelElement.getLink();</span>
+<span class="nc bnc" id="L603" title="All 2 branches missed.">				if (!org.nasdanika.common.Util.isBlank(link)) {</span>
+<span class="nc" id="L604">					info.put(&quot;link&quot;, link);</span>
+				}				
+			}
+<span class="nc" id="L607">			Map&lt;String, String&gt; style = modelElement.getStyle();</span>
+<span class="nc bnc" id="L608" title="All 4 branches missed.">			if (style != null &amp;&amp; !style.isEmpty()) {</span>
+<span class="nc" id="L609">				info.put(&quot;style&quot;, style);</span>
+			}
+			
+<span class="nc" id="L612">			Set&lt;String&gt; tags = modelElement.getTags();</span>
+<span class="nc bnc" id="L613" title="All 4 branches missed.">			if (tags != null &amp;&amp; !tags.isEmpty()) {</span>
+<span class="nc" id="L614">				info.put(&quot;tags&quot;, tags);</span>
+			}
+			
+<span class="nc" id="L617">			info.put(&quot;visible&quot;, modelElement.isVisible());		</span>
+
+			// Properties
+<span class="nc" id="L620">			NamedNodeMap attributes = modelElement.getElement().getAttributes();</span>
+<span class="nc bnc" id="L621" title="All 2 branches missed.">			if (attributes != null) {</span>
+<span class="nc" id="L622">				Map&lt;String, String&gt; properties = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L623" title="All 2 branches missed.">				for (int i = 0; i &lt; attributes.getLength(); ++i) {</span>
+<span class="nc" id="L624">					org.w3c.dom.Node attribute = attributes.item(i);</span>
+<span class="nc bnc" id="L625" title="All 2 branches missed.">					if (attribute instanceof Attr) {</span>
+<span class="nc" id="L626">						String propertyName = ((Attr) attribute).getName();</span>
+<span class="nc" id="L627">						String propertyValue = modelElement.getProperty(propertyName);</span>
+<span class="nc bnc" id="L628" title="All 2 branches missed.">						if (!org.nasdanika.common.Util.isBlank(propertyValue)) {</span>
+<span class="nc" id="L629">							properties.put(propertyName, propertyValue);</span>
+						}
+					}
+				}
+<span class="nc bnc" id="L633" title="All 2 branches missed.">				if (!properties.isEmpty()) {</span>
+<span class="nc" id="L634">					info.put(&quot;properties&quot;, properties);</span>
+				}
+			}
+			
+<span class="nc" id="L638">			Collection&lt;URI&gt; elementActionURIs = NcoreActionBuilder.resolveURIs(NcoreActionBuilder.ACTION_URI_KEY, modelElement, actionURIs, false);</span>
+<span class="nc bnc" id="L639" title="All 4 branches missed.">			if (elementActionURIs != null &amp;&amp; !elementActionURIs.isEmpty()) {</span>
+<span class="nc" id="L640">				info.put(&quot;action-uris&quot;, elementActionURIs.stream().map(Object::toString).toArray());</span>
+			}
+			
+<span class="nc" id="L643">			Collection&lt;URI&gt; elementActionUriBases = NcoreActionBuilder.resolveURIs(NcoreActionBuilder.ACTION_URI_KEY, modelElement, actionURIs, true);</span>
+<span class="nc bnc" id="L644" title="All 4 branches missed.">			if (elementActionUriBases != null &amp;&amp; !elementActionUriBases.isEmpty()) {</span>
+<span class="nc" id="L645">				info.put(&quot;action-uri-bases&quot;, elementActionUriBases.stream().map(Object::toString).toArray());</span>
+			}
+			
+<span class="nc" id="L648">			Collection&lt;URI&gt; elementTargetURIs = NcoreActionBuilder.resolveURIs(NcoreActionBuilder.TARGET_URI_KEY, modelElement, actionURIs, false);</span>
+<span class="nc bnc" id="L649" title="All 4 branches missed.">			if (elementTargetURIs != null &amp;&amp; !elementTargetURIs.isEmpty()) {</span>
+<span class="nc" id="L650">				info.put(&quot;target-uris&quot;, elementTargetURIs.stream().map(Object::toString).toArray());</span>
+			}
+			
+<span class="nc" id="L653">			Collection&lt;URI&gt; elementTargetUriBases = NcoreActionBuilder.resolveURIs(NcoreActionBuilder.TARGET_URI_KEY, modelElement, actionURIs, true);</span>
+<span class="nc bnc" id="L654" title="All 4 branches missed.">			if (elementTargetUriBases != null &amp;&amp; !elementTargetUriBases.isEmpty()) {</span>
+<span class="nc" id="L655">				info.put(&quot;target-uri-bases&quot;, elementTargetUriBases.stream().map(Object::toString).toArray());</span>
+			}
+			
+		}
+<span class="nc bnc" id="L659" title="All 2 branches missed.">		if (element instanceof Connection) {</span>
+<span class="nc" id="L660">			Node source = ((Connection) element).getSource();</span>
+<span class="nc bnc" id="L661" title="All 2 branches missed.">			if (source != null) {</span>
+<span class="nc" id="L662">				info.put(&quot;source&quot;, source.toString());</span>
+			}
+<span class="nc" id="L664">			Node target = ((Connection) element).getTarget();</span>
+<span class="nc bnc" id="L665" title="All 2 branches missed.">			if (target != null) {</span>
+<span class="nc" id="L666">				info.put(&quot;target&quot;, target.toString());</span>
+			}
+		}
+<span class="nc bnc" id="L669" title="All 2 branches missed.">		if (element instanceof Node) {</span>
+<span class="nc" id="L670">			List&lt;Connection&gt; incomingConnections = ((Node) element).getIncomingConnections();</span>
+<span class="nc bnc" id="L671" title="All 4 branches missed.">			if (incomingConnections != null &amp;&amp; !incomingConnections.isEmpty()) {</span>
+<span class="nc" id="L672">				info.put(&quot;incoming-connections&quot;, incomingConnections.stream().map(Object::toString).toArray());</span>
+			}
+<span class="nc" id="L674">			List&lt;Connection&gt; outgoingConnections = ((Node) element).getOutgoingConnections();</span>
+<span class="nc bnc" id="L675" title="All 4 branches missed.">			if (outgoingConnections != null &amp;&amp; !outgoingConnections.isEmpty()) {</span>
+<span class="nc" id="L676">				info.put(&quot;outgoing-connections&quot;, outgoingConnections.stream().map(Object::toString).toArray());</span>
+			}
+		}
+		
+<span class="nc bnc" id="L680" title="All 4 branches missed.">		if (childInfo != null &amp;&amp; !childInfo.isEmpty()) {</span>
+<span class="nc" id="L681">			info.put(&quot;children&quot;, childInfo.values().stream().toArray());</span>
+		}
+<span class="nc" id="L683">		return info;</span>
+	}
+	
+	/**
+	 * Computes semantic link. This implementation uses the registry and uriResolver. 
+	 * Override to add support of resolving external semantic links, e.g. loaded from semantic maps of dependency sites.
+	 * @param context
+	 * @param key
+	 * @param path
+	 * @param action
+	 * @param baseSemanticURI
+	 * @param uriResolver
+	 * @param registry
+	 * @return
+	 */
+	protected String computeSemanticLink(
+			Context context, 
+			String key, 
+			String path, 
+			Action action,
+			URI baseSemanticURI,
+			BiFunction&lt;Label, URI, URI&gt; uriResolver,
+			Map&lt;EObject, Label&gt; registry,
+			Consumer&lt;String&gt; propertyResolutionErrorConsumer,
+			ProgressMonitor progressMonitor) {
+<span class="nc" id="L708">		int spaceIdx = path.indexOf(' ');</span>
+<span class="nc bnc" id="L709" title="All 2 branches missed.">		URI targetURI = URI.createURI(spaceIdx == -1 ? path : path.substring(0, spaceIdx));</span>
+<span class="nc bnc" id="L710" title="All 4 branches missed.">		if (baseSemanticURI != null &amp;&amp; targetURI.isRelative()) {</span>
+<span class="nc" id="L711">			targetURI = targetURI.resolve(baseSemanticURI.appendSegment(&quot;&quot;));</span>
+		}	
+<span class="nc" id="L713">		URI bURI = uriResolver.apply(action, (URI) null);						</span>
+<span class="nc bnc" id="L714" title="All 2 branches missed.">		for (Entry&lt;EObject, Label&gt; registryEntry: registry.entrySet()) {</span>
+<span class="nc bnc" id="L715" title="All 2 branches missed.">			for (URI semanticURI: NcoreUtil.getUris(registryEntry.getKey())) {</span>
+<span class="nc bnc" id="L716" title="All 2 branches missed.">				if (Objects.equals(targetURI, semanticURI)) {</span>
+<span class="nc" id="L717">					Label targetLabel = registryEntry.getValue();</span>
+<span class="nc" id="L718">					Label tLabel = Util.createLabel(targetLabel, action, uriResolver, null, null, false, false, false);</span>
+<span class="nc" id="L719">					SupplierFactory&lt;Tag&gt; tagSupplierFactory = EObjectAdaptable.adaptToSupplierFactory(tLabel, Tag.class, new AppAdapterFactory());</span>
+					Tag tag; 
+<span class="nc bnc" id="L721" title="All 2 branches missed.">					if (tagSupplierFactory == null) {</span>
+<span class="nc" id="L722">						HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);</span>
+<span class="nc" id="L723">						URI targetActionURI = uriResolver.apply(targetLabel, bURI);</span>
+<span class="nc bnc" id="L724" title="All 4 branches missed.">						tag = htmlFactory.tag(targetActionURI == null ? TagName.span : TagName.a, spaceIdx == -1 ? targetLabel.getText() : path.substring(spaceIdx + 1));</span>
+<span class="nc" id="L725">						String targetActionTooltip = targetLabel.getTooltip();</span>
+<span class="nc bnc" id="L726" title="All 2 branches missed.">						if (!org.nasdanika.common.Util.isBlank(targetActionTooltip)) {</span>
+<span class="nc" id="L727">							tag.attribute(&quot;title&quot;, targetActionTooltip);</span>
+						}
+<span class="nc bnc" id="L729" title="All 2 branches missed.">						if (targetActionURI != null) {</span>
+<span class="nc" id="L730">							tag.attribute(&quot;href&quot;, targetActionURI.toString());</span>
+						}
+<span class="nc" id="L732">					} else {</span>
+<span class="nc" id="L733">						tag = tagSupplierFactory.create(context).execute(progressMonitor);</span>
+					}
+<span class="nc" id="L735">					return tag.toString(); </span>
+				}
+<span class="nc" id="L737">			}</span>
+<span class="nc" id="L738">		}</span>
+<span class="nc" id="L739">		String semanticLink = computeSemanticLink(targetURI, bURI, context);</span>
+<span class="nc bnc" id="L740" title="All 2 branches missed.">		if (semanticLink == null) {</span>
+<span class="nc" id="L741">			String message = &quot;Unresolved semantic URI: &quot; + targetURI;</span>
+<span class="nc" id="L742">			progressMonitor.worked(Status.ERROR, 1, message, action);</span>
+<span class="nc bnc" id="L743" title="All 2 branches missed.">			if (propertyResolutionErrorConsumer != null) {</span>
+<span class="nc" id="L744">				propertyResolutionErrorConsumer.accept(message);</span>
+			}
+		}
+		
+<span class="nc" id="L748">		return semanticLink;</span>
+	}
+	
+	/**
+	 * Computes semantic links for external URI's. This implementation returns null;
+	 * @param targetURI 
+	 * @param baseURI Base URI to deresolve link's reference to make it relative.
+	 * @param context
+	 * @return
+	 */
+	protected String computeSemanticLink(URI targetURI, URI baseURI, Context context) { 
+<span class="nc" id="L759">		return null;</span>
+	}	
+
+	/**
+	 * Computes semantic reference. This implementation uses the registry and uriResolver. 
+	 * Override to add support of resolving external semantic references, e.g. loaded from semantic maps of dependency sites.
+	 * @param context
+	 * @param key
+	 * @param path
+	 * @param action
+	 * @param baseSemanticURI
+	 * @param uriResolver
+	 * @param registry
+	 * @return
+	 */
+	protected URI computeSemanticReferfence(
+			Context context, 
+			String key, 
+			String path,
+			Action action,
+			URI baseSemanticURI,
+			BiFunction&lt;Label, URI, URI&gt; uriResolver,
+			Map&lt;EObject, Label&gt; registry,
+			Consumer&lt;String&gt; propertyResolutionErrorConsumer,
+			ProgressMonitor progressMonitor) {
+
+<span class="fc" id="L785">		URI targetURI = URI.createURI(path);</span>
+<span class="pc bpc" id="L786" title="3 of 4 branches missed.">		if (baseSemanticURI != null &amp;&amp; targetURI.isRelative()) {</span>
+<span class="nc" id="L787">			targetURI = targetURI.resolve(baseSemanticURI.appendSegment(&quot;&quot;));</span>
+		}	
+<span class="fc" id="L789">		URI bURI = uriResolver.apply(action, (URI) null);						</span>
+<span class="pc bpc" id="L790" title="1 of 2 branches missed.">		for (Entry&lt;EObject, Label&gt; registryEntry: registry.entrySet()) {</span>
+<span class="fc bfc" id="L791" title="All 2 branches covered.">			for (URI semanticURI: NcoreUtil.getUris(registryEntry.getKey())) {</span>
+<span class="fc bfc" id="L792" title="All 2 branches covered.">				if (Objects.equals(targetURI, semanticURI)) {</span>
+<span class="fc" id="L793">					Label targetLabel = registryEntry.getValue();</span>
+<span class="fc" id="L794">					URI targetActionURI = uriResolver.apply(targetLabel, bURI);</span>
+<span class="pc bpc" id="L795" title="1 of 2 branches missed.">					if (targetActionURI != null) {</span>
+<span class="fc" id="L796">						return targetActionURI;</span>
+					}
+				}
+<span class="fc" id="L799">			}</span>
+<span class="fc" id="L800">		}</span>
+<span class="nc" id="L801">		URI ref = computeSemanticReference(targetURI, context);		</span>
+<span class="nc bnc" id="L802" title="All 2 branches missed.">		if (ref == null) {</span>
+<span class="nc" id="L803">			String message = &quot;Unresolved semantic URI: &quot; + targetURI;</span>
+<span class="nc" id="L804">			progressMonitor.worked(Status.ERROR, 1, message, action);</span>
+<span class="nc bnc" id="L805" title="All 2 branches missed.">			if (propertyResolutionErrorConsumer != null) {</span>
+<span class="nc" id="L806">				propertyResolutionErrorConsumer.accept(message);</span>
+			}
+		}
+<span class="nc bnc" id="L809" title="All 4 branches missed.">		return ref == null || bURI == null ? ref : ref.deresolve(bURI, true, true, true);</span>
+	}
+
+	/**
+	 * Computes semantic links for external URI's. This implementation returns null;
+	 * @param targetURI
+	 * @param context
+	 * @return
+	 */
+	protected URI computeSemanticReference(URI targetURI, Context context) { 
+<span class="nc" id="L819">		return null;</span>
+	}	
+	
+	/**
+	 * {@link ActionContentProvider} method
+	 * @param action
+	 * @param uriResolver
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected EList&lt;EObject&gt; getActionContent(
+			Action action, 
+			BiFunction&lt;Label, URI, URI&gt; uriResolver,
+			Map&lt;EObject, Label&gt; registry,
+			File resourceWorkDir,
+			Context context,
+			java.util.function.Consumer&lt;Diagnostic&gt; diagnosticConsumer,
+			BiConsumer&lt;String, String&gt; representationLinkResolutionErrorConsumer,						
+			ProgressMonitor progressMonitor) {
+
+<span class="fc" id="L839">		List&lt;Object&gt; contentContributions = new ArrayList&lt;&gt;();</span>
+		
+<span class="fc" id="L841">		Context actionContentContext = createActionContentContext(</span>
+				action, 
+				uriResolver, 
+				registry, 
+<span class="fc" id="L845">				(ContentConsumer) contentContributions::add, </span>
+				representationLinkResolutionErrorConsumer, 
+				context, 
+				progressMonitor);
+		
+<span class="fc" id="L850">		File contentDir = new File(resourceWorkDir, &quot;content&quot;);</span>
+<span class="fc" id="L851">		contentDir.mkdirs();</span>
+		
+<span class="fc" id="L853">		String fileName = action.getUuid() + &quot;.html&quot;;</span>
+<span class="fc" id="L854">		SupplierFactory&lt;InputStream&gt; contentFactory = org.nasdanika.common.Util.asInputStreamSupplierFactory(action.getContent());			</span>
+<span class="fc" id="L855">		try (InputStream contentStream = org.nasdanika.common.Util.call(contentFactory.create(actionContentContext), progressMonitor, diagnosticConsumer, Status.FAIL, Status.ERROR)) {</span>
+<span class="pc bpc" id="L856" title="1 of 2 branches missed.">			if (contentContributions.isEmpty()) {</span>
+<span class="fc" id="L857">				Files.copy(contentStream, new File(contentDir, fileName).toPath(), StandardCopyOption.REPLACE_EXISTING);</span>
+			} else {
+<span class="nc" id="L859">				Stream&lt;InputStream&gt; pageBodyContributionsStream = contentContributions.stream().filter(Objects::nonNull).map(e -&gt; {</span>
+					try {
+<span class="nc" id="L861">						return DefaultConverter.INSTANCE.toInputStream(e.toString());</span>
+<span class="nc" id="L862">					} catch (IOException ex) {</span>
+<span class="nc" id="L863">						throw new NasdanikaException(&quot;Error converting element to InputStream: &quot; + ex, ex);</span>
+					}
+				});
+<span class="nc" id="L866">				Stream&lt;InputStream&gt; concatenatedStream = Stream.concat(pageBodyContributionsStream, Stream.of(contentStream));</span>
+<span class="nc" id="L867">				Files.copy(org.nasdanika.common.Util.join(concatenatedStream), new File(contentDir, fileName).toPath(), StandardCopyOption.REPLACE_EXISTING);</span>
+			}
+<span class="nc" id="L869">		} catch (Exception e) {</span>
+<span class="nc" id="L870">			throw new NasdanikaException(e);</span>
+<span class="fc" id="L871">		}</span>
+		
+<span class="fc" id="L873">		org.nasdanika.exec.content.Resource contentResource = ContentFactory.eINSTANCE.createResource();</span>
+<span class="fc" id="L874">		contentResource.setLocation(&quot;../content/&quot; + fileName);</span>
+<span class="fc" id="L875">		progressMonitor.worked(1, &quot;[Action content] &quot; + action.getText() + &quot; -&gt; &quot; + fileName);</span>
+<span class="fc" id="L876">		return ECollections.singletonEList(contentResource);					</span>
+	}
+	
+	
+	/**
+	 * Computes semantic link. This implementation uses the registry and uriResolver. 
+	 * Override to add support of resolving external semantic links, e.g. loaded from semantic maps of dependency sites.
+	 * @param context
+	 * @param key
+	 * @param path
+	 * @param action
+	 * @param baseSemanticURI
+	 * @param uriResolver
+	 * @param registry
+	 * @return
+	 */
+	protected Object computeRepresentation(
+			Map&lt;String, Object&gt; representations,
+			Context context, 
+			String key, 
+			String path, 
+			Action action,
+			URI baseSemanticURI,
+			BiFunction&lt;Label, URI, URI&gt; uriResolver,
+			Map&lt;EObject, Label&gt; registry) {
+
+<span class="fc" id="L902">		String[] pathSegments = path.split(&quot;/&quot;);</span>
+<span class="pc bpc" id="L903" title="1 of 2 branches missed.">		if (pathSegments.length == 1) {</span>
+			// Non drawio representation, just a key
+<span class="nc" id="L905">			return representations.get(path);</span>
+		}
+		try {
+<span class="fc" id="L908">			org.nasdanika.drawio.Document valueDocument = (org.nasdanika.drawio.Document) representations.get(pathSegments[0]);			</span>
+<span class="pc bpc" id="L909" title="1 of 2 branches missed.">			if (valueDocument != null) {</span>
+<span class="pc bpc" id="L910" title="1 of 2 branches missed.">				if (pathSegments.length == 2) {</span>
+					// Document
+<span class="pc bpc" id="L912" title="1 of 2 branches missed.">					if (&quot;diagram&quot;.equals(pathSegments[1])) {</span>
+<span class="fc" id="L913">						return valueDocument.save(true);</span>
+					}
+					
+<span class="nc bnc" id="L916" title="All 2 branches missed.">					if (&quot;toc&quot;.equals(pathSegments[1])) {</span>
+<span class="nc" id="L917">						return String.valueOf(computeTableOfContents(valueDocument, context));</span>
+					}
+										
+<span class="nc bnc" id="L920" title="All 2 branches missed.">					if (&quot;info&quot;.equals(pathSegments[1])) {</span>
+<span class="nc" id="L921">						return computeInfo(action, valueDocument, context);</span>
+					}
+					
+<span class="nc" id="L924">					return null;</span>
+				} 
+				
+<span class="nc bnc" id="L927" title="All 2 branches missed.">				if (pathSegments.length == 3) {</span>
+					// Page
+<span class="nc bnc" id="L929" title="All 2 branches missed.">					for (Page page: valueDocument.getPages()) {</span>
+<span class="nc bnc" id="L930" title="All 2 branches missed.">						if (pathSegments[1].equals(page.getName())) {</span>
+<span class="nc" id="L931">							org.nasdanika.drawio.Document pageDocument = org.nasdanika.drawio.Document.create(true, valueDocument.getURI());</span>
+<span class="nc" id="L932">							pageDocument.getPages().add(page);</span>
+<span class="nc bnc" id="L933" title="All 2 branches missed.">							if (&quot;diagram&quot;.equals(pathSegments[2])) {</span>
+<span class="nc" id="L934">								return pageDocument.save(true);</span>
+							}
+							
+<span class="nc bnc" id="L937" title="All 2 branches missed.">							if (&quot;toc&quot;.equals(pathSegments[2])) {</span>
+<span class="nc" id="L938">								return String.valueOf(computeTableOfContents(pageDocument, context));</span>
+							}
+							
+<span class="nc bnc" id="L941" title="All 2 branches missed.">							if (&quot;info&quot;.equals(pathSegments[2])) {</span>
+<span class="nc" id="L942">								return computeInfo(action, pageDocument, context);</span>
+							}
+						}
+<span class="nc" id="L945">					}</span>
+				}
+			}
+<span class="nc" id="L948">		} catch (TransformerException | IOException | ParserConfigurationException e) {</span>
+<span class="nc" id="L949">			throw new NasdanikaException(e);</span>
+<span class="nc" id="L950">		}</span>
+		
+<span class="nc" id="L952">		return null;		</span>
+	}	
+	
+	/**
+	 * Registers semantic-link and semantic-ref property computers
+	 * @param action
+	 * @param uriResolver
+	 * @param registry
+	 * @param mctx
+	 */
+	protected Context createActionContentContext(
+			Action action, 
+			BiFunction&lt;Label, URI, URI&gt; uriResolver,
+			Map&lt;EObject, Label&gt; registry,
+			ContentConsumer contentConsumer,
+			BiConsumer&lt;String, String&gt; propertyLinkResolutionErrorConsumer,						
+			Context context,
+			ProgressMonitor progressMonitor) {
+		
+<span class="fc" id="L971">		String actionMarker = NcoreActionBuilder.actionMarker(action);</span>
+				
+<span class="fc" id="L973">		MutableContext mctx = context.fork();</span>
+<span class="fc" id="L974">		mctx.put(&quot;nsd-site-map-tree-script&quot;, (Function&lt;Context, String&gt;) ctx -&gt; computeSiteMapTreeScript(ctx, action, uriResolver, registry, progressMonitor));</span>
+		
+<span class="pc bpc" id="L976" title="1 of 2 branches missed.">		if (contentConsumer != null) {</span>
+<span class="fc" id="L977">			mctx.register(ContentConsumer.class, contentConsumer);</span>
+		}
+		
+<span class="fc" id="L980">		Optional&lt;URI&gt; baseSemanticURI = registry</span>
+<span class="fc" id="L981">				.entrySet()</span>
+<span class="fc" id="L982">				.stream()</span>
+<span class="pc bpc" id="L983" title="1 of 4 branches missed.">				.filter(e -&gt; e.getValue() != null &amp;&amp; Objects.equals(e.getValue().getUuid(), action.getUuid()))</span>
+<span class="fc" id="L984">				.flatMap(e -&gt; NcoreUtil.getUris(e.getKey()).stream())</span>
+<span class="fc" id="L985">				.filter(Objects::nonNull)</span>
+<span class="pc bpc" id="L986" title="2 of 4 branches missed.">				.filter(u -&gt; !u.isRelative() &amp;&amp; u.isHierarchical())</span>
+<span class="fc" id="L987">				.findFirst();									</span>
+		
+<span class="fc" id="L989">		Map&lt;String, Object&gt; representations = NcoreActionBuilder.resolveRepresentationLinks(</span>
+				action, 
+				uriResolver, 
+				propertyLinkResolutionErrorConsumer, 
+				progressMonitor);
+		
+<span class="fc" id="L995">		PropertyComputer representationsPropertyComputer = new PropertyComputer() {</span>
+			
+			@SuppressWarnings(&quot;unchecked&quot;)
+			@Override
+			public &lt;T&gt; T compute(Context ctx, String key, String path, Class&lt;T&gt; type) {
+<span class="pc bpc" id="L1000" title="2 of 4 branches missed.">				if (type == null || type.isAssignableFrom(String.class)) {</span>
+<span class="fc" id="L1001">					return (T) computeRepresentation(representations, ctx, key, path, action, baseSemanticURI.orElse(null), uriResolver, registry);			</span>
+				}
+<span class="nc" id="L1003">				return null;</span>
+			}
+		}; 
+		
+<span class="fc" id="L1007">		mctx.put(&quot;representations&quot;, representationsPropertyComputer);</span>
+		
+<span class="fc" id="L1009">		PropertyComputer semanticLinkPropertyComputer = new PropertyComputer() {</span>
+			
+			@SuppressWarnings(&quot;unchecked&quot;)
+			@Override
+			public &lt;T&gt; T compute(Context ctx, String key, String path, Class&lt;T&gt; type) {
+<span class="nc bnc" id="L1014" title="All 4 branches missed.">				if (type == null || type.isAssignableFrom(String.class)) {</span>
+<span class="nc" id="L1015">					return (T) computeSemanticLink(</span>
+							ctx, 
+							key, 
+							path, 
+							action, 
+<span class="nc" id="L1020">							baseSemanticURI.orElse(null), </span>
+							uriResolver, 
+							registry, 
+<span class="nc" id="L1023">							error -&gt; propertyLinkResolutionErrorConsumer.accept(actionMarker, error), </span>
+							progressMonitor);			
+				}
+<span class="nc" id="L1026">				return null;</span>
+			}
+		}; 
+		
+<span class="fc" id="L1030">		mctx.put(&quot;semantic-link&quot;, semanticLinkPropertyComputer);</span>
+					
+<span class="fc" id="L1032">		PropertyComputer semanticReferencePropertyComputer = new PropertyComputer() {</span>
+			
+			@SuppressWarnings(&quot;unchecked&quot;)
+			@Override
+			public &lt;T&gt; T compute(Context propertyComputerContext, String key, String path, Class&lt;T&gt; type) {
+<span class="pc bpc" id="L1037" title="2 of 4 branches missed.">				if (type == null || type.isAssignableFrom(String.class)) {</span>
+<span class="fc" id="L1038">					URI sRef = computeSemanticReferfence(</span>
+							propertyComputerContext, 
+							key, 
+							path, 
+							action, 
+<span class="fc" id="L1043">							baseSemanticURI.orElse(null), </span>
+							uriResolver, 
+							registry, 
+<span class="nc" id="L1046">							error -&gt; propertyLinkResolutionErrorConsumer.accept(actionMarker, error), </span>
+							progressMonitor);
+<span class="pc bpc" id="L1048" title="1 of 2 branches missed.">					return sRef == null ? null : (T) sRef.toString();</span>
+				}
+<span class="nc" id="L1050">				return null;</span>
+			}
+		};
+		
+<span class="fc" id="L1054">		mctx.put(&quot;semantic-ref&quot;, semanticReferencePropertyComputer);</span>
+		
+<span class="fc" id="L1056">		return mctx;</span>
+	}	
+	
+	/**
+	 * Generates files from the previously generated resource model.
+	 * @throws org.eclipse.emf.common.util.DiagnosticException 
+	 * @throws IOException 
+	 * @throws Exception
+	 */
+	protected Map&lt;String, Collection&lt;String&gt;&gt; generateContainer(
+			Resource resourceModel,
+			File workDir,
+			File outputDir,
+			Predicate&lt;String&gt; cleanPredicate,
+			String siteMapDomain,
+			String containerName, 
+			Context context, 
+			ProgressMonitor progressMonitor) throws org.eclipse.emf.common.util.DiagnosticException, IOException {
+<span class="fc" id="L1074">		Map&lt;String, Collection&lt;String&gt;&gt; errors = new TreeMap&lt;&gt;();</span>
+		
+<span class="fc" id="L1076">		Util.generateContainer(</span>
+				resourceModel, 
+				new FileSystemContainer(workDir), 
+				context, 
+				progressMonitor);
+		
+<span class="fc" id="L1082">		org.nasdanika.common.Util.copy(new File(workDir, containerName), outputDir, true, cleanPredicate, null);</span>
+		
+<span class="fc" id="L1084">		Util.generateSitemapAndSearch(</span>
+				outputDir, 
+				siteMapDomain, 
+				this::isSiteMap, 
+<span class="fc" id="L1088">				getChangeFrequency(), </span>
+				this::isSearch, 
+				(path, error) -&gt;  {
+<span class="fc" id="L1091">					progressMonitor.worked(Status.ERROR, 1, &quot;[&quot; + path +&quot;] &quot; + error);</span>
+<span class="fc" id="L1092">					errors.computeIfAbsent(path, p -&gt; new ArrayList&lt;&gt;()).add(error);</span>
+<span class="fc" id="L1093">				});		</span>
+		
+<span class="fc" id="L1095">		return errors;</span>
+	}
+	
+	protected ChangeFreq getChangeFrequency() {
+<span class="fc" id="L1099">		return ChangeFreq.WEEKLY;</span>
+	}
+	
+	protected boolean isSiteMap(File file, String path) {
+<span class="fc" id="L1103">		return path.endsWith(&quot;.html&quot;);</span>
+	}
+	
+	protected boolean isSearch(File file, String path) {
+<span class="fc bfc" id="L1107" title="All 4 branches covered.">		return path.endsWith(&quot;.html&quot;) &amp;&amp; !&quot;search.html&quot;.equals(path);</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

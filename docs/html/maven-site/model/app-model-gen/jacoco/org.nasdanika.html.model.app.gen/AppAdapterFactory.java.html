@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AppAdapterFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Application Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.app.gen</a> &gt; <span class="el_source">AppAdapterFactory.java</span></div><h1>AppAdapterFactory.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.app.gen;
+
+import org.nasdanika.common.ConsumerFactory;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.emf.FunctionAdapterFactory;
+import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.ContentPanel;
+import org.nasdanika.html.model.app.Footer;
+import org.nasdanika.html.model.app.Header;
+import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.Link;
+import org.nasdanika.html.model.app.NavigationBar;
+import org.nasdanika.html.model.app.NavigationPanel;
+import org.nasdanika.html.model.app.Page;
+import org.nasdanika.html.model.bootstrap.gen.BootstrapAdapterFactory;
+
+/**
+ * @author Pavel
+ *
+ */
+public class AppAdapterFactory extends BootstrapAdapterFactory {
+	
+<span class="fc" id="L24">	public static AppAdapterFactory INSTANCE = new AppAdapterFactory();</span>
+	
+	@SuppressWarnings({ &quot;unchecked&quot;, &quot;rawtypes&quot; })
+<span class="fc" id="L27">	public AppAdapterFactory() {</span>
+<span class="fc" id="L28">		ClassLoader classLoader = getClassLoader();</span>
+		
+<span class="fc" id="L30">		registerAdapterFactory(</span>
+				new FunctionAdapterFactory&lt;SupplierFactory&lt;HTMLElement&lt;?&gt;&gt;, Page&gt;(
+					AppPackage.Literals.PAGE, 
+					(Class) SupplierFactory.class, 
+					classLoader, 
+<span class="fc" id="L35">					e -&gt; new PageSupplierFactoryAdapter(e, this)));</span>
+		
+<span class="fc" id="L37">		registerAdapterFactory(</span>
+				new FunctionAdapterFactory&lt;SupplierFactory.Provider, Label&gt;(
+					AppPackage.Literals.LABEL, 
+					SupplierFactory.Provider.class, 
+					classLoader, 
+<span class="fc" id="L42">					e -&gt; new LabelSupplierFactoryProviderAdapter(e, this)));</span>
+		
+<span class="fc" id="L44">		registerAdapterFactory(</span>
+				new FunctionAdapterFactory&lt;SupplierFactory.Provider, Link&gt;(
+					AppPackage.Literals.LINK, 
+					SupplierFactory.Provider.class, 
+					classLoader, 
+<span class="fc" id="L49">					e -&gt; new LinkSupplierFactoryProviderAdapter(e, this)));</span>
+		
+<span class="fc" id="L51">		registerAdapterFactory(</span>
+				new FunctionAdapterFactory&lt;ConsumerFactory&lt;HTMLElement&lt;?&gt;&gt;, ContentPanel&gt;(
+					AppPackage.Literals.CONTENT_PANEL, 
+					(Class) ConsumerFactory.class, 
+					classLoader, 
+<span class="fc" id="L56">					e -&gt; new ContentPanelConsumerFactoryAdapter(e, this)));		</span>
+		
+<span class="fc" id="L58">		registerAdapterFactory(</span>
+				new FunctionAdapterFactory&lt;ConsumerFactory&lt;HTMLElement&lt;?&gt;&gt;, Footer&gt;(
+					AppPackage.Literals.FOOTER, 
+					(Class) ConsumerFactory.class, 
+					classLoader, 
+<span class="fc" id="L63">					e -&gt; new FooterConsumerFactoryAdapter(e, this)));		</span>
+		
+<span class="fc" id="L65">		registerAdapterFactory(</span>
+				new FunctionAdapterFactory&lt;ConsumerFactory&lt;HTMLElement&lt;?&gt;&gt;, Header&gt;(
+					AppPackage.Literals.HEADER, 
+					(Class) ConsumerFactory.class, 
+					classLoader, 
+<span class="fc" id="L70">					e -&gt; new HeaderConsumerFactoryAdapter(e, this)));		</span>
+		
+<span class="fc" id="L72">		registerAdapterFactory(</span>
+				new FunctionAdapterFactory&lt;ConsumerFactory&lt;HTMLElement&lt;?&gt;&gt;, NavigationBar&gt;(
+					AppPackage.Literals.NAVIGATION_BAR, 
+					(Class) ConsumerFactory.class, 
+					classLoader, 
+<span class="fc" id="L77">					e -&gt; new NavigationBarConsumerFactoryAdapter(e, this)));		</span>
+		
+<span class="fc" id="L79">		registerAdapterFactory(</span>
+				new FunctionAdapterFactory&lt;ConsumerFactory&lt;HTMLElement&lt;?&gt;&gt;, NavigationPanel&gt;(
+					AppPackage.Literals.NAVIGATION_PANEL, 
+					(Class) ConsumerFactory.class, 
+					classLoader, 
+<span class="fc" id="L84">					e -&gt; new NavigationPanelConsumerFactoryAdapter(e, this)));	</span>
+		
+		// Lower-level factories - through inheritance
+//		registerAdapterFactory(new ExecutionParticpantAdapterFactory());
+//		registerAdapterFactory(new HtmlAdapterFactory());
+//		registerAdapterFactory(new BootstrapAdapterFactory());				
+<span class="fc" id="L90">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

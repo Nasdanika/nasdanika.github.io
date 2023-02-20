@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoadingExecutionParticipant.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika EMF</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.emf.persistence</a> &gt; <span class="el_source">LoadingExecutionParticipant.java</span></div><h1>LoadingExecutionParticipant.java</h1><pre class="source lang-java linenums">package org.nasdanika.emf.persistence;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EPackage.Registry;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.URIHandlerImpl;
+import org.eclipse.emf.ecore.util.Diagnostician;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.nasdanika.common.BasicDiagnostic;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.DefaultConverter;
+import org.nasdanika.common.Diagnostic;
+import org.nasdanika.common.ExecutionParticipant;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Status;
+import org.nasdanika.common.Util;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.emf.EmfUtil;
+import org.nasdanika.ncore.util.NcoreResourceSet;
+import org.nasdanika.persistence.Marked;
+import org.nasdanika.persistence.Marker;
+
+/**
+ * {@link ExecutionParticipant} which loads resources, diagnoses them
+ * and stores in a {@link ResourceSet} for use in execute() methods of subclasses.
+ * 
+ * @author Pavel
+ *
+ */
+public abstract class LoadingExecutionParticipant implements ExecutionParticipant {
+	
+	protected Context context;
+	protected List&lt;EObject&gt; roots;
+	protected ResourceSet resourceSet;
+<span class="nc" id="L52">	protected Map&lt;EObject, org.eclipse.emf.common.util.Diagnostic&gt; diagnosticMap = new LinkedHashMap&lt;&gt;();</span>
+	
+<span class="nc" id="L54">	public LoadingExecutionParticipant(Context context) {</span>
+<span class="nc" id="L55">		this.context = context;</span>
+<span class="nc" id="L56">	}</span>
+	
+	@Override
+	public double size() {
+<span class="nc" id="L60">		return 1;</span>
+	}
+
+	@Override
+	public String name() {
+<span class="nc" id="L65">		return &quot;Loading resources&quot;;</span>
+	}
+	
+	protected boolean matchURI(EObject obj, URI uri) {
+<span class="nc" id="L69">		return false;</span>
+	}
+	
+	protected abstract Collection&lt;URI&gt; getResources();
+	
+	protected ResourceSet createResourceSet(ProgressMonitor progressMonitor) {
+<span class="nc" id="L75">		ResourceSet ret = new NcoreResourceSet() {</span>
+
+			@Override
+			protected boolean matchURI(EObject eObj, URI uri) {
+<span class="nc bnc" id="L79" title="All 4 branches missed.">				return super.matchURI(eObj, uri) || LoadingExecutionParticipant.this.matchURI(eObj, uri);</span>
+			}
+			
+		};
+
+		// XMI as default.
+<span class="nc" id="L85">		ret.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());</span>
+		
+<span class="nc" id="L87">		ret.getURIConverter().getURIHandlers().add(0, new URIHandlerImpl() {</span>
+
+			@Override
+			public boolean canHandle(URI uri) {
+<span class="nc bnc" id="L91" title="All 4 branches missed.">				return uri != null &amp;&amp; Util.CLASSPATH_SCHEME.equals(uri.scheme());</span>
+			}
+
+			@Override
+			public InputStream createInputStream(URI uri, Map&lt;?, ?&gt; options) throws IOException {
+<span class="nc" id="L96">				return DefaultConverter.INSTANCE.toInputStream(uri);</span>
+			}
+			
+		});
+		
+<span class="nc" id="L101">		Registry packageRegistry = ret.getPackageRegistry();</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">		for (EPackage ePackage: getEPackages()) {</span>
+<span class="nc" id="L103">			packageRegistry.put(ePackage.getNsURI(), ePackage);</span>
+<span class="nc" id="L104">		}		</span>
+		
+<span class="nc" id="L106">		return ret;</span>
+	}
+	
+	protected abstract Collection&lt;EPackage&gt; getEPackages();
+	
+	/**
+	 * Diagnoses the {@link ResourceSet}. This implementation finds unresolved proxies and reports them
+	 * with {@link Status} FAIL by calling unresolvedProxyDiagnostic().
+	 * @param resourceSet
+	 * @return
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	protected BasicDiagnostic diagnose() {
+<span class="nc" id="L119">		BasicDiagnostic ret = new BasicDiagnostic(Status.SUCCESS, &quot;Diagnostic of &quot; + resourceSet, resourceSet);</span>
+		
+<span class="nc" id="L121">		TreeIterator&lt;Notifier&gt; cit = resourceSet.getAllContents();</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		while (cit.hasNext()) {</span>
+<span class="nc" id="L123">			Notifier next = cit.next();</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">			if (next instanceof EObject) {</span>
+<span class="nc" id="L125">				EObject nextEObject = (EObject) next;</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">				if (nextEObject.eIsProxy()) {							</span>
+<span class="nc" id="L127">					ret.add(unresolvedProxyDiagnostic(nextEObject, null, null));</span>
+				} else {
+<span class="nc bnc" id="L129" title="All 2 branches missed.">					for (EReference ref: nextEObject.eClass().getEAllReferences()) {</span>
+<span class="nc" id="L130">						Object val = nextEObject.eGet(ref);</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">						if (val instanceof EObject) {</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">							if (((EObject) val).eIsProxy()) {</span>
+<span class="nc" id="L133">								ret.add(unresolvedProxyDiagnostic((EObject) val, ref, nextEObject));</span>
+							}
+<span class="nc bnc" id="L135" title="All 2 branches missed.">						} else if (val instanceof Collection) {</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">							for (EObject ve: (Collection&lt;EObject&gt;) val) {</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">								if (ve.eIsProxy()) {</span>
+<span class="nc" id="L138">									ret.add(unresolvedProxyDiagnostic((EObject) ve, ref, nextEObject));</span>
+								}								
+<span class="nc" id="L140">							}</span>
+						}
+<span class="nc" id="L142">					}</span>
+				}
+			}	
+<span class="nc" id="L145">		}</span>
+<span class="nc" id="L146">		return ret;</span>
+	}
+	
+	/**
+	 * Reports unresolved proxies
+	 * @param source Unresolved proxy
+	 * @param containmentReference Reference containing the proxy. Can be null.
+	 * @param container Container of unresolved proxy. Can be null. 
+	 * @return
+	 */
+	protected Diagnostic unresolvedProxyDiagnostic(EObject source, EReference containmentReference, EObject container) {
+<span class="nc" id="L157">		Marked marked = EObjectAdaptable.adaptTo(source, Marked.class);</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		List&lt;? extends Marker&gt; markers = marked == null ? null : marked.getMarkers();</span>
+<span class="nc bnc" id="L159" title="All 4 branches missed.">		if (markers == null || markers.isEmpty()) {</span>
+<span class="nc" id="L160">			return new BasicDiagnostic(getUnresolvedProxyStatus(), &quot;Unresolved proxy: &quot; + source, source, containmentReference, container);</span>
+		}
+	
+<span class="nc" id="L163">		return new BasicDiagnostic(getUnresolvedProxyStatus(), &quot;Unresolved proxy at &quot; + markers.stream().map(Object::toString).collect(Collectors.joining(&quot;, &quot;)) + &quot;: &quot; + source, source, markers, containmentReference, container);		</span>
+	}
+
+	/**
+	 * Override if unresolved proxies are allowed in loaded resources, e.g. they'd be resolvable at some point after the model is loaded. 
+	 * This method is called only if isDiagnose() returns true (default). If the diagnostic would result in errors, e.g. due to unresolved
+	 * proxies in opposites, then override isDiagnoseModel() instead to return false and then explicitly diagnose the model which is fully loaded and as 
+	 * such all proxies are resolvable. 
+	 * @return Diagnostic status for unresolved proxies. This method returns FAIL which results in exception during load.
+	 */
+	protected Status getUnresolvedProxyStatus() {
+<span class="nc" id="L174">		return Status.FAIL;</span>
+	}
+
+	/**
+	 * Loads resources, checks for unresolved proxies and diagnoses.
+	 */
+	@Override
+	public Diagnostic diagnose(ProgressMonitor progressMonitor) {
+<span class="nc" id="L182">		resourceSet = createResourceSet(progressMonitor);</span>
+		
+		// Pre-loading
+<span class="nc bnc" id="L185" title="All 2 branches missed.">		for (URI uri: getResources()) {</span>
+<span class="nc" id="L186">			resourceSet.getResource(uri, true);</span>
+<span class="nc" id="L187">		}</span>
+		
+		// Resolving all proxies and clearing all caches
+<span class="nc" id="L190">		EcoreUtil.resolveAll(resourceSet);</span>
+<span class="nc" id="L191">		resourceSet.getAllContents().forEachRemaining(notifier -&gt; notifier.eNotify(FeatureCacheAdapter.CLEAR_CACHE));</span>
+
+<span class="nc bnc" id="L193" title="All 2 branches missed.">		if (isDiagnoseModel()) {</span>
+<span class="nc" id="L194">			BasicDiagnostic ret = diagnose();</span>
+			
+<span class="nc" id="L196">			Diagnostician diagnostician = new Diagnostician();</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">			if (ret.getStatus() != Status.FAIL) {				</span>
+<span class="nc" id="L198">				roots = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L199">				Map&lt;Class&lt;Context&gt;, Context&gt; diagnosticContext = Collections.singletonMap(Context.class, context);</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">				for (Resource resource: resourceSet.getResources()) {</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">					for (EObject e: resource.getContents()) {</span>
+<span class="nc" id="L202">						org.eclipse.emf.common.util.Diagnostic diagnostic = diagnostician.validate(e, diagnosticContext);</span>
+<span class="nc" id="L203">						diagnosticMap.put(e, diagnostic);</span>
+<span class="nc" id="L204">						ret.add(EmfUtil.wrap(diagnostic));</span>
+<span class="nc" id="L205">						roots.add(e);</span>
+<span class="nc" id="L206">					}</span>
+<span class="nc" id="L207">				}</span>
+			}
+			
+<span class="nc" id="L210">			return ret;</span>
+		}
+		
+<span class="nc" id="L213">		return ExecutionParticipant.super.diagnose(progressMonitor);</span>
+	}
+	
+	/**
+	 * If this method returns &lt;code&gt;true&lt;/code&gt; the loaded model is diagnosed by {@link Diagnostician}.
+	 * Override to return &lt;code&gt;false&lt;/code&gt; if the diagnosis is not required after loading, e.g. the model is knows to contain diagnostic errors. 
+	 * E.g. it is a partial model with unresolved proxies.
+	 * @return  
+	 */
+	protected boolean isDiagnoseModel() {
+<span class="nc" id="L223">		return true;</span>
+	}
+
+	/**
+	 * @return Classloader for loading classpath resources (URI's with &lt;code&gt;classpath&lt;/code&gt; scheme).
+	 * This implementation returns this class classloader.
+	 */
+	protected ClassLoader getClassLoader() {
+<span class="nc" id="L231">		return getClass().getClassLoader();</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

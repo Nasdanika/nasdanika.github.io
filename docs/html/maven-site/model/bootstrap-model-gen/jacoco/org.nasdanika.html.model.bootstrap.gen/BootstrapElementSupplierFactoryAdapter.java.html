@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BootstrapElementSupplierFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Bootstrap Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.bootstrap.gen</a> &gt; <span class="el_source">BootstrapElementSupplierFactoryAdapter.java</span></div><h1>BootstrapElementSupplierFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.bootstrap.gen;
+
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.nasdanika.common.ConsumerFactory;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.Function;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Supplier;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.model.bootstrap.Appearance;
+import org.nasdanika.html.model.html.gen.HtmlElementSupplierFactoryAdapter;
+
+public abstract class BootstrapElementSupplierFactoryAdapter&lt;M extends org.nasdanika.html.model.bootstrap.BootstrapElement, T extends org.nasdanika.html.bootstrap.BootstrapElement&lt;?,?&gt;&gt; extends HtmlElementSupplierFactoryAdapter&lt;M, org.nasdanika.html.HTMLElement&lt;?&gt;&gt; {
+	
+	public BootstrapElementSupplierFactoryAdapter(M bootstrapElement, AdapterFactory adapterFactory) {
+<span class="fc" id="L17">		super(bootstrapElement, adapterFactory);</span>
+<span class="fc" id="L18">	}</span>
+
+	@Override
+	protected Function&lt;HTMLElement&lt;?&gt;, HTMLElement&lt;?&gt;&gt; createConfigureFunction(Context context) {
+<span class="fc" id="L22">		Appearance appearance = getTarget().getAppearance();</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">		if (appearance == null) {</span>
+<span class="fc" id="L24">			return super.createConfigureFunction(context);</span>
+		}
+		@SuppressWarnings({ &quot;rawtypes&quot;, &quot;unchecked&quot; })
+<span class="fc" id="L27">		ConsumerFactory&lt;HTMLElement&lt;?&gt;&gt; appearanceConsumerFactory = (ConsumerFactory) EObjectAdaptable.adaptToConsumerFactoryNonNull(appearance, org.nasdanika.html.HTMLElement.class);</span>
+<span class="fc" id="L28">		return super.createConfigureFunction(context).then(appearanceConsumerFactory.asFunctionFactory().create(context));</span>
+	}
+	
+	@Override
+	protected Supplier&lt;HTMLElement&lt;?&gt;&gt; createHTMLElementSupplier(Context context) {
+<span class="fc" id="L33">		return createBootstrapElementSupplier(context).then(new Function&lt;T, HTMLElement&lt;?&gt;&gt;() {</span>
+
+			@Override
+			public double size() {
+<span class="fc" id="L37">				return 1;</span>
+			}
+
+			@Override
+			public String name() {
+<span class="fc" id="L42">				return &quot;Bootstrap element to HTML element&quot;;</span>
+			}
+
+			@Override
+			public HTMLElement&lt;?&gt; execute(T bootstrapElement, ProgressMonitor progressMonitor) {
+<span class="fc" id="L47">				return bootstrapElement.toHTMLElement();</span>
+			}
+			
+		});
+	}
+		
+	protected Supplier&lt;T&gt; createBootstrapElementSupplier(Context context) {
+<span class="nc" id="L54">		throw new UnsupportedOperationException(&quot;Override this method or createHTMLElementSupplier()&quot;);</span>
+	}
+	
+	/**
+	 * Retrieves wrapping bootstrap element.
+	 * @param context
+	 * @return
+	 */
+	protected Function&lt;org.nasdanika.html.HTMLElement&lt;?&gt;, T&gt; getWrapper(Context context) {
+<span class="fc" id="L63">		return new Function&lt;org.nasdanika.html.HTMLElement&lt;?&gt;, T&gt;() {</span>
+	
+			@Override
+			public double size() {
+<span class="fc" id="L67">				return 1;</span>
+			}
+	
+			@Override
+			public String name() {
+<span class="fc" id="L72">				return &quot;Retrieving wrapping bootstrap element&quot;;</span>
+			}
+	
+			@SuppressWarnings(&quot;unchecked&quot;)
+			@Override
+			public T execute(HTMLElement&lt;?&gt; htmlElement, ProgressMonitor progressMonitor) {
+<span class="fc" id="L78">				return (T) htmlElement.getData(org.nasdanika.html.bootstrap.BootstrapElement.class);</span>
+			}
+			
+		};
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

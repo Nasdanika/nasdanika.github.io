@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResourceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Execution Model</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.resources.impl</a> &gt; <span class="el_source">ResourceImpl.java</span></div><h1>ResourceImpl.java</h1><pre class="source lang-java linenums">/**
+ */
+package org.nasdanika.exec.resources.impl;
+
+import java.util.Collection;
+
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.nasdanika.exec.resources.ReconcileAction;
+import org.nasdanika.exec.resources.Resource;
+import org.nasdanika.exec.resources.ResourcesPackage;
+import org.nasdanika.ncore.impl.ModelElementImpl;
+
+/**
+ * &lt;!-- begin-user-doc --&gt;
+ * An implementation of the model object '&lt;em&gt;&lt;b&gt;Resource&lt;/b&gt;&lt;/em&gt;'.
+ * &lt;!-- end-user-doc --&gt;
+ * &lt;p&gt;
+ * The following features are implemented:
+ * &lt;/p&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.resources.impl.ResourceImpl#getName &lt;em&gt;Name&lt;/em&gt;}&lt;/li&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.resources.impl.ResourceImpl#getContents &lt;em&gt;Contents&lt;/em&gt;}&lt;/li&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.resources.impl.ResourceImpl#getReconcileAction &lt;em&gt;Reconcile Action&lt;/em&gt;}&lt;/li&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.resources.impl.ResourceImpl#getMerger &lt;em&gt;Merger&lt;/em&gt;}&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * @generated
+ */
+public class ResourceImpl extends ModelElementImpl implements Resource {
+	/**
+	 * The default value of the '{@link #getName() &lt;em&gt;Name&lt;/em&gt;}' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+<span class="fc" id="L43">	protected static final String NAME_EDEFAULT = null;</span>
+
+	/**
+	 * The default value of the '{@link #getReconcileAction() &lt;em&gt;Reconcile Action&lt;/em&gt;}' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see #getReconcileAction()
+	 * @generated
+	 * @ordered
+	 */
+<span class="fc" id="L53">	protected static final ReconcileAction RECONCILE_ACTION_EDEFAULT = ReconcileAction.OVERWRITE;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected ResourceImpl() {
+<span class="fc" id="L61">		super();</span>
+<span class="fc" id="L62">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+<span class="nc" id="L71">		return ResourcesPackage.Literals.RESOURCE;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public String getName() {
+<span class="fc" id="L81">		return (String)eDynamicGet(ResourcesPackage.RESOURCE__NAME, ResourcesPackage.Literals.RESOURCE__NAME, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void setName(String newName) {
+<span class="fc" id="L91">		eDynamicSet(ResourcesPackage.RESOURCE__NAME, ResourcesPackage.Literals.RESOURCE__NAME, newName);</span>
+<span class="fc" id="L92">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public EList&lt;EObject&gt; getContents() {
+<span class="fc" id="L102">		return (EList&lt;EObject&gt;)eDynamicGet(ResourcesPackage.RESOURCE__CONTENTS, ResourcesPackage.Literals.RESOURCE__CONTENTS, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public ReconcileAction getReconcileAction() {
+<span class="fc" id="L112">		return (ReconcileAction)eDynamicGet(ResourcesPackage.RESOURCE__RECONCILE_ACTION, ResourcesPackage.Literals.RESOURCE__RECONCILE_ACTION, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void setReconcileAction(ReconcileAction newReconcileAction) {
+<span class="nc" id="L122">		eDynamicSet(ResourcesPackage.RESOURCE__RECONCILE_ACTION, ResourcesPackage.Literals.RESOURCE__RECONCILE_ACTION, newReconcileAction);</span>
+<span class="nc" id="L123">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EObject getMerger() {
+<span class="fc" id="L132">		return (EObject)eDynamicGet(ResourcesPackage.RESOURCE__MERGER, ResourcesPackage.Literals.RESOURCE__MERGER, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	public NotificationChain basicSetMerger(EObject newMerger, NotificationChain msgs) {
+<span class="nc" id="L141">		msgs = eDynamicInverseAdd((InternalEObject)newMerger, ResourcesPackage.RESOURCE__MERGER, msgs);</span>
+<span class="nc" id="L142">		return msgs;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void setMerger(EObject newMerger) {
+<span class="nc" id="L152">		eDynamicSet(ResourcesPackage.RESOURCE__MERGER, ResourcesPackage.Literals.RESOURCE__MERGER, newMerger);</span>
+<span class="nc" id="L153">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+<span class="nc bnc" id="L162" title="All 3 branches missed.">		switch (featureID) {</span>
+			case ResourcesPackage.RESOURCE__CONTENTS:
+<span class="nc" id="L164">				return ((InternalEList&lt;?&gt;)getContents()).basicRemove(otherEnd, msgs);</span>
+			case ResourcesPackage.RESOURCE__MERGER:
+<span class="nc" id="L166">				return basicSetMerger(null, msgs);</span>
+		}
+<span class="nc" id="L168">		return super.eInverseRemove(otherEnd, featureID, msgs);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+<span class="pc bpc" id="L178" title="1 of 5 branches missed.">		switch (featureID) {</span>
+			case ResourcesPackage.RESOURCE__NAME:
+<span class="fc" id="L180">				return getName();</span>
+			case ResourcesPackage.RESOURCE__CONTENTS:
+<span class="fc" id="L182">				return getContents();</span>
+			case ResourcesPackage.RESOURCE__RECONCILE_ACTION:
+<span class="nc" id="L184">				return getReconcileAction();</span>
+			case ResourcesPackage.RESOURCE__MERGER:
+<span class="fc" id="L186">				return getMerger();</span>
+		}
+<span class="fc" id="L188">		return super.eGet(featureID, resolve, coreType);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public void eSet(int featureID, Object newValue) {
+<span class="pc bpc" id="L199" title="3 of 5 branches missed.">		switch (featureID) {</span>
+			case ResourcesPackage.RESOURCE__NAME:
+<span class="fc" id="L201">				setName((String)newValue);</span>
+<span class="fc" id="L202">				return;</span>
+			case ResourcesPackage.RESOURCE__CONTENTS:
+<span class="fc" id="L204">				getContents().clear();</span>
+<span class="fc" id="L205">				getContents().addAll((Collection&lt;? extends EObject&gt;)newValue);</span>
+<span class="fc" id="L206">				return;</span>
+			case ResourcesPackage.RESOURCE__RECONCILE_ACTION:
+<span class="nc" id="L208">				setReconcileAction((ReconcileAction)newValue);</span>
+<span class="nc" id="L209">				return;</span>
+			case ResourcesPackage.RESOURCE__MERGER:
+<span class="nc" id="L211">				setMerger((EObject)newValue);</span>
+<span class="nc" id="L212">				return;</span>
+		}
+<span class="nc" id="L214">		super.eSet(featureID, newValue);</span>
+<span class="nc" id="L215">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+<span class="nc bnc" id="L224" title="All 5 branches missed.">		switch (featureID) {</span>
+			case ResourcesPackage.RESOURCE__NAME:
+<span class="nc" id="L226">				setName(NAME_EDEFAULT);</span>
+<span class="nc" id="L227">				return;</span>
+			case ResourcesPackage.RESOURCE__CONTENTS:
+<span class="nc" id="L229">				getContents().clear();</span>
+<span class="nc" id="L230">				return;</span>
+			case ResourcesPackage.RESOURCE__RECONCILE_ACTION:
+<span class="nc" id="L232">				setReconcileAction(RECONCILE_ACTION_EDEFAULT);</span>
+<span class="nc" id="L233">				return;</span>
+			case ResourcesPackage.RESOURCE__MERGER:
+<span class="nc" id="L235">				setMerger((EObject)null);</span>
+<span class="nc" id="L236">				return;</span>
+		}
+<span class="nc" id="L238">		super.eUnset(featureID);</span>
+<span class="nc" id="L239">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+<span class="fc bfc" id="L248" title="All 5 branches covered.">		switch (featureID) {</span>
+			case ResourcesPackage.RESOURCE__NAME:
+<span class="pc bpc" id="L250" title="4 of 6 branches missed.">				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());</span>
+			case ResourcesPackage.RESOURCE__CONTENTS:
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">				return !getContents().isEmpty();</span>
+			case ResourcesPackage.RESOURCE__RECONCILE_ACTION:
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">				return getReconcileAction() != RECONCILE_ACTION_EDEFAULT;</span>
+			case ResourcesPackage.RESOURCE__MERGER:
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">				return getMerger() != null;</span>
+		}
+<span class="fc" id="L258">		return super.eIsSet(featureID);</span>
+	}
+
+} //ResourceImpl
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

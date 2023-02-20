@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Entity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Resources</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.resources</a> &gt; <span class="el_source">Entity.java</span></div><h1>Entity.java</h1><pre class="source lang-java linenums">package org.nasdanika.resources;
+
+import java.util.function.BiFunction;
+import java.util.zip.ZipFile;
+
+import org.nasdanika.common.ProgressMonitor;
+
+/**
+ * Entity is something which has externalizable state. E.g. file is an entity with binary contents/state - a sequence of bytes.
+ * @author Pavel
+ *
+ * @param &lt;T&gt; Entity state type
+ * @param &lt;E&gt; Container element type.
+ */
+public interface Entity&lt;T,E&gt; extends Resource&lt;E&gt; {
+	
+	/**
+	 * @param monitor
+	 * @return Entity state. 
+	 * @throws IllegalStateException if the entity's underlying state storage does not exist or cannot be read.
+	 */
+	T getState(ProgressMonitor monitor);
+		
+	/**
+	 * 
+	 * @param type State type
+	 * @param monitor
+	 * @return Entity state converted to the the requested content type. E.g. file contents converted to String. This implementation does not perform any conversion and
+	 * returns contents AS-IS if it is already of the requested type or throws an {@link UnsupportedOperationException} otherwise.
+	 * @throws IllegalStateException if the entity state storage does not exist, cannot be read, or conversion from T to V is not supported.
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	default &lt;V&gt; V getState(Class&lt;V&gt; type, ProgressMonitor monitor) {
+<span class="nc" id="L34">		T contents = getState(monitor);</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">		if (type.isInstance(contents)) {</span>
+<span class="nc" id="L36">			return (V) contents;</span>
+		}
+<span class="nc" id="L38">		throw new UnsupportedOperationException(&quot;Unsupported content type: &quot;+type);</span>
+	}	
+	
+	/**
+	 * Sets entity state, e.g. file contents. If the entity storage does not exist this call creates the storage and intermediary containers as needed.
+	 * @param state Entity state. 
+	 * @param monitor
+	 * @throws IllegalStateException if canWrite() returns false.
+	 */
+	void setState(T state, ProgressMonitor monitor);
+	
+	/**
+	 * Appends state if the entity state exists and calls setState if it doesn't.
+	 * @param Entity state.
+	 * @param monitor
+	 * @throws IllegalStateException if canWrite() returns false.
+	 */
+	void appendState(T state, ProgressMonitor monitor);
+
+	/**
+	 * @return true if entity state can be read. Some containers may be write-only.
+	 */
+	boolean canRead();
+	
+	/**
+	 * @return true if entity state can be changed. Some containers may be read-only, e.g. a container backed by a {@link ZipFile} would only support reading resources from it.
+	 */
+	boolean canWrite();
+	
+	/**
+	 * Copies entity. 
+	 * @param container target container, may be the same container.
+	 * @param path Path in the target container.
+	 * @param monitor Progress monitor.
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	default void copy(Container&lt;? super E&gt; container, String path, ProgressMonitor monitor) {	
+<span class="nc bnc" id="L76" title="All 2 branches missed.">		if (exists(monitor.split(&quot;Checking existence&quot;, 1, this))) {</span>
+			try (
+<span class="nc" id="L78">					ProgressMonitor getCopyTargetMonitor = monitor.split(&quot;Getting copy target&quot;+getPath(), 1, this); </span>
+<span class="nc" id="L79">					ProgressMonitor readMonitor = monitor.split(&quot;Copying &quot;+getPath(), 1, this); </span>
+<span class="nc" id="L80">					ProgressMonitor writeMonitor = monitor.split(&quot;Writing &quot;+path, 1, container, path)) {</span>
+<span class="nc" id="L81">				Object copyTarget = container.get(path, getCopyTargetMonitor);</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">				if (copyTarget instanceof Entity) {</span>
+<span class="nc" id="L83">					((Entity&lt;T,E&gt;) copyTarget).setState(getState(readMonitor), writeMonitor);</span>
+				} else {
+<span class="nc" id="L85">					throw new IllegalArgumentException(&quot;Copy target is not an entity: &quot;+copyTarget);</span>
+				}
+			}
+		}
+<span class="nc" id="L89">	}</span>
+	
+	/**
+	 * Moves entity. This implementation implements move as copy and delete.
+	 * @param container target container, may be the same container.
+	 * @param path Path in the target container.
+	 * @param monitor Progress monitor.
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	default void move(Container&lt;? super E&gt; container, String path, ProgressMonitor monitor) {
+<span class="nc bnc" id="L100" title="All 2 branches missed.">		if (exists(monitor.split(&quot;Checking existence&quot;, 1, this))) {</span>
+			try (
+<span class="nc" id="L102">					ProgressMonitor getCopyTargetMonitor = monitor.split(&quot;Getting copy target&quot;+getPath(), 1, this); </span>
+<span class="nc" id="L103">					ProgressMonitor readMonitor = monitor.split(&quot;Copying &quot;+getPath(), 1, this); </span>
+<span class="nc" id="L104">					ProgressMonitor writeMonitor = monitor.split(&quot;Writing &quot;+path, 1, container, path);</span>
+<span class="nc" id="L105">					ProgressMonitor deleteMonitor = monitor.split(&quot;Deleting&quot;+path, 1, this, path)) {</span>
+<span class="nc" id="L106">				Object moveTarget = container.get(path, getCopyTargetMonitor);</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">				if (moveTarget instanceof Entity) {</span>
+<span class="nc" id="L108">					((Entity&lt;T,E&gt;) moveTarget).setState(getState(readMonitor), writeMonitor);</span>
+<span class="nc" id="L109">					delete(deleteMonitor);</span>
+				} else {
+<span class="nc" id="L111">					throw new IllegalArgumentException(&quot;Copy target is not an entity: &quot;+moveTarget);</span>
+				}
+			}
+		}
+<span class="nc" id="L115">	}</span>
+	
+	/**
+	 * Adapts to a different state type.
+	 * @param &lt;V&gt;
+	 * @param decoder Decodes T to V.
+	 * @param encoder Encodes V to T.
+	 * @param sizeConverter converts size of an entity. Size is passed as-is if null.
+	 * @return
+	 */
+	default &lt;V&gt; Entity&lt;V,E&gt; adapt(BiFunction&lt;Entity&lt;T,E&gt;, T, V&gt; decoder, BiFunction&lt;Entity&lt;T,E&gt;, V, T&gt; encoder, BiFunction&lt;Entity&lt;T,E&gt;, Long, Long&gt; sizeConverter) {
+<span class="nc" id="L126">		return new Entity&lt;V,E&gt;() {</span>
+
+			@Override
+			public String getName() {
+<span class="nc" id="L130">				return Entity.this.getName();</span>
+			}
+
+			@Override
+			public boolean exists(ProgressMonitor monitor) {
+<span class="nc" id="L135">				return Entity.this.exists(monitor);</span>
+			}
+
+			@Override
+			public Container&lt;E&gt; getParent() {
+<span class="nc" id="L140">				Container&lt;E&gt; parent = Entity.this.getParent();</span>
+				@SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L142">				BiFunction&lt;String, E, E&gt; adapter = (path, source) -&gt; {</span>
+<span class="nc" id="L143">					return (E) ((Entity&lt;T,E&gt;) source).adapt(decoder, encoder, sizeConverter);</span>
+				};
+				
+<span class="nc" id="L146">				BiFunction&lt;String, E, E&gt; converter = (path, adapted) -&gt; {</span>
+<span class="nc" id="L147">					throw new UnsupportedOperationException(&quot;Entity put is not supported&quot;);</span>
+				};
+<span class="nc bnc" id="L149" title="All 2 branches missed.">				return parent == null ? null : parent.adapt(adapter, converter);</span>
+			}
+
+			@Override
+			public void delete(ProgressMonitor monitor) {
+<span class="nc" id="L154">				Entity.this.delete(monitor);</span>
+<span class="nc" id="L155">			}</span>
+
+			@Override
+			public String getPath() {
+<span class="nc" id="L159">				return Entity.this.getPath();</span>
+			}
+
+			@Override
+			public V getState(ProgressMonitor monitor) {
+<span class="nc" id="L164">				return decoder.apply(Entity.this, Entity.this.getState(monitor));</span>
+			}
+
+			@Override
+			public void setState(V contents, ProgressMonitor monitor) {
+<span class="nc" id="L169">				Entity.this.setState(encoder.apply(Entity.this, contents), monitor);</span>
+<span class="nc" id="L170">			}</span>
+
+			@Override
+			public void appendState(V contents, ProgressMonitor monitor) {
+<span class="nc" id="L174">				Entity.this.appendState(encoder.apply(Entity.this, contents), monitor);</span>
+<span class="nc" id="L175">			}</span>
+
+			@Override
+			public boolean canRead() {
+<span class="nc bnc" id="L179" title="All 4 branches missed.">				return decoder != null &amp;&amp; Entity.this.canRead();</span>
+			}
+
+			@Override
+			public boolean canWrite() {
+<span class="nc bnc" id="L184" title="All 4 branches missed.">				return encoder != null &amp;&amp; Entity.this.canWrite();</span>
+			}
+
+			@Override
+			public long size(ProgressMonitor monitor) {
+<span class="nc bnc" id="L189" title="All 2 branches missed.">				return sizeConverter == null ? Entity.this.size(monitor) : sizeConverter.apply(Entity.this, Entity.this.size(monitor));</span>
+			}
+
+			@Override
+			public String toString() {
+<span class="nc" id="L194">				return getClass().getName()+&quot;(&quot;+getPath()+&quot;)&quot;;</span>
+			}
+			
+		};
+	}
+	
+//	/**
+//	 * @return true if the entity has state modifications which are not synchronized with its external storage.
+//	 */
+//	boolean isDirty();
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

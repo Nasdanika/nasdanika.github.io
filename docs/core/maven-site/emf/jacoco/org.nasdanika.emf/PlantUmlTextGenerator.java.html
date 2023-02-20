@@ -1,0 +1,816 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlantUmlTextGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika EMF</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.emf</a> &gt; <span class="el_source">PlantUmlTextGenerator.java</span></div><h1>PlantUmlTextGenerator.java</h1><pre class="source lang-java linenums">package org.nasdanika.emf;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EEnumLiteral;
+import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EParameter;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.ETypeParameter;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.DependencyTracer;
+import org.nasdanika.common.NasdanikaException;
+import org.nasdanika.common.Util;
+import org.nasdanika.ncore.util.NcoreUtil;
+
+/**
+ * Generates PlantUML text from Ecore models.
+ * 
+ * This code is based on net.sourceforge.plantuml.text.AbstractDiagramTextProvider and 
+ * net.sourceforge.plantuml.ecore.AbstractEcoreDiagramTextProvider from 
+ * https://github.com/hallvard/plantuml
+ * 
+ * @author Pavel Vlasov
+ *
+ */
+public class PlantUmlTextGenerator implements DiagramTextGenerator {
+	
+	private static final String DIAGRAM_STYLE_KEY = &quot;diagram-style&quot;;
+	private static final String RELATED_BACKGROUND = &quot;#DDDDDD&quot;;
+	
+	// Default background: #FEFECE
+
+	private Appendable collector;
+	private Function&lt;EClassifier, String&gt; eClassifierLinkResolver;
+	private Function&lt;EModelElement, String&gt; eModelElementFirstDocSentenceProvider;
+	private Predicate&lt;EModelElement&gt; elementPredicate;
+	private BiFunction&lt;ENamedElement, String, String&gt; labelProvider;
+
+	public PlantUmlTextGenerator(
+			Appendable collector, 
+			Predicate&lt;EModelElement&gt; elementPredicate,			
+			Function&lt;EClassifier, String&gt; eClassifierLinkResolver, 
+			Function&lt;EModelElement, String&gt; eModelElementFirstDocSentenceProvider,
+<span class="nc" id="L70">			BiFunction&lt;ENamedElement, String, String&gt; labelProvider) {</span>
+<span class="nc" id="L71">		this.collector = collector;</span>
+<span class="nc" id="L72">		this.elementPredicate = elementPredicate;</span>
+<span class="nc" id="L73">		this.eClassifierLinkResolver = eClassifierLinkResolver;</span>
+<span class="nc" id="L74">		this.eModelElementFirstDocSentenceProvider = eModelElementFirstDocSentenceProvider;</span>
+<span class="nc" id="L75">		this.labelProvider = labelProvider;</span>
+<span class="nc" id="L76">	}</span>
+	
+	/**
+	 * Filters the collection retaining only model elements which shall be documented.
+	 * @param &lt;T&gt;
+	 * @param elements
+	 * @return
+	 */
+	protected &lt;T extends EModelElement&gt; List&lt;T&gt; retainDocumentable(Collection&lt;T&gt; elements) {
+<span class="nc" id="L85">		return elements.stream().filter(elementPredicate).collect(Collectors.toList());</span>
+	}	
+	
+	private static final String EXTENDS_RELATION = &quot;&lt;|--&quot;; 
+	private static final String IMPLEMENTS_RELATION = &quot;&lt;|..&quot;;
+	private static final String DEPENDENCY_RELATION = &quot;..&gt;&quot;;	
+	private static final String CLASS_COMPARTMENT_SEPARATOR_LINE = &quot;\t__\n&quot;;
+
+	protected void appendClassStart(String modifiers, String classType, String name, String link, String style) throws IOException {
+<span class="nc bnc" id="L94" title="All 2 branches missed.">		if (modifiers != null) {</span>
+<span class="nc" id="L95">			collector.append(modifiers);</span>
+<span class="nc" id="L96">			collector.append(&quot; &quot;);</span>
+		}
+		
+<span class="nc" id="L99">		collector</span>
+<span class="nc" id="L100">			.append(classType)</span>
+<span class="nc" id="L101">			.append(&quot; &quot;)</span>
+<span class="nc" id="L102">			.append(name)</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">			.append(Util.isBlank(link) ? &quot;&quot; : &quot; [[&quot; + link + &quot;]]&quot;)</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">			.append(Util.isBlank(style) ? &quot;&quot; : &quot; &quot; + style)</span>
+<span class="nc" id="L105">			.append(&quot; {\n&quot;);</span>
+<span class="nc" id="L106">	}</span>
+	
+	protected String getLabel(ENamedElement namedElement) {
+<span class="nc" id="L109">		return labelProvider.apply(namedElement, namedElement.getName());</span>
+	}
+	
+	protected void appendClassEnd() throws IOException {
+<span class="nc" id="L113">		collector.append(&quot;}\n&quot;);</span>
+<span class="nc" id="L114">	}</span>
+
+	private static String getSimpleName(String name) {
+<span class="nc bnc" id="L117" title="All 2 branches missed.">		return name==null ? null : name.substring(name.lastIndexOf('.') + 1);</span>
+	}
+
+	protected void appendMember(String modifiers, String visibility, String type, String name, Iterable&lt;String&gt; parameters) throws IOException {
+<span class="nc" id="L121">		collector.append(&quot;\t&quot;);</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (visibility != null) {</span>
+<span class="nc" id="L123">			collector.append(visibility);</span>
+		}
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (modifiers != null) {</span>
+<span class="nc" id="L126">			collector.append(modifiers);</span>
+<span class="nc" id="L127">			collector.append(&quot; &quot;);</span>
+		}
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (type != null) {</span>
+<span class="nc" id="L130">			collector.append(type);</span>
+<span class="nc" id="L131">			collector.append(&quot; &quot;);</span>
+		}
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (name != null) {</span>
+<span class="nc" id="L134">			collector.append(name);</span>
+		}
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		if (parameters != null) {</span>
+<span class="nc" id="L137">			collector.append(&quot;(&quot;);</span>
+<span class="nc" id="L138">			Iterator&lt;String&gt; it = parameters.iterator();</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			while (it.hasNext()) {</span>
+<span class="nc" id="L140">				collector.append(it.next());</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">				if (it.hasNext()) {</span>
+<span class="nc" id="L142">					collector.append(&quot;, &quot;);</span>
+				}
+			}
+<span class="nc" id="L145">			collector.append(&quot;)&quot;);</span>
+		}
+<span class="nc" id="L147">		collector.append(&quot;\n&quot;);</span>
+<span class="nc" id="L148">	}</span>
+	
+	protected void appendAttribute(String modifiers, String visibility, String type, String name) throws IOException {
+<span class="nc" id="L151">		appendMember(modifiers, visibility, type, name, null);</span>
+<span class="nc" id="L152">	}</span>
+
+	protected void appendOperation(String modifiers, String visibility, String type, String name, Iterable&lt;String&gt; parameters) throws IOException {
+<span class="nc" id="L155">		appendMember(modifiers, visibility, type, name, parameters);</span>
+<span class="nc" id="L156">	}</span>
+		
+	public void appendGeneralization(EClass subClass, EGenericType superType) throws IOException {
+<span class="nc bnc" id="L159" title="All 2 branches missed.">		if (elementPredicate.test(superType.getEClassifier())) {</span>
+<span class="nc" id="L160">			EClass superClass = (EClass) superType.getEClassifier();</span>
+<span class="nc" id="L161">			collector</span>
+<span class="nc" id="L162">				.append(qualifiedName(superClass))</span>
+<span class="nc" id="L163">				.append(&quot; &quot;)</span>
+<span class="nc bnc" id="L164" title="All 4 branches missed.">				.append(superClass.isInterface() &amp;&amp; !subClass.isInterface() ? IMPLEMENTS_RELATION : EXTENDS_RELATION)</span>
+<span class="nc" id="L165">				.append(&quot; &quot;)</span>
+<span class="nc" id="L166">				.append(qualifiedName(subClass));</span>
+			
+<span class="nc bnc" id="L168" title="All 2 branches missed.">			if (!superType.getETypeArguments().isEmpty()) {</span>
+<span class="nc" id="L169">				collector.append(&quot; : &lt;&quot;);</span>
+<span class="nc" id="L170">				Iterator&lt;EGenericType&gt; it = superType.getETypeArguments().iterator();</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">				while (it.hasNext()) {</span>
+<span class="nc" id="L172">					collector.append(genericName(it.next()));</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">					if (it.hasNext()) {</span>
+<span class="nc" id="L174">						collector.append(&quot;,&quot;);</span>
+					}
+				}
+<span class="nc" id="L177">				collector.append(&quot;&gt;&quot;);</span>
+			}		
+			
+<span class="nc" id="L180">			collector.append(&quot;\n&quot;);</span>
+		}
+<span class="nc" id="L182">	}</span>
+		
+	// --- ECore ---
+	
+<span class="nc" id="L186">	private DependencyTracer&lt;EClassifier&gt; OUT_DEPENDENCY_TRACER = new DependencyTracer&lt;EClassifier&gt;() {</span>
+
+		@Override
+		protected Iterable&lt;EClassifier&gt; getDependencies(EClassifier obj) {
+<span class="nc" id="L190">			Collection&lt;EClassifier&gt; ret = new HashSet&lt;&gt;();</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">			if (obj instanceof EClass) {</span>
+<span class="nc" id="L192">				EClass eClass = (EClass) obj;</span>
+<span class="nc" id="L193">				ret.addAll(eClass.getESuperTypes());</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">				for (EReference ref: retainDocumentable(eClass.getEReferences())) {					</span>
+<span class="nc" id="L195">					EClass eReferenceType = ref.getEReferenceType();</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">					if (elementPredicate.test(eReferenceType)) {</span>
+<span class="nc" id="L197">						EClass associationTarget = NcoreUtil.getAssociationTarget(ref);</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">						if (associationTarget == null) {</span>
+<span class="nc" id="L199">							ret.add(eReferenceType);</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">						} else if (elementPredicate.test(associationTarget)) {</span>
+<span class="nc" id="L201">							ret.add(eReferenceType);</span>
+<span class="nc" id="L202">							ret.add(associationTarget);							</span>
+						}						
+					}					
+<span class="nc" id="L205">				}</span>
+				
+<span class="nc" id="L207">				ret.addAll(EmfUtil.collectTypeDependencies(eClass));				</span>
+			}
+<span class="nc" id="L209">			return retainDocumentable(ret);</span>
+		}
+		
+	};
+		
+<span class="nc" id="L214">	private DependencyTracer&lt;EClassifier&gt; inDependencyTracer = new DependencyTracer&lt;EClassifier&gt;() {</span>
+
+		@Override
+		protected Iterable&lt;EClassifier&gt; getDependencies(EClassifier obj) {
+<span class="nc" id="L218">			Collection&lt;EClassifier&gt; ret = new HashSet&lt;&gt;();</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">			if (obj instanceof EClass) {</span>
+<span class="nc" id="L220">				ret.addAll(getSubTypes((EClass) obj));</span>
+<span class="nc" id="L221">				ret.addAll(getReferrers((EClass) obj));</span>
+			}
+<span class="nc" id="L223">			ret.addAll(getUses(obj));</span>
+<span class="nc" id="L224">			return retainDocumentable(ret);</span>
+		}
+		
+	};
+		
+<span class="nc" id="L229">	private DependencyTracer&lt;EClassifier&gt; bothDependencyTracer = new DependencyTracer&lt;EClassifier&gt;() {</span>
+	
+		@Override
+		protected Iterable&lt;EClassifier&gt; getDependencies(EClassifier obj) {
+<span class="nc" id="L233">			Collection&lt;EClassifier&gt; ret = new HashSet&lt;&gt;();</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">			if (obj instanceof EClass) {</span>
+				// In
+<span class="nc" id="L236">				EClass eClass = (EClass) obj;</span>
+<span class="nc" id="L237">				ret.addAll(getSubTypes(eClass));</span>
+<span class="nc" id="L238">				ret.addAll(getReferrers(eClass));</span>
+				
+				// Out
+<span class="nc" id="L241">				ret.addAll(eClass.getESuperTypes());</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">				for (EReference ref: retainDocumentable(eClass.getEReferences())) {</span>
+<span class="nc" id="L243">					EClass eReferenceType = ref.getEReferenceType();</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">					if (elementPredicate.test(eReferenceType)) {</span>
+<span class="nc" id="L245">						EClass associationTarget = NcoreUtil.getAssociationTarget(ref);</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">						if (associationTarget == null) {</span>
+<span class="nc" id="L247">							ret.add(eReferenceType);</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">						} else if (elementPredicate.test(associationTarget)) {</span>
+<span class="nc" id="L249">							ret.add(eReferenceType);</span>
+<span class="nc" id="L250">							ret.add(associationTarget);							</span>
+						}						
+					}					
+<span class="nc" id="L253">				}</span>
+				
+<span class="nc" id="L255">				ret.addAll(EmfUtil.collectTypeDependencies(eClass));				</span>
+			}
+
+			// In
+<span class="nc" id="L259">			ret.addAll(getUses(obj));</span>
+			
+<span class="nc" id="L261">			return retainDocumentable(ret);</span>
+		}
+		
+	};
+		
+	/**
+	 * Appends core classifiers, their related classifiers, and relationships
+	 * @param coreClassifiers
+	 * @throws IOException 
+	 */
+	@Override
+	public void appendWithRelationships(
+			Collection&lt;? extends EClassifier&gt; coreClassifiers,
+			RelationshipDirection direction,
+			int depth) {
+		
+		try {
+<span class="nc" id="L278">			Set&lt;EClassifier&gt; coreSet = new HashSet&lt;&gt;(retainDocumentable(coreClassifiers));				</span>
+<span class="nc" id="L279">			Set&lt;EClassifier&gt; relatedSet = new HashSet&lt;&gt;();</span>
+			
+<span class="nc bnc" id="L281" title="All 4 branches missed.">			switch (direction) {</span>
+			case both:
+<span class="nc" id="L283">				relatedSet = bothDependencyTracer.trace(coreSet, depth);</span>
+<span class="nc" id="L284">				break;</span>
+			case in:
+<span class="nc" id="L286">				relatedSet = inDependencyTracer.trace(coreSet, depth);</span>
+<span class="nc" id="L287">				break;</span>
+			case out:
+<span class="nc" id="L289">				relatedSet = OUT_DEPENDENCY_TRACER.trace(coreSet, depth);</span>
+<span class="nc" id="L290">				break;</span>
+			default:
+				break;		
+			}
+			
+<span class="nc" id="L295">			Set&lt;EClassifier&gt; allClassifiers = new HashSet&lt;&gt;(coreSet);</span>
+			
+<span class="nc bnc" id="L297" title="All 2 branches missed.">			for (EClassifier rc: relatedSet) {</span>
+<span class="nc bnc" id="L298" title="All 4 branches missed.">				if (!coreSet.contains(rc) &amp;&amp; getEClassifierLink(rc) != null) {</span>
+<span class="nc" id="L299">					allClassifiers.add(rc);				</span>
+				}
+<span class="nc" id="L301">			}</span>
+			
+<span class="nc bnc" id="L303" title="All 2 branches missed.">			for (EClassifier cc: coreSet) {</span>
+<span class="nc" id="L304">				appendEClassifier(cc, allClassifiers);</span>
+<span class="nc" id="L305">			}</span>
+			
+<span class="nc bnc" id="L307" title="All 2 branches missed.">			for (EClassifier rc: relatedSet) {</span>
+<span class="nc bnc" id="L308" title="All 4 branches missed.">				if (!coreSet.contains(rc) &amp;&amp; getEClassifierLink(rc) != null) {</span>
+<span class="nc" id="L309">					String style = NcoreUtil.getNasdanikaAnnotationDetail(rc, DIAGRAM_STYLE_KEY);</span>
+<span class="nc bnc" id="L310" title="All 2 branches missed.">					if (style == null) {</span>
+<span class="nc" id="L311">						style = RELATED_BACKGROUND;</span>
+					} else {
+<span class="nc" id="L313">						style = Context.singleton(&quot;background&quot;, RELATED_BACKGROUND).interpolateToString(style);</span>
+					}
+					
+<span class="nc" id="L316">					appendEClassifier(rc, style, allClassifiers);</span>
+				}
+<span class="nc" id="L318">			}		</span>
+			
+<span class="nc bnc" id="L320" title="All 2 branches missed.">			for (EClassifier c: allClassifiers) {</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">				if (c instanceof EClass) {</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">					for (EGenericType gsc: ((EClass) c).getEGenericSuperTypes()) {</span>
+<span class="nc bnc" id="L323" title="All 2 branches missed.">						if (allClassifiers.contains(gsc.getEClassifier())) {</span>
+<span class="nc" id="L324">							appendGeneralization((EClass) c, gsc);</span>
+						}
+<span class="nc" id="L326">					}</span>
+				}
+<span class="nc" id="L328">			}</span>
+			
+<span class="nc" id="L330">			Set&lt;EReference&gt; processedOpposites = new HashSet&lt;&gt;();</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">			for (EClassifier c: allClassifiers) {</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">				if (c instanceof EClass) {</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">					for (EReference ref: ((EClass) c).getEReferences()) {</span>
+<span class="nc" id="L334">						EClass eReferenceType = ref.getEReferenceType();</span>
+//						EClass associationTarget = getAssociationTarget(ref);
+//						if (associationTarget == null) { // Regular relationship
+<span class="nc bnc" id="L337" title="All 4 branches missed.">							if (!processedOpposites.contains(ref) &amp;&amp; allClassifiers.contains(eReferenceType)) {</span>
+<span class="nc" id="L338">								appendEReference(ref);</span>
+<span class="nc" id="L339">								EReference opposite = NcoreUtil.getOpposite(ref);</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">								if (opposite!=null) {</span>
+<span class="nc" id="L341">									processedOpposites.add(opposite);</span>
+								}
+							}
+//						} else { // Association class, no handling of opposites right now
+//							if (allClassifiers.contains(eReferenceType) &amp;&amp; allClassifiers.contains(associationTarget)) {
+//								appendAssociation(ref);								
+//							}
+//						}
+<span class="nc" id="L349">					}</span>
+				}
+<span class="nc" id="L351">			}	</span>
+			
+			// Type dependencies
+<span class="nc bnc" id="L354" title="All 2 branches missed.">			for (EClassifier c: allClassifiers) {</span>
+<span class="nc bnc" id="L355" title="All 2 branches missed.">				for (EClass src: getUses(c)) {</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">					if (allClassifiers.contains(src)) {</span>
+<span class="nc" id="L357">						appendTypeDependency(src, c);</span>
+					}				
+<span class="nc" id="L359">				}</span>
+<span class="nc" id="L360">			}</span>
+<span class="nc" id="L361">		} catch (IOException e) {</span>
+<span class="nc" id="L362">			throw new NasdanikaException(e);</span>
+<span class="nc" id="L363">		}</span>
+<span class="nc" id="L364">	}</span>
+	
+	protected static String getMultiplicity(EStructuralFeature feature) {
+<span class="nc bnc" id="L367" title="All 2 branches missed.">		if (feature.isMany()) {</span>
+<span class="nc" id="L368">			int lowerBound = feature.getLowerBound();</span>
+<span class="nc" id="L369">			int upperBound = feature.getUpperBound();</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">			if (lowerBound == upperBound) {</span>
+<span class="nc" id="L371">				return String.valueOf(lowerBound);</span>
+			}
+<span class="nc bnc" id="L373" title="All 4 branches missed.">			if (lowerBound==0 &amp;&amp; upperBound==-1) {</span>
+<span class="nc" id="L374">				return &quot;*&quot;;</span>
+			}
+<span class="nc bnc" id="L376" title="All 2 branches missed.">			return String.valueOf(lowerBound)+&quot;..&quot;+(upperBound == -1 ? &quot;*&quot; : upperBound);</span>
+		}
+		
+<span class="nc" id="L379">		return &quot;&quot;;</span>
+	}	
+	
+	/**
+	 * @param ref
+	 * @return Empty string if there are no EKeys, a comma separated list of EKeys in parenthesis otherwise.
+	 */
+	protected String eKeys(EReference ref) {
+<span class="nc" id="L387">		StringBuilder ret = new StringBuilder();</span>
+<span class="nc" id="L388">		EList&lt;EAttribute&gt; eKeys = ref.getEKeys();</span>
+<span class="nc bnc" id="L389" title="All 2 branches missed.">		if (!eKeys.isEmpty()) {</span>
+<span class="nc" id="L390">			ret.append(&quot;(&quot;);		</span>
+<span class="nc" id="L391">			ret.append(String.join(&quot;,&quot;, eKeys.stream().map(this::getLabel).collect(Collectors.toList())));</span>
+<span class="nc" id="L392">			ret.append(&quot;)&quot;);</span>
+		}
+		
+<span class="nc" id="L395">		return ret.toString();</span>
+	}
+	
+	protected void appendEReference(EReference ref) throws IOException {
+<span class="nc bnc" id="L399" title="All 2 branches missed.">		if (elementPredicate.test(ref)) {</span>
+<span class="nc" id="L400">			collector.append(qualifiedName(ref.getEContainingClass()));</span>
+<span class="nc" id="L401">			collector.append(&quot; &quot;);</span>
+<span class="nc" id="L402">			EReference opposite = NcoreUtil.getOpposite(ref);</span>
+<span class="nc bnc" id="L403" title="All 2 branches missed.">			if (ref.isContainment()) {</span>
+<span class="nc" id="L404">				collector.append(&quot;*&quot;);</span>
+<span class="nc bnc" id="L405" title="All 2 branches missed.">			} else if (opposite!=null) {</span>
+<span class="nc" id="L406">				collector.append(&quot;\&quot;&quot;);</span>
+<span class="nc" id="L407">				collector.append(getLabel(opposite));</span>
+<span class="nc" id="L408">				collector.append(eKeys(opposite));</span>
+<span class="nc" id="L409">				String multiplicity = getMultiplicity(opposite);</span>
+<span class="nc bnc" id="L410" title="All 2 branches missed.">				if (!multiplicity.isEmpty()) {</span>
+<span class="nc" id="L411">					collector.append(&quot;[&quot;+multiplicity+&quot;]&quot;);</span>
+				}
+<span class="nc" id="L413">				collector.append(&quot;\&quot; &quot;);</span>
+			}
+			
+<span class="nc" id="L416">			String diagramStyle = NcoreUtil.getNasdanikaAnnotationDetail(ref, DIAGRAM_STYLE_KEY);</span>
+<span class="nc bnc" id="L417" title="All 2 branches missed.">			String relationLine = Util.isBlank(diagramStyle) ? &quot;--&quot; : &quot;-[&quot; + diagramStyle + &quot;]-&quot;;</span>
+<span class="nc" id="L418">			String associationRelation = relationLine + &quot;&gt;&quot;;</span>
+			
+<span class="nc bnc" id="L420" title="All 2 branches missed.">			if (opposite == null) {</span>
+<span class="nc" id="L421">				collector.append(associationRelation);</span>
+			} else {
+<span class="nc" id="L423">				collector.append(relationLine);</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">				if (opposite.isContainment()) {</span>
+<span class="nc" id="L425">					collector.append(&quot;*&quot;);</span>
+				}
+			}		
+<span class="nc" id="L428">			collector.append(&quot; &quot;);</span>
+			
+<span class="nc" id="L430">			String multiplicity = getMultiplicity(ref);</span>
+<span class="nc bnc" id="L431" title="All 2 branches missed.">			if (opposite == null) {</span>
+<span class="nc bnc" id="L432" title="All 2 branches missed.">				if (!multiplicity.isEmpty()) {</span>
+<span class="nc" id="L433">					collector</span>
+<span class="nc" id="L434">						.append(&quot;\&quot;&quot;)</span>
+<span class="nc" id="L435">						.append(multiplicity)</span>
+<span class="nc" id="L436">						.append(&quot;\&quot; &quot;);						</span>
+				}
+			} else {
+<span class="nc" id="L439">				collector.append(&quot;\&quot;&quot;);</span>
+<span class="nc" id="L440">				collector.append(getLabel(ref));			</span>
+<span class="nc" id="L441">				collector.append(eKeys(ref));</span>
+<span class="nc bnc" id="L442" title="All 2 branches missed.">				if (!multiplicity.isEmpty()) {</span>
+<span class="nc" id="L443">					collector.append(&quot;[&quot;+multiplicity+&quot;]&quot;);</span>
+				}
+<span class="nc" id="L445">				collector.append(&quot;\&quot; &quot;);			</span>
+			}		
+			
+<span class="nc" id="L448">			collector.append(qualifiedName(ref.getEReferenceType()));		</span>
+			
+<span class="nc bnc" id="L450" title="All 2 branches missed.">			if (opposite == null) {</span>
+<span class="nc" id="L451">				collector</span>
+<span class="nc" id="L452">					.append(&quot; : &quot;)</span>
+<span class="nc" id="L453">					.append(getLabel(ref));</span>
+	
+<span class="nc" id="L455">				collector.append(eKeys(ref));			</span>
+<span class="nc" id="L456">				collector.append(genericTypeArguments(ref.getEGenericType()));</span>
+			}
+			
+<span class="nc" id="L459">			collector.append(System.lineSeparator());</span>
+		}
+<span class="nc" id="L461">	}</span>
+	
+//	protected void appendAssociation(EReference ref) throws IOException {
+//		if (elementPredicate.test(ref)) {
+//			String sourceQualifiedName = qualifiedName(ref.getEContainingClass());
+//			collector.append(sourceQualifiedName);
+//			collector.append(&quot; &quot;);
+//			if (ref.isContainment()) {
+//				collector.append(&quot;*&quot;);
+//			}
+//			
+//			String diagramStyle = NcoreUtil.getNasdanikaAnnotationDetail(ref, DIAGRAM_STYLE_KEY);
+//			String relationLine = Util.isBlank(diagramStyle) ? &quot;--&quot; : &quot;-[&quot; + diagramStyle + &quot;]-&quot;;
+//			String associationRelation = relationLine + &quot;&gt;&quot;;
+//			
+//			collector.append(associationRelation);
+//			collector.append(&quot; &quot;);
+//			
+//			String multiplicity = getMultiplicity(ref);
+//			if (!multiplicity.isEmpty()) {
+//				collector
+//					.append(&quot;\&quot;&quot;)
+//					.append(multiplicity)
+//					.append(&quot;\&quot; &quot;);						
+//			}
+//			
+//			String associationTargetQualifiedName = qualifiedName(getAssociationTarget(ref));
+//			collector.append(associationTargetQualifiedName);		
+//			
+//			collector
+//				.append(&quot; : &quot;)
+//				.append(getLabel(ref));
+//
+//			collector.append(eKeys(ref));			
+//			collector.append(genericTypeArguments(ref.getEGenericType()));
+//			
+//			collector.append(System.lineSeparator());
+//			
+//			collector
+//				.append(&quot;(&quot;)
+//				.append(sourceQualifiedName)
+//				.append(&quot;, &quot;)
+//				.append(associationTargetQualifiedName)
+//				.append(&quot;) .. &quot;)
+//				.append(qualifiedName(ref.getEReferenceType()))
+//				.append(System.lineSeparator());				
+//		}
+//	}
+		
+	protected void appendTypeDependency(EClass source, EClassifier target) throws IOException {
+<span class="nc bnc" id="L511" title="All 4 branches missed.">		if (elementPredicate.test(source) &amp;&amp; elementPredicate.test(target)) {</span>
+<span class="nc" id="L512">			collector.append(qualifiedName(source));</span>
+<span class="nc" id="L513">			collector.append(&quot; &quot;);</span>
+<span class="nc" id="L514">			collector.append(DEPENDENCY_RELATION);</span>
+<span class="nc" id="L515">			collector.append(&quot; &quot;);</span>
+<span class="nc" id="L516">			collector.append(qualifiedName(target));		</span>
+<span class="nc" id="L517">			collector.append(System.lineSeparator());</span>
+		}
+<span class="nc" id="L519">	}</span>
+	
+	/**
+	 * Finds all subtypes in the resourceset. 
+	 * @return
+	 */
+	protected Collection&lt;EClass&gt; getSubTypes(EClass eClass) {
+		TreeIterator&lt;?&gt; acit;
+<span class="nc" id="L527">		Resource eResource = eClass.eResource();</span>
+<span class="nc bnc" id="L528" title="All 2 branches missed.">		if (eResource == null) {</span>
+<span class="nc" id="L529">			EPackage ePackage = eClass.getEPackage();</span>
+<span class="nc bnc" id="L530" title="All 2 branches missed.">			if (ePackage == null) {</span>
+<span class="nc" id="L531">				return Collections.emptySet();</span>
+			}
+<span class="nc" id="L533">			acit = ePackage.eAllContents();</span>
+<span class="nc" id="L534">		} else {</span>
+<span class="nc" id="L535">			ResourceSet resourceSet = eResource.getResourceSet();</span>
+<span class="nc bnc" id="L536" title="All 2 branches missed.">			acit = resourceSet == null ? eResource.getAllContents() : resourceSet.getAllContents();</span>
+		}
+<span class="nc" id="L538">		Set&lt;EClass&gt; ret = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L539">		acit.forEachRemaining(obj -&gt; {</span>
+<span class="nc bnc" id="L540" title="All 4 branches missed.">			if (obj instanceof EClass &amp;&amp; ((EClass) obj).getESuperTypes().contains(eClass)) {</span>
+<span class="nc" id="L541">				ret.add((EClass) obj);</span>
+			}
+<span class="nc" id="L543">		});</span>
+<span class="nc" id="L544">		return retainDocumentable(ret);</span>
+	}
+	
+	protected Collection&lt;EClass&gt; getReferrers(EClass eClass) {
+<span class="nc" id="L548">		return getReferrers(eClass, true);</span>
+	}
+	
+	/**
+	 * Finds all referrers in the resourceset. 
+	 * @return
+	 */
+	protected Collection&lt;EClass&gt; getReferrers(EClass eClass, boolean includeAssociations) {
+		TreeIterator&lt;?&gt; acit;
+<span class="nc" id="L557">		Resource eResource = eClass.eResource();</span>
+<span class="nc bnc" id="L558" title="All 2 branches missed.">		if (eResource == null) {</span>
+<span class="nc" id="L559">			EPackage ePackage = eClass.getEPackage();</span>
+<span class="nc bnc" id="L560" title="All 2 branches missed.">			if (ePackage == null) {</span>
+<span class="nc" id="L561">				return Collections.emptySet();</span>
+			}
+<span class="nc" id="L563">			acit = ePackage.eAllContents();</span>
+<span class="nc" id="L564">		} else {</span>
+<span class="nc" id="L565">			ResourceSet resourceSet = eResource.getResourceSet();</span>
+<span class="nc bnc" id="L566" title="All 2 branches missed.">			acit = resourceSet == null ? eResource.getAllContents() : resourceSet.getAllContents();</span>
+		}
+<span class="nc" id="L568">		Set&lt;EClass&gt; ret = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L569">		acit.forEachRemaining(obj -&gt; {</span>
+<span class="nc bnc" id="L570" title="All 4 branches missed.">			if (obj instanceof EReference &amp;&amp; ((EReference) obj).getEReferenceType() == eClass) {</span>
+				// Finding association sources. TODO - handle a case when association target does not pass the predicate test, but the association class does.
+<span class="nc" id="L572">				EClass referrer = ((EReference) obj).getEContainingClass();</span>
+<span class="nc bnc" id="L573" title="All 2 branches missed.">				if (includeAssociations) {</span>
+<span class="nc bnc" id="L574" title="All 2 branches missed.">					for (EClass superReferrer: getReferrers(referrer, false)) {</span>
+<span class="nc bnc" id="L575" title="All 2 branches missed.">						for (EReference superReference: superReferrer.getEReferences()) {</span>
+<span class="nc bnc" id="L576" title="All 2 branches missed.">							if (superReference.getEReferenceType() == referrer) {</span>
+<span class="nc" id="L577">								EClass associationTarget = NcoreUtil.getAssociationTarget(superReference);</span>
+<span class="nc bnc" id="L578" title="All 2 branches missed.">								if (associationTarget == eClass) {</span>
+<span class="nc" id="L579">									ret.add(superReferrer);</span>
+								}
+							}
+<span class="nc" id="L582">						}</span>
+<span class="nc" id="L583">					}</span>
+				}
+<span class="nc" id="L585">				ret.add(referrer);</span>
+			}
+<span class="nc" id="L587">		});</span>
+<span class="nc" id="L588">		return retainDocumentable(ret);</span>
+	}
+	
+	/**
+	 * Finds all type uses in the resourceset. 
+	 * @return
+	 */
+	protected Collection&lt;EClass&gt; getUses(EClassifier eClassifier) {
+		TreeIterator&lt;?&gt; acit;
+<span class="nc" id="L597">		Resource eResource = eClassifier.eResource();</span>
+<span class="nc bnc" id="L598" title="All 2 branches missed.">		if (eResource == null) {</span>
+<span class="nc" id="L599">			EPackage ePackage = eClassifier.getEPackage();</span>
+<span class="nc bnc" id="L600" title="All 2 branches missed.">			if (ePackage == null) {</span>
+<span class="nc" id="L601">				return Collections.emptySet();</span>
+			}
+<span class="nc" id="L603">			acit = ePackage.eAllContents();</span>
+<span class="nc" id="L604">		} else {</span>
+<span class="nc" id="L605">			ResourceSet resourceSet = eResource.getResourceSet();</span>
+<span class="nc bnc" id="L606" title="All 2 branches missed.">			acit = resourceSet == null ? eResource.getAllContents() : resourceSet.getAllContents();</span>
+		}
+<span class="nc" id="L608">		Set&lt;EClass&gt; ret = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L609">		acit.forEachRemaining(obj -&gt; {</span>
+<span class="nc bnc" id="L610" title="All 4 branches missed.">			if (obj instanceof EClass &amp;&amp; EmfUtil.collectTypeDependencies((EClass) obj).contains(eClassifier)) {</span>
+<span class="nc" id="L611">				ret.add((EClass) obj);</span>
+			}
+<span class="nc" id="L613">		});</span>
+<span class="nc" id="L614">		return retainDocumentable(ret);</span>
+	}
+		
+	public void appendEClassifier(EClassifier eClassifier, Set&lt;EClassifier&gt; allClassifiers) throws IOException {
+<span class="nc" id="L618">		String style = Context.EMPTY_CONTEXT.interpolateToString(NcoreUtil.getNasdanikaAnnotationDetail(eClassifier, DIAGRAM_STYLE_KEY));</span>
+<span class="nc" id="L619">		appendEClassifier(eClassifier, style, allClassifiers);</span>
+<span class="nc" id="L620">	}</span>
+	
+	public void appendEClassifier(EClassifier eClassifier, String style, Set&lt;EClassifier&gt; allClassifiers) throws IOException {
+<span class="nc bnc" id="L623" title="All 2 branches missed.">		if (elementPredicate.test(eClassifier)) {</span>
+<span class="nc bnc" id="L624" title="All 2 branches missed.">			if (eClassifier instanceof EClass) {</span>
+<span class="nc" id="L625">				appendEClass((EClass) eClassifier, style, allClassifiers);</span>
+<span class="nc bnc" id="L626" title="All 2 branches missed.">			} else if (eClassifier instanceof EEnum) {</span>
+<span class="nc" id="L627">				appendEEnum((EEnum) eClassifier, style, allClassifiers);			</span>
+<span class="nc bnc" id="L628" title="All 2 branches missed.">			} else if (eClassifier instanceof EDataType) {</span>
+<span class="nc" id="L629">				appendEDataType((EDataType) eClassifier, style, allClassifiers);</span>
+			}
+		}
+<span class="nc" id="L632">	}</span>
+	
+	protected String qualifiedName(EClassifier eClassifier) {
+<span class="nc" id="L635">		EPackage ePackage = eClassifier.getEPackage();</span>
+<span class="nc bnc" id="L636" title="All 2 branches missed.">		if (ePackage == null) {</span>
+<span class="nc" id="L637">			return getLabel(eClassifier);				</span>
+		}
+<span class="nc" id="L639">		return &quot;\&quot;&quot;+getLabel(ePackage)+&quot; (&quot;+ePackage.getNsURI()+&quot;).&quot;+getLabel(eClassifier)+&quot;\&quot;&quot;;</span>
+	}	
+	
+	protected String typeParameters(EClassifier eClassifier) {
+<span class="nc bnc" id="L643" title="All 2 branches missed.">		if (eClassifier.getETypeParameters().isEmpty()) {</span>
+<span class="nc" id="L644">			return &quot;&quot;;</span>
+		}
+<span class="nc" id="L646">		StringBuilder typeParameters = new StringBuilder();</span>
+<span class="nc bnc" id="L647" title="All 2 branches missed.">		for (ETypeParameter typeParameter: eClassifier.getETypeParameters()) {</span>
+<span class="nc bnc" id="L648" title="All 2 branches missed.">			if (typeParameters.length() &gt; 0) {</span>
+<span class="nc" id="L649">				typeParameters.append(&quot;,&quot;);</span>
+			}
+<span class="nc" id="L651">			typeParameters.append(genericName(typeParameter));</span>
+<span class="nc" id="L652">		}		</span>
+		
+<span class="nc" id="L654">		return &quot;&lt;&quot; + typeParameters +&quot;&gt;&quot;;</span>
+	}	
+	
+	protected String genericName(ETypeParameter typeParameter) {
+<span class="nc" id="L658">		StringBuilder ret = new StringBuilder(getLabel(typeParameter));</span>
+<span class="nc bnc" id="L659" title="All 2 branches missed.">		for (EGenericType bound : typeParameter.getEBounds()) {</span>
+<span class="nc bnc" id="L660" title="All 2 branches missed.">			if (bound.getEUpperBound() != null) {</span>
+<span class="nc" id="L661">				ret.append(&quot; extends &quot;).append(genericName(bound.getEUpperBound()));</span>
+			}
+<span class="nc bnc" id="L663" title="All 2 branches missed.">			if (bound.getELowerBound() != null) {</span>
+<span class="nc" id="L664">				ret.append(&quot; super &quot;).append(genericName(bound.getELowerBound()));</span>
+			}
+<span class="nc" id="L666">		}</span>
+		
+<span class="nc" id="L668">		return ret.toString();</span>
+	}
+	
+	protected String genericName(EGenericType eGenericType) {
+<span class="nc bnc" id="L672" title="All 2 branches missed.">		if (eGenericType == null) {</span>
+<span class="nc" id="L673">			return &quot;void&quot;;</span>
+		}
+<span class="nc" id="L675">		StringBuilder ret = new StringBuilder();		</span>
+<span class="nc bnc" id="L676" title="All 2 branches missed.">		if (eGenericType.getETypeParameter() != null) {</span>
+<span class="nc" id="L677">			ret.append(getLabel(eGenericType.getETypeParameter()));</span>
+<span class="nc bnc" id="L678" title="All 2 branches missed.">		} else if (eGenericType.getEClassifier() != null) {</span>
+<span class="nc" id="L679">			ret.append(getLabel(eGenericType.getEClassifier()));			</span>
+		}
+<span class="nc" id="L681">		ret.append(genericTypeArguments(eGenericType));</span>
+<span class="nc" id="L682">		return ret.toString();</span>
+	}
+
+	protected String genericTypeArguments(EGenericType eGenericType) {
+<span class="nc" id="L686">		StringBuilder ret = new StringBuilder();</span>
+<span class="nc" id="L687">		Iterator&lt;EGenericType&gt; it = eGenericType.getETypeArguments().iterator();</span>
+<span class="nc bnc" id="L688" title="All 2 branches missed.">		if (it.hasNext()) {</span>
+<span class="nc" id="L689">			ret.append(&quot;&lt;&quot;);</span>
+<span class="nc bnc" id="L690" title="All 2 branches missed.">			while (it.hasNext()) {</span>
+<span class="nc" id="L691">				ret.append(genericName(it.next()));</span>
+<span class="nc bnc" id="L692" title="All 2 branches missed.">				if (it.hasNext()) {</span>
+<span class="nc" id="L693">					ret.append(&quot;,&quot;);</span>
+				}
+			}
+<span class="nc" id="L696">			ret.append(&quot;&gt;&quot;);</span>
+		}
+<span class="nc" id="L698">		return ret.toString();</span>
+	}
+
+	public void appendEClass(EClass eClass, Set&lt;EClassifier&gt; allClassifiers) throws IOException {
+<span class="nc" id="L702">		appendEClass(eClass, null, allClassifiers);</span>
+<span class="nc" id="L703">	}</span>
+	
+<span class="nc" id="L705">	protected Comparator&lt;ENamedElement&gt; eNamedElementComparator = (a,b) -&gt; labelProvider.apply(a, a.getName()).compareTo(labelProvider.apply(b, b.getName()));</span>
+	
+	public void appendEClass(EClass eClass, String style, Set&lt;EClassifier&gt; allClassifiers) throws IOException {
+<span class="nc bnc" id="L708" title="All 4 branches missed.">		String modifiers = eClass.isAbstract() &amp;&amp; !eClass.isInterface() ? &quot;abstract&quot; : null;</span>
+<span class="nc bnc" id="L709" title="All 2 branches missed.">		appendClassStart(modifiers, eClass.isInterface() ? &quot;interface&quot; : &quot;class&quot;, qualifiedName(eClass) + typeParameters(eClass), getEClassifierLink(eClass), style);</span>
+<span class="nc bnc" id="L710" title="All 2 branches missed.">		if (isAppendAttributes(eClass)) {</span>
+<span class="nc bnc" id="L711" title="All 2 branches missed.">			for (EAttribute attribute: eClass.getEAttributes().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList())) {			</span>
+<span class="nc" id="L712">				EGenericType eGenericType = attribute.getEGenericType();</span>
+<span class="nc bnc" id="L713" title="All 2 branches missed.">				if (eGenericType != null) {</span>
+<span class="nc bnc" id="L714" title="All 2 branches missed.">					appendAttribute(null, null, genericName(eGenericType) + (attribute.isMany() ? &quot;[]&quot; : &quot;&quot;), getLabel(attribute));</span>
+				}						
+<span class="nc" id="L716">			}</span>
+		}
+<span class="nc" id="L718">		collector.append(CLASS_COMPARTMENT_SEPARATOR_LINE);</span>
+<span class="nc bnc" id="L719" title="All 2 branches missed.">		for (EReference reference: eClass.getEReferences().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList())) {</span>
+<span class="nc" id="L720">			EGenericType eGenericType = reference.getEGenericType();			</span>
+<span class="nc bnc" id="L721" title="All 4 branches missed.">			if (eGenericType == null || !allClassifiers.contains(reference.getEReferenceType())) {</span>
+<span class="nc bnc" id="L722" title="All 2 branches missed.">				appendAttribute(null, null, genericName(eGenericType) + (reference.isMany() ? &quot;[]&quot; : &quot;&quot;), getLabel(reference));</span>
+			}						
+<span class="nc" id="L724">		}</span>
+		
+<span class="nc" id="L726">		collector.append(CLASS_COMPARTMENT_SEPARATOR_LINE);</span>
+<span class="nc bnc" id="L727" title="All 2 branches missed.">		if (isAppendOperations(eClass)) {</span>
+<span class="nc bnc" id="L728" title="All 2 branches missed.">			for (EOperation op : eClass.getEOperations().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList())) {</span>
+<span class="nc" id="L729">				Collection&lt;String&gt; parameters = new ArrayList&lt;String&gt;();</span>
+<span class="nc bnc" id="L730" title="All 2 branches missed.">				for (EParameter parameter : op.getEParameters()) {</span>
+<span class="nc" id="L731">					String paramString = getLabel(parameter);</span>
+<span class="nc bnc" id="L732" title="All 2 branches missed.">					if (parameter.getEGenericType() != null) {</span>
+<span class="nc" id="L733">						paramString = genericName(parameter.getEGenericType()) + &quot; &quot; + paramString;</span>
+					}
+<span class="nc" id="L735">					parameters.add(paramString);</span>
+<span class="nc" id="L736">				}</span>
+<span class="nc" id="L737">				appendOperation(null, null, genericName(op.getEGenericType()), getLabel(op), parameters);</span>
+<span class="nc" id="L738">			}</span>
+		}
+<span class="nc" id="L740">		appendClassEnd();</span>
+<span class="nc" id="L741">	}</span>
+
+	/**
+	 * Constructs {@link EClassifier} with the first documentation sentence as a tooltip. 
+	 * @param eClassifier
+	 * @return
+	 */
+	protected String getEClassifierLink(EClassifier eClassifier) {
+<span class="nc" id="L749">		String link = null;</span>
+<span class="nc bnc" id="L750" title="All 4 branches missed.">		if (eClassifier != null &amp;&amp; eClassifierLinkResolver != null) {</span>
+<span class="nc" id="L751">			link = eClassifierLinkResolver.apply(eClassifier);</span>
+<span class="nc bnc" id="L752" title="All 4 branches missed.">			if (link != null &amp;&amp; eModelElementFirstDocSentenceProvider != null) {</span>
+<span class="nc" id="L753">				String firstDocSentence = eModelElementFirstDocSentenceProvider.apply(eClassifier);</span>
+<span class="nc bnc" id="L754" title="All 2 branches missed.">				if (!org.nasdanika.common.Util.isBlank(firstDocSentence)) {</span>
+<span class="nc" id="L755">					link += &quot;{&quot; + firstDocSentence + &quot;}&quot;;</span>
+				}
+			}
+		}
+<span class="nc" id="L759">		return link;</span>
+	}
+	
+	protected boolean isAppendAttributes(EClass eClass) {
+<span class="nc" id="L763">		return true;</span>
+	}
+	
+	protected boolean isAppendOperations(EClass eClass) {
+<span class="nc" id="L767">		return true;</span>
+	}
+
+	public void appendEDataType(EDataType dataType, Set&lt;EClassifier&gt; allClassifiers) throws IOException {
+<span class="nc" id="L771">		appendEDataType(dataType, null, allClassifiers);</span>
+<span class="nc" id="L772">	}	</span>
+	
+	public void appendEDataType(EDataType dataType, String background, Set&lt;EClassifier&gt; allClassifiers) throws IOException {
+<span class="nc" id="L775">		appendClassStart(null, &quot;class&quot;, qualifiedName(dataType)+&quot; &lt;&lt; (D,orchid) &gt;&gt;&quot;, getEClassifierLink(dataType), background);</span>
+<span class="nc bnc" id="L776" title="All 2 branches missed.">		if (dataType.getInstanceClassName() != null) {</span>
+<span class="nc" id="L777">			appendAttribute(null, null, null, dataType.getInstanceClassName());</span>
+		}
+<span class="nc" id="L779">		appendClassEnd();</span>
+<span class="nc" id="L780">	}</span>
+
+	public void appendEEnum(EEnum eEnum, Set&lt;EClassifier&gt; allClassifiers) throws IOException {
+<span class="nc" id="L783">		appendEEnum(eEnum, null, allClassifiers);</span>
+<span class="nc" id="L784">	}</span>
+	
+	public void appendEEnum(EEnum eEnum, String background, Set&lt;EClassifier&gt; allClassifiers) throws IOException {
+<span class="nc" id="L787">		appendClassStart(null, &quot;enum&quot;, qualifiedName(eEnum), getEClassifierLink(eEnum), background);</span>
+<span class="nc bnc" id="L788" title="All 2 branches missed.">		for (EEnumLiteral literal : eEnum.getELiterals()) {</span>
+<span class="nc bnc" id="L789" title="All 2 branches missed.">			appendAttribute(String.valueOf(literal.getValue()), null, getLabel(literal), literal.getName().equals(literal.getLiteral()) ? &quot;&quot; : literal.getLiteral());</span>
+<span class="nc" id="L790">		}</span>
+<span class="nc" id="L791">		appendClassEnd();</span>
+<span class="nc" id="L792">	}</span>
+
+	protected String getTypeName(EClassifier type) {
+<span class="nc" id="L795">		String typeName = null;</span>
+<span class="nc bnc" id="L796" title="All 2 branches missed.">		if (type != null) {</span>
+<span class="nc bnc" id="L797" title="All 2 branches missed.">			if (type instanceof EDataType) {</span>
+<span class="nc" id="L798">				typeName = type.getInstanceClassName();</span>
+			}
+<span class="nc bnc" id="L800" title="All 2 branches missed.">			if (typeName == null) {</span>
+<span class="nc" id="L801">				typeName = getLabel(type);</span>
+			}
+		}
+<span class="nc" id="L804">		return getSimpleName(typeName);</span>
+	}
+	
+	public void appendStartUml() throws IOException {
+<span class="nc" id="L808">		collector.append(&quot;@startuml&quot;).append(System.lineSeparator());</span>
+<span class="nc" id="L809">	}</span>
+	
+	public void appendEndUml() throws IOException {
+<span class="nc" id="L812">		collector.append(&quot;@enduml&quot;).append(System.lineSeparator());</span>
+<span class="nc" id="L813">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

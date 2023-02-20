@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BlockConsumerFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Exec Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.gen</a> &gt; <span class="el_source">BlockConsumerFactoryAdapter.java</span></div><h1>BlockConsumerFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.exec.gen;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import org.nasdanika.common.Consumer;
+import org.nasdanika.common.ConsumerFactory;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Reference;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.exec.Block;
+import org.nasdanika.persistence.Util;
+import org.nasdanika.resources.BinaryEntityContainer;
+
+public class BlockConsumerFactoryAdapter extends BlockExecutionParticipantAdapter implements ConsumerFactory&lt;BinaryEntityContainer&gt; {
+	
+	public BlockConsumerFactoryAdapter(Block block) {
+<span class="fc" id="L21">		super(block);</span>
+<span class="fc" id="L22">	}</span>
+	
+	@Override
+	public boolean isAdapterForType(Object type) {
+<span class="nc bnc" id="L26" title="All 2 branches missed.">		return type == SupplierFactory.class;</span>
+	}
+	
+	private static class BlockConsumer extends BlockExecutionParticipant&lt;Consumer&lt;BinaryEntityContainer&gt;&gt; implements Consumer&lt;BinaryEntityContainer&gt; {
+
+		private Reference&lt;Exception&gt; eRef;
+
+		BlockConsumer(
+				Consumer&lt;BinaryEntityContainer&gt; tryParticipant,
+				Consumer&lt;BinaryEntityContainer&gt; catchParticipant,
+				Consumer&lt;BinaryEntityContainer&gt; finallyParticipant,
+				Reference&lt;Exception&gt; eRef) {
+<span class="fc" id="L38">			super(tryParticipant, catchParticipant, finallyParticipant);</span>
+<span class="fc" id="L39">			this.eRef = eRef;</span>
+<span class="fc" id="L40">		}</span>
+
+		@Override
+		public void execute(BinaryEntityContainer container, ProgressMonitor progressMonitor) {
+			try {
+<span class="fc" id="L45">				tryParticipant.splitAndExecute(container, progressMonitor);</span>
+<span class="fc" id="L46">			} catch (Exception e) {</span>
+<span class="fc" id="L47">				tryParticipant.splitAndRollback(progressMonitor);</span>
+<span class="fc" id="L48">				eRef.set(e);</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">				if (catchParticipant == null) {</span>
+<span class="nc" id="L50">					throw e;</span>
+				}
+<span class="fc" id="L52">				catchParticipant.splitAndExecute(container, progressMonitor);</span>
+			} finally {
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">				if (finallyParticipant != null) {</span>
+<span class="fc" id="L55">					finallyParticipant.splitAndExecute(container, progressMonitor);</span>
+				}
+			}			
+<span class="fc" id="L58">		}</span>
+		
+	}	
+	
+	@Override
+	public Consumer&lt;BinaryEntityContainer&gt; create(Context context) {
+<span class="fc" id="L64">		Reference&lt;Exception&gt; eRef = new Reference&lt;Exception&gt;();</span>
+<span class="fc" id="L65">		Block target = (Block) getTarget();</span>
+		
+<span class="fc" id="L67">		List&lt;ConsumerFactory&lt;BinaryEntityContainer&gt;&gt; tryBlock = target.getTry().stream().map(e -&gt; Objects.requireNonNull(EObjectAdaptable.adaptToConsumerFactory(e, BinaryEntityContainer.class), &quot;Cannot adapt to ConsumerFactory: &quot; + e)).collect(Collectors.toList());</span>
+<span class="fc" id="L68">		Consumer&lt;BinaryEntityContainer&gt;  tryConsumer = Util.asConsumerFactory(tryBlock).create(context);</span>
+		
+<span class="fc" id="L70">		Consumer&lt;BinaryEntityContainer&gt; catchConsumer = null; 		</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">		if (!target.getCatch().isEmpty()) {</span>
+<span class="fc" id="L72">			List&lt;ConsumerFactory&lt;BinaryEntityContainer&gt;&gt; catchBlock = target.getCatch().stream().map(e -&gt; Objects.requireNonNull(EObjectAdaptable.adaptToConsumerFactory(e, BinaryEntityContainer.class), &quot;Cannot adapt to ConsumerFactory: &quot; + e)).collect(Collectors.toList());</span>
+<span class="fc" id="L73">			catchConsumer = Util.asConsumerFactory(catchBlock).contextify(ctx -&gt; createCatchContextSupplier(ctx, eRef)).create(context);</span>
+		}
+		
+<span class="fc" id="L76">		Consumer&lt;BinaryEntityContainer&gt;  finallyConsumer = null;</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">		if (!target.getFinally().isEmpty()) {</span>
+<span class="fc" id="L78">			List&lt;ConsumerFactory&lt;BinaryEntityContainer&gt;&gt; finallyBlock = target.getFinally().stream().map(e -&gt; Objects.requireNonNull(EObjectAdaptable.adaptToConsumerFactory(e, BinaryEntityContainer.class), &quot;Cannot adapt to ConsumerFactory: &quot; + e)).collect(Collectors.toList());</span>
+<span class="fc" id="L79">			finallyConsumer = Util.asConsumerFactory(finallyBlock).contextify(ctx -&gt; createCatchContextSupplier(ctx, eRef)).create(context);</span>
+		}		
+		
+<span class="fc" id="L82">		return new BlockConsumer(tryConsumer, catchConsumer, finallyConsumer, eRef);		</span>
+	}	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

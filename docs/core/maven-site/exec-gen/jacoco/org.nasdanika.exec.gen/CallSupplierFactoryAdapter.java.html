@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CallSupplierFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Exec Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.gen</a> &gt; <span class="el_source">CallSupplierFactoryAdapter.java</span></div><h1>CallSupplierFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.exec.gen;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.function.BiConsumer;
+
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.EMap;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.nasdanika.common.BasicDiagnostic;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.Converter;
+import org.nasdanika.common.DefaultConverter;
+import org.nasdanika.common.Diagnostic;
+import org.nasdanika.common.ExecutionException;
+import org.nasdanika.common.Function;
+import org.nasdanika.common.ListCompoundSupplierFactory;
+import org.nasdanika.common.MapCompoundSupplierFactory;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Status;
+import org.nasdanika.common.Supplier;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.Util;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.exec.Call;
+import org.nasdanika.exec.ExecPackage;
+import org.nasdanika.persistence.ConfigurationException;
+import org.nasdanika.persistence.Marked;
+
+public class CallSupplierFactoryAdapter extends AdapterImpl implements SupplierFactory&lt;InputStream&gt; {
+	
+<span class="fc" id="L42">	public CallSupplierFactoryAdapter(Call call) {</span>
+<span class="fc" id="L43">		setTarget(call);</span>
+<span class="fc" id="L44">	}</span>
+	
+	@Override
+	public boolean isAdapterForType(Object type) {
+<span class="nc bnc" id="L48" title="All 2 branches missed.">		return type == SupplierFactory.class;</span>
+	}
+	
+	@Override
+	public Supplier&lt;InputStream&gt; create(Context context) {
+<span class="fc" id="L53">		MapCompoundSupplierFactory&lt;EStructuralFeature, Object&gt; featureMapFactory = new MapCompoundSupplierFactory&lt;&gt;(&quot;Feature map factory&quot;);</span>
+<span class="fc" id="L54">		Call call = (Call) getTarget();</span>
+<span class="fc" id="L55">		EList&lt;EObject&gt; init = call.getInit();</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">		if (!init.isEmpty()) {</span>
+<span class="fc" id="L57">			ListCompoundSupplierFactory&lt;Object&gt; initFactory = new ListCompoundSupplierFactory&lt;&gt;(&quot;Init&quot;); </span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">			for (EObject initArg: init) {</span>
+<span class="fc" id="L59">				initFactory.add(Objects.requireNonNull(EObjectAdaptable.adaptToSupplierFactory(initArg, Object.class), &quot;Cannot adapt to SupplierFactory: &quot; + initArg));</span>
+<span class="fc" id="L60">			}</span>
+<span class="fc" id="L61">			featureMapFactory.put(ExecPackage.Literals.CALL__INIT, initFactory);</span>
+		}
+		
+<span class="fc" id="L64">		EList&lt;EObject&gt; args = call.getArguments();</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">		if (!args.isEmpty()) {</span>
+<span class="fc" id="L66">			ListCompoundSupplierFactory&lt;Object&gt; argFactory = new ListCompoundSupplierFactory&lt;&gt;(&quot;Arguments&quot;); </span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">			for (EObject arg: args) {</span>
+<span class="fc" id="L68">				argFactory.add(Objects.requireNonNull(EObjectAdaptable.adaptToSupplierFactory(arg, Object.class), &quot;Cannot adapt to SupplierFactory: &quot; + arg));</span>
+<span class="fc" id="L69">			}</span>
+<span class="fc" id="L70">			featureMapFactory.put(ExecPackage.Literals.CALL__ARGUMENTS, argFactory);</span>
+		}
+		
+<span class="fc" id="L73">		EMap&lt;String, EObject&gt; properties = call.getProperties();</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">		if (!properties.isEmpty()) {</span>
+<span class="fc" id="L75">			MapCompoundSupplierFactory&lt;String,Object&gt; propertiesFactory = new MapCompoundSupplierFactory&lt;&gt;(&quot;Properties&quot;);</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">			for (Entry&lt;String, EObject&gt; pe: properties.entrySet()) {</span>
+<span class="fc" id="L77">				propertiesFactory.put(pe.getKey(), Objects.requireNonNull(EObjectAdaptable.adaptToSupplierFactory(pe.getValue(), Object.class), &quot;Cannot adapt to SupplierFactory: &quot; + pe.getValue()));</span>
+<span class="fc" id="L78">			}</span>
+<span class="fc" id="L79">			featureMapFactory.put(ExecPackage.Literals.CALL__PROPERTIES, propertiesFactory);</span>
+		}
+		
+<span class="fc" id="L82">		return featureMapFactory.then(this::createResultFunction).create(context);</span>
+	}
+	
+	protected Function&lt;Map&lt;EStructuralFeature,Object&gt;, InputStream&gt; createResultFunction(Context context) {
+<span class="fc" id="L86">		Call call = (Call) getTarget();</span>
+		
+<span class="fc" id="L88">		return new Function&lt;Map&lt;EStructuralFeature,Object&gt;, InputStream&gt;() {</span>
+			
+			private Class&lt;?&gt; clazz;
+			private Constructor&lt;?&gt; constructor;
+			private Object instance;		
+			private Method method;
+
+			@Override
+			public double size() {
+<span class="fc" id="L97">				return 1;</span>
+			}
+
+			@Override
+			public String name() {
+<span class="fc" id="L102">				String description = call.getDescription();</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">				return Util.isBlank(description) ? &quot;Call&quot; : &quot;Call &quot; + description;</span>
+			}
+			
+			@Override
+			public Diagnostic diagnose(ProgressMonitor progressMonitor) {
+<span class="fc" id="L108">				String property = call.getProperty();</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">				if (!Util.isBlank(property)) {</span>
+<span class="fc" id="L110">					instance = context.get(property);</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">					if (instance == null) {</span>
+<span class="nc" id="L112">						return new BasicDiagnostic(Status.ERROR, &quot;Call property not found: &quot; + property, call);</span>
+					}
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">					if (!call.getInit().isEmpty()) {</span>
+<span class="nc" id="L115">						return new BasicDiagnostic(Status.ERROR, &quot;Cannot specify constructor arguments for property&quot;, call);								</span>
+					}
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">					if (!call.getProperties().isEmpty()) {</span>
+<span class="nc" id="L118">						return new BasicDiagnostic(Status.ERROR, &quot;Cannot specify properties for property&quot;, call);								</span>
+					}
+				} else {
+<span class="fc" id="L121">					ClassLoader classLoader = context.get(ClassLoader.class, getClass().getClassLoader());</span>
+<span class="fc" id="L122">					String service = call.getService();</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">					if (!Util.isBlank(service)) {</span>
+						try {
+<span class="fc" id="L125">							instance = context.get(classLoader.loadClass(service));</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">							if (instance == null) {</span>
+<span class="nc" id="L127">								return new BasicDiagnostic(Status.ERROR, &quot;Call service not found: &quot; + service, call);</span>
+							}
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">							if (!call.getInit().isEmpty()) {</span>
+<span class="nc" id="L130">								return new BasicDiagnostic(Status.ERROR, &quot;Cannot specify constructor arguments for service&quot;, call);								</span>
+							}
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">							if (!call.getProperties().isEmpty()) {</span>
+<span class="nc" id="L133">								return new BasicDiagnostic(Status.ERROR, &quot;Cannot specify properties for service&quot;, call);								</span>
+							}
+<span class="nc" id="L135">						} catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L136">							return new BasicDiagnostic(Status.ERROR, &quot;Service class not found: &quot; + service, call);</span>
+<span class="fc" id="L137">						}						</span>
+					} else {
+<span class="fc" id="L139">						String type = call.getType();</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">						if (Util.isBlank(type)) {</span>
+<span class="nc" id="L141">							return new BasicDiagnostic(Status.ERROR, &quot;Call must specify one of 'class', 'property', or 'service'&quot;, call);							</span>
+						}
+						try {
+<span class="fc" id="L144">							clazz = classLoader.loadClass(type);</span>
+<span class="pc bpc" id="L145" title="1 of 4 branches missed.">							if (!BiConsumer.class.isAssignableFrom(clazz) &amp;&amp; !call.getProperties().isEmpty()) {</span>
+<span class="nc" id="L146">								return new BasicDiagnostic(Status.ERROR, &quot;In order to inject properties &quot; + clazz.getName() + &quot; must implement &quot; + BiConsumer.class, call);															</span>
+							}
+<span class="fc bfc" id="L148" title="All 4 branches covered.">							if ((SupplierFactory.class.isAssignableFrom(clazz) || Supplier.class.isAssignableFrom(clazz))</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">									&amp;&amp; call.getInit().isEmpty()</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">									&amp;&amp; call.getProperties().isEmpty()</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">									&amp;&amp; Util.isBlank(call.getMethod())) {</span>
+								// Special case - creating an instance here so can be diagnosed
+								try {
+<span class="fc" id="L154">									Constructor&lt;?&gt; constr = clazz.getDeclaredConstructor();</span>
+<span class="fc" id="L155">									Object obj = constr.newInstance();</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">									instance = SupplierFactory.class.isAssignableFrom(clazz) ? ((SupplierFactory&lt;?&gt;) obj).create(context) : (Supplier&lt;?&gt;) obj;</span>
+<span class="fc" id="L157">									clazz = null;</span>
+<span class="fc" id="L158">									return ((Supplier&lt;?&gt;) instance).diagnose(progressMonitor);</span>
+<span class="nc" id="L159">								} catch (Exception e) {</span>
+<span class="nc" id="L160">									return new BasicDiagnostic(Status.ERROR, &quot;Cannot instantiate &quot; + clazz, call, e);															</span>
+									
+								}								
+							}
+<span class="nc" id="L164">						} catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L165">							return new BasicDiagnostic(Status.ERROR, &quot;Class not found: &quot; + type, call);</span>
+<span class="fc" id="L166">						}												</span>
+					}
+				}
+<span class="fc" id="L169">				String methodName = call.getMethod();</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">				if (Util.isBlank(methodName)) {</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">					if (!call.getArguments().isEmpty()) {</span>
+<span class="nc" id="L172">						return new BasicDiagnostic(Status.ERROR, &quot;Cannot specify arguments without method&quot;, call);								</span>
+					}
+<span class="nc bnc" id="L174" title="All 2 branches missed.">					for (Constructor&lt;?&gt; constructor: clazz.getConstructors()) {</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">						if (constructor.getParameterCount() == call.getInit().size()) {</span>
+<span class="nc" id="L176">							this.constructor = constructor;</span>
+<span class="nc" id="L177">							break;</span>
+						}
+					}		
+<span class="nc bnc" id="L180" title="All 2 branches missed.">					if (constructor == null) {</span>
+<span class="nc" id="L181">						return new BasicDiagnostic(Status.ERROR, &quot;There is no constructor for class '&quot; + call.getType() + &quot;' which takes &quot; + call.getInit().size() + &quot; arguments&quot;, call);</span>
+					}
+				} else {
+<span class="fc bfc" id="L184" title="All 2 branches covered.">					if (clazz == null) {</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">						for (Method method: instance.getClass().getMethods()) {</span>
+<span class="pc bpc" id="L186" title="2 of 6 branches missed.">							if (method.getName().equals(methodName) &amp;&amp; method.getParameterCount() == call.getArguments().size() &amp;&amp; !Modifier.isStatic(method.getModifiers())) {</span>
+<span class="fc" id="L187">								this.method = method;</span>
+<span class="fc" id="L188">								break;</span>
+							}
+						}		
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">						if (method == null) {</span>
+<span class="nc" id="L192">							return new BasicDiagnostic(Status.ERROR, &quot;Method '&quot; + methodName +&quot;' with &quot; + call.getArguments().size() + &quot; arguments not found in &quot; + instance, call);																						</span>
+						}
+					} else {
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">						for (Method method: clazz.getMethods()) {</span>
+<span class="pc bpc" id="L196" title="1 of 4 branches missed.">							if (method.getName().equals(methodName) &amp;&amp; method.getParameterCount() == call.getArguments().size()) {</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">								if (Modifier.isStatic(method.getModifiers())) {</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">									if (!call.getInit().isEmpty()) {</span>
+<span class="nc" id="L199">										return new BasicDiagnostic(Status.ERROR, &quot;Cannot specify constructor arguments for a static method&quot;, call);								</span>
+									}								
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">									if (!call.getProperties().isEmpty()) {</span>
+<span class="nc" id="L202">										return new BasicDiagnostic(Status.ERROR, &quot;Cannot specify properties for a static method&quot;, call);								</span>
+									}
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">								} else if (clazz != null) {</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">									for (Constructor&lt;?&gt; constructor: clazz.getConstructors()) {</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">										if (constructor.getParameterCount() == call.getInit().size()) {</span>
+<span class="fc" id="L207">											this.constructor = constructor;</span>
+<span class="fc" id="L208">											break;</span>
+										}
+									}		
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">									if (constructor == null) {</span>
+<span class="nc" id="L212">										return new BasicDiagnostic(Status.ERROR, &quot;There is no constructor for class '&quot; + call.getType() + &quot;' which takes &quot; + call.getInit().size() + &quot; arguments&quot;, call);</span>
+									}
+								}
+<span class="fc" id="L215">								this.method = method;</span>
+<span class="fc" id="L216">								break;</span>
+							}
+						}		
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">						if (method == null) {</span>
+<span class="nc" id="L220">							return new BasicDiagnostic(Status.ERROR, &quot;Method '&quot; + methodName +&quot;' with &quot; + call.getArguments().size() + &quot; arguments not found in &quot; + clazz, call);																						</span>
+						}						
+					}
+				}
+<span class="fc" id="L224">				return Function.super.diagnose(progressMonitor);</span>
+			}
+
+			@SuppressWarnings(&quot;unchecked&quot;)
+			@Override
+			public InputStream execute(Map&lt;EStructuralFeature,Object&gt; data, ProgressMonitor progressMonitor) {
+<span class="fc" id="L230">				List&lt;Object&gt; initList = (List&lt;Object&gt;) data.get(ExecPackage.Literals.CALL__INIT);</span>
+				
+<span class="fc" id="L232">				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE);</span>
+				Object obj;
+<span class="fc bfc" id="L234" title="All 2 branches covered.">				if (clazz == null) {</span>
+<span class="fc" id="L235">					obj = instance;</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">				} else if (constructor == null) {</span>
+<span class="fc" id="L237">					obj = null;</span>
+				} else {
+<span class="fc" id="L239">					Object[] constructorArguments = coerce(context, initList, constructor.getParameterTypes(), progressMonitor);</span>
+					try {
+<span class="fc" id="L241">						obj = constructor.newInstance(constructorArguments);</span>
+<span class="nc" id="L242">					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException	| InvocationTargetException e) {</span>
+<span class="nc" id="L243">						throw new ExecutionException(e, this);</span>
+<span class="fc" id="L244">					}</span>
+<span class="fc" id="L245">					Map&lt;String,Object&gt; properties = (Map&lt;String,Object&gt;) data.get(ExecPackage.Literals.CALL__PROPERTIES);					</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">					if (properties != null) {</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">						for (Entry&lt;String, Object&gt; pe: properties.entrySet()) {</span>
+<span class="fc" id="L248">							((BiConsumer&lt;String,Object&gt;) obj).accept(pe.getKey(), pe.getValue());</span>
+<span class="fc" id="L249">						}</span>
+					}
+				}
+
+				Object result;
+<span class="fc bfc" id="L254" title="All 2 branches covered.">				if (method == null) {</span>
+<span class="fc" id="L255">					result = obj;</span>
+				} else {
+<span class="fc" id="L257">					List&lt;Object&gt; argList = (List&lt;Object&gt;) data.get(ExecPackage.Literals.CALL__ARGUMENTS);</span>
+<span class="fc" id="L258">					Object[] methodArguments = coerce(context, argList, method.getParameterTypes(), progressMonitor);</span>
+					try {
+<span class="fc" id="L260">						result = method.invoke(obj, methodArguments);</span>
+<span class="nc" id="L261">					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {</span>
+<span class="nc" id="L262">						throw new ExecutionException(e, this);</span>
+<span class="fc" id="L263">					}					</span>
+				}
+
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">				if (result instanceof SupplierFactory) {</span>
+<span class="nc" id="L267">					result = ((SupplierFactory&lt;?&gt;) result).create(context); </span>
+				} 
+				
+<span class="fc bfc" id="L270" title="All 2 branches covered.">				if (result instanceof Supplier) {</span>
+					try {
+<span class="fc" id="L272">						result = Util.call((Supplier&lt;?&gt;) result, progressMonitor, null);</span>
+<span class="nc" id="L273">					} catch (Exception e) {</span>
+<span class="nc" id="L274">						throw new ExecutionException(e, this);</span>
+<span class="fc" id="L275">					}</span>
+				}
+				
+<span class="pc bpc" id="L278" title="1 of 2 branches missed.">				if (result == null) {</span>
+<span class="nc" id="L279">					return null;</span>
+				}
+
+<span class="fc" id="L282">				InputStream ret = converter.convert(result, InputStream.class);</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">				if (ret == null) {</span>
+<span class="nc" id="L284">					throw new ConfigurationException(&quot;Cannot convert '&quot; + obj + &quot;' to InputStream&quot;, EObjectAdaptable.adaptTo((EObject) getTarget(), Marked.class));</span>
+				}
+<span class="fc" id="L286">				return ret;</span>
+			}
+		};
+	}
+	
+	/**
+	 * Converts arguments to parameter types where possible.
+	 * @param arguments
+	 * @param parameterTypes
+	 * @return
+	 */
+	private Object[] coerce(Context context, List&lt;Object&gt; arguments, Class&lt;?&gt;[] parameterTypes, ProgressMonitor progressMonitor) {
+<span class="fc bfc" id="L298" title="All 2 branches covered.">		if (arguments == null) {</span>
+<span class="fc" id="L299">			return null;</span>
+		}
+<span class="fc" id="L301">		Object[] ret = arguments.toArray();</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">		for (int i = 0; i &lt; ret.length; ++i) {</span>
+<span class="fc" id="L303">			ret[i] = coerce(context, ret[i], parameterTypes[i], progressMonitor);</span>
+		}
+<span class="fc" id="L305">		return ret;</span>
+	}
+	
+	/**
+	 * Converts argument to parameter type where possible.
+	 * @param argument
+	 * @param parameterType
+	 * @return
+	 */
+	private Object coerce(Context context, Object argument, Class&lt;?&gt; parameterType, ProgressMonitor progressMonitor) {
+<span class="pc bpc" id="L315" title="2 of 4 branches missed.">		if (argument == null || parameterType.isInstance(argument)) {</span>
+<span class="nc" id="L316">			return argument;</span>
+		}
+<span class="pc bpc" id="L318" title="2 of 4 branches missed.">		if (parameterType == String.class &amp;&amp; argument instanceof InputStream) {</span>
+			try {
+<span class="fc" id="L320">				return Util.toString(context, (InputStream ) argument);</span>
+<span class="nc" id="L321">			} catch (IOException e) {</span>
+<span class="nc" id="L322">				throw new ExecutionException(e);</span>
+			}
+		}
+<span class="nc" id="L325">		Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE);</span>
+<span class="nc" id="L326">		Object ret = converter.convert(argument, parameterType);</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">		if (ret == null) {</span>
+<span class="nc" id="L328">			throw new ConfigurationException(&quot;Cannot convert &quot; + argument + &quot; to &quot; + parameterType, EObjectAdaptable.adaptTo((EObject) getTarget(), Marked.class));</span>
+		}
+<span class="nc" id="L330">		return ret;</span>
+	}	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

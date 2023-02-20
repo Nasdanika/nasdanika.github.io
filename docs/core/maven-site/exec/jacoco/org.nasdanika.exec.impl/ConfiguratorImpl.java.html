@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConfiguratorImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Execution Model</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.impl</a> &gt; <span class="el_source">ConfiguratorImpl.java</span></div><h1>ConfiguratorImpl.java</h1><pre class="source lang-java linenums">/**
+ */
+package org.nasdanika.exec.impl;
+
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EMap;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.nasdanika.exec.Configurator;
+import org.nasdanika.exec.ExecPackage;
+import org.nasdanika.ncore.impl.ModelElementImpl;
+
+/**
+ * &lt;!-- begin-user-doc --&gt;
+ * An implementation of the model object '&lt;em&gt;&lt;b&gt;Configurator&lt;/b&gt;&lt;/em&gt;'.
+ * &lt;!-- end-user-doc --&gt;
+ * &lt;p&gt;
+ * The following features are implemented:
+ * &lt;/p&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.impl.ConfiguratorImpl#getTarget &lt;em&gt;Target&lt;/em&gt;}&lt;/li&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.impl.ConfiguratorImpl#getProperties &lt;em&gt;Properties&lt;/em&gt;}&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * @generated
+ */
+public class ConfiguratorImpl extends ModelElementImpl implements Configurator {
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected ConfiguratorImpl() {
+<span class="fc" id="L37">		super();</span>
+<span class="fc" id="L38">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+<span class="fc" id="L47">		return ExecPackage.Literals.CONFIGURATOR;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EObject getTarget() {
+<span class="fc" id="L57">		return (EObject)eDynamicGet(ExecPackage.CONFIGURATOR__TARGET, ExecPackage.Literals.CONFIGURATOR__TARGET, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	public NotificationChain basicSetTarget(EObject newTarget, NotificationChain msgs) {
+<span class="nc" id="L66">		msgs = eDynamicInverseAdd((InternalEObject)newTarget, ExecPackage.CONFIGURATOR__TARGET, msgs);</span>
+<span class="nc" id="L67">		return msgs;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void setTarget(EObject newTarget) {
+<span class="fc" id="L77">		eDynamicSet(ExecPackage.CONFIGURATOR__TARGET, ExecPackage.Literals.CONFIGURATOR__TARGET, newTarget);</span>
+<span class="fc" id="L78">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public EMap&lt;String, EObject&gt; getProperties() {
+<span class="fc" id="L88">		return (EMap&lt;String, EObject&gt;)eDynamicGet(ExecPackage.CONFIGURATOR__PROPERTIES, ExecPackage.Literals.CONFIGURATOR__PROPERTIES, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+<span class="nc bnc" id="L98" title="All 3 branches missed.">		switch (featureID) {</span>
+			case ExecPackage.CONFIGURATOR__TARGET:
+<span class="nc" id="L100">				return basicSetTarget(null, msgs);</span>
+			case ExecPackage.CONFIGURATOR__PROPERTIES:
+<span class="nc" id="L102">				return ((InternalEList&lt;?&gt;)getProperties()).basicRemove(otherEnd, msgs);</span>
+		}
+<span class="nc" id="L104">		return super.eInverseRemove(otherEnd, featureID, msgs);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+<span class="fc bfc" id="L114" title="All 3 branches covered.">		switch (featureID) {</span>
+			case ExecPackage.CONFIGURATOR__TARGET:
+<span class="fc" id="L116">				return getTarget();</span>
+			case ExecPackage.CONFIGURATOR__PROPERTIES:
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">				if (coreType) return getProperties();</span>
+<span class="nc" id="L119">				else return getProperties().map();</span>
+		}
+<span class="fc" id="L121">		return super.eGet(featureID, resolve, coreType);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void eSet(int featureID, Object newValue) {
+<span class="fc bfc" id="L131" title="All 3 branches covered.">		switch (featureID) {</span>
+			case ExecPackage.CONFIGURATOR__TARGET:
+<span class="fc" id="L133">				setTarget((EObject)newValue);</span>
+<span class="fc" id="L134">				return;</span>
+			case ExecPackage.CONFIGURATOR__PROPERTIES:
+<span class="fc" id="L136">				((EStructuralFeature.Setting)getProperties()).set(newValue);</span>
+<span class="fc" id="L137">				return;</span>
+		}
+<span class="fc" id="L139">		super.eSet(featureID, newValue);</span>
+<span class="fc" id="L140">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+<span class="nc bnc" id="L149" title="All 3 branches missed.">		switch (featureID) {</span>
+			case ExecPackage.CONFIGURATOR__TARGET:
+<span class="nc" id="L151">				setTarget((EObject)null);</span>
+<span class="nc" id="L152">				return;</span>
+			case ExecPackage.CONFIGURATOR__PROPERTIES:
+<span class="nc" id="L154">				getProperties().clear();</span>
+<span class="nc" id="L155">				return;</span>
+		}
+<span class="nc" id="L157">		super.eUnset(featureID);</span>
+<span class="nc" id="L158">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+<span class="fc bfc" id="L167" title="All 3 branches covered.">		switch (featureID) {</span>
+			case ExecPackage.CONFIGURATOR__TARGET:
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">				return getTarget() != null;</span>
+			case ExecPackage.CONFIGURATOR__PROPERTIES:
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">				return !getProperties().isEmpty();</span>
+		}
+<span class="fc" id="L173">		return super.eIsSet(featureID);</span>
+	}
+
+} //ConfiguratorImpl
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

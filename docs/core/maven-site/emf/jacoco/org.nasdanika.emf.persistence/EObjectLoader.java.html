@@ -1,0 +1,723 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EObjectLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika EMF</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.emf.persistence</a> &gt; <span class="el_source">EObjectLoader.java</span></div><h1>EObjectLoader.java</h1><pre class="source lang-java linenums">package org.nasdanika.emf.persistence;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAnnotation;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.FunctionFactory;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Supplier;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.URIEncodable;
+import org.nasdanika.common.Util;
+import org.nasdanika.graph.processor.emf.AbstractEObjectFactoryProcessorResource;
+import org.nasdanika.graph.processor.emf.LinkedResourcesAdapter;
+import org.nasdanika.ncore.Marked;
+import org.nasdanika.ncore.util.NcoreUtil;
+import org.nasdanika.persistence.ContextLoadable;
+import org.nasdanika.persistence.DispatchingLoader;
+import org.nasdanika.persistence.LoadTracker;
+import org.nasdanika.persistence.Loadable;
+import org.nasdanika.persistence.Marker;
+import org.nasdanika.persistence.ObjectLoader;
+import org.yaml.snakeyaml.Yaml;
+
+public class EObjectLoader extends DispatchingLoader {
+	
+	/**
+	 * If proxy URI is prefixed with ./ then the URI is not resolved relative to the context resource at the load time.
+	 * Rather the prefix is removed and a URI created from the tail is passed to the proxy object to be used
+	 * at proxy resolution time. 
+	 */
+	public static final String LATE_PROXY_RESOLUTION_URI_PREFIX = &quot;./&quot;;	
+	
+	static final String HREF_KEY = &quot;href&quot;;
+
+	/**
+	 * Use this annotation to customize load keys. Use feature-key annotation for features to also customize containment path calculation.
+	 */
+	public static final String LOAD_KEY = &quot;load-key&quot;;
+	
+	/**
+	 * Information about how element is loaded in markdown. For {@link EStructuralFeature}s overrides feature documentation if present.  
+	 */
+	public static final String LOAD_DOC = &quot;load-doc&quot;;
+	
+	/**
+	 * Reference to a resource with information about how element is loaded in markdown. For {@link EStructuralFeature}s overrides feature documentation if present.  
+	 */
+	public static final String LOAD_DOC_REF = &quot;load-doc-reference&quot;;
+	
+	/**
+	 * If this Nasdanika annotation details is set to &quot;true&quot; on a {@link EStructuralFeature} and configuration object is not a map
+	 * then the configuration object is loaded into this feature. 
+	 */
+	public static final String IS_DEFAULT_FEATURE = &quot;default-feature&quot;;
+	
+	/**
+	 * {@link EReference} annotation with a name of value feature as a value. 
+	 * Value feature is loaded with the configuration map value for reference with eKeys. 
+	 * If this annotation is not set then the object itself is loaded with the value. 
+	 */
+	public static final String VALUE_FEATURE = &quot;value-feature&quot;;
+	
+	/**
+	 * If this Nasdanika annotation details is set to &quot;true&quot; on a {@link EAttribute} and configuration object is a {@link String}
+	 * then the configuration object is resolved relative to the model resource {@link URI} (base). 
+	 */
+	public static final String IS_RESOLVE_URI = &quot;resolve-uri&quot;;
+	
+	/**
+	 * This annotation allows to override element types for homogenous references.
+	 * The value shall be a YAML map of reference names to types. If entry value is a string it is treated as a class name from the same
+	 * {@link EPackage} as the annotated {@link EClass}. If it is a map then it shall contain &lt;code&gt;ns-uri&lt;/code&gt; and &lt;code&gt;name&lt;/code&gt; keys.
+	 * EClass is looked up in the loader's {@link ResourceSet} package registry.
+	 */
+	public static final String REFERENCE_TYPES = &quot;reference-types&quot;;
+	
+	/**
+	 * This annotation allows to customize element types for homogenous references based on configuration element type
+	 * The value shall be a YAML map of configuration types (string, map, list, number, boolean) to reference types. 
+	 * If entry value is a string it is treated as a class name from the same
+	 * {@link EPackage} as the annotated {@link EReference}'s {@link EClass}. 
+	 * If it is a map then it shall contain &lt;code&gt;ns-uri&lt;/code&gt; and &lt;code&gt;name&lt;/code&gt; keys.
+	 * EClass is looked up in the loader's {@link ResourceSet} package registry.
+	 */
+	public static final String REFERENCE_TYPE = &quot;reference-type&quot;;
+	
+	/**
+	 * This annotation allows to load keys for features.
+	 * The value shall be a YAML map of feature names to keys. If entry value is a string it is treated as a key name.
+	 */
+	public static final String LOAD_KEYS = &quot;load-keys&quot;;
+	
+<span class="nc" id="L121">	private ThreadLocal&lt;java.util.function.Function&lt;EClass, EObject&gt;&gt; threadConstructor = new ThreadLocal&lt;java.util.function.Function&lt;EClass,EObject&gt;&gt;();</span>
+	
+	/**
+	 * Sets thread constructor for creation of 
+	 * @param constructor
+	 */
+	public void setThreadConstructor(java.util.function.Function&lt;EClass, EObject&gt; constructor) {
+<span class="nc" id="L128">		threadConstructor.set(constructor);</span>
+<span class="nc" id="L129">	}</span>
+	
+	/**
+	 * 
+	 * @param eClass
+	 * @param feature
+	 * @return Features in the argument class the argument feature is exclusive with.
+	 */
+	public static Object[] getExclusiveWith(EClass eClass, EStructuralFeature feature, BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider) {
+<span class="nc" id="L138">		Set&lt;String&gt; ret = new HashSet&lt;&gt;();</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		for (EStructuralFeature sf: eClass.getEAllStructuralFeatures()) {</span>
+<span class="nc" id="L140">			String exclusiveWithStr = NcoreUtil.getNasdanikaAnnotationDetail(sf, &quot;exclusive-with&quot;); // A space-separated list of load keys which are mutually exclusive with the annotated feature.</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			if (!Util.isBlank(exclusiveWithStr)) {</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">				for (String ew: exclusiveWithStr.split(&quot;\\s&quot;)) {</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">					if (sf == feature) {</span>
+<span class="nc" id="L144">						ret.add(ew);</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">					} else if (ew.equals(keyProvider.apply(eClass, feature))) {</span>
+<span class="nc" id="L146">						ret.add(keyProvider.apply(eClass, sf));</span>
+					}
+					
+				}
+			}
+<span class="nc" id="L151">		}</span>
+
+<span class="nc" id="L153">		return ret.toArray();</span>
+	}
+	
+	/**
+	 * If true, feature is loaded even if it not changeable, but it is not injected into the object.
+	 * In this case the getter can access loaded value using {@link LoadTracker} adapter get() method.
+	 */
+	public static final String IS_COMPUTED = &quot;computed&quot;;
+	
+	public static boolean isDefaultFeature(EClass eClass, EStructuralFeature feature) {
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (&quot;true&quot;.equals(NcoreUtil.getNasdanikaAnnotationDetail(feature, IS_DEFAULT_FEATURE))) {</span>
+<span class="nc" id="L164">			return true;</span>
+		}
+<span class="nc" id="L166">		String dfName = NcoreUtil.getNasdanikaAnnotationDetail(eClass, IS_DEFAULT_FEATURE);</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (!Util.isBlank(dfName)) {</span>
+<span class="nc" id="L168">			return feature.getName().equals(dfName);</span>
+		}
+<span class="nc bnc" id="L170" title="All 2 branches missed.">		for (EClass st: eClass.getEAllSuperTypes()) {</span>
+<span class="nc" id="L171">			dfName = NcoreUtil.getNasdanikaAnnotationDetail(st, IS_DEFAULT_FEATURE);</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			if (!Util.isBlank(dfName)) {</span>
+<span class="nc" id="L173">				return feature.getName().equals(dfName);</span>
+			}			
+<span class="nc" id="L175">		}</span>
+<span class="nc" id="L176">		return false;</span>
+	}
+	
+	public static String getValueFeature(EReference eReference) {
+<span class="nc" id="L180">		return NcoreUtil.getNasdanikaAnnotationDetail(eReference, VALUE_FEATURE);</span>
+	}	
+	
+	/**
+	 * If this Nasdanika annotation details is set to &quot;false&quot; on a {@link EStructuralFeature} or {@link EClass} then this feature or class is not loaded from configuration. 
+	 */
+	public static final String IS_LOADABLE = &quot;loadable&quot;;
+	
+	/**
+	 * If this Nasdanika annotation details is set to &quot;true&quot; on a {@link EReference} with a concrete element type then reference element(s) are loaded using the reference type
+	 * and they shall be a maps of features as opposed of a map of type to a map of features.
+	 */
+	public static final String IS_HOMOGENOUS = &quot;homogenous&quot;;
+	
+	/**
+	 * If this Nasdanika annotation details is set to &quot;true&quot; on a homogenous {@link EReference} then string values are treated as default features, not as object references. 
+	 */
+	public static final String IS_STRICT_CONTAINMENT = &quot;strict-containment&quot;;
+	
+	/**
+	 * Default implementation of load key provider - gets load key from the Nasdanika annotation (urn:org.nasdanika) &lt;code&gt;load-key&lt;/code&gt; details if it is present.
+	 * For features delegates to {@link NcoreUtil} getFeatureKey.
+	 * Otherwise converts {@link ENamedElement} element name from camel case to lower-cased kebab case. E.g. firstName is converted first-name.
+	 */
+<span class="nc" id="L204">	public static final BiFunction&lt;EClass,ENamedElement,String&gt; LOAD_KEY_PROVIDER = (eClass,ne) -&gt; {</span>
+<span class="nc" id="L205">		EAnnotation na = NcoreUtil.getNasdanikaAnnotation(ne);</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		if (na != null) {</span>
+<span class="nc bnc" id="L207" title="All 4 branches missed.">			if (na.getDetails().containsKey(IS_LOADABLE) &amp;&amp; &quot;false&quot;.equals(na.getDetails().get(IS_LOADABLE))) {</span>
+<span class="nc" id="L208">				return null;</span>
+			}
+<span class="nc bnc" id="L210" title="All 2 branches missed.">			if (na.getDetails().containsKey(LOAD_KEY)) {</span>
+<span class="nc" id="L211">				return na.getDetails().get(LOAD_KEY);</span>
+			}
+		}
+
+<span class="nc bnc" id="L215" title="All 4 branches missed.">		if (eClass != null &amp;&amp; ne instanceof EStructuralFeature) {</span>
+<span class="nc" id="L216">			EStructuralFeature feature = (EStructuralFeature) ne;</span>
+<span class="nc" id="L217">			String loadKey = getLoadKey(eClass, feature);		</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">			return loadKey == null ? NcoreUtil.getFeatureKey(eClass, feature) : loadKey;</span>
+		}
+		
+<span class="nc" id="L221">		return Util.camelToKebab(ne.getName());</span>
+	};
+	
+	private BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider;
+	
+	private class EPackageEntry {
+
+		EPackage ePackage;
+		
+		BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider;
+				
+<span class="nc" id="L232">		EPackageEntry(EPackage ePackage, BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider) {</span>
+<span class="nc" id="L233">			this.ePackage = ePackage;</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">			this.keyProvider = keyProvider == null ? LOAD_KEY_PROVIDER : keyProvider;</span>
+<span class="nc" id="L235">		}</span>
+		
+	}
+	
+<span class="nc" id="L239">	private java.util.function.Supplier&lt;Collection&lt;Map.Entry&lt;String,EPackageEntry&gt;&gt;&gt; registrySupplier = () -&gt; Collections.emptySet();</span>
+	
+	private Collection&lt;Map.Entry&lt;String,EPackageEntry&gt;&gt; getRegistry() {
+<span class="nc" id="L242">		return registrySupplier.get();</span>
+	}
+
+	private ResourceSet resourceSet;
+
+	public EObjectLoader(ObjectLoader chain, BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider, EPackage... ePackages) {
+<span class="nc" id="L248">		super(chain);</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		this.keyProvider = keyProvider == null ? LOAD_KEY_PROVIDER : keyProvider;</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		if (ePackages.length &gt; 0) {</span>
+<span class="nc" id="L251">			Map&lt;String,EPackageEntry&gt; registry = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">			for (EPackage ePackage: ePackages) {</span>
+<span class="nc" id="L253">				Entry&lt;String, EPackageEntry&gt; re = createRegistryEntry(ePackage);</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">				if (re != null) {</span>
+<span class="nc" id="L255">					registry.put(re.getKey(), re.getValue());</span>
+				}
+			}
+<span class="nc" id="L258">			registrySupplier = registry::entrySet;</span>
+		}
+<span class="nc" id="L260">	}</span>
+	
+	public MarkerFactory getMarkerFactory() {
+<span class="nc" id="L263">		return markerFactory;</span>
+	}
+	
+	public void setMarkerFactory(MarkerFactory markerFactory) {
+<span class="nc" id="L267">		this.markerFactory = markerFactory;</span>
+<span class="nc" id="L268">	}</span>
+	
+<span class="nc" id="L270">	private MarkerFactory markerFactory = MarkerFactory.INSTANCE;</span>
+	
+	public EObjectLoader(EPackage... ePackages) {
+<span class="nc" id="L273">		this(null, null, ePackages);</span>
+<span class="nc" id="L274">	}</span>
+
+	public EObjectLoader(ObjectLoader chain, BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider, ResourceSet resourceSet) {
+<span class="nc" id="L277">		this(chain, keyProvider);</span>
+<span class="nc" id="L278">		this.resourceSet = resourceSet;</span>
+		
+<span class="nc bnc" id="L280" title="All 2 branches missed.">		if (resourceSet != null) {</span>
+<span class="nc" id="L281">			registrySupplier = () -&gt; resourceSet.getPackageRegistry().values().stream().map(EPackage.class::cast).map(this::createRegistryEntry).collect(Collectors.toList());</span>
+		}		
+<span class="nc" id="L283">	}</span>
+	
+	public EObjectLoader(ResourceSet resourceSet) {
+<span class="nc" id="L286">		this(null, null, resourceSet);</span>
+<span class="nc" id="L287">	}</span>
+	
+	private Map.Entry&lt;String, EPackageEntry&gt; createRegistryEntry(EPackage ePackage, BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider) {
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		if (keyProvider == null) {</span>
+<span class="nc" id="L291">			keyProvider = this.keyProvider;</span>
+		}
+<span class="nc" id="L293">		String packageKey = keyProvider.apply(null, ePackage);</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">		if (Util.isBlank(packageKey)) {</span>
+<span class="nc" id="L295">			return null;</span>
+		}
+<span class="nc bnc" id="L297" title="All 2 branches missed.">		return Map.entry(packageKey + &quot;-&quot;, new EPackageEntry(ePackage, keyProvider == null ? this.keyProvider : keyProvider));</span>
+	}
+	
+	private Map.Entry&lt;String, EPackageEntry&gt; createRegistryEntry(EPackage ePackage) {
+<span class="nc" id="L301">		return createRegistryEntry(ePackage, null);</span>
+	}
+
+	/**
+	 * Creates a new EObject from a prototype. 
+	 * @param loader
+	 * @param type
+	 * @param config
+	 * @param prototype Prototype EObject, can be null.
+	 * @param base
+	 * @param progressMonitor
+	 * @param marker
+	 * @return
+	 */
+	public Object create(ObjectLoader loader, String type, Object config, java.util.function.Function&lt;EClass, EObject&gt; constructor, URI base, ProgressMonitor progressMonitor, List&lt;? extends Marker&gt; markers) {
+<span class="nc" id="L316">		BiSupplier&lt;EClass,BiFunction&lt;EClass,ENamedElement,String&gt;&gt; result = resolveEClass(type);</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">		if (result != null) {</span>
+<span class="nc" id="L318">			return create(loader, result.getFirst(), config, base, progressMonitor, markers, result.getSecond(), constructor);</span>
+		}
+		
+<span class="nc" id="L321">		return super.create(loader, type, config, base, progressMonitor, markers);</span>
+	}
+	
+	/**
+	 * Creates an object by calling create() which takes constructor and passing thread constructor to it.
+	 */
+	@Override
+	public Object create(ObjectLoader loader, String type, Object config, URI base, ProgressMonitor progressMonitor, List&lt;? extends Marker&gt; markers) {
+<span class="nc" id="L329">		return create(loader, type, config, threadConstructor.get(), base, progressMonitor, markers);</span>
+	}	
+	
+	/**
+	 * Resolves EClass and key provider from type name.
+	 * @param type
+	 * @return
+	 */
+	public BiSupplier&lt;EClass,BiFunction&lt;EClass,ENamedElement,String&gt;&gt; resolveEClass(String type) {		
+<span class="nc bnc" id="L338" title="All 2 branches missed.">		for (Entry&lt;String, EPackageEntry&gt; re: getRegistry()) {</span>
+<span class="nc bnc" id="L339" title="All 2 branches missed.">			if (type.startsWith(re.getKey())) {</span>
+<span class="nc" id="L340">				EPackageEntry ePackageEntry = re.getValue();</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">				for (EClassifier eClassifier: ePackageEntry.ePackage.getEClassifiers()) {</span>
+<span class="nc bnc" id="L342" title="All 4 branches missed.">					if (eClassifier instanceof EClass &amp;&amp; &quot;true&quot;.equals(NcoreUtil.getNasdanikaAnnotationDetail(eClassifier, IS_LOADABLE, &quot;true&quot;))) {</span>
+<span class="nc" id="L343">						String eClassifierKey = ePackageEntry.keyProvider.apply(null, eClassifier);</span>
+<span class="nc bnc" id="L344" title="All 4 branches missed.">						if (eClassifierKey != null &amp;&amp; type.equals(re.getKey() + eClassifierKey)) {</span>
+<span class="nc" id="L345">							return new BiSupplier&lt;EClass, BiFunction&lt;EClass,ENamedElement,String&gt;&gt;() {</span>
+
+								@Override
+								public EClass getFirst() {
+<span class="nc" id="L349">									return (EClass) eClassifier;</span>
+								}
+
+								@Override
+								public BiFunction&lt;EClass,ENamedElement, String&gt; getSecond() {
+<span class="nc" id="L354">									return ePackageEntry.keyProvider;</span>
+								}
+							}; 
+						}
+					}
+<span class="nc" id="L359">				}</span>
+			}
+<span class="nc" id="L361">		}</span>
+<span class="nc" id="L362">		return null;		</span>
+	}
+	
+	/**
+	 * Creates an instance of EClass or a supplier factory
+	 * @param loader
+	 * @param eClass
+	 * @param config
+	 * @param base
+	 * @param progressMonitor
+	 * @param marker
+	 * @param ePackageEntry
+	 * @param eClassifier
+	 * @return
+	 */
+	public Object create(
+			ObjectLoader loader, 
+			EClass eClass, 
+			Object config, 
+			URI base, 
+			ProgressMonitor progressMonitor, 
+			List&lt;? extends Marker&gt; markers, 
+			BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider,
+			java.util.function.Function&lt;EClass, EObject&gt; constructor) {
+		
+		// Nulls are nulls
+<span class="nc bnc" id="L388" title="All 2 branches missed.">		if (config == null) {</span>
+<span class="nc" id="L389">			return null;</span>
+		}
+		
+		// Proxy
+<span class="nc" id="L393">		Object proxy = createProxy(eClass, config, base, markers, progressMonitor);</span>
+<span class="nc bnc" id="L394" title="All 2 branches missed.">		if (proxy != null) {</span>
+<span class="nc" id="L395">			return configure(proxy, loader, config, base, null, progressMonitor);</span>
+		}
+		
+<span class="nc" id="L398">		Class&lt;?&gt; instanceClass = eClass.getInstanceClass();</span>
+<span class="nc" id="L399">		EFactory factory = eClass.getEPackage().getEFactoryInstance();</span>
+		
+<span class="nc bnc" id="L401" title="All 2 branches missed.">		if (Loadable.class.isAssignableFrom(instanceClass)) {</span>
+<span class="nc" id="L402">			EObject eObject = factory.create(eClass);</span>
+<span class="nc" id="L403">			((Loadable) eObject).load(loader, config, base, progressMonitor, markers);</span>
+<span class="nc" id="L404">			return configure(eObject, loader, config, base, null, progressMonitor);</span>
+		}
+<span class="nc bnc" id="L406" title="All 2 branches missed.">		if (ContextLoadable.class.isAssignableFrom(instanceClass)) {</span>
+<span class="nc" id="L407">			return new SupplierFactory&lt;EObject&gt;() {</span>
+
+				@Override
+				public Supplier&lt;EObject&gt; create(Context context) {
+<span class="nc" id="L411">					return new Supplier&lt;EObject&gt;() {</span>
+
+						@Override
+						public double size() {
+<span class="nc" id="L415">							return 1;</span>
+						}
+
+						@Override
+						public String name() {
+<span class="nc" id="L420">							return &quot;Creating &quot; + eClass.getName();</span>
+						}
+
+						@Override
+						public EObject execute(ProgressMonitor pm) {
+<span class="nc" id="L425">							EObject eObject = factory.create(eClass);</span>
+<span class="nc" id="L426">							((ContextLoadable) eObject).load(context, loader, config, base, pm, markers);</span>
+<span class="nc" id="L427">							return configure(eObject, loader, config, base, context, pm);</span>
+						}
+						
+					};
+				}									
+			};
+		}							
+<span class="nc" id="L434">		EObjectSupplierFactory eObjectSupplierFactory = createEObjectSupplierFactory(eClass, keyProvider, constructor);</span>
+<span class="nc" id="L435">		eObjectSupplierFactory.load(loader, config, base, progressMonitor, markers);</span>
+<span class="nc" id="L436">		FunctionFactory&lt;EObject, EObject&gt; configureFactory = ctx -&gt; new org.nasdanika.common.Function&lt;EObject, EObject&gt;() {</span>
+
+			@Override
+			public double size() {
+<span class="nc" id="L440">				return 1;</span>
+			}
+
+			@Override
+			public String name() {
+<span class="nc" id="L445">				return &quot;Configure&quot;;</span>
+			}
+
+			@Override
+			public EObject execute(EObject eObject, ProgressMonitor pm) {
+<span class="nc" id="L450">				return configure(eObject, loader, config, base, ctx, pm);</span>
+			}
+			
+		};
+<span class="nc" id="L454">		return eObjectSupplierFactory.then(configureFactory);</span>
+	}
+	
+	/**
+	 * Override to configure an object after creation. This method can replace the object.
+	 * @param obj Created object to configure.
+	 * @param loader Root loader.
+	 * @param config Object config.
+	 * @param base Base URI.
+	 * @param context Context. Not null if created by a supplier.
+	 * @param progressMonitor Progress monitor.
+	 * @return Configured object. This implementation loads linked resources.
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	protected &lt;T&gt; T configure(
+			T obj,
+			ObjectLoader loader, 
+			Object config, 
+			URI base, 
+			Context context,
+			ProgressMonitor progressMonitor) {
+		
+		// Loading linked resources if resourceSet is not null.
+<span class="nc bnc" id="L477" title="All 2 branches missed.">		if (resourceSet != null) {</span>
+<span class="nc bnc" id="L478" title="All 2 branches missed.">			if (obj instanceof EObject) {</span>
+<span class="nc" id="L479">				EObject eObj = (EObject) obj;</span>
+<span class="nc" id="L480">				EClass eClass = eObj.eClass();</span>
+<span class="nc bnc" id="L481" title="All 2 branches missed.">				for (EAttribute eAttr: eClass.getEAllAttributes()) {</span>
+<span class="nc bnc" id="L482" title="All 2 branches missed.">					if (isLinkedResourceAttribute(eAttr)) {</span>
+<span class="nc" id="L483">						linkResources(eObj, eObj, eAttr, loader, config, base, context, progressMonitor);</span>
+					}
+<span class="nc" id="L485">				}</span>
+				
+				// EMaps with EString value attributes annotated with content-type = resource-uri.
+<span class="nc bnc" id="L488" title="All 2 branches missed.">				for (EReference eRef: eClass.getEAllReferences()) {</span>
+<span class="nc" id="L489">					EClassifier refType = eRef.getEType();</span>
+<span class="nc" id="L490">					Class&lt;?&gt; refClass = refType.getInstanceClass();</span>
+<span class="nc bnc" id="L491" title="All 8 branches missed.">					if (eRef.isMany() &amp;&amp; refType instanceof EClass &amp;&amp; refClass != null &amp;&amp; Map.Entry.class.isAssignableFrom(refClass)) {</span>
+<span class="nc" id="L492">						EStructuralFeature valueFeature = ((EClass) refType).getEStructuralFeature(&quot;value&quot;);</span>
+<span class="nc bnc" id="L493" title="All 4 branches missed.">						if (valueFeature instanceof EAttribute &amp;&amp; isLinkedResourceAttribute((EAttribute) valueFeature)) {</span>
+<span class="nc bnc" id="L494" title="All 2 branches missed.">							for (EObject entry: (Collection&lt;EObject&gt;) eObj.eGet(eRef)) {</span>
+<span class="nc" id="L495">								linkResources(eObj, entry, (EAttribute) valueFeature, loader, config, base, context, progressMonitor);							</span>
+<span class="nc" id="L496">							}</span>
+						}
+					}
+<span class="nc" id="L499">				}</span>
+			}
+		}
+		
+<span class="nc" id="L503">		return obj;</span>
+	}
+	
+	protected boolean isLinkedResourceAttribute(EAttribute eAttribute) {
+<span class="nc bnc" id="L507" title="All 6 branches missed.">		return eAttribute != null &amp;&amp; eAttribute.getEType() == EcorePackage.Literals.ESTRING &amp;&amp; &quot;resource-uri&quot;.equals(NcoreUtil.getNasdanikaAnnotationDetail(eAttribute, &quot;content-type&quot;)); </span>
+	}
+	
+	/**
+	 * Loads and links resources specified in the valueObject's linkedResourceAttribute to the semanticElement.
+	 * @param semanticElement Loaded object to link the resource to.
+	 * @param valueObject Value object containing linked resource attribute, can be different from the semanticElement in case of EMap's.
+	 * @param linkedResourceAttribute Attribute containing resource URI.
+	 * @param loader 
+	 * @param config
+	 * @param base
+	 * @param context
+	 * @param progressMonitor
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	protected void linkResources(
+			EObject semanticElement, 
+			EObject valueObject, 
+			EAttribute linkedResourceAttribute,
+			ObjectLoader loader, 
+			Object config, 
+			URI base, 
+			Context context,
+			ProgressMonitor progressMonitor) {
+		
+<span class="nc bnc" id="L532" title="All 2 branches missed.">		if (linkedResourceAttribute.isMany()) {</span>
+<span class="nc" id="L533">			ListIterator&lt;String&gt; it = ((List&lt;String&gt;) valueObject.eGet(linkedResourceAttribute)).listIterator();</span>
+<span class="nc bnc" id="L534" title="All 2 branches missed.">			while (it.hasNext()) {</span>
+<span class="nc" id="L535">				it.set(linkResource(semanticElement, it.next(), loader, config, base, context, progressMonitor));</span>
+			}
+<span class="nc" id="L537">		} else {</span>
+<span class="nc" id="L538">			valueObject.eSet(linkedResourceAttribute, linkResource(semanticElement, (String) valueObject.eGet(linkedResourceAttribute), loader, config, base, context, progressMonitor));</span>
+		}		
+<span class="nc" id="L540">	}</span>
+	
+	/**
+	 * Loads and links resources specified in the valueObject's linkedResourceAttribute to the semanticElement.
+	 * @param semanticElement Loaded object to link the resource to.
+	 * @param resourceUriStr
+	 * @param loader
+	 * @param config
+	 * @param base
+	 * @param context
+	 * @param progressMonitor
+	 * @return
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	protected String linkResource(
+			EObject semanticElement,
+			String resourceUriStr,
+			ObjectLoader loader, 
+			Object config, 
+			URI base, 
+			Context context,
+			ProgressMonitor progressMonitor) {
+		
+<span class="nc" id="L563">		URI resourceURI = URI.createURI(resourceUriStr);</span>
+<span class="nc bnc" id="L564" title="All 8 branches missed.">		if (resourceURI.isRelative() &amp;&amp; base != null &amp;&amp; !base.isRelative() &amp;&amp; base.isHierarchical()) {</span>
+<span class="nc" id="L565">			resourceURI = resourceURI.resolve(base);</span>
+		}
+<span class="nc" id="L567">		Resource linkedResource = resourceSet.getResource(resourceURI, true);</span>
+		
+		// Adding to linked resources adapter for setting children in createSemanticElement				
+<span class="nc" id="L570">		LinkedResourcesAdapter linkedResourcesAdapter = (LinkedResourcesAdapter) EcoreUtil.getRegisteredAdapter(semanticElement, LinkedResourcesAdapter.class);</span>
+<span class="nc bnc" id="L571" title="All 2 branches missed.">		if (linkedResourcesAdapter == null) {</span>
+<span class="nc" id="L572">			linkedResourcesAdapter = new LinkedResourcesAdapter();</span>
+<span class="nc" id="L573">			semanticElement.eAdapters().add(linkedResourcesAdapter);</span>
+		}
+<span class="nc" id="L575">		linkedResourcesAdapter.getLinkedResources().add(linkedResource);</span>
+		
+<span class="nc bnc" id="L577" title="All 2 branches missed.">		if (linkedResource instanceof AbstractEObjectFactoryProcessorResource) {</span>
+<span class="nc" id="L578">			((AbstractEObjectFactoryProcessorResource&lt;EObject&gt;) linkedResource).setParent(semanticElement);</span>
+		}
+		
+<span class="nc" id="L581">		return encodeLinkedResource(semanticElement, resourceUriStr, linkedResource, loader, config, base, context, progressMonitor);</span>
+	}
+	
+	/**
+	 * Optionally changes the value of the resourceUriStr by encoding the resource.
+	 * This implementation replaces resourceUriStr value with encoded Drawio document so it can be used to generate interactive diagrams in documentation. 
+	 * @param semanticElement Loaded object to link the resource to.
+	 * @param resourceUriStr
+	 * @param linkedResource
+	 * @param loader
+	 * @param config
+	 * @param base
+	 * @param context
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected String encodeLinkedResource(
+			EObject semanticElement,
+			String resourceUriStr,
+			Resource linkedResource,
+			ObjectLoader loader, 
+			Object config, 
+			URI base, 
+			Context context,
+			ProgressMonitor progressMonitor) {
+		
+<span class="nc bnc" id="L607" title="All 2 branches missed.">		if (linkedResource instanceof URIEncodable) {</span>
+<span class="nc" id="L608">			return ((URIEncodable) linkedResource).encode().toString();</span>
+		}
+		
+<span class="nc" id="L611">		return resourceUriStr;	</span>
+	}
+		
+	/**
+	 * Creates a new {@link EObjectSupplierFactory}. This implementation calls EObjectSupplierFactory constructor.
+	 * @param eClass
+	 * @param keyProvider
+	 * @return
+	 */
+	protected EObjectSupplierFactory createEObjectSupplierFactory(
+			EClass eClass,
+			BiFunction&lt;EClass, ENamedElement, String&gt; keyProvider,
+			java.util.function.Function&lt;EClass, EObject&gt; constructor) {		
+<span class="nc" id="L624">		return new EObjectSupplierFactory(this, eClass, keyProvider, constructor);</span>
+	}
+
+	/**
+	 * Creates a proxy object if config is a singleton map with &quot;href&quot; key.
+	 * @param eClass
+	 * @param config
+	 * @param base
+	 * @return Proxy object or null if config is not a proxy config.
+	 */
+	public EObject createProxy(EClass eClass, Object config, URI base, List&lt;? extends Marker&gt; markers, ProgressMonitor progressMonitor) {
+<span class="nc bnc" id="L635" title="All 2 branches missed.">		if (config instanceof Map) {</span>
+			@SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L637">			Map&lt;Object,Object&gt; configMap = (Map&lt;Object,Object&gt;) config;</span>
+<span class="nc bnc" id="L638" title="All 2 branches missed.">			if (configMap.size() == 1 </span>
+<span class="nc bnc" id="L639" title="All 2 branches missed.">					&amp;&amp; configMap.containsKey(HREF_KEY)) {</span>
+<span class="nc" id="L640">				EObject eObject = eClass.getEPackage().getEFactoryInstance().create(eClass);</span>
+<span class="nc bnc" id="L641" title="All 2 branches missed.">				if (eObject instanceof MinimalEObjectImpl) {</span>
+<span class="nc" id="L642">					Object href = configMap.get(HREF_KEY);					</span>
+					URI proxyURI;
+<span class="nc bnc" id="L644" title="All 2 branches missed.">					if (href instanceof URI) {</span>
+<span class="nc" id="L645">						proxyURI = (URI) href;</span>
+<span class="nc bnc" id="L646" title="All 2 branches missed.">					} else if (href instanceof String) {</span>
+<span class="nc" id="L647">						proxyURI = URI.createURI((String) configMap.get(HREF_KEY));</span>
+					} else {
+<span class="nc" id="L649">						return null;</span>
+					}
+					
+<span class="nc" id="L652">					String proxyURIStr = proxyURI.toString();</span>
+<span class="nc bnc" id="L653" title="All 2 branches missed.">					if (proxyURIStr.startsWith(LATE_PROXY_RESOLUTION_URI_PREFIX)) {</span>
+<span class="nc" id="L654">						proxyURI = URI.createURI(proxyURIStr.substring(LATE_PROXY_RESOLUTION_URI_PREFIX.length()));</span>
+<span class="nc bnc" id="L655" title="All 2 branches missed.">					} else if (base != null) {</span>
+<span class="nc" id="L656">						proxyURI = proxyURI.resolve(base);</span>
+					}
+<span class="nc" id="L658">					((MinimalEObjectImpl) eObject).eSetProxyURI(proxyURI);</span>
+<span class="nc" id="L659">					mark(eObject, markers, progressMonitor);</span>
+					
+<span class="nc" id="L661">					return eObject;</span>
+				}
+			}
+		}
+<span class="nc" id="L665">		return null;</span>
+	}
+
+	/**
+	 * If marker is not null adds marked adapter. If eObject is instance of {@link Marked} creates and sets {@link org.nasdanika.ncore.Marker}.
+	 * @param eObject
+	 * @param marker
+	 */
+	public void mark(EObject eObject, List&lt;? extends Marker&gt; markers, ProgressMonitor progressMonitor) {
+<span class="nc bnc" id="L674" title="All 2 branches missed.">		if (markers != null) {</span>
+<span class="nc" id="L675">			eObject.eAdapters().add(new MarkedAdapter(markers));</span>
+<span class="nc bnc" id="L676" title="All 2 branches missed.">			if (eObject instanceof Marked) {		</span>
+<span class="nc bnc" id="L677" title="All 2 branches missed.">				for (Marker marker: markers) {</span>
+<span class="nc" id="L678">					org.nasdanika.ncore.Marker mMarker = markerFactory.createMarker(marker.getLocation(), progressMonitor);</span>
+<span class="nc" id="L679">					mMarker.setPosition(marker.getPosition());</span>
+<span class="nc" id="L680">					((Marked) eObject).getMarkers().add(0, mMarker);</span>
+<span class="nc" id="L681">				}</span>
+			}
+		}
+<span class="nc" id="L684">	}</span>
+	
+	/**
+	 * Resolves proxy using the loader's resource set.
+	 * Does not suppress exceptions. 
+	 */
+	public EObject resolve(EObject proxy) {
+<span class="nc bnc" id="L691" title="All 2 branches missed.">		if (!proxy.eIsProxy()) {</span>
+<span class="nc" id="L692">			return proxy;</span>
+		}
+
+<span class="nc" id="L695">		URI proxyURI = ((InternalEObject) proxy).eProxyURI();</span>
+<span class="nc" id="L696">		EObject ret = resourceSet.getEObject(proxyURI, true);</span>
+<span class="nc bnc" id="L697" title="All 4 branches missed.">		return ret == null || ret == proxy ? ret : resolve(ret);</span>
+	}	
+
+	public ResourceSet getResourceSet() {
+<span class="nc" id="L701">		return resourceSet;</span>
+	}
+	
+	/**
+	 * @return Load key from &lt;code&gt;load-keys&lt;/code&gt; annotation. 
+	 */
+	public static String getLoadKey(EClass eClass, EStructuralFeature feature) {
+<span class="nc bnc" id="L708" title="All 2 branches missed.">		for (EClass ec: NcoreUtil.lineage(eClass)) {</span>
+<span class="nc" id="L709">			String loadKeys = NcoreUtil.getNasdanikaAnnotationDetail(ec, LOAD_KEYS);</span>
+<span class="nc bnc" id="L710" title="All 2 branches missed.">			if (!Util.isBlank(loadKeys)) {</span>
+<span class="nc" id="L711">				Yaml yaml = new Yaml();</span>
+<span class="nc" id="L712">				Map&lt;String,Object&gt; loadKeyMap = yaml.load(loadKeys);</span>
+<span class="nc" id="L713">				Object loadKey = loadKeyMap.get(feature.getName());</span>
+<span class="nc bnc" id="L714" title="All 2 branches missed.">				if (loadKey instanceof String) {</span>
+<span class="nc" id="L715">					return (String) loadKey;</span>
+				}
+			}
+<span class="nc" id="L718">		}</span>
+<span class="nc" id="L719">		return null;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

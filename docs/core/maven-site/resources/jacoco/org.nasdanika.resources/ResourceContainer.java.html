@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResourceContainer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Resources</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.resources</a> &gt; <span class="el_source">ResourceContainer.java</span></div><h1>ResourceContainer.java</h1><pre class="source lang-java linenums">package org.nasdanika.resources;
+
+import java.util.Map;
+
+import org.nasdanika.common.ProgressMonitor;
+
+/**
+ * Container of resources.
+ * @author Pavel
+ *
+ * @param &lt;T&gt; Content type.
+ */
+public interface ResourceContainer&lt;E extends Resource&lt;?&gt;&gt; extends Container&lt;E&gt; {
+		
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	default void copy(Container&lt;? super E&gt; container, String path, ProgressMonitor monitor) {
+<span class="nc bnc" id="L18" title="All 2 branches missed.">		if (exists(monitor.split(&quot;Checking existence&quot;, 1, this))) {			</span>
+<span class="nc" id="L19">			long size = size(monitor.split(&quot;Getting size&quot;, 1, this));</span>
+<span class="nc" id="L20">			try (ProgressMonitor subMonitor = monitor.split(&quot;Copying &quot;+getName(), size, this)) {</span>
+<span class="nc" id="L21">				Container&lt;? super E&gt; target = container.getContainer(path, monitor.split(&quot;Getting target container &quot;+path, 1, container));</span>
+<span class="nc" id="L22">				Map&lt;String, Object&gt; children = getChildren(monitor.split(&quot;Getting children&quot;, 1, this));</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">				if (children != null) {				</span>
+<span class="nc" id="L24">					children.forEach((childName, child) -&gt; ((Resource&lt;E&gt;) child).copy(target, childName, subMonitor.split(&quot;Copying child &quot;+path, 1, this)));</span>
+				}
+			}
+		}
+<span class="nc" id="L28">	}</span>
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	default void move(Container&lt;? super E&gt; container, String path, ProgressMonitor monitor) {
+<span class="nc bnc" id="L33" title="All 2 branches missed.">		if (exists(monitor.split(&quot;Checking existence&quot;, 1, this))) {			</span>
+<span class="nc" id="L34">			long size = size(monitor.split(&quot;Getting size&quot;, 1, this));</span>
+<span class="nc" id="L35">			try (ProgressMonitor subMonitor = monitor.split(&quot;Moving &quot;+getName(), size*2 + 1, this)) {</span>
+<span class="nc" id="L36">				Container&lt;? super E&gt; target = container.getContainer(path, monitor.split(&quot;Getting target container &quot;+path, 1, container));</span>
+<span class="nc" id="L37">				Map&lt;String, Object&gt; children = getChildren(monitor.split(&quot;Getting children&quot;, 1, this));</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">				if (children != null) {				</span>
+<span class="nc" id="L39">					children.forEach((childName, child) -&gt; ((Resource&lt;E&gt;) child).move(target, childName, subMonitor.split(&quot;Copying child &quot;+path, 1, this)));</span>
+				}
+<span class="nc" id="L41">				delete(subMonitor.split(&quot;Deleting&quot;, 1, this));</span>
+			}
+		}				
+<span class="nc" id="L44">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

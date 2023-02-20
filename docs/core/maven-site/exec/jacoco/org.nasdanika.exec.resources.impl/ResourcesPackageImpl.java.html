@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResourcesPackageImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Execution Model</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.resources.impl</a> &gt; <span class="el_source">ResourcesPackageImpl.java</span></div><h1>ResourcesPackageImpl.java</h1><pre class="source lang-java linenums">/**
+ */
+package org.nasdanika.exec.resources.impl;
+
+import static org.nasdanika.exec.resources.ResourcesPackage.CONTAINER;
+import static org.nasdanika.exec.resources.ResourcesPackage.RESOURCE;
+
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.impl.EPackageImpl;
+import org.nasdanika.exec.ExecPackage;
+import org.nasdanika.exec.content.ContentPackage;
+import org.nasdanika.exec.content.impl.ContentPackageImpl;
+import org.nasdanika.exec.impl.ExecPackageImpl;
+import org.nasdanika.exec.resources.File;
+import org.nasdanika.exec.resources.ReconcileAction;
+import org.nasdanika.exec.resources.Resource;
+import org.nasdanika.exec.resources.ResourcesFactory;
+import org.nasdanika.exec.resources.ResourcesPackage;
+import org.nasdanika.ncore.NcorePackage;
+
+/**
+ * &lt;!-- begin-user-doc --&gt;
+ * An implementation of the model &lt;b&gt;Package&lt;/b&gt;.
+ * &lt;!-- end-user-doc --&gt;
+ * @generated
+ */
+public class ResourcesPackageImpl extends EPackageImpl implements ResourcesPackage {
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L38">	private EClass resourceEClass = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L45">	private EClass containerEClass = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L52">	private EClass fileEClass = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L59">	private EEnum reconcileActionEEnum = null;</span>
+
+	/**
+	 * Creates an instance of the model &lt;b&gt;Package&lt;/b&gt;, registered with
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
+	 * package URI value.
+	 * &lt;p&gt;Note: the correct way to create the package is via the static
+	 * factory method {@link #init init()}, which also performs
+	 * initialization of the package, or returns the registered package,
+	 * if one already exists.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see org.eclipse.emf.ecore.EPackage.Registry
+	 * @see org.nasdanika.exec.resources.ResourcesPackage#eNS_URI
+	 * @see #init()
+	 * @generated
+	 */
+	private ResourcesPackageImpl() {
+<span class="fc" id="L77">		super(eNS_URI, ResourcesFactory.eINSTANCE);</span>
+<span class="fc" id="L78">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L85">	private static boolean isInited = false;</span>
+
+	/**
+	 * Creates, registers, and initializes the &lt;b&gt;Package&lt;/b&gt; for this model, and for any others upon which it depends.
+	 *
+	 * &lt;p&gt;This method is used to initialize {@link ResourcesPackage#eINSTANCE} when that field is accessed.
+	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see #eNS_URI
+	 * @see #createPackageContents()
+	 * @see #initializePackageContents()
+	 * @generated
+	 */
+	public static ResourcesPackage init() {
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		if (isInited) return (ResourcesPackage)EPackage.Registry.INSTANCE.getEPackage(ResourcesPackage.eNS_URI);</span>
+
+		// Obtain or create and register package
+<span class="fc" id="L103">		Object registeredResourcesPackage = EPackage.Registry.INSTANCE.get(eNS_URI);</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		ResourcesPackageImpl theResourcesPackage = registeredResourcesPackage instanceof ResourcesPackageImpl ? (ResourcesPackageImpl)registeredResourcesPackage : new ResourcesPackageImpl();</span>
+
+<span class="fc" id="L106">		isInited = true;</span>
+
+		// Initialize simple dependencies
+<span class="fc" id="L109">		NcorePackage.eINSTANCE.eClass();</span>
+
+		// Obtain or create and register interdependencies
+<span class="fc" id="L112">		Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ExecPackage.eNS_URI);</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		ExecPackageImpl theExecPackage = (ExecPackageImpl)(registeredPackage instanceof ExecPackageImpl ? registeredPackage : ExecPackage.eINSTANCE);</span>
+<span class="fc" id="L114">		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ContentPackage.eNS_URI);</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		ContentPackageImpl theContentPackage = (ContentPackageImpl)(registeredPackage instanceof ContentPackageImpl ? registeredPackage : ContentPackage.eINSTANCE);</span>
+
+		// Create package meta-data objects
+<span class="fc" id="L118">		theResourcesPackage.createPackageContents();</span>
+<span class="fc" id="L119">		theExecPackage.createPackageContents();</span>
+<span class="fc" id="L120">		theContentPackage.createPackageContents();</span>
+
+		// Initialize created meta-data
+<span class="fc" id="L123">		theResourcesPackage.initializePackageContents();</span>
+<span class="fc" id="L124">		theExecPackage.initializePackageContents();</span>
+<span class="fc" id="L125">		theContentPackage.initializePackageContents();</span>
+
+		// Mark meta-data to indicate it can't be changed
+<span class="fc" id="L128">		theResourcesPackage.freeze();</span>
+
+		// Update the registry and return the package
+<span class="fc" id="L131">		EPackage.Registry.INSTANCE.put(ResourcesPackage.eNS_URI, theResourcesPackage);</span>
+<span class="fc" id="L132">		return theResourcesPackage;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getResource() {
+<span class="fc" id="L142">		return resourceEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getResource_Name() {
+<span class="fc" id="L152">		return (EAttribute)resourceEClass.getEStructuralFeatures().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getResource_Contents() {
+<span class="fc" id="L162">		return (EReference)resourceEClass.getEStructuralFeatures().get(1);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getResource_ReconcileAction() {
+<span class="fc" id="L172">		return (EAttribute)resourceEClass.getEStructuralFeatures().get(2);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getResource_Merger() {
+<span class="fc" id="L182">		return (EReference)resourceEClass.getEStructuralFeatures().get(3);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getContainer() {
+<span class="fc" id="L192">		return containerEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EOperation getContainer__GetContainer__String() {
+<span class="fc" id="L202">		return containerEClass.getEOperations().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EOperation getContainer__GetFile__String() {
+<span class="fc" id="L212">		return containerEClass.getEOperations().get(1);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EOperation getContainer__Find__String() {
+<span class="fc" id="L222">		return containerEClass.getEOperations().get(2);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getFile() {
+<span class="fc" id="L232">		return fileEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EEnum getReconcileAction() {
+<span class="fc" id="L242">		return reconcileActionEEnum;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public ResourcesFactory getResourcesFactory() {
+<span class="nc" id="L252">		return (ResourcesFactory)getEFactoryInstance();</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L260">	private boolean isCreated = false;</span>
+
+	/**
+	 * Creates the meta-model objects for the package.  This method is
+	 * guarded to have no affect on any invocation but its first.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	public void createPackageContents() {
+<span class="fc bfc" id="L270" title="All 2 branches covered.">		if (isCreated) return;</span>
+<span class="fc" id="L271">		isCreated = true;</span>
+
+		// Create classes and their features
+<span class="fc" id="L274">		resourceEClass = createEClass(RESOURCE);</span>
+<span class="fc" id="L275">		createEAttribute(resourceEClass, RESOURCE__NAME);</span>
+<span class="fc" id="L276">		createEReference(resourceEClass, RESOURCE__CONTENTS);</span>
+<span class="fc" id="L277">		createEAttribute(resourceEClass, RESOURCE__RECONCILE_ACTION);</span>
+<span class="fc" id="L278">		createEReference(resourceEClass, RESOURCE__MERGER);</span>
+
+<span class="fc" id="L280">		containerEClass = createEClass(CONTAINER);</span>
+<span class="fc" id="L281">		createEOperation(containerEClass, CONTAINER___GET_CONTAINER__STRING);</span>
+<span class="fc" id="L282">		createEOperation(containerEClass, CONTAINER___GET_FILE__STRING);</span>
+<span class="fc" id="L283">		createEOperation(containerEClass, CONTAINER___FIND__STRING);</span>
+
+<span class="fc" id="L285">		fileEClass = createEClass(FILE);</span>
+
+		// Create enums
+<span class="fc" id="L288">		reconcileActionEEnum = createEEnum(RECONCILE_ACTION);</span>
+<span class="fc" id="L289">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L296">	private boolean isInitialized = false;</span>
+
+	/**
+	 * Complete the initialization of the package and its meta-model.  This
+	 * method is guarded to have no affect on any invocation but its first.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	public void initializePackageContents() {
+<span class="fc bfc" id="L306" title="All 2 branches covered.">		if (isInitialized) return;</span>
+<span class="fc" id="L307">		isInitialized = true;</span>
+
+		// Initialize package
+<span class="fc" id="L310">		setName(eNAME);</span>
+<span class="fc" id="L311">		setNsPrefix(eNS_PREFIX);</span>
+<span class="fc" id="L312">		setNsURI(eNS_URI);</span>
+
+		// Obtain other dependent packages
+<span class="fc" id="L315">		NcorePackage theNcorePackage = (NcorePackage)EPackage.Registry.INSTANCE.getEPackage(NcorePackage.eNS_URI);</span>
+
+		// Create type parameters
+
+		// Set bounds for type parameters
+
+		// Add supertypes to classes
+<span class="fc" id="L322">		resourceEClass.getESuperTypes().add(theNcorePackage.getModelElement());</span>
+<span class="fc" id="L323">		containerEClass.getESuperTypes().add(this.getResource());</span>
+<span class="fc" id="L324">		fileEClass.getESuperTypes().add(this.getResource());</span>
+
+		// Initialize classes, features, and operations; add parameters
+<span class="fc" id="L327">		initEClass(resourceEClass, Resource.class, &quot;Resource&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+<span class="fc" id="L328">		initEAttribute(getResource_Name(), ecorePackage.getEString(), &quot;name&quot;, null, 1, 1, Resource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L329">		initEReference(getResource_Contents(), ecorePackage.getEObject(), null, &quot;contents&quot;, null, 0, -1, Resource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L330">		initEAttribute(getResource_ReconcileAction(), this.getReconcileAction(), &quot;reconcileAction&quot;, &quot;Overwrite&quot;, 0, 1, Resource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L331">		initEReference(getResource_Merger(), ecorePackage.getEObject(), null, &quot;merger&quot;, null, 0, 1, Resource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+
+<span class="fc" id="L333">		initEClass(containerEClass, org.nasdanika.exec.resources.Container.class, &quot;Container&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+
+<span class="fc" id="L335">		EOperation op = initEOperation(getContainer__GetContainer__String(), this.getContainer(), &quot;getContainer&quot;, 0, 1, IS_UNIQUE, IS_ORDERED);</span>
+<span class="fc" id="L336">		addEParameter(op, ecorePackage.getEString(), &quot;path&quot;, 0, 1, IS_UNIQUE, IS_ORDERED);</span>
+
+<span class="fc" id="L338">		op = initEOperation(getContainer__GetFile__String(), this.getFile(), &quot;getFile&quot;, 0, 1, IS_UNIQUE, IS_ORDERED);</span>
+<span class="fc" id="L339">		addEParameter(op, ecorePackage.getEString(), &quot;path&quot;, 0, 1, IS_UNIQUE, IS_ORDERED);</span>
+
+<span class="fc" id="L341">		op = initEOperation(getContainer__Find__String(), this.getResource(), &quot;find&quot;, 0, 1, IS_UNIQUE, IS_ORDERED);</span>
+<span class="fc" id="L342">		addEParameter(op, ecorePackage.getEString(), &quot;path&quot;, 0, 1, IS_UNIQUE, IS_ORDERED);</span>
+
+<span class="fc" id="L344">		initEClass(fileEClass, File.class, &quot;File&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+
+		// Initialize enums and add enum literals
+<span class="fc" id="L347">		initEEnum(reconcileActionEEnum, ReconcileAction.class, &quot;ReconcileAction&quot;);</span>
+<span class="fc" id="L348">		addEEnumLiteral(reconcileActionEEnum, ReconcileAction.APPEND);</span>
+<span class="fc" id="L349">		addEEnumLiteral(reconcileActionEEnum, ReconcileAction.CANCEL);</span>
+<span class="fc" id="L350">		addEEnumLiteral(reconcileActionEEnum, ReconcileAction.KEEP);</span>
+<span class="fc" id="L351">		addEEnumLiteral(reconcileActionEEnum, ReconcileAction.MERGE);</span>
+<span class="fc" id="L352">		addEEnumLiteral(reconcileActionEEnum, ReconcileAction.OVERWRITE);</span>
+
+		// Create annotations
+		// urn:org.nasdanika
+<span class="fc" id="L356">		createUrnorgAnnotations();</span>
+		// http://www.eclipse.org/emf/2002/GenModel
+<span class="fc" id="L358">		createGenModelAnnotations();</span>
+<span class="fc" id="L359">	}</span>
+
+	/**
+	 * Initializes the annotations for &lt;b&gt;urn:org.nasdanika&lt;/b&gt;.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected void createUrnorgAnnotations() {
+<span class="fc" id="L368">		String source = &quot;urn:org.nasdanika&quot;;</span>
+<span class="fc" id="L369">		addAnnotation</span>
+<span class="fc" id="L370">		  (this,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/resources/package-summary.md&quot;
+		   });
+<span class="fc" id="L375">		addAnnotation</span>
+<span class="fc" id="L376">		  (resourceEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/resources/resource.md&quot;
+		   });
+<span class="fc" id="L381">		addAnnotation</span>
+<span class="fc" id="L382">		  (containerEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/resources/container.md&quot;
+		   });
+<span class="fc" id="L387">		addAnnotation</span>
+<span class="fc" id="L388">		  (fileEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/resources/file.md&quot;
+		   });
+<span class="fc" id="L393">	}</span>
+
+	/**
+	 * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/GenModel&lt;/b&gt;.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected void createGenModelAnnotations() {
+<span class="fc" id="L402">		String source = &quot;http://www.eclipse.org/emf/2002/GenModel&quot;;</span>
+<span class="fc" id="L403">		addAnnotation</span>
+<span class="fc" id="L404">		  (getResource_Name(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Resource name. Interpolated.&quot;
+		   });
+<span class="fc" id="L409">		addAnnotation</span>
+<span class="fc" id="L410">		  (getResource_Contents(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Resource contents. File contents elements are adapted to ``SupplierFactory`` and produced ``InputStream``s are contcatenated. Container contents elements are adapted to ConsumerFactory and the container is passed to their ``execute`` method.&quot;
+		   });
+<span class="fc" id="L415">		addAnnotation</span>
+<span class="fc" id="L416">		  (getResource_ReconcileAction(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Reconcile action - what to do if a resource with the same name already exists. Defalut is ``Overwrite``.&quot;
+		   });
+<span class="fc" id="L421">		addAnnotation</span>
+<span class="fc" id="L422">		  (getResource_Merger(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Merger for ``Merge`` reconcile action. Adapted to ``org.nasdanika.common.resources.Merger`` to execute actual merge.&quot;
+		   });
+<span class="fc" id="L427">		addAnnotation</span>
+<span class="fc" id="L428">		  (reconcileActionEEnum,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Defines an action to take when a resource with the same name already exists.&quot;
+		   });
+<span class="fc" id="L433">		addAnnotation</span>
+<span class="fc" id="L434">		  (reconcileActionEEnum.getELiterals().get(0),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Appends new content to the existing content. For containers it means that new resources will be placed in the container next to the existing resources. For files it means that the new content will be appended after the existing content.&quot;
+		   });
+<span class="fc" id="L439">		addAnnotation</span>
+<span class="fc" id="L440">		  (reconcileActionEEnum.getELiterals().get(1),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Cancels execution if resource already exists.&quot;
+		   });
+<span class="fc" id="L445">		addAnnotation</span>
+<span class="fc" id="L446">		  (reconcileActionEEnum.getELiterals().get(2),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Keeps the existing resource intact.&quot;
+		   });
+<span class="fc" id="L451">		addAnnotation</span>
+<span class="fc" id="L452">		  (reconcileActionEEnum.getELiterals().get(3),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Merges old and new content of a file using a built-in or provided ``org.nasdanika.common.resources.Merger``. Merger is obtained from ``merger`` reference. For containers Merge is the same as Append.&quot;
+		   });
+<span class="fc" id="L457">		addAnnotation</span>
+<span class="fc" id="L458">		  (reconcileActionEEnum.getELiterals().get(4),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Overwrites existing resource. For containers - deletes their contents.&quot;
+		   });
+<span class="fc" id="L463">	}</span>
+
+} //ResourcesPackageImpl
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

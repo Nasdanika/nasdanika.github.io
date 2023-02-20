@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModelImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Java API for working with Drawio diagrams</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.drawio.impl</a> &gt; <span class="el_source">ModelImpl.java</span></div><h1>ModelImpl.java</h1><pre class="source lang-java linenums">package org.nasdanika.drawio.impl;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterOutputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.apache.commons.codec.binary.Base64;
+import org.eclipse.emf.common.util.URI;
+import org.nasdanika.drawio.Element;
+import org.nasdanika.drawio.Model;
+import org.nasdanika.drawio.ModelElement;
+import org.nasdanika.drawio.Page;
+import org.nasdanika.drawio.Root;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+class ModelImpl extends ElementImpl implements Model {
+	
+	static final String ATTRIBUTE_VERTEX = &quot;vertex&quot;;
+	static final String ATTRIBUTE_EDGE = &quot;edge&quot;;
+	
+<span class="fc" id="L51">	private Map&lt;org.w3c.dom.Element, ModelElement&gt; cache = new IdentityHashMap&lt;&gt;();</span>
+	private Page page;		
+	
+<span class="fc" id="L54">	ModelImpl(Page page, org.w3c.dom.Element element) {</span>
+<span class="fc" id="L55">		this.page = page;</span>
+<span class="fc" id="L56">		this.element = element;		</span>
+<span class="fc" id="L57">	}</span>
+	
+<span class="fc" id="L59">	ModelImpl(Page page, String compressedStr) throws SAXException, IOException, ParserConfigurationException {</span>
+<span class="fc" id="L60">		this.page = page;</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">		if (!Base64.isBase64(compressedStr)) {</span>
+<span class="nc" id="L62">			throw new IllegalArgumentException(&quot;Compressed diagram is not Base64 encoded&quot;);</span>
+		}
+<span class="fc" id="L64">	    byte[] compressed = Base64.decodeBase64(compressedStr);</span>
+<span class="fc" id="L65">	    byte[] decompressed = inflate(compressed);</span>
+<span class="fc" id="L66">	    String decompressedStr = new String(decompressed, StandardCharsets.UTF_8);</span>
+<span class="fc" id="L67">	    String decodedStr = URLDecoder.decode(decompressedStr, StandardCharsets.UTF_8.name());</span>
+	    
+<span class="fc" id="L69">		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L70">		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();</span>
+<span class="fc" id="L71">		element = dBuilder.parse(new InputSource(new StringReader(decodedStr))).getDocumentElement();				</span>
+<span class="fc" id="L72">	}</span>
+	
+	/**
+	 * @return Compressed model string.
+	 */
+	String compress() throws TransformerException, IOException {
+<span class="fc" id="L78">	    TransformerFactory tFactory = TransformerFactory.newInstance();</span>
+<span class="fc" id="L79">	    Transformer transformer = tFactory.newTransformer();</span>
+<span class="fc" id="L80">	    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, &quot;yes&quot;);</span>
+<span class="fc" id="L81">		transformer.setOutputProperty(OutputKeys.ENCODING, &quot;UTF-8&quot;);</span>
+		
+<span class="fc" id="L83">	    DOMSource source = new DOMSource(element);</span>
+<span class="fc" id="L84">	    StringWriter sw = new StringWriter();</span>
+<span class="fc" id="L85">	    try (sw) {</span>
+<span class="fc" id="L86">		    StreamResult out = new StreamResult(sw);</span>
+<span class="fc" id="L87">		    transformer.transform(source, out);</span>
+	    }
+<span class="fc" id="L89">	    String urlEncodedStr = URLEncoder.encode(sw.toString(), StandardCharsets.UTF_8.name()).replace(&quot;+&quot;, &quot;%20&quot;); // Hackish replacement of + with %20 for drawio viewer to understand.</span>
+<span class="fc" id="L90">	    byte[] reCompressed = deflate(urlEncodedStr.getBytes(StandardCharsets.UTF_8));</span>
+<span class="fc" id="L91">	    return Base64.encodeBase64String(reCompressed);		</span>
+	}
+	
+	@Override
+	protected List&lt;? extends Element&gt; getChildren() {
+<span class="fc" id="L96">		return Collections.singletonList(getRoot());</span>
+	}
+
+	@Override
+	public Root getRoot() {
+<span class="fc bfc" id="L101" title="All 2 branches covered.">		List&lt;ModelElement&gt; result = collect(e -&gt; !ModelElementImpl.getCellElement(e).hasAttribute(ModelElementImpl.ATTRIBUTE_PARENT));</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		if (result.isEmpty()) {</span>
+<span class="nc" id="L103">			return null;</span>
+		}
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (result.size() == 1) {</span>
+<span class="fc" id="L106">			return (Root) result.get(0);</span>
+		}
+<span class="nc" id="L108">		throw new IllegalArgumentException(&quot;More than one root&quot;);		</span>
+	}
+	
+	private ModelElement create(org.w3c.dom.Element element) {
+<span class="fc" id="L112">		org.w3c.dom.Element cellElement = ModelElementImpl.getCellElement(element);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">		if (!cellElement.hasAttribute(ModelElementImpl.ATTRIBUTE_PARENT)) {</span>
+<span class="fc" id="L114">			return new RootImpl(element, this);</span>
+		}
+<span class="fc" id="L116">		ModelElement parent = find(cellElement.getAttribute(ModelElementImpl.ATTRIBUTE_PARENT));</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">		if (parent instanceof Root) {</span>
+<span class="fc" id="L118">			return new LayerImpl(element, this);			</span>
+		}
+<span class="pc bpc" id="L120" title="1 of 4 branches missed.">		if (cellElement.hasAttribute(ATTRIBUTE_VERTEX) &amp;&amp; &quot;1&quot;.equals(cellElement.getAttribute(ATTRIBUTE_VERTEX))) {</span>
+<span class="fc" id="L121">			return new NodeImpl(element, this);</span>
+		}
+<span class="pc bpc" id="L123" title="2 of 4 branches missed.">		if (cellElement.hasAttribute(ATTRIBUTE_EDGE) &amp;&amp; &quot;1&quot;.equals(cellElement.getAttribute(ATTRIBUTE_EDGE))) {</span>
+<span class="fc" id="L124">			return new ConnectionImpl(element, this);</span>
+		}
+<span class="nc" id="L126">		return new ModelElementImpl(element, this); // Generic model element, shall it ever happen?</span>
+	}
+	
+	ModelElement find(String id) {
+<span class="pc bpc" id="L130" title="1 of 4 branches missed.">		List&lt;ModelElement&gt; result = collect(e -&gt; e.hasAttribute(ModelElementImpl.ATTRIBUTE_ID) &amp;&amp; id.equals(e.getAttribute(ModelElementImpl.ATTRIBUTE_ID)));</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (result.isEmpty()) {</span>
+<span class="nc" id="L132">			return null;</span>
+		}
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (result.size() == 1) {</span>
+<span class="fc" id="L135">			return result.get(0);</span>
+		}
+<span class="nc" id="L137">		throw new IllegalArgumentException(&quot;More than one element found with id: &quot; + id);		</span>
+	}
+	
+	/**
+	 * Collects elements children of root matching the predicate and transparently converts them to model elements on access.
+	 * @param predicate DOM element predicate
+	 * @return
+	 */
+	List&lt;ModelElement&gt; collect(Predicate&lt;org.w3c.dom.Element&gt; predicate) {
+<span class="fc" id="L146">		List&lt;org.w3c.dom.Element&gt; rootElements = DocumentImpl.getChildrenElements(element, &quot;root&quot;);</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (rootElements.size() != 1) {</span>
+<span class="nc" id="L148">			throw new IllegalArgumentException(&quot;There should be only one root XML element, found &quot; + rootElements.size());</span>
+		}
+		
+<span class="fc" id="L151">		List&lt;org.w3c.dom.Element&gt; elements = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L152">		org.w3c.dom.Element rootElement = rootElements.get(0);</span>
+<span class="fc" id="L153">		NodeList childNodes = rootElement.getChildNodes();</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">		for (int i = 0; i &lt; childNodes.getLength(); ++i) {</span>
+<span class="fc" id="L155">			Node child = childNodes.item(i);</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">			if (child instanceof org.w3c.dom.Element) {</span>
+<span class="fc" id="L157">				org.w3c.dom.Element childElement = (org.w3c.dom.Element) child;</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">				if (predicate.test(childElement)) {</span>
+<span class="fc" id="L159">					elements.add(childElement);</span>
+				}
+			}
+		}
+		
+<span class="fc" id="L164">		return new AbstractList&lt;ModelElement&gt;() {</span>
+
+			@Override
+			public ModelElement get(int index) {
+<span class="fc" id="L168">				return cache.computeIfAbsent(elements.get(index), ModelImpl.this::create);</span>
+			}
+
+			@Override
+			public int size() {
+<span class="fc" id="L173">				return elements.size();</span>
+			}
+			
+		};
+	}	
+	
+	private static  byte[] inflate(byte[] content) throws IOException {
+<span class="fc" id="L180">		ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="fc" id="L181">		try (ByteArrayInputStream source = new ByteArrayInputStream(content); OutputStream target = new InflaterOutputStream(baos, new Inflater(true))) {</span>
+<span class="fc" id="L182">	        byte[] buf = new byte[8192];</span>
+	        int length;
+<span class="fc bfc" id="L184" title="All 2 branches covered.">	        while ((length = source.read(buf)) &gt; 0) {</span>
+<span class="fc" id="L185">	            target.write(buf, 0, length);</span>
+	        }
+		}
+		
+<span class="fc" id="L189">		return baos.toByteArray();</span>
+	}
+	
+	private static  byte[] deflate(byte[] content) throws IOException {
+<span class="fc" id="L193">		ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="fc" id="L194">		try (ByteArrayInputStream source = new ByteArrayInputStream(content); OutputStream target = new DeflaterOutputStream(baos, new Deflater(Deflater.DEFAULT_COMPRESSION, true))) {</span>
+<span class="fc" id="L195">	        byte[] buf = new byte[8192];</span>
+	        int length;
+<span class="fc bfc" id="L197" title="All 2 branches covered.">	        while ((length = source.read(buf)) &gt; 0) {</span>
+<span class="fc" id="L198">	            target.write(buf, 0, length);</span>
+	        }
+		}
+		
+<span class="fc" id="L202">		return baos.toByteArray();</span>
+	}
+
+	@Override
+	public Page getPage() {
+<span class="fc" id="L207">		return page;</span>
+	}
+
+	@Override
+	public URI getURI() {
+<span class="nc" id="L212">		URI pageURI = getPage().getURI();</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		return pageURI == null ? URI.createURI(&quot;model&quot;) : pageURI.appendSegment(&quot;model&quot;);</span>
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+<span class="pc bpc" id="L218" title="2 of 4 branches missed.">		return super.equals(obj) &amp;&amp; getPage().equals(((Model) obj).getPage());</span>
+	}
+	
+	@Override
+	public int hashCode() {
+<span class="fc" id="L223">		return getPage().hashCode() ^ getClass().hashCode();</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

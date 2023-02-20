@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExecPackageImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Execution Model</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.impl</a> &gt; <span class="el_source">ExecPackageImpl.java</span></div><h1>ExecPackageImpl.java</h1><pre class="source lang-java linenums">/**
+ */
+package org.nasdanika.exec.impl;
+
+import java.util.Map;
+
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EValidator;
+import org.eclipse.emf.ecore.impl.EPackageImpl;
+import org.nasdanika.exec.Block;
+import org.nasdanika.exec.Call;
+import org.nasdanika.exec.Configurator;
+import org.nasdanika.exec.Eval;
+import org.nasdanika.exec.ExecFactory;
+import org.nasdanika.exec.ExecPackage;
+import org.nasdanika.exec.Fail;
+import org.nasdanika.exec.List;
+import org.nasdanika.exec.content.ContentPackage;
+import org.nasdanika.exec.content.impl.ContentPackageImpl;
+import org.nasdanika.exec.resources.ResourcesPackage;
+import org.nasdanika.exec.resources.impl.ResourcesPackageImpl;
+import org.nasdanika.exec.util.ExecValidator;
+import org.nasdanika.ncore.NcorePackage;
+
+/**
+ * &lt;!-- begin-user-doc --&gt;
+ * An implementation of the model &lt;b&gt;Package&lt;/b&gt;.
+ * &lt;!-- end-user-doc --&gt;
+ * @generated
+ */
+public class ExecPackageImpl extends EPackageImpl implements ExecPackage {
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L40">	private EClass blockEClass = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L47">	private EClass callEClass = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L54">	private EClass propertyEClass = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L61">	private EClass configuratorEClass = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L68">	private EClass evalEClass = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L75">	private EClass failEClass = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L82">	private EClass listEClass = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L89">	private EClass mapEClass = null;</span>
+
+	/**
+	 * Creates an instance of the model &lt;b&gt;Package&lt;/b&gt;, registered with
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
+	 * package URI value.
+	 * &lt;p&gt;Note: the correct way to create the package is via the static
+	 * factory method {@link #init init()}, which also performs
+	 * initialization of the package, or returns the registered package,
+	 * if one already exists.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see org.eclipse.emf.ecore.EPackage.Registry
+	 * @see org.nasdanika.exec.ExecPackage#eNS_URI
+	 * @see #init()
+	 * @generated
+	 */
+	private ExecPackageImpl() {
+<span class="fc" id="L107">		super(eNS_URI, ExecFactory.eINSTANCE);</span>
+<span class="fc" id="L108">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L115">	private static boolean isInited = false;</span>
+
+	/**
+	 * Creates, registers, and initializes the &lt;b&gt;Package&lt;/b&gt; for this model, and for any others upon which it depends.
+	 *
+	 * &lt;p&gt;This method is used to initialize {@link ExecPackage#eINSTANCE} when that field is accessed.
+	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see #eNS_URI
+	 * @see #createPackageContents()
+	 * @see #initializePackageContents()
+	 * @generated
+	 */
+	public static ExecPackage init() {
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (isInited) return (ExecPackage)EPackage.Registry.INSTANCE.getEPackage(ExecPackage.eNS_URI);</span>
+
+		// Obtain or create and register package
+<span class="fc" id="L133">		Object registeredExecPackage = EPackage.Registry.INSTANCE.get(eNS_URI);</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		ExecPackageImpl theExecPackage = registeredExecPackage instanceof ExecPackageImpl ? (ExecPackageImpl)registeredExecPackage : new ExecPackageImpl();</span>
+
+<span class="fc" id="L136">		isInited = true;</span>
+
+		// Initialize simple dependencies
+<span class="fc" id="L139">		NcorePackage.eINSTANCE.eClass();</span>
+
+		// Obtain or create and register interdependencies
+<span class="fc" id="L142">		Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ContentPackage.eNS_URI);</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		ContentPackageImpl theContentPackage = (ContentPackageImpl)(registeredPackage instanceof ContentPackageImpl ? registeredPackage : ContentPackage.eINSTANCE);</span>
+<span class="fc" id="L144">		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ResourcesPackage.eNS_URI);</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		ResourcesPackageImpl theResourcesPackage = (ResourcesPackageImpl)(registeredPackage instanceof ResourcesPackageImpl ? registeredPackage : ResourcesPackage.eINSTANCE);</span>
+
+		// Create package meta-data objects
+<span class="fc" id="L148">		theExecPackage.createPackageContents();</span>
+<span class="fc" id="L149">		theContentPackage.createPackageContents();</span>
+<span class="fc" id="L150">		theResourcesPackage.createPackageContents();</span>
+
+		// Initialize created meta-data
+<span class="fc" id="L153">		theExecPackage.initializePackageContents();</span>
+<span class="fc" id="L154">		theContentPackage.initializePackageContents();</span>
+<span class="fc" id="L155">		theResourcesPackage.initializePackageContents();</span>
+
+		// Register package validator
+<span class="fc" id="L158">		EValidator.Registry.INSTANCE.put</span>
+<span class="fc" id="L159">			(theExecPackage,</span>
+<span class="fc" id="L160">			 new EValidator.Descriptor() {</span>
+				 @Override
+				 public EValidator getEValidator() {
+<span class="fc" id="L163">					 return ExecValidator.INSTANCE;</span>
+				 }
+			 });
+
+		// Mark meta-data to indicate it can't be changed
+<span class="fc" id="L168">		theExecPackage.freeze();</span>
+
+		// Update the registry and return the package
+<span class="fc" id="L171">		EPackage.Registry.INSTANCE.put(ExecPackage.eNS_URI, theExecPackage);</span>
+<span class="fc" id="L172">		return theExecPackage;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getBlock() {
+<span class="fc" id="L182">		return blockEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getBlock_Try() {
+<span class="fc" id="L192">		return (EReference)blockEClass.getEStructuralFeatures().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getBlock_Catch() {
+<span class="fc" id="L202">		return (EReference)blockEClass.getEStructuralFeatures().get(1);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getBlock_Finally() {
+<span class="fc" id="L212">		return (EReference)blockEClass.getEStructuralFeatures().get(2);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getCall() {
+<span class="fc" id="L222">		return callEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCall_Type() {
+<span class="fc" id="L232">		return (EAttribute)callEClass.getEStructuralFeatures().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCall_Property() {
+<span class="fc" id="L242">		return (EAttribute)callEClass.getEStructuralFeatures().get(1);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCall_Service() {
+<span class="fc" id="L252">		return (EAttribute)callEClass.getEStructuralFeatures().get(2);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCall_Method() {
+<span class="fc" id="L262">		return (EAttribute)callEClass.getEStructuralFeatures().get(3);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getCall_Properties() {
+<span class="fc" id="L272">		return (EReference)callEClass.getEStructuralFeatures().get(4);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getCall_Init() {
+<span class="fc" id="L282">		return (EReference)callEClass.getEStructuralFeatures().get(5);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getCall_Arguments() {
+<span class="fc" id="L292">		return (EReference)callEClass.getEStructuralFeatures().get(6);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getProperty() {
+<span class="fc" id="L302">		return propertyEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getProperty_Key() {
+<span class="fc" id="L312">		return (EAttribute)propertyEClass.getEStructuralFeatures().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getProperty_Value() {
+<span class="fc" id="L322">		return (EReference)propertyEClass.getEStructuralFeatures().get(1);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getConfigurator() {
+<span class="fc" id="L332">		return configuratorEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getConfigurator_Target() {
+<span class="fc" id="L342">		return (EReference)configuratorEClass.getEStructuralFeatures().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getConfigurator_Properties() {
+<span class="fc" id="L352">		return (EReference)configuratorEClass.getEStructuralFeatures().get(1);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getEval() {
+<span class="fc" id="L362">		return evalEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getEval_Script() {
+<span class="fc" id="L372">		return (EReference)evalEClass.getEStructuralFeatures().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getEval_Bindings() {
+<span class="fc" id="L382">		return (EReference)evalEClass.getEStructuralFeatures().get(1);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getFail() {
+<span class="fc" id="L392">		return failEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EAttribute getFail_Message() {
+<span class="fc" id="L402">		return (EAttribute)failEClass.getEStructuralFeatures().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getList() {
+<span class="fc" id="L412">		return listEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getList_Elements() {
+<span class="fc" id="L422">		return (EReference)listEClass.getEStructuralFeatures().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EClass getMap() {
+<span class="fc" id="L432">		return mapEClass;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EReference getMap_Entries() {
+<span class="fc" id="L442">		return (EReference)mapEClass.getEStructuralFeatures().get(0);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public ExecFactory getExecFactory() {
+<span class="nc" id="L452">		return (ExecFactory)getEFactoryInstance();</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L460">	private boolean isCreated = false;</span>
+
+	/**
+	 * Creates the meta-model objects for the package.  This method is
+	 * guarded to have no affect on any invocation but its first.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	public void createPackageContents() {
+<span class="fc bfc" id="L470" title="All 2 branches covered.">		if (isCreated) return;</span>
+<span class="fc" id="L471">		isCreated = true;</span>
+
+		// Create classes and their features
+<span class="fc" id="L474">		blockEClass = createEClass(BLOCK);</span>
+<span class="fc" id="L475">		createEReference(blockEClass, BLOCK__TRY);</span>
+<span class="fc" id="L476">		createEReference(blockEClass, BLOCK__CATCH);</span>
+<span class="fc" id="L477">		createEReference(blockEClass, BLOCK__FINALLY);</span>
+
+<span class="fc" id="L479">		callEClass = createEClass(CALL);</span>
+<span class="fc" id="L480">		createEAttribute(callEClass, CALL__TYPE);</span>
+<span class="fc" id="L481">		createEAttribute(callEClass, CALL__PROPERTY);</span>
+<span class="fc" id="L482">		createEAttribute(callEClass, CALL__SERVICE);</span>
+<span class="fc" id="L483">		createEAttribute(callEClass, CALL__METHOD);</span>
+<span class="fc" id="L484">		createEReference(callEClass, CALL__PROPERTIES);</span>
+<span class="fc" id="L485">		createEReference(callEClass, CALL__INIT);</span>
+<span class="fc" id="L486">		createEReference(callEClass, CALL__ARGUMENTS);</span>
+
+<span class="fc" id="L488">		propertyEClass = createEClass(PROPERTY);</span>
+<span class="fc" id="L489">		createEAttribute(propertyEClass, PROPERTY__KEY);</span>
+<span class="fc" id="L490">		createEReference(propertyEClass, PROPERTY__VALUE);</span>
+
+<span class="fc" id="L492">		configuratorEClass = createEClass(CONFIGURATOR);</span>
+<span class="fc" id="L493">		createEReference(configuratorEClass, CONFIGURATOR__TARGET);</span>
+<span class="fc" id="L494">		createEReference(configuratorEClass, CONFIGURATOR__PROPERTIES);</span>
+
+<span class="fc" id="L496">		evalEClass = createEClass(EVAL);</span>
+<span class="fc" id="L497">		createEReference(evalEClass, EVAL__SCRIPT);</span>
+<span class="fc" id="L498">		createEReference(evalEClass, EVAL__BINDINGS);</span>
+
+<span class="fc" id="L500">		failEClass = createEClass(FAIL);</span>
+<span class="fc" id="L501">		createEAttribute(failEClass, FAIL__MESSAGE);</span>
+
+<span class="fc" id="L503">		listEClass = createEClass(LIST);</span>
+<span class="fc" id="L504">		createEReference(listEClass, LIST__ELEMENTS);</span>
+
+<span class="fc" id="L506">		mapEClass = createEClass(MAP);</span>
+<span class="fc" id="L507">		createEReference(mapEClass, MAP__ENTRIES);</span>
+<span class="fc" id="L508">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L515">	private boolean isInitialized = false;</span>
+
+	/**
+	 * Complete the initialization of the package and its meta-model.  This
+	 * method is guarded to have no affect on any invocation but its first.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	public void initializePackageContents() {
+<span class="fc bfc" id="L525" title="All 2 branches covered.">		if (isInitialized) return;</span>
+<span class="fc" id="L526">		isInitialized = true;</span>
+
+		// Initialize package
+<span class="fc" id="L529">		setName(eNAME);</span>
+<span class="fc" id="L530">		setNsPrefix(eNS_PREFIX);</span>
+<span class="fc" id="L531">		setNsURI(eNS_URI);</span>
+
+		// Obtain other dependent packages
+<span class="fc" id="L534">		ContentPackage theContentPackage = (ContentPackage)EPackage.Registry.INSTANCE.getEPackage(ContentPackage.eNS_URI);</span>
+<span class="fc" id="L535">		ResourcesPackage theResourcesPackage = (ResourcesPackage)EPackage.Registry.INSTANCE.getEPackage(ResourcesPackage.eNS_URI);</span>
+<span class="fc" id="L536">		NcorePackage theNcorePackage = (NcorePackage)EPackage.Registry.INSTANCE.getEPackage(NcorePackage.eNS_URI);</span>
+
+		// Add subpackages
+<span class="fc" id="L539">		getESubpackages().add(theContentPackage);</span>
+<span class="fc" id="L540">		getESubpackages().add(theResourcesPackage);</span>
+
+		// Create type parameters
+
+		// Set bounds for type parameters
+
+		// Add supertypes to classes
+<span class="fc" id="L547">		blockEClass.getESuperTypes().add(theNcorePackage.getModelElement());</span>
+<span class="fc" id="L548">		callEClass.getESuperTypes().add(theNcorePackage.getModelElement());</span>
+<span class="fc" id="L549">		configuratorEClass.getESuperTypes().add(theNcorePackage.getModelElement());</span>
+<span class="fc" id="L550">		evalEClass.getESuperTypes().add(theNcorePackage.getModelElement());</span>
+<span class="fc" id="L551">		failEClass.getESuperTypes().add(theNcorePackage.getModelElement());</span>
+<span class="fc" id="L552">		listEClass.getESuperTypes().add(theNcorePackage.getModelElement());</span>
+<span class="fc" id="L553">		mapEClass.getESuperTypes().add(theNcorePackage.getModelElement());</span>
+
+		// Initialize classes, features, and operations; add parameters
+<span class="fc" id="L556">		initEClass(blockEClass, Block.class, &quot;Block&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+<span class="fc" id="L557">		initEReference(getBlock_Try(), ecorePackage.getEObject(), null, &quot;try&quot;, null, 1, -1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L558">		initEReference(getBlock_Catch(), ecorePackage.getEObject(), null, &quot;catch&quot;, null, 0, -1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L559">		initEReference(getBlock_Finally(), ecorePackage.getEObject(), null, &quot;finally&quot;, null, 0, -1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+
+<span class="fc" id="L561">		initEClass(callEClass, Call.class, &quot;Call&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+<span class="fc" id="L562">		initEAttribute(getCall_Type(), ecorePackage.getEString(), &quot;type&quot;, null, 0, 1, Call.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L563">		initEAttribute(getCall_Property(), ecorePackage.getEString(), &quot;property&quot;, null, 0, 1, Call.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L564">		initEAttribute(getCall_Service(), ecorePackage.getEString(), &quot;service&quot;, null, 0, 1, Call.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L565">		initEAttribute(getCall_Method(), ecorePackage.getEString(), &quot;method&quot;, null, 0, 1, Call.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L566">		initEReference(getCall_Properties(), this.getProperty(), null, &quot;properties&quot;, null, 0, -1, Call.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L567">		initEReference(getCall_Init(), ecorePackage.getEObject(), null, &quot;init&quot;, null, 0, -1, Call.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L568">		initEReference(getCall_Arguments(), ecorePackage.getEObject(), null, &quot;arguments&quot;, null, 0, -1, Call.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+
+<span class="fc" id="L570">		initEClass(propertyEClass, Map.Entry.class, &quot;Property&quot;, !IS_ABSTRACT, !IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);</span>
+<span class="fc" id="L571">		initEAttribute(getProperty_Key(), ecorePackage.getEString(), &quot;key&quot;, null, 1, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L572">		initEReference(getProperty_Value(), ecorePackage.getEObject(), null, &quot;value&quot;, null, 1, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+
+<span class="fc" id="L574">		initEClass(configuratorEClass, Configurator.class, &quot;Configurator&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+<span class="fc" id="L575">		initEReference(getConfigurator_Target(), ecorePackage.getEObject(), null, &quot;target&quot;, null, 1, 1, Configurator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L576">		initEReference(getConfigurator_Properties(), this.getProperty(), null, &quot;properties&quot;, null, 0, -1, Configurator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+
+<span class="fc" id="L578">		initEClass(evalEClass, Eval.class, &quot;Eval&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+<span class="fc" id="L579">		initEReference(getEval_Script(), ecorePackage.getEObject(), null, &quot;script&quot;, null, 1, 1, Eval.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+<span class="fc" id="L580">		initEReference(getEval_Bindings(), this.getProperty(), null, &quot;bindings&quot;, null, 0, -1, Eval.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+
+<span class="fc" id="L582">		initEClass(failEClass, Fail.class, &quot;Fail&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+<span class="fc" id="L583">		initEAttribute(getFail_Message(), ecorePackage.getEString(), &quot;message&quot;, null, 0, 1, Fail.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+
+<span class="fc" id="L585">		initEClass(listEClass, List.class, &quot;List&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+<span class="fc" id="L586">		initEReference(getList_Elements(), ecorePackage.getEObject(), null, &quot;elements&quot;, null, 1, -1, List.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+
+<span class="fc" id="L588">		initEClass(mapEClass, org.nasdanika.exec.Map.class, &quot;Map&quot;, !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);</span>
+<span class="fc" id="L589">		initEReference(getMap_Entries(), this.getProperty(), null, &quot;entries&quot;, null, 0, -1, org.nasdanika.exec.Map.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);</span>
+
+		// Create resource
+<span class="fc" id="L592">		createResource(eNS_URI);</span>
+
+		// Create annotations
+		// urn:org.nasdanika
+<span class="fc" id="L596">		createUrnorgAnnotations();</span>
+		// http://www.eclipse.org/emf/2002/Ecore
+<span class="fc" id="L598">		createEcoreAnnotations();</span>
+		// http://www.eclipse.org/emf/2002/GenModel
+<span class="fc" id="L600">		createGenModelAnnotations();</span>
+<span class="fc" id="L601">	}</span>
+
+	/**
+	 * Initializes the annotations for &lt;b&gt;urn:org.nasdanika&lt;/b&gt;.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected void createUrnorgAnnotations() {
+<span class="fc" id="L610">		String source = &quot;urn:org.nasdanika&quot;;</span>
+<span class="fc" id="L611">		addAnnotation</span>
+<span class="fc" id="L612">		  (this,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/package-summary.md&quot;
+		   });
+<span class="fc" id="L617">		addAnnotation</span>
+<span class="fc" id="L618">		  (blockEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/block.md&quot;
+		   });
+<span class="fc" id="L623">		addAnnotation</span>
+<span class="fc" id="L624">		  (callEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/call.md&quot;
+		   });
+<span class="fc" id="L629">		addAnnotation</span>
+<span class="fc" id="L630">		  (getCall_Type(),</span>
+		   source,
+		   new String[] {
+			   &quot;feature-key&quot;, &quot;class&quot;,
+			   &quot;exclusive-with&quot;, &quot;service property&quot;,
+			   &quot;default-feature&quot;, &quot;true&quot;
+		   });
+<span class="fc" id="L637">		addAnnotation</span>
+<span class="fc" id="L638">		  (getCall_Property(),</span>
+		   source,
+		   new String[] {
+			   &quot;exclusive-with&quot;, &quot;class service&quot;
+		   });
+<span class="fc" id="L643">		addAnnotation</span>
+<span class="fc" id="L644">		  (getCall_Service(),</span>
+		   source,
+		   new String[] {
+			   &quot;exclusive-with&quot;, &quot;class property&quot;
+		   });
+<span class="fc" id="L649">		addAnnotation</span>
+<span class="fc" id="L650">		  (getCall_Init(),</span>
+		   source,
+		   new String[] {
+			   &quot;exclusive-with&quot;, &quot;service property&quot;
+		   });
+<span class="fc" id="L655">		addAnnotation</span>
+<span class="fc" id="L656">		  (propertyEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/property.md&quot;
+		   });
+<span class="fc" id="L661">		addAnnotation</span>
+<span class="fc" id="L662">		  (configuratorEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/configurator.md&quot;
+		   });
+<span class="fc" id="L667">		addAnnotation</span>
+<span class="fc" id="L668">		  (evalEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/eval.md&quot;
+		   });
+<span class="fc" id="L673">		addAnnotation</span>
+<span class="fc" id="L674">		  (getEval_Script(),</span>
+		   source,
+		   new String[] {
+			   &quot;default-feature&quot;, &quot;true&quot;
+		   });
+<span class="fc" id="L679">		addAnnotation</span>
+<span class="fc" id="L680">		  (failEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/fail.md&quot;
+		   });
+<span class="fc" id="L685">		addAnnotation</span>
+<span class="fc" id="L686">		  (getFail_Message(),</span>
+		   source,
+		   new String[] {
+			   &quot;default-feature&quot;, &quot;true&quot;
+		   });
+<span class="fc" id="L691">		addAnnotation</span>
+<span class="fc" id="L692">		  (listEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/list.md&quot;
+		   });
+<span class="fc" id="L697">		addAnnotation</span>
+<span class="fc" id="L698">		  (mapEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;documentation-reference&quot;, &quot;doc/map.md&quot;
+		   });
+<span class="fc" id="L703">	}</span>
+
+	/**
+	 * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/GenModel&lt;/b&gt;.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected void createGenModelAnnotations() {
+<span class="fc" id="L712">		String source = &quot;http://www.eclipse.org/emf/2002/GenModel&quot;;</span>
+<span class="fc" id="L713">		addAnnotation</span>
+<span class="fc" id="L714">		  (getCall_Type(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Fully qualified class name. Mutually exclusive with ``service`` and ``property``. One of ``class``, ``property``, or ``service`` is required.\n\nFor SupplierFactory adapter, if the class implements SupplierFactory then it is instantiated and then its ``create()`` method is invoked to create a supplier.\nIf the class implements Supplier, then it is instantiated. If there are no ``init`` arguments, then the supplier is diagnosed as part of ``diagnose()``. \nOtherwise it is diagnosed in ``execute()`` and diagnostic results are discarded.\n\nSimilar processing will be implemented for Consumer and Command.\n&quot;
+		   });
+<span class="fc" id="L719">		addAnnotation</span>
+<span class="fc" id="L720">		  (getCall_Property(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Context property name. Mutually exclusive with ``class`` and ``service``. One of ``class``, ``property``, or ``service`` is required.&quot;
+		   });
+<span class="fc" id="L725">		addAnnotation</span>
+<span class="fc" id="L726">		  (getCall_Service(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Fully qualified context service class name. Mutually exclusive with ``class`` and ``property``. One of ``class``, ``property``, or ``service`` is required.&quot;
+		   });
+<span class="fc" id="L731">		addAnnotation</span>
+<span class="fc" id="L732">		  (getCall_Method(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;An optional method to call. In the ``class`` case the method can be static. If the method is static the class is not instantiated and if ``init`` or ``properties`` are present it results in an exception.&quot;
+		   });
+<span class="fc" id="L737">		addAnnotation</span>
+<span class="fc" id="L738">		  (getCall_Properties(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;A map injected into the instance in the ``class`` case if the instance implements ${javadoc/java.util.function.BiConsumer} or in the service or property case if they implement SupplierFactory. If elements implement SupplierFactory then the supplier factory is used to produce value to be injected. Otherwise elements are injected AS-IS.&quot;
+		   });
+<span class="fc" id="L743">		addAnnotation</span>
+<span class="fc" id="L744">		  (getCall_Init(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;An optional array of constructor arguments for the ``class``. Not applicable for ``property`` and ``service``. If elements implement SupplierFactory then the factory is used to produce argument values. Then arguments get converted to constructor parameter types if conversion is available. If conversion is not available, an exception is thrown.&quot;
+		   });
+<span class="fc" id="L749">		addAnnotation</span>
+<span class="fc" id="L750">		  (getCall_Arguments(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;An optional array of method arguments. If elements implement SupplierFactory, then the factory is used to produce argument value. Then arguments get converted to method parameter types if conversion is available. If conversion is not available, an exception is thrown.&quot;
+		   });
+<span class="fc" id="L755">		addAnnotation</span>
+<span class="fc" id="L756">		  (getConfigurator_Target(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Component to execute with the augmented context.&quot;
+		   });
+<span class="fc" id="L761">		addAnnotation</span>
+<span class="fc" id="L762">		  (getConfigurator_Properties(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;A map injected into the instance in the ``class`` case if the instance implements java.util.function.BiConsumer or in the service or property case if they implement SupplierFactory. \nIf elements implement SupplierFactory then the supplier factory is used to produce value to be injected. Otherwise elements are injected AS-IS.&quot;
+		   });
+<span class="fc" id="L767">		addAnnotation</span>
+<span class="fc" id="L768">		  (getEval_Script(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Script source&quot;
+		   });
+<span class="fc" id="L773">		addAnnotation</span>
+<span class="fc" id="L774">		  (getEval_Bindings(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Script bindings. Context is available as ``context`` binding and progress monitor as ``progressMonitor`` binding.&quot;
+		   });
+<span class="fc" id="L779">		addAnnotation</span>
+<span class="fc" id="L780">		  (getFail_Message(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Message to output. Interpolated.&quot;
+		   });
+<span class="fc" id="L785">		addAnnotation</span>
+<span class="fc" id="L786">		  (getMap_Entries(),</span>
+		   source,
+		   new String[] {
+			   &quot;documentation&quot;, &quot;Map entries.&quot;
+		   });
+<span class="fc" id="L791">	}</span>
+
+	/**
+	 * Initializes the annotations for &lt;b&gt;http://www.eclipse.org/emf/2002/Ecore&lt;/b&gt;.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected void createEcoreAnnotations() {
+<span class="fc" id="L800">		String source = &quot;http://www.eclipse.org/emf/2002/Ecore&quot;;</span>
+<span class="fc" id="L801">		addAnnotation</span>
+<span class="fc" id="L802">		  (callEClass,</span>
+		   source,
+		   new String[] {
+			   &quot;constraints&quot;, &quot;service_property_class method_arguments&quot;
+		   });
+<span class="fc" id="L807">	}</span>
+
+} //ExecPackageImpl
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

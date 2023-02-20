@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResourceSupplierFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Exec Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.gen.content</a> &gt; <span class="el_source">ResourceSupplierFactoryAdapter.java</span></div><h1>ResourceSupplierFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.exec.gen.content;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.common.BasicDiagnostic;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.Diagnostic;
+import org.nasdanika.common.ExecutionException;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Status;
+import org.nasdanika.common.Supplier;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.Util;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.exec.content.Resource;
+import org.nasdanika.persistence.Marked;
+import org.nasdanika.persistence.Marker;
+
+public class ResourceSupplierFactoryAdapter extends AdapterImpl implements SupplierFactory&lt;InputStream&gt; {
+
+	private List&lt;? extends Marker&gt; markers;
+	
+<span class="fc" id="L31">	public ResourceSupplierFactoryAdapter(Resource resource) {</span>
+<span class="fc" id="L32">		setTarget(resource);</span>
+<span class="fc" id="L33">		Marked marked = EObjectAdaptable.adaptTo((EObject) getTarget(), Marked.class);</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">		markers = marked == null ? null : marked.getMarkers();</span>
+<span class="fc" id="L35">	}</span>
+	
+	@Override
+	public boolean isAdapterForType(Object type) {
+<span class="nc bnc" id="L39" title="All 2 branches missed.">		return type == SupplierFactory.class;</span>
+	}
+
+	@Override
+	public Supplier&lt;InputStream&gt; create(Context context) {
+<span class="fc" id="L44">		ClassLoader[] classLoaders = { getClass().getClassLoader(), Thread.currentThread().getContextClassLoader(), context.get(ClassLoader.class) };		</span>
+		
+<span class="fc" id="L46">		return new Supplier&lt;InputStream&gt;() {</span>
+			
+			private URL theURL;
+			
+			@Override
+			public Diagnostic diagnose(ProgressMonitor progressMonitor) {
+				try {
+<span class="fc" id="L53">					Resource resource = (Resource) getTarget();</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">					URI uri = URI.createURI(resource.isInterpolate() ? context.interpolateToString(resource.getLocation()) : resource.getLocation());</span>
+<span class="fc" id="L55">					org.eclipse.emf.ecore.resource.Resource eResource = resource.eResource();</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">					if (eResource != null) {</span>
+<span class="fc" id="L57">						URI base = eResource.getURI();</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">						if (base != null) {</span>
+<span class="fc" id="L59">							uri = uri.resolve(base);</span>
+						}
+					}
+					
+<span class="fc" id="L63">					String iUrl = uri.toString();					</span>
+					
+<span class="fc bfc" id="L65" title="All 2 branches covered.">					if (iUrl.startsWith(Util.CLASSPATH_URL_PREFIX)) {</span>
+<span class="fc" id="L66">						String resourcePath = iUrl.substring(Util.CLASSPATH_URL_PREFIX.length());</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">						for (ClassLoader classLoader: classLoaders) {</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">							if (classLoader != null) {</span>
+<span class="fc" id="L69">								theURL = classLoader.getResource(resourcePath);</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">								if (theURL != null) {</span>
+<span class="fc" id="L71">									break;</span>
+								}
+							}
+						}						
+						
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">						if (theURL == null) {</span>
+<span class="nc" id="L77">							return new BasicDiagnostic(Status.ERROR, &quot;Classpath resource not found: &quot; + iUrl, markers);						</span>
+						}
+<span class="fc" id="L79">					} else {</span>
+<span class="fc" id="L80">						theURL = new URL(iUrl);</span>
+					}
+<span class="fc" id="L82">					return Supplier.super.diagnose(progressMonitor);</span>
+<span class="nc" id="L83">				} catch (MalformedURLException e) {					</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">					return new BasicDiagnostic(Status.ERROR, e.getMessage() + (markers == null ? &quot;&quot; : &quot; at &quot; + markers.stream().map(Object::toString).collect(Collectors.joining(&quot;, &quot;))));</span>
+				}
+			}
+
+			@Override
+			public double size() {
+<span class="fc" id="L90">				return 1;</span>
+			}
+
+			@Override
+			public String name() {
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">				return &quot;Resource: &quot; + markers == null ? &quot;(undefined)&quot; : markers.stream().map(Object::toString).collect(Collectors.joining(&quot;, &quot;));</span>
+			}
+
+			@Override
+			public InputStream execute(ProgressMonitor progressMonitor) {
+				try {
+<span class="fc" id="L101">					Resource resource = (Resource) getTarget();		</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">					if (resource.isInterpolate()) {</span>
+<span class="nc" id="L103">						return Util.filter(context, theURL.openStream(), context::interpolateToString);</span>
+					}
+<span class="fc" id="L105">					return theURL.openStream();</span>
+<span class="fc" id="L106">				} catch (IOException e) {</span>
+<span class="fc" id="L107">					throw new ExecutionException(e, this);</span>
+				}
+			}
+			
+		};
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

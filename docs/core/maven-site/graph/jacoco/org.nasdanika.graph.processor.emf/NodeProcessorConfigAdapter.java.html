@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NodeProcessorConfigAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Graph</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.graph.processor.emf</a> &gt; <span class="el_source">NodeProcessorConfigAdapter.java</span></div><h1>NodeProcessorConfigAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.graph.processor.emf;
+
+import java.util.Map;
+import java.util.concurrent.CompletionStage;
+import java.util.function.Consumer;
+
+import org.nasdanika.graph.Connection;
+import org.nasdanika.graph.Node;
+import org.nasdanika.graph.processor.NodeProcessorConfig;
+
+public class NodeProcessorConfigAdapter&lt;P, H, E&gt; extends ProcessorConfigAdapter&lt;P, NodeProcessorConfig&lt;P, H, E&gt;&gt; implements NodeProcessorConfig&lt;P, H, E&gt; {
+
+	public NodeProcessorConfigAdapter(NodeProcessorConfig&lt;P, H, E&gt; delegate) {
+<span class="nc" id="L14">		super(delegate);</span>
+<span class="nc" id="L15">	}</span>
+
+	@Override
+	public Map&lt;Connection, CompletionStage&lt;E&gt;&gt; getIncomingEndpoints() {
+<span class="nc" id="L19">		return delegate.getIncomingEndpoints();</span>
+	}
+
+	@Override
+	public Map&lt;Connection, Consumer&lt;H&gt;&gt; getIncomingHandlerConsumers() {
+<span class="nc" id="L24">		return delegate.getIncomingHandlerConsumers();</span>
+	}
+
+	@Override
+	public Map&lt;Connection, CompletionStage&lt;E&gt;&gt; getOutgoingEndpoints() {
+<span class="nc" id="L29">		return delegate.getOutgoingEndpoints();</span>
+	}
+
+	@Override
+	public Map&lt;Connection, Consumer&lt;H&gt;&gt; getOutgoingHandlerConsumers() {
+<span class="nc" id="L34">		return delegate.getOutgoingHandlerConsumers();</span>
+	}
+	
+	@Override
+	public Node getElement() {
+<span class="nc" id="L39">		return delegate.getElement();</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

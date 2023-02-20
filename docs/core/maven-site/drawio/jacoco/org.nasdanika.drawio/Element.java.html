@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Element.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Java API for working with Drawio diagrams</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.drawio</a> &gt; <span class="el_source">Element.java</span></div><h1>Element.java</h1><pre class="source lang-java linenums">package org.nasdanika.drawio;
+
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+
+import org.eclipse.emf.common.util.URI;
+import org.nasdanika.persistence.Marked;
+
+/**
+ * {@link Document} element, including the Document itself, backed by {@link org.w3c.dom.Element}.
+ * @author Pavel
+ *
+ */
+public interface Element extends org.nasdanika.graph.Element, Marked {
+	
+	/**
+	 * @return The underlying XML element.
+	 */
+	org.w3c.dom.Element getElement();
+	
+	/**
+	 * Accepts the visitor in children first (bottom-up) way.
+	 * @param visitor
+	 */
+	default void accept(Consumer&lt;? super Element&gt; visitor, ConnectionBase connectionBase) {
+<span class="fc" id="L28">		accept((e, cr) -&gt; { visitor.accept(e); return null; }, connectionBase);</span>
+<span class="fc" id="L29">	}</span>
+	
+	/**
+	 * Accepts a result producing visitor {@link BiFunction}. Passes to it a map of results collected from children, nulls are not included.   
+	 * @param &lt;T&gt;
+	 * @param visitor
+	 * @return result returned by the visitor.
+	 */
+	&lt;T&gt; T accept(BiFunction&lt;Element, Map&lt;Element, T&gt;, T&gt; visitor, ConnectionBase connectionBase);
+		
+	@Override
+	default &lt;T&gt; T accept(BiFunction&lt;? super org.nasdanika.graph.Element, Map&lt;? extends org.nasdanika.graph.Element, T&gt;, T&gt; visitor) {
+<span class="fc" id="L41">		BiFunction&lt;Element, Map&lt;Element, T&gt;, T&gt; visitorAdapter = (element, childMappings) -&gt; {</span>
+<span class="fc" id="L42">			return visitor.apply(element, childMappings);</span>
+		};
+<span class="fc" id="L44">		return accept(visitorAdapter, ConnectionBase.PARENT);</span>
+	}
+	
+	/**
+	 * @return Stream containing this element and its children.
+	 */
+	default Stream&lt;Element&gt; stream(ConnectionBase connectionBase) {
+<span class="fc" id="L51">		BiFunction&lt;Element, Map&lt;Element, Stream&lt;Element&gt;&gt;, Stream&lt;Element&gt;&gt; visitor = (element, childMappings) -&gt; {</span>
+<span class="fc" id="L52">			return childMappings.values().stream().reduce(Stream.of(element), (a,b) -&gt; Stream.concat(a, b));</span>
+		};
+<span class="fc" id="L54">		return accept(visitor, connectionBase);</span>
+	}; 
+	
+	/**
+	 * 
+	 * @return Element URI for resolving relative references, e.g. links to documentation. 
+	 */
+	URI getURI();	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

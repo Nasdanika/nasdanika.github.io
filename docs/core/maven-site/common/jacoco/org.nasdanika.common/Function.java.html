@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Function.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">Function.java</span></div><h1>Function.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
+
+/**
+ * 
+ * @author Pavel Vlasov
+ * @param C context type.
+ * @param T result type.
+ */
+public interface Function&lt;T,R&gt; extends ExecutionParticipant, ExecutionParticipantInfo, BiFunction&lt;T,ProgressMonitor,R&gt; {
+	
+	R execute(T arg, ProgressMonitor progressMonitor);	
+	
+	default R splitAndExecute(T arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L18">		try (ProgressMonitor subMonitor = split(progressMonitor, &quot;Executing &quot;+name())) {</span>
+<span class="nc" id="L19">			return execute(arg, subMonitor);</span>
+		}
+	}
+	
+	default R splitAndExecute(T arg, double size, ProgressMonitor progressMonitor) {
+<span class="nc" id="L24">		try (ProgressMonitor subMonitor = split(size, progressMonitor, &quot;Executing &quot;+name())) {</span>
+<span class="nc" id="L25">			return execute(arg, subMonitor);</span>
+		}
+	}
+	
+<span class="fc" id="L29">	Function&lt;Object,Object&gt; NOP = new Function&lt;Object,Object&gt;() {</span>
+
+		@Override
+		public double size() {
+<span class="nc" id="L33">			return 0;</span>
+		}
+		
+		@Override
+		public String name() {
+<span class="nc" id="L38">			return &quot;No operation&quot;;</span>
+		}
+
+		@Override
+		public Object execute(Object arg, ProgressMonitor monitor) {
+<span class="nc" id="L43">			return arg;</span>
+		}
+		
+	};
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	static &lt;V&gt; Function&lt;V,V&gt; nop() {
+<span class="nc" id="L50">		return (Function&lt;V,V&gt;) NOP;</span>
+	}
+	
+	default &lt;V&gt; Function&lt;V,R&gt; before(java.util.function.Function&lt;V,T&gt; before) {
+<span class="nc" id="L54">		return new Function&lt;V,R&gt;() {</span>
+			
+			@Override
+			public R execute(V arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L58">				return Function.this.execute(before.apply(arg), progressMonitor);</span>
+			}
+			
+			@Override
+			public Diagnostic diagnose(ProgressMonitor progressMonitor) {
+<span class="nc" id="L63">				return Function.this.diagnose(progressMonitor);</span>
+			}
+			
+			@Override
+			public void close() {
+<span class="nc" id="L68">				Function.this.close();</span>
+<span class="nc" id="L69">			}</span>
+			
+			@Override
+			public void commit(ProgressMonitor progressMonitor) {
+<span class="nc" id="L73">				Function.this.commit(progressMonitor);</span>
+<span class="nc" id="L74">			}</span>
+			
+			@Override
+			public boolean rollback(ProgressMonitor progressMonitor) {
+<span class="nc" id="L78">				return Function.this.rollback(progressMonitor);</span>
+			}
+			
+			@Override
+			public double size() {
+<span class="nc" id="L83">				return Function.this.size();</span>
+			}
+			
+			@Override
+			public String name() {
+<span class="nc" id="L88">				return Function.this.name();</span>
+			}
+			
+		};
+	}
+	
+	default &lt;V&gt; Function&lt;T,V&gt; then(java.util.function.Function&lt;? super R, V&gt; then) {
+<span class="nc" id="L95">		return new Function&lt;T,V&gt;() {</span>
+			
+			@Override
+			public V execute(T arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L99">				return then.apply(Function.this.execute(arg, progressMonitor));</span>
+			}
+			
+			@Override
+			public Diagnostic diagnose(ProgressMonitor progressMonitor) {
+<span class="nc" id="L104">				return Function.this.diagnose(progressMonitor);</span>
+			}
+			
+			@Override
+			public void close() {
+<span class="nc" id="L109">				Function.this.close();</span>
+<span class="nc" id="L110">			}</span>
+			
+			@Override
+			public void commit(ProgressMonitor progressMonitor) {
+<span class="nc" id="L114">				Function.this.commit(progressMonitor);</span>
+<span class="nc" id="L115">			}</span>
+			
+			@Override
+			public boolean rollback(ProgressMonitor progressMonitor) {
+<span class="nc" id="L119">				return Function.this.rollback(progressMonitor);</span>
+			}
+			
+			@Override
+			public double size() {
+<span class="nc" id="L124">				return Function.this.size();</span>
+			}
+			
+			@Override
+			public String name() {
+<span class="nc" id="L129">				return Function.this.name();</span>
+			}
+			
+		};
+	}
+	
+	default &lt;V&gt; Function&lt;T,V&gt; then(Function&lt;? super R, V&gt; then) {
+<span class="nc" id="L136">		List&lt;ExecutionParticipant&gt; elements = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L137">		elements.add(this);</span>
+<span class="nc" id="L138">		elements.add(then);</span>
+		class Then extends CompoundExecutionParticipant&lt;ExecutionParticipant&gt; implements Function&lt;T,V&gt; {
+
+<span class="nc" id="L141">			protected Then(String name) {</span>
+<span class="nc" id="L142">				super(name, true);</span>
+<span class="nc" id="L143">			}</span>
+			
+			@Override
+			public V execute(T arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L147">				return then.splitAndExecute(Function.this.splitAndExecute(arg, progressMonitor), progressMonitor);</span>
+			}
+
+			@Override
+			protected List&lt;ExecutionParticipant&gt; getElements() {
+<span class="nc" id="L152">				return elements;</span>
+			}			
+		}
+		
+<span class="nc" id="L156">		StringBuilder nameBuilder = new StringBuilder();</span>
+<span class="nc" id="L157">		nameBuilder.append(Function.this.name()).append(&quot; =&gt; &quot;).append(then.name());</span>
+<span class="nc" id="L158">		return new Then(nameBuilder.toString());</span>
+	}
+		
+	default Consumer&lt;T&gt; then(Consumer&lt;? super R&gt; then) {
+<span class="nc" id="L162">		List&lt;ExecutionParticipant&gt; elements = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L163">		elements.add(this);</span>
+<span class="nc" id="L164">		elements.add(then);</span>
+		class Then extends CompoundExecutionParticipant&lt;ExecutionParticipant&gt; implements Consumer&lt;T&gt; {
+
+<span class="nc" id="L167">			protected Then(String name) {</span>
+<span class="nc" id="L168">				super(name, true);</span>
+<span class="nc" id="L169">			}</span>
+			
+			@Override
+			public void execute(T arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L173">				then.splitAndExecute(Function.this.splitAndExecute(arg, progressMonitor), progressMonitor);</span>
+<span class="nc" id="L174">			}</span>
+
+			@Override
+			protected List&lt;ExecutionParticipant&gt; getElements() {
+<span class="nc" id="L178">				return elements;</span>
+			}			
+		}
+		
+<span class="nc" id="L182">		StringBuilder nameBuilder = new StringBuilder();</span>
+<span class="nc" id="L183">		nameBuilder.append(Function.this.name()).append(&quot; =&gt; &quot;).append(then.name());</span>
+<span class="nc" id="L184">		return new Then(nameBuilder.toString());</span>
+	}	
+	
+	static &lt;T,R&gt; Function&lt;T,R&gt; fromBiFunction(BiFunction&lt;T, ProgressMonitor, R&gt; biFunction, String name, double size) {
+<span class="nc" id="L188">		return new Function&lt;T,R&gt;() {</span>
+
+			@Override
+			public double size() {
+<span class="nc" id="L192">				return size;</span>
+			}
+
+			@Override
+			public String name() {
+<span class="nc" id="L197">				return name;</span>
+			}
+
+			@Override
+			public R execute(T arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L202">				return biFunction.apply(arg, progressMonitor);</span>
+			}
+			
+		};
+	}
+	
+	static &lt;T,R&gt; Function&lt;T,R&gt; fromFunction(java.util.function.Function&lt;T, R&gt; function, String name, double size) {
+<span class="nc" id="L209">		return fromBiFunction((arg, monitor) -&gt; function.apply(arg), name, size);</span>
+	}
+	
+	default R apply(T arg, ProgressMonitor progressMonitor) {
+		try {
+<span class="nc" id="L214">			progressMonitor.setWorkRemaining(size()*3); // diagnose, execute, commit or rollback</span>
+<span class="nc" id="L215">			diagnose(progressMonitor.split(&quot;Diagnosing&quot;, size())).checkError(&quot;Diagnostic failed: &quot;+name());</span>
+			try {
+<span class="nc" id="L217">				R result = execute(arg, progressMonitor.split(&quot;Executing&quot;, size()));</span>
+<span class="nc" id="L218">				commit(progressMonitor.split(&quot;Committing&quot;, size()));</span>
+<span class="nc" id="L219">				return result;</span>
+<span class="nc" id="L220">			} catch (Exception e) {</span>
+				try {
+<span class="nc" id="L222">					rollback(progressMonitor.split(&quot;Rolling back: &quot;+e, size(), e));</span>
+<span class="nc" id="L223">				} catch (Exception re) {</span>
+<span class="nc" id="L224">					e.addSuppressed(re);</span>
+<span class="nc" id="L225">				}</span>
+<span class="nc" id="L226">				throw e;</span>
+			}
+		} finally {
+<span class="nc" id="L229">			close();</span>
+		}		
+	}
+	
+	/**
+	 * Calls asBiFunction() with a {@link NullProgressMonitor}.
+	 * @return
+	 */
+	default java.util.function.Function&lt;T,R&gt; toFunction(ProgressMonitor progressMonitor) {
+<span class="nc" id="L238">		return arg -&gt; apply(arg, progressMonitor);</span>
+	}
+		
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ValidatingModelWorkFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika EMF</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.emf</a> &gt; <span class="el_source">ValidatingModelWorkFactory.java</span></div><h1>ValidatingModelWorkFactory.java</h1><pre class="source lang-java linenums">package org.nasdanika.emf;
+
+import java.util.Map;
+
+import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.DiagnosticException;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.Diagnostician;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.ExecutionException;
+import org.nasdanika.common.Supplier;
+
+/**
+ * This class loads a model, validates it and then returns work for executing generation. 
+ * @author Pavel
+ *
+ */
+public class ValidatingModelWorkFactory&lt;T&gt; extends ModelWorkFactory&lt;T&gt; {
+
+	public ValidatingModelWorkFactory(ResourceSet resourceSet, URI modelUri) {
+<span class="nc" id="L23">		super(resourceSet, modelUri);</span>
+<span class="nc" id="L24">	}</span>
+
+	public ValidatingModelWorkFactory(String platformPluginUri, EPackage... ePackages) {
+<span class="nc" id="L27">		super(platformPluginUri, ePackages);</span>
+<span class="nc" id="L28">	}</span>
+
+	public ValidatingModelWorkFactory(URI modelUri, EPackage... ePackages) {
+<span class="nc" id="L31">		super(modelUri, ePackages);</span>
+<span class="nc" id="L32">	}</span>
+	
+	public ValidatingModelWorkFactory(ResourceSet resourceSet, String platformPluginUri) {
+<span class="nc" id="L35">		super(resourceSet, platformPluginUri);</span>
+<span class="nc" id="L36">	}</span>
+	
+	@Override
+	public Supplier&lt;T&gt; create(Context context) {
+<span class="nc" id="L40">		Diagnostician diagnostician = new Diagnostician() {</span>
+			
+			public Map&lt;Object,Object&gt; createDefaultContext() {
+<span class="nc" id="L43">				Map&lt;Object, Object&gt; ctx = super.createDefaultContext();</span>
+<span class="nc" id="L44">				ctx.put(Context.class, context);</span>
+<span class="nc" id="L45">				return ctx;</span>
+			};
+			
+		};				
+<span class="nc" id="L49">		Diagnostic validationResult = diagnostician.validate(root);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">		if (validationResult.getSeverity() == Diagnostic.ERROR) {</span>
+<span class="nc" id="L51">			throw new ExecutionException(new DiagnosticException(validationResult));</span>
+		}
+<span class="nc" id="L53">		return super.create(context);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

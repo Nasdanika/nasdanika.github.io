@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ButtonImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika HTML</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.impl</a> &gt; <span class="el_source">ButtonImpl.java</span></div><h1>ButtonImpl.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.impl;
+
+import org.nasdanika.html.Button;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.TagName;
+
+class ButtonImpl extends HTMLElementImpl&lt;Button&gt; implements Button {
+	
+	ButtonImpl(HTMLFactory factory, Object... content) {
+<span class="nc" id="L10">		super(factory, TagName.button, false);</span>
+<span class="nc bnc" id="L11" title="All 2 branches missed.">		for (Object c: content) {</span>
+<span class="nc bnc" id="L12" title="All 2 branches missed.">			if (c!=null) {</span>
+<span class="nc" id="L13">				this.content.add(c);</span>
+			}
+		}
+<span class="nc" id="L16">	}</span>
+	
+	@Override
+	public Button type(Type type) {
+<span class="nc" id="L20">		attribute(&quot;type&quot;, type.name().toLowerCase());</span>
+<span class="nc" id="L21">		return this;</span>
+	}
+			
+	@Override
+	public Button content(Object... content) {
+<span class="nc" id="L26">		return super.content(content);</span>
+	}
+
+	@Override
+	public Button disabled(boolean disabled) {
+<span class="nc bnc" id="L31" title="All 2 branches missed.">		attribute(&quot;disabled&quot;, disabled ? true : null);</span>
+<span class="nc" id="L32">		return this;</span>
+	}
+
+	@Override
+	public Button disabled() {
+<span class="nc" id="L37">		return disabled(true);</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

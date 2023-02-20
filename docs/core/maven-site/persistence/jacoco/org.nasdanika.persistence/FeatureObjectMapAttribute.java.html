@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FeatureObjectMapAttribute.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Persistence</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.persistence</a> &gt; <span class="el_source">FeatureObjectMapAttribute.java</span></div><h1>FeatureObjectMapAttribute.java</h1><pre class="source lang-java linenums">package org.nasdanika.persistence;
+
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import org.eclipse.emf.common.util.URI;
+import org.nasdanika.common.ProgressMonitor;
+
+/**
+ * If config is a map loads each entry value creating elements using value factory and then loading them.
+ * @author Pavel
+ *
+ * @param &lt;V&gt;
+ */
+public class FeatureObjectMapAttribute&lt;K, V extends FeatureObject&gt; extends MapAttribute&lt;K,V&gt; {
+
+
+	private Function&lt;K, V&gt; valueFactory;
+
+	/**
+	 * 
+	 * @param key
+	 * @param valueFactory Factory of values which takes key as an argument.
+	 * @param isDefault
+	 * @param required
+	 * @param defaultValue
+	 * @param description
+	 * @param exclusiveWith
+	 */
+	public FeatureObjectMapAttribute(
+			Object key, 
+			Function&lt;K,V&gt; valueFactory,
+			boolean isDefault, 
+			boolean required, 
+			Map&lt;K,V&gt; defaultValue, 
+			String description, 
+			Object... exclusiveWith) {
+<span class="nc" id="L39">		super(key, isDefault, required, defaultValue, description, exclusiveWith);</span>
+<span class="nc" id="L40">		this.valueFactory = valueFactory;</span>
+<span class="nc" id="L41">	}</span>
+
+	/**
+	 * Creates map value.
+	 * @param loader
+	 * @param element
+	 * @param base
+	 * @param progressMonitor
+	 * @param marker
+	 * @return
+	 */
+	@Override
+	protected V createValue(ObjectLoader loader, K key, Object value, URI base, ProgressMonitor progressMonitor, List&lt;? extends Marker&gt; markers) { 
+<span class="nc" id="L54">		V ret = valueFactory.apply(key);</span>
+<span class="nc" id="L55">		ret.load(loader, value, base, progressMonitor, markers);</span>
+<span class="nc" id="L56">		return ret;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

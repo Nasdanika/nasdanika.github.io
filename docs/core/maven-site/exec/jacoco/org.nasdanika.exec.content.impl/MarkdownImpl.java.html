@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MarkdownImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Execution Model</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.content.impl</a> &gt; <span class="el_source">MarkdownImpl.java</span></div><h1>MarkdownImpl.java</h1><pre class="source lang-java linenums">/**
+ */
+package org.nasdanika.exec.content.impl;
+
+import org.eclipse.emf.ecore.EClass;
+import org.nasdanika.exec.content.ContentPackage;
+import org.nasdanika.exec.content.Markdown;
+
+/**
+ * &lt;!-- begin-user-doc --&gt;
+ * An implementation of the model object '&lt;em&gt;&lt;b&gt;Markdown&lt;/b&gt;&lt;/em&gt;'.
+ * &lt;!-- end-user-doc --&gt;
+ * &lt;p&gt;
+ * The following features are implemented:
+ * &lt;/p&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.content.impl.MarkdownImpl#isStyle &lt;em&gt;Style&lt;/em&gt;}&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * @generated
+ */
+public class MarkdownImpl extends FilterImpl implements Markdown {
+	/**
+	 * The default value of the '{@link #isStyle() &lt;em&gt;Style&lt;/em&gt;}' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see #isStyle()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean STYLE_EDEFAULT = false;
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected MarkdownImpl() {
+<span class="nc" id="L38">		super();</span>
+<span class="nc" id="L39">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+<span class="nc" id="L48">		return ContentPackage.Literals.MARKDOWN;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public boolean isStyle() {
+<span class="nc" id="L58">		return (Boolean)eDynamicGet(ContentPackage.MARKDOWN__STYLE, ContentPackage.Literals.MARKDOWN__STYLE, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void setStyle(boolean newStyle) {
+<span class="nc" id="L68">		eDynamicSet(ContentPackage.MARKDOWN__STYLE, ContentPackage.Literals.MARKDOWN__STYLE, newStyle);</span>
+<span class="nc" id="L69">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+<span class="nc bnc" id="L78" title="All 2 branches missed.">		switch (featureID) {</span>
+			case ContentPackage.MARKDOWN__STYLE:
+<span class="nc" id="L80">				return isStyle();</span>
+		}
+<span class="nc" id="L82">		return super.eGet(featureID, resolve, coreType);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void eSet(int featureID, Object newValue) {
+<span class="nc bnc" id="L92" title="All 2 branches missed.">		switch (featureID) {</span>
+			case ContentPackage.MARKDOWN__STYLE:
+<span class="nc" id="L94">				setStyle((Boolean)newValue);</span>
+<span class="nc" id="L95">				return;</span>
+		}
+<span class="nc" id="L97">		super.eSet(featureID, newValue);</span>
+<span class="nc" id="L98">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		switch (featureID) {</span>
+			case ContentPackage.MARKDOWN__STYLE:
+<span class="nc" id="L109">				setStyle(STYLE_EDEFAULT);</span>
+<span class="nc" id="L110">				return;</span>
+		}
+<span class="nc" id="L112">		super.eUnset(featureID);</span>
+<span class="nc" id="L113">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		switch (featureID) {</span>
+			case ContentPackage.MARKDOWN__STYLE:
+<span class="nc bnc" id="L124" title="All 2 branches missed.">				return isStyle() != STYLE_EDEFAULT;</span>
+		}
+<span class="nc" id="L126">		return super.eIsSet(featureID);</span>
+	}
+
+} //MarkdownImpl
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

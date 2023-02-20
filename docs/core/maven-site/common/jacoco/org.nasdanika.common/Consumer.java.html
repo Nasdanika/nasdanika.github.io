@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Consumer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">Consumer.java</span></div><h1>Consumer.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+import java.util.function.BiConsumer;
+
+/**
+ * @author Pavel Vlasov
+ */
+public interface Consumer&lt;T&gt; extends ExecutionParticipant, ExecutionParticipantInfo, BiConsumer&lt;T, ProgressMonitor&gt; {
+		
+	/**
+	 * Executes Consumer.
+	 * @param monitor Monitor to use.
+	 * @return
+	 */
+	void execute(T arg, ProgressMonitor progressMonitor);	
+	
+	default void splitAndExecute(T arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L18">		try (ProgressMonitor subMonitor = split(progressMonitor, &quot;Executing &quot;+name())) {</span>
+<span class="nc" id="L19">			execute(arg, subMonitor);</span>
+		}
+<span class="nc" id="L21">	}	</span>
+	
+	default void splitAndExecute(T arg, double size, ProgressMonitor progressMonitor) {
+<span class="nc" id="L24">		try (ProgressMonitor subMonitor = split(size, progressMonitor, &quot;Executing &quot;+name())) {</span>
+<span class="nc" id="L25">			execute(arg, subMonitor);</span>
+		}
+<span class="nc" id="L27">	}	</span>
+	
+<span class="nc" id="L29">	Consumer&lt;Object&gt; NOP = new Consumer&lt;Object&gt;() {</span>
+
+		@Override
+		public double size() {
+<span class="nc" id="L33">			return 0;</span>
+		}
+		
+		@Override
+		public String name() {
+<span class="nc" id="L38">			return &quot;No operation consumer&quot;;</span>
+		}
+
+		@Override
+		public void execute(Object arg, ProgressMonitor monitor) {
+			// NOP
+<span class="nc" id="L44">		}</span>
+		
+	};
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	static &lt;T&gt; Consumer&lt;T&gt; nop() {
+<span class="nc" id="L50">		return (Consumer&lt;T&gt;) NOP;</span>
+	}
+	
+	@Override
+	default void accept(T arg, ProgressMonitor progressMonitor) {
+		try {
+<span class="nc" id="L56">			progressMonitor.setWorkRemaining(size()*3); // diagnose, execute, commit or rollback</span>
+<span class="nc" id="L57">			diagnose(progressMonitor.split(&quot;Diagnosing&quot;, size())).checkError(&quot;Diagnostic failed: &quot;+name());</span>
+			try {
+<span class="nc" id="L59">				execute(arg, progressMonitor.split(&quot;Executing&quot;, size()));</span>
+<span class="nc" id="L60">				commit(progressMonitor.split(&quot;Committing&quot;, size()));</span>
+<span class="nc" id="L61">			} catch (Exception e) {</span>
+				try {
+<span class="nc" id="L63">					rollback(progressMonitor.split(&quot;Rolling back: &quot;+e, size(), e));</span>
+<span class="nc" id="L64">				} catch (Exception re) {</span>
+<span class="nc" id="L65">					e.addSuppressed(re);</span>
+<span class="nc" id="L66">				}</span>
+<span class="nc" id="L67">				throw e;</span>
+<span class="nc" id="L68">			}</span>
+		} finally {
+<span class="nc" id="L70">			close();</span>
+		}		
+<span class="nc" id="L72">	}</span>
+	
+	default &lt;V&gt; Consumer&lt;V&gt; before(java.util.function.Function&lt;V,T&gt; before) {
+<span class="nc" id="L75">		return new Consumer&lt;V&gt;() {</span>
+			
+			@Override
+			public void execute(V arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L79">				Consumer.this.execute(before.apply(arg), progressMonitor);</span>
+<span class="nc" id="L80">			}</span>
+			
+			@Override
+			public Diagnostic diagnose(ProgressMonitor progressMonitor) {
+<span class="nc" id="L84">				return Consumer.this.diagnose(progressMonitor);</span>
+			}
+			
+			@Override
+			public void close() {
+<span class="nc" id="L89">				Consumer.this.close();</span>
+<span class="nc" id="L90">			}</span>
+			
+			@Override
+			public void commit(ProgressMonitor progressMonitor) {
+<span class="nc" id="L94">				Consumer.this.commit(progressMonitor);</span>
+<span class="nc" id="L95">			}</span>
+			
+			@Override
+			public boolean rollback(ProgressMonitor progressMonitor) {
+<span class="nc" id="L99">				return Consumer.this.rollback(progressMonitor);</span>
+			}
+			
+			@Override
+			public double size() {
+<span class="nc" id="L104">				return Consumer.this.size();</span>
+			}
+			
+			@Override
+			public String name() {
+<span class="nc" id="L109">				return Consumer.this.name();</span>
+			}
+			
+		};
+	}
+		
+	/**
+	 * @return Function which executes this consumer and returns the argument. 
+	 * This method can be used for chaining consumers.
+	 */
+	default Function&lt;T,T&gt; asFunction() {
+<span class="nc" id="L120">		return new Function&lt;T,T&gt;() {</span>
+			
+			@Override
+			public T execute(T arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L124">				Consumer.this.execute(arg, progressMonitor);</span>
+<span class="nc" id="L125">				return arg;</span>
+			}
+			
+			@Override
+			public Diagnostic diagnose(ProgressMonitor progressMonitor) {
+<span class="nc" id="L130">				return Consumer.this.diagnose(progressMonitor);</span>
+			}
+			
+			@Override
+			public void close() {
+<span class="nc" id="L135">				Consumer.this.close();</span>
+<span class="nc" id="L136">			}</span>
+			
+			@Override
+			public void commit(ProgressMonitor progressMonitor) {
+<span class="nc" id="L140">				Consumer.this.commit(progressMonitor);</span>
+<span class="nc" id="L141">			}</span>
+			
+			@Override
+			public boolean rollback(ProgressMonitor progressMonitor) {
+<span class="nc" id="L145">				return Consumer.this.rollback(progressMonitor);</span>
+			}
+			
+			@Override
+			public double size() {
+<span class="nc" id="L150">				return Consumer.this.size();</span>
+			}
+			
+			@Override
+			public String name() {
+<span class="nc" id="L155">				return Consumer.this.name();</span>
+			}
+			
+		};
+	}
+	
+	/**
+	 * @return Function which executes this consumer passing BiSupplier.getFirst() (T) and returns getSecond() (R). 
+	 * This method can be used for chaining consumers.
+	 */
+	default &lt;R&gt; Function&lt;BiSupplier&lt;T,R&gt;,R&gt; asBiSupplierFunction() {
+<span class="nc" id="L166">		return new Function&lt;BiSupplier&lt;T,R&gt;,R&gt;() {</span>
+			
+			@Override
+			public R execute(BiSupplier&lt;T,R&gt; input, ProgressMonitor progressMonitor) {
+<span class="nc" id="L170">				Consumer.this.execute(input.getFirst(), progressMonitor);</span>
+<span class="nc" id="L171">				return input.getSecond();</span>
+			}
+			
+			@Override
+			public Diagnostic diagnose(ProgressMonitor progressMonitor) {
+<span class="nc" id="L176">				return Consumer.this.diagnose(progressMonitor);</span>
+			}
+			
+			@Override
+			public void close() {
+<span class="nc" id="L181">				Consumer.this.close();</span>
+<span class="nc" id="L182">			}</span>
+			
+			@Override
+			public void commit(ProgressMonitor progressMonitor) {
+<span class="nc" id="L186">				Consumer.this.commit(progressMonitor);</span>
+<span class="nc" id="L187">			}</span>
+			
+			@Override
+			public boolean rollback(ProgressMonitor progressMonitor) {
+<span class="nc" id="L191">				return Consumer.this.rollback(progressMonitor);</span>
+			}
+			
+			@Override
+			public double size() {
+<span class="nc" id="L196">				return Consumer.this.size();</span>
+			}
+			
+			@Override
+			public String name() {
+<span class="nc" id="L201">				return Consumer.this.name();</span>
+			}
+			
+		};
+	}
+				
+	static &lt;T&gt; Consumer&lt;T&gt; fromBiConsumer(BiConsumer&lt;T,ProgressMonitor&gt; biConsumer, String name, double size) {
+<span class="nc" id="L208">		return new Consumer&lt;T&gt;() {</span>
+
+			@Override
+			public double size() {
+<span class="nc" id="L212">				return size;</span>
+			}
+
+			@Override
+			public String name() {
+<span class="nc" id="L217">				return name;</span>
+			}
+
+			@Override
+			public void execute(T arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L222">				biConsumer.accept(arg, progressMonitor);				</span>
+<span class="nc" id="L223">			}</span>
+		};
+	}
+	
+	/**
+	 * @param &lt;T&gt;
+	 * @param supplier
+	 * @param name
+	 * @param size
+	 * @return
+	 */
+	static &lt;T&gt; Consumer&lt;T&gt; fromConsumer(java.util.function.Consumer&lt;T&gt; consumer, String name, double size) {
+<span class="nc" id="L235">		return fromBiConsumer((arg,progressMonitor) -&gt; consumer.accept(arg), name, size);		</span>
+	}
+	
+	default java.util.function.Consumer&lt;T&gt; toConsumer(ProgressMonitor progressMonitor) {
+<span class="nc" id="L239">		return arg -&gt; execute(arg, progressMonitor);</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

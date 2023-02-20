@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProgressMonitor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">ProgressMonitor.java</span></div><h1>ProgressMonitor.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+/**
+ * Progress monitor is used for reporting progress in 
+ * the try with resources style:
+ * 
+ * ```
+ * try (ProgressMonitor progressMonitor = ...) {
+ *     while (...) {
+ *         ...
+ *         progressMonitor.worked(work, progressMessage);
+ *     }
+ * }
+ * ```
+ * 
+ * @author Pavel
+ *
+ */
+public interface ProgressMonitor extends AutoCloseable, Composeable&lt;ProgressMonitor&gt; {
+			
+	/**
+	 * Closes this monitor.
+	 */
+	@Override
+	void close(); 
+	
+	/**
+	 * Indicates that this monitor was cancelled and further operations shall not be performed.
+	 * @return
+	 */
+	boolean isCancelled();
+	
+	/**
+	 * Creates a sub-monitor of this monitor which will consume a given number of ticks from the receiver.
+	 * @param Task name
+	 * @param ticks Amount of work
+	 * @param details optional additional information.
+	 * @return
+	 */
+	ProgressMonitor split(String taskName, double size, Object... data);
+	
+	/**
+	 * Reports progress.
+	 * @param work Supplier installment - how much work was done since the last report, not the total work.
+	 * @param progressMessage Progress message. 
+	 */
+	void worked(Status status, double work, String progressMessage, Object... data);
+	
+	/**
+	 * Shortcut for ``worked(SUCCESS, work, progressMessage)``.
+	 * @param work
+	 * @param progressMessage
+	 */
+	default void worked(double work, String progressMessage, Object... data) {
+<span class="fc" id="L55">		worked(Status.SUCCESS, work, progressMessage, data);</span>
+<span class="fc" id="L56">	}</span>
+	
+	/**
+	 * Resizes the remaining amount of work.
+	 * @param size
+	 * @return This instance - fluent API.
+	 */
+	ProgressMonitor setWorkRemaining(double size);
+
+	/**
+	 * Composes two monitors. The resulting monitor reports isCancelled() as OR, composes splits, 
+	 * and invokes other methods on both monitors.
+	 */
+	@Override
+	default ProgressMonitor compose(ProgressMonitor other) {
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">		if (other == null) {</span>
+<span class="nc" id="L72">			return this;</span>
+		}
+<span class="fc" id="L74">		return new ProgressMonitor() {</span>
+			
+			@Override
+			public void worked(Status status, double work, String progressMessage, Object... data) {
+<span class="fc" id="L78">				ProgressMonitor.this.worked(status, work, progressMessage, data);</span>
+<span class="fc" id="L79">				other.worked(status, work, progressMessage, data);</span>
+<span class="fc" id="L80">			}</span>
+			
+			@Override
+			public ProgressMonitor split(String taskName, double size, Object... data) {
+<span class="fc" id="L84">				return	ProgressMonitor.this.split(taskName, size, data).compose(other.split(taskName, size, data));</span>
+			}
+			
+			@Override
+			public boolean isCancelled() {
+<span class="pc bpc" id="L89" title="2 of 4 branches missed.">				return ProgressMonitor.this.isCancelled() || other.isCancelled();</span>
+			}
+			
+			@Override
+			public void close() {
+<span class="fc" id="L94">				ProgressMonitor.this.close();</span>
+<span class="fc" id="L95">				other.close();</span>
+<span class="fc" id="L96">			}</span>
+
+			@Override
+			public ProgressMonitor setWorkRemaining(double size) {
+<span class="fc" id="L100">				ProgressMonitor.this.setWorkRemaining(size);</span>
+<span class="fc" id="L101">				other.setWorkRemaining(size);</span>
+<span class="fc" id="L102">				return this;</span>
+			}
+			
+		};
+	}
+	
+	/**
+	 * Creates a progress monitor which multiplies work sizes passed to it by the scale. I.e. when
+	 * the returned scaled monitor consumes X amount of work, this monitor consumes X / scale amount of work. 
+	 * For example you want to consume 1 from this monitor and the task size is 10, then the scale is 10.
+	 * @param scale
+	 * @return
+	 */
+	default ProgressMonitor scale(double scale) {
+<span class="nc" id="L116">		return new ProgressMonitor() {</span>
+			
+			@Override
+			public void worked(Status status, double work, String progressMessage, Object... data) {
+<span class="nc" id="L120">				ProgressMonitor.this.worked(status, work / scale, progressMessage, data);</span>
+				
+<span class="nc" id="L122">			}</span>
+			
+			@Override
+			public ProgressMonitor split(String taskName, double size, Object... data) {
+<span class="nc" id="L126">				return ProgressMonitor.this.split(taskName, size / scale, data).scale(scale);</span>
+			}
+			
+			@Override
+			public ProgressMonitor setWorkRemaining(double size) {
+<span class="nc" id="L131">				ProgressMonitor.this.setWorkRemaining(size / scale);</span>
+<span class="nc" id="L132">				return this;</span>
+			}
+			
+			@Override
+			public boolean isCancelled() {
+<span class="nc" id="L137">				return ProgressMonitor.this.isCancelled();</span>
+			}
+			
+			@Override
+			public void close() {
+<span class="nc" id="L142">				ProgressMonitor.this.close();				</span>
+<span class="nc" id="L143">			}</span>
+		};
+	}
+		
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

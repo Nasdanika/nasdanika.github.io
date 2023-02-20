@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HtmlElementAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika HTML Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.html.gen</a> &gt; <span class="el_source">HtmlElementAdapter.java</span></div><h1>HtmlElementAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.html.gen;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.Function;
+import org.nasdanika.common.FunctionFactory;
+import org.nasdanika.common.ListCompoundSupplierFactory;
+import org.nasdanika.common.MapCompoundSupplierFactory;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.emf.ComposeableAdapterFactory;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.Container;
+import org.nasdanika.html.model.html.HtmlPackage;
+
+/**
+ * Base class for HTML Element adapters providing common functionality
+ * @author Pavel
+ *
+ * @param &lt;M&gt;
+ * @param &lt;T&gt;
+ */
+public abstract class HtmlElementAdapter&lt;M extends org.nasdanika.html.model.html.HtmlElement, T extends org.nasdanika.html.HTMLElement&lt;?&gt;&gt; extends AdapterImpl {
+		
+	protected AdapterFactory adapterFactory;
+	
+	protected AdapterFactory getRootAdapterFactory() {
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">		return adapterFactory instanceof ComposeableAdapterFactory ? ((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory() : adapterFactory;</span>
+	}
+	
+<span class="fc" id="L40">	protected HtmlElementAdapter(M htmlElement, AdapterFactory adapterFactory) {</span>
+<span class="fc" id="L41">		setTarget(htmlElement);</span>
+<span class="fc" id="L42">		this.adapterFactory = adapterFactory;</span>
+<span class="fc" id="L43">	}</span>
+	
+	protected Adapter getRegisteredAdapter(EObject eObject, Object type) {
+<span class="nc" id="L46">		Adapter result = EcoreUtil.getExistingAdapter(eObject, type);</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">		if (result != null) {</span>
+<span class="nc" id="L48">			return result;</span>
+		}
+
+<span class="nc" id="L51">		AdapterFactory factory = getRootAdapterFactory();</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">		return factory == null ? null : factory.adaptNew(eObject, type);</span>
+	}	
+	
+	/**
+	 * Creates a function which configures the element and returns it.
+	 * This implementation applies attributes and adds content. Override to implement additional configuration.
+	 * You may chain configuration functions with &lt;code&gt;.then&lt;/code&gt;
+	 * @param context
+	 * @return
+	 */
+	protected Function&lt;T, T&gt; createConfigureFunction(Context context) {
+<span class="fc" id="L63">		MapCompoundSupplierFactory&lt;String,Object&gt; attributesFactory = new MapCompoundSupplierFactory&lt;&gt;(&quot;Attributes&quot;);</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">		for (Entry&lt;String, EObject&gt; ae: getTarget().getAttributes()) {</span>
+<span class="fc" id="L65">			EObject value = ae.getValue();</span>
+<span class="fc" id="L66">			attributesFactory.put(ae.getKey(), EObjectAdaptable.adaptToSupplierFactoryNonNull(value, Object.class, getRootAdapterFactory()));</span>
+<span class="fc" id="L67">		}</span>
+		
+<span class="fc" id="L69">		ListCompoundSupplierFactory&lt;Object&gt; contentFactory = new ListCompoundSupplierFactory&lt;&gt;(&quot;Content&quot;, EObjectAdaptable.adaptToSupplierFactoryNonNull(getContent(), Object.class));				</span>
+		
+<span class="fc" id="L71">		MapCompoundSupplierFactory&lt;EStructuralFeature,Object&gt; configurationFactory = new MapCompoundSupplierFactory&lt;&gt;(&quot;Attributes and Content&quot;);</span>
+<span class="fc" id="L72">		configurationFactory.put(HtmlPackage.Literals.HTML_ELEMENT__ATTRIBUTES, attributesFactory);</span>
+<span class="fc" id="L73">		configurationFactory.put(HtmlPackage.Literals.HTML_ELEMENT__CONTENT, contentFactory);</span>
+		
+<span class="fc" id="L75">		FunctionFactory&lt;BiSupplier&lt;T, Map&lt;EStructuralFeature, Object&gt;&gt;, T&gt; applyAttributesAndContentFunctionFactory = HtmlElementAdapter::createApplyAttributesAndContentFunction;</span>
+<span class="fc" id="L76">		FunctionFactory&lt;T, BiSupplier&lt;T, Map&lt;EStructuralFeature, Object&gt;&gt;&gt; configurationFunctionFactory = configurationFactory.asFunctionFactory();</span>
+<span class="fc" id="L77">		return configurationFunctionFactory.then(applyAttributesAndContentFunctionFactory).create(context);</span>
+	}
+
+	/**
+	 * This implementation returns target content. Override to customize.
+	 * @return
+	 */
+	protected List&lt;EObject&gt; getContent() {
+<span class="fc" id="L85">		return getTarget().getContent();</span>
+	}
+	
+	public static &lt;T extends org.nasdanika.html.HTMLElement&lt;?&gt;&gt; Function&lt;BiSupplier&lt;T, Map&lt;EStructuralFeature, Object&gt;&gt;, T&gt; createApplyAttributesAndContentFunction(Context context) {
+<span class="fc" id="L89">		return new Function&lt;BiSupplier&lt;T,Map&lt;EStructuralFeature,Object&gt;&gt;, T&gt;() {</span>
+			
+			@Override
+			public double size() {
+<span class="fc" id="L93">				return 1;</span>
+			}
+			
+			@Override
+			public String name() {
+<span class="fc" id="L98">				return &quot;Apply attributes&quot;;</span>
+			}
+			
+			@SuppressWarnings(&quot;unchecked&quot;)
+			@Override
+			public T execute(BiSupplier&lt;T, Map&lt;EStructuralFeature, Object&gt;&gt; input, ProgressMonitor progressMonitor) {
+<span class="fc" id="L104">				T ret = input.getFirst();</span>
+<span class="fc" id="L105">				Map&lt;EStructuralFeature, Object&gt; config = input.getSecond();</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">				for (Entry&lt;String, Object&gt; ae: ((Map&lt;String,Object&gt;) config.get(HtmlPackage.Literals.HTML_ELEMENT__ATTRIBUTES)).entrySet()) {</span>
+<span class="fc" id="L107">					ret.attribute(ae.getKey(), ae.getValue());</span>
+<span class="fc" id="L108">				}</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">				for (Object c: (List&lt;Object&gt;) config.get(HtmlPackage.Literals.HTML_ELEMENT__CONTENT)) {</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">					if (ret instanceof Container) {</span>
+<span class="fc" id="L111">						((Container&lt;?&gt;) ret).content(c);</span>
+					} else {
+<span class="nc" id="L113">						ret.getContent().add(c);</span>
+					}
+<span class="fc" id="L115">				}</span>
+<span class="fc" id="L116">				return ret;</span>
+			}
+		};
+		
+	}
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public M getTarget() {
+<span class="fc" id="L125">		return (M) super.getTarget();</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

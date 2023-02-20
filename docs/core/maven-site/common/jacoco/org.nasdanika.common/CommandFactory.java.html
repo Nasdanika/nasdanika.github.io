@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommandFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">CommandFactory.java</span></div><h1>CommandFactory.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+/**
+ * @author Pavel Vlasov
+ *
+ * @param &lt;T&gt;
+ */
+public interface CommandFactory extends ExecutionParticipantFactory&lt;Command&gt; {
+		
+	/**
+	 * @param contextSupplierFactory Factory which creates a context to be passed to this factory to create supplier.
+	 * @return Command factory which creates a context using the context supplier factory and then uses that context and this factory to create a command.
+	 */
+	default CommandFactory contextify(SupplierFactory&lt;Context&gt; contextSupplierFactory) {
+<span class="nc" id="L15">		return new CommandFactory() {</span>
+
+			@Override
+			public Command create(Context context) {
+<span class="nc" id="L19">				return new ContextifiedExecutionParticipant.ContextifiedCommand(contextSupplierFactory.create(context), CommandFactory.this);</span>
+			}
+			
+		};
+	}
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

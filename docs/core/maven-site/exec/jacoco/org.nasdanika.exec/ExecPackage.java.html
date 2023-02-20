@@ -1,0 +1,1391 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExecPackage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Execution Model</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec</a> &gt; <span class="el_source">ExecPackage.java</span></div><h1>ExecPackage.java</h1><pre class="source lang-java linenums">/**
+ */
+package org.nasdanika.exec;
+
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.nasdanika.ncore.NcorePackage;
+
+/**
+ * &lt;!-- begin-user-doc --&gt;
+ * The &lt;b&gt;Package&lt;/b&gt; for the model.
+ * It contains accessors for the meta objects to represent
+ * &lt;ul&gt;
+ *   &lt;li&gt;each class,&lt;/li&gt;
+ *   &lt;li&gt;each feature of each class,&lt;/li&gt;
+ *   &lt;li&gt;each operation of each class,&lt;/li&gt;
+ *   &lt;li&gt;each enum,&lt;/li&gt;
+ *   &lt;li&gt;and each data type&lt;/li&gt;
+ * &lt;/ul&gt;
+ * &lt;!-- end-user-doc --&gt;
+ * @see org.nasdanika.exec.ExecFactory
+ * @model kind=&quot;package&quot;
+ *        annotation=&quot;urn:org.nasdanika documentation-reference='doc/package-summary.md'&quot;
+ * @generated
+ */
+public interface ExecPackage extends EPackage {
+	/**
+	 * The package name.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	String eNAME = &quot;exec&quot;;
+
+	/**
+	 * The package namespace URI.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	String eNS_URI = &quot;urn:org.nasdanika.exec&quot;;
+
+	/**
+	 * The package namespace name.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	String eNS_PREFIX = &quot;org.nasdanika.exec&quot;;
+
+	/**
+	 * The singleton instance of the package.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L59">	ExecPackage eINSTANCE = org.nasdanika.exec.impl.ExecPackageImpl.init();</span>
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.exec.impl.BlockImpl &lt;em&gt;Block&lt;/em&gt;}' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see org.nasdanika.exec.impl.BlockImpl
+	 * @see org.nasdanika.exec.impl.ExecPackageImpl#getBlock()
+	 * @generated
+	 */
+	int BLOCK = 0;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Uris&lt;/b&gt;&lt;/em&gt;' attribute list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK__URIS = NcorePackage.MODEL_ELEMENT__URIS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Description&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK__DESCRIPTION = NcorePackage.MODEL_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Uuid&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK__UUID = NcorePackage.MODEL_ELEMENT__UUID;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Action Prototype&lt;/b&gt;&lt;/em&gt;' reference.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Representations&lt;/b&gt;&lt;/em&gt;' map.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK__REPRESENTATIONS = NcorePackage.MODEL_ELEMENT__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Try&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK__TRY = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Catch&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK__CATCH = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Finally&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK__FINALLY = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '&lt;em&gt;Block&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK_FEATURE_COUNT = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of operations of the '&lt;em&gt;Block&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int BLOCK_OPERATION_COUNT = NcorePackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
+
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.exec.impl.CallImpl &lt;em&gt;Call&lt;/em&gt;}' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see org.nasdanika.exec.impl.CallImpl
+	 * @see org.nasdanika.exec.impl.ExecPackageImpl#getCall()
+	 * @generated
+	 */
+	int CALL = 1;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Uris&lt;/b&gt;&lt;/em&gt;' attribute list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL__URIS = NcorePackage.MODEL_ELEMENT__URIS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Description&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL__DESCRIPTION = NcorePackage.MODEL_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Uuid&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL__UUID = NcorePackage.MODEL_ELEMENT__UUID;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Action Prototype&lt;/b&gt;&lt;/em&gt;' reference.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Representations&lt;/b&gt;&lt;/em&gt;' map.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL__REPRESENTATIONS = NcorePackage.MODEL_ELEMENT__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Type&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL__TYPE = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Property&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL__PROPERTY = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Service&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL__SERVICE = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Method&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL__METHOD = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Properties&lt;/b&gt;&lt;/em&gt;' map.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL__PROPERTIES = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Init&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL__INIT = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Arguments&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL__ARGUMENTS = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 6;
+
+	/**
+	 * The number of structural features of the '&lt;em&gt;Call&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL_FEATURE_COUNT = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 7;
+
+	/**
+	 * The number of operations of the '&lt;em&gt;Call&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CALL_OPERATION_COUNT = NcorePackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.exec.impl.PropertyImpl &lt;em&gt;Property&lt;/em&gt;}' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see org.nasdanika.exec.impl.PropertyImpl
+	 * @see org.nasdanika.exec.impl.ExecPackageImpl#getProperty()
+	 * @generated
+	 */
+	int PROPERTY = 2;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Key&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY__KEY = 0;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/em&gt;' containment reference.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY__VALUE = 1;
+
+	/**
+	 * The number of structural features of the '&lt;em&gt;Property&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_FEATURE_COUNT = 2;
+
+	/**
+	 * The number of operations of the '&lt;em&gt;Property&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_OPERATION_COUNT = 0;
+
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.exec.impl.ConfiguratorImpl &lt;em&gt;Configurator&lt;/em&gt;}' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see org.nasdanika.exec.impl.ConfiguratorImpl
+	 * @see org.nasdanika.exec.impl.ExecPackageImpl#getConfigurator()
+	 * @generated
+	 */
+	int CONFIGURATOR = 3;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATOR__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Uris&lt;/b&gt;&lt;/em&gt;' attribute list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATOR__URIS = NcorePackage.MODEL_ELEMENT__URIS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Description&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATOR__DESCRIPTION = NcorePackage.MODEL_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Uuid&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATOR__UUID = NcorePackage.MODEL_ELEMENT__UUID;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Action Prototype&lt;/b&gt;&lt;/em&gt;' reference.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATOR__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Representations&lt;/b&gt;&lt;/em&gt;' map.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATOR__REPRESENTATIONS = NcorePackage.MODEL_ELEMENT__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Target&lt;/b&gt;&lt;/em&gt;' containment reference.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATOR__TARGET = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Properties&lt;/b&gt;&lt;/em&gt;' map.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATOR__PROPERTIES = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '&lt;em&gt;Configurator&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATOR_FEATURE_COUNT = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of operations of the '&lt;em&gt;Configurator&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATOR_OPERATION_COUNT = NcorePackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
+
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.exec.impl.EvalImpl &lt;em&gt;Eval&lt;/em&gt;}' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see org.nasdanika.exec.impl.EvalImpl
+	 * @see org.nasdanika.exec.impl.ExecPackageImpl#getEval()
+	 * @generated
+	 */
+	int EVAL = 4;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int EVAL__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Uris&lt;/b&gt;&lt;/em&gt;' attribute list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int EVAL__URIS = NcorePackage.MODEL_ELEMENT__URIS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Description&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int EVAL__DESCRIPTION = NcorePackage.MODEL_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Uuid&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int EVAL__UUID = NcorePackage.MODEL_ELEMENT__UUID;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Action Prototype&lt;/b&gt;&lt;/em&gt;' reference.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int EVAL__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Representations&lt;/b&gt;&lt;/em&gt;' map.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int EVAL__REPRESENTATIONS = NcorePackage.MODEL_ELEMENT__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Script&lt;/b&gt;&lt;/em&gt;' containment reference.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int EVAL__SCRIPT = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Bindings&lt;/b&gt;&lt;/em&gt;' map.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int EVAL__BINDINGS = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '&lt;em&gt;Eval&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int EVAL_FEATURE_COUNT = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of operations of the '&lt;em&gt;Eval&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int EVAL_OPERATION_COUNT = NcorePackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
+
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.exec.impl.FailImpl &lt;em&gt;Fail&lt;/em&gt;}' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see org.nasdanika.exec.impl.FailImpl
+	 * @see org.nasdanika.exec.impl.ExecPackageImpl#getFail()
+	 * @generated
+	 */
+	int FAIL = 5;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int FAIL__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Uris&lt;/b&gt;&lt;/em&gt;' attribute list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int FAIL__URIS = NcorePackage.MODEL_ELEMENT__URIS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Description&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int FAIL__DESCRIPTION = NcorePackage.MODEL_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Uuid&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int FAIL__UUID = NcorePackage.MODEL_ELEMENT__UUID;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Action Prototype&lt;/b&gt;&lt;/em&gt;' reference.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int FAIL__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Representations&lt;/b&gt;&lt;/em&gt;' map.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int FAIL__REPRESENTATIONS = NcorePackage.MODEL_ELEMENT__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Message&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int FAIL__MESSAGE = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '&lt;em&gt;Fail&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int FAIL_FEATURE_COUNT = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '&lt;em&gt;Fail&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int FAIL_OPERATION_COUNT = NcorePackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
+
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.exec.impl.ListImpl &lt;em&gt;List&lt;/em&gt;}' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see org.nasdanika.exec.impl.ListImpl
+	 * @see org.nasdanika.exec.impl.ExecPackageImpl#getList()
+	 * @generated
+	 */
+	int LIST = 6;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int LIST__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Uris&lt;/b&gt;&lt;/em&gt;' attribute list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int LIST__URIS = NcorePackage.MODEL_ELEMENT__URIS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Description&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int LIST__DESCRIPTION = NcorePackage.MODEL_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Uuid&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int LIST__UUID = NcorePackage.MODEL_ELEMENT__UUID;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Action Prototype&lt;/b&gt;&lt;/em&gt;' reference.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int LIST__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Representations&lt;/b&gt;&lt;/em&gt;' map.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int LIST__REPRESENTATIONS = NcorePackage.MODEL_ELEMENT__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Elements&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int LIST__ELEMENTS = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '&lt;em&gt;List&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_FEATURE_COUNT = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '&lt;em&gt;List&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_OPERATION_COUNT = NcorePackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
+
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.exec.impl.MapImpl &lt;em&gt;Map&lt;/em&gt;}' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see org.nasdanika.exec.impl.MapImpl
+	 * @see org.nasdanika.exec.impl.ExecPackageImpl#getMap()
+	 * @generated
+	 */
+	int MAP = 7;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Markers&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int MAP__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Uris&lt;/b&gt;&lt;/em&gt;' attribute list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int MAP__URIS = NcorePackage.MODEL_ELEMENT__URIS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Description&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int MAP__DESCRIPTION = NcorePackage.MODEL_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Uuid&lt;/b&gt;&lt;/em&gt;' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int MAP__UUID = NcorePackage.MODEL_ELEMENT__UUID;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Action Prototype&lt;/b&gt;&lt;/em&gt;' reference.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int MAP__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Representations&lt;/b&gt;&lt;/em&gt;' map.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int MAP__REPRESENTATIONS = NcorePackage.MODEL_ELEMENT__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Entries&lt;/b&gt;&lt;/em&gt;' map.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int MAP__ENTRIES = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '&lt;em&gt;Map&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int MAP_FEATURE_COUNT = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '&lt;em&gt;Map&lt;/em&gt;' class.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int MAP_OPERATION_COUNT = NcorePackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
+
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.exec.Block &lt;em&gt;Block&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for class '&lt;em&gt;Block&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Block
+	 * @generated
+	 */
+	EClass getBlock();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.exec.Block#getTry &lt;em&gt;Try&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the containment reference list '&lt;em&gt;Try&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Block#getTry()
+	 * @see #getBlock()
+	 * @generated
+	 */
+	EReference getBlock_Try();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.exec.Block#getCatch &lt;em&gt;Catch&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the containment reference list '&lt;em&gt;Catch&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Block#getCatch()
+	 * @see #getBlock()
+	 * @generated
+	 */
+	EReference getBlock_Catch();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.exec.Block#getFinally &lt;em&gt;Finally&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the containment reference list '&lt;em&gt;Finally&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Block#getFinally()
+	 * @see #getBlock()
+	 * @generated
+	 */
+	EReference getBlock_Finally();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.exec.Call &lt;em&gt;Call&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for class '&lt;em&gt;Call&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Call
+	 * @generated
+	 */
+	EClass getCall();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.exec.Call#getType &lt;em&gt;Type&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the attribute '&lt;em&gt;Type&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Call#getType()
+	 * @see #getCall()
+	 * @generated
+	 */
+	EAttribute getCall_Type();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.exec.Call#getProperty &lt;em&gt;Property&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the attribute '&lt;em&gt;Property&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Call#getProperty()
+	 * @see #getCall()
+	 * @generated
+	 */
+	EAttribute getCall_Property();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.exec.Call#getService &lt;em&gt;Service&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the attribute '&lt;em&gt;Service&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Call#getService()
+	 * @see #getCall()
+	 * @generated
+	 */
+	EAttribute getCall_Service();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.exec.Call#getMethod &lt;em&gt;Method&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the attribute '&lt;em&gt;Method&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Call#getMethod()
+	 * @see #getCall()
+	 * @generated
+	 */
+	EAttribute getCall_Method();
+
+	/**
+	 * Returns the meta object for the map '{@link org.nasdanika.exec.Call#getProperties &lt;em&gt;Properties&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the map '&lt;em&gt;Properties&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Call#getProperties()
+	 * @see #getCall()
+	 * @generated
+	 */
+	EReference getCall_Properties();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.exec.Call#getInit &lt;em&gt;Init&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the containment reference list '&lt;em&gt;Init&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Call#getInit()
+	 * @see #getCall()
+	 * @generated
+	 */
+	EReference getCall_Init();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.exec.Call#getArguments &lt;em&gt;Arguments&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the containment reference list '&lt;em&gt;Arguments&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Call#getArguments()
+	 * @see #getCall()
+	 * @generated
+	 */
+	EReference getCall_Arguments();
+
+	/**
+	 * Returns the meta object for class '{@link java.util.Map.Entry &lt;em&gt;Property&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for class '&lt;em&gt;Property&lt;/em&gt;'.
+	 * @see java.util.Map.Entry
+	 * @model keyDataType=&quot;org.eclipse.emf.ecore.EString&quot; keyRequired=&quot;true&quot;
+	 *        valueType=&quot;org.eclipse.emf.ecore.EObject&quot; valueContainment=&quot;true&quot; valueRequired=&quot;true&quot;
+	 *        annotation=&quot;urn:org.nasdanika documentation-reference='doc/property.md'&quot;
+	 * @generated
+	 */
+	EClass getProperty();
+
+	/**
+	 * Returns the meta object for the attribute '{@link java.util.Map.Entry &lt;em&gt;Key&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the attribute '&lt;em&gt;Key&lt;/em&gt;'.
+	 * @see java.util.Map.Entry
+	 * @see #getProperty()
+	 * @generated
+	 */
+	EAttribute getProperty_Key();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link java.util.Map.Entry &lt;em&gt;Value&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the containment reference '&lt;em&gt;Value&lt;/em&gt;'.
+	 * @see java.util.Map.Entry
+	 * @see #getProperty()
+	 * @generated
+	 */
+	EReference getProperty_Value();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.exec.Configurator &lt;em&gt;Configurator&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for class '&lt;em&gt;Configurator&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Configurator
+	 * @generated
+	 */
+	EClass getConfigurator();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.exec.Configurator#getTarget &lt;em&gt;Target&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the containment reference '&lt;em&gt;Target&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Configurator#getTarget()
+	 * @see #getConfigurator()
+	 * @generated
+	 */
+	EReference getConfigurator_Target();
+
+	/**
+	 * Returns the meta object for the map '{@link org.nasdanika.exec.Configurator#getProperties &lt;em&gt;Properties&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the map '&lt;em&gt;Properties&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Configurator#getProperties()
+	 * @see #getConfigurator()
+	 * @generated
+	 */
+	EReference getConfigurator_Properties();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.exec.Eval &lt;em&gt;Eval&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for class '&lt;em&gt;Eval&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Eval
+	 * @generated
+	 */
+	EClass getEval();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.exec.Eval#getScript &lt;em&gt;Script&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the containment reference '&lt;em&gt;Script&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Eval#getScript()
+	 * @see #getEval()
+	 * @generated
+	 */
+	EReference getEval_Script();
+
+	/**
+	 * Returns the meta object for the map '{@link org.nasdanika.exec.Eval#getBindings &lt;em&gt;Bindings&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the map '&lt;em&gt;Bindings&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Eval#getBindings()
+	 * @see #getEval()
+	 * @generated
+	 */
+	EReference getEval_Bindings();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.exec.Fail &lt;em&gt;Fail&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for class '&lt;em&gt;Fail&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Fail
+	 * @generated
+	 */
+	EClass getFail();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.exec.Fail#getMessage &lt;em&gt;Message&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the attribute '&lt;em&gt;Message&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Fail#getMessage()
+	 * @see #getFail()
+	 * @generated
+	 */
+	EAttribute getFail_Message();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.exec.List &lt;em&gt;List&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for class '&lt;em&gt;List&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.List
+	 * @generated
+	 */
+	EClass getList();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.exec.List#getElements &lt;em&gt;Elements&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the containment reference list '&lt;em&gt;Elements&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.List#getElements()
+	 * @see #getList()
+	 * @generated
+	 */
+	EReference getList_Elements();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.exec.Map &lt;em&gt;Map&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for class '&lt;em&gt;Map&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Map
+	 * @generated
+	 */
+	EClass getMap();
+
+	/**
+	 * Returns the meta object for the map '{@link org.nasdanika.exec.Map#getEntries &lt;em&gt;Entries&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the meta object for the map '&lt;em&gt;Entries&lt;/em&gt;'.
+	 * @see org.nasdanika.exec.Map#getEntries()
+	 * @see #getMap()
+	 * @generated
+	 */
+	EReference getMap_Entries();
+
+	/**
+	 * Returns the factory that creates the instances of the model.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the factory that creates the instances of the model.
+	 * @generated
+	 */
+	ExecFactory getExecFactory();
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * Defines literals for the meta objects that represent
+	 * &lt;ul&gt;
+	 *   &lt;li&gt;each class,&lt;/li&gt;
+	 *   &lt;li&gt;each feature of each class,&lt;/li&gt;
+	 *   &lt;li&gt;each operation of each class,&lt;/li&gt;
+	 *   &lt;li&gt;each enum,&lt;/li&gt;
+	 *   &lt;li&gt;and each data type&lt;/li&gt;
+	 * &lt;/ul&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	interface Literals {
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.exec.impl.BlockImpl &lt;em&gt;Block&lt;/em&gt;}' class.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @see org.nasdanika.exec.impl.BlockImpl
+		 * @see org.nasdanika.exec.impl.ExecPackageImpl#getBlock()
+		 * @generated
+		 */
+<span class="fc" id="L1164">		EClass BLOCK = eINSTANCE.getBlock();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Try&lt;/b&gt;&lt;/em&gt;' containment reference list feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1172">		EReference BLOCK__TRY = eINSTANCE.getBlock_Try();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Catch&lt;/b&gt;&lt;/em&gt;' containment reference list feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1180">		EReference BLOCK__CATCH = eINSTANCE.getBlock_Catch();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Finally&lt;/b&gt;&lt;/em&gt;' containment reference list feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1188">		EReference BLOCK__FINALLY = eINSTANCE.getBlock_Finally();</span>
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.exec.impl.CallImpl &lt;em&gt;Call&lt;/em&gt;}' class.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @see org.nasdanika.exec.impl.CallImpl
+		 * @see org.nasdanika.exec.impl.ExecPackageImpl#getCall()
+		 * @generated
+		 */
+<span class="fc" id="L1198">		EClass CALL = eINSTANCE.getCall();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Type&lt;/b&gt;&lt;/em&gt;' attribute feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1206">		EAttribute CALL__TYPE = eINSTANCE.getCall_Type();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Property&lt;/b&gt;&lt;/em&gt;' attribute feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1214">		EAttribute CALL__PROPERTY = eINSTANCE.getCall_Property();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Service&lt;/b&gt;&lt;/em&gt;' attribute feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1222">		EAttribute CALL__SERVICE = eINSTANCE.getCall_Service();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Method&lt;/b&gt;&lt;/em&gt;' attribute feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1230">		EAttribute CALL__METHOD = eINSTANCE.getCall_Method();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Properties&lt;/b&gt;&lt;/em&gt;' map feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1238">		EReference CALL__PROPERTIES = eINSTANCE.getCall_Properties();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Init&lt;/b&gt;&lt;/em&gt;' containment reference list feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1246">		EReference CALL__INIT = eINSTANCE.getCall_Init();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Arguments&lt;/b&gt;&lt;/em&gt;' containment reference list feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1254">		EReference CALL__ARGUMENTS = eINSTANCE.getCall_Arguments();</span>
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.exec.impl.PropertyImpl &lt;em&gt;Property&lt;/em&gt;}' class.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @see org.nasdanika.exec.impl.PropertyImpl
+		 * @see org.nasdanika.exec.impl.ExecPackageImpl#getProperty()
+		 * @generated
+		 */
+<span class="fc" id="L1264">		EClass PROPERTY = eINSTANCE.getProperty();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Key&lt;/b&gt;&lt;/em&gt;' attribute feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1272">		EAttribute PROPERTY__KEY = eINSTANCE.getProperty_Key();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/em&gt;' containment reference feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1280">		EReference PROPERTY__VALUE = eINSTANCE.getProperty_Value();</span>
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.exec.impl.ConfiguratorImpl &lt;em&gt;Configurator&lt;/em&gt;}' class.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @see org.nasdanika.exec.impl.ConfiguratorImpl
+		 * @see org.nasdanika.exec.impl.ExecPackageImpl#getConfigurator()
+		 * @generated
+		 */
+<span class="fc" id="L1290">		EClass CONFIGURATOR = eINSTANCE.getConfigurator();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Target&lt;/b&gt;&lt;/em&gt;' containment reference feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1298">		EReference CONFIGURATOR__TARGET = eINSTANCE.getConfigurator_Target();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Properties&lt;/b&gt;&lt;/em&gt;' map feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1306">		EReference CONFIGURATOR__PROPERTIES = eINSTANCE.getConfigurator_Properties();</span>
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.exec.impl.EvalImpl &lt;em&gt;Eval&lt;/em&gt;}' class.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @see org.nasdanika.exec.impl.EvalImpl
+		 * @see org.nasdanika.exec.impl.ExecPackageImpl#getEval()
+		 * @generated
+		 */
+<span class="fc" id="L1316">		EClass EVAL = eINSTANCE.getEval();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Script&lt;/b&gt;&lt;/em&gt;' containment reference feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1324">		EReference EVAL__SCRIPT = eINSTANCE.getEval_Script();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Bindings&lt;/b&gt;&lt;/em&gt;' map feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1332">		EReference EVAL__BINDINGS = eINSTANCE.getEval_Bindings();</span>
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.exec.impl.FailImpl &lt;em&gt;Fail&lt;/em&gt;}' class.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @see org.nasdanika.exec.impl.FailImpl
+		 * @see org.nasdanika.exec.impl.ExecPackageImpl#getFail()
+		 * @generated
+		 */
+<span class="fc" id="L1342">		EClass FAIL = eINSTANCE.getFail();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Message&lt;/b&gt;&lt;/em&gt;' attribute feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1350">		EAttribute FAIL__MESSAGE = eINSTANCE.getFail_Message();</span>
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.exec.impl.ListImpl &lt;em&gt;List&lt;/em&gt;}' class.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @see org.nasdanika.exec.impl.ListImpl
+		 * @see org.nasdanika.exec.impl.ExecPackageImpl#getList()
+		 * @generated
+		 */
+<span class="fc" id="L1360">		EClass LIST = eINSTANCE.getList();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Elements&lt;/b&gt;&lt;/em&gt;' containment reference list feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1368">		EReference LIST__ELEMENTS = eINSTANCE.getList_Elements();</span>
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.exec.impl.MapImpl &lt;em&gt;Map&lt;/em&gt;}' class.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @see org.nasdanika.exec.impl.MapImpl
+		 * @see org.nasdanika.exec.impl.ExecPackageImpl#getMap()
+		 * @generated
+		 */
+<span class="fc" id="L1378">		EClass MAP = eINSTANCE.getMap();</span>
+
+		/**
+		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Entries&lt;/b&gt;&lt;/em&gt;' map feature.
+		 * &lt;!-- begin-user-doc --&gt;
+		 * &lt;!-- end-user-doc --&gt;
+		 * @generated
+		 */
+<span class="fc" id="L1386">		EReference MAP__ENTRIES = eINSTANCE.getMap_Entries();</span>
+
+	}
+
+} //ExecPackage
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

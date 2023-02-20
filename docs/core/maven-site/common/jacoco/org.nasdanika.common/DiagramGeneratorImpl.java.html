@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DiagramGeneratorImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">DiagramGeneratorImpl.java</span></div><h1>DiagramGeneratorImpl.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+import org.apache.commons.text.StringEscapeUtils;
+import org.json.JSONObject;
+
+<span class="nc" id="L6">public class DiagramGeneratorImpl implements DiagramGenerator {</span>
+	
+	@Override
+	public String generateDiagram(String spec, String dialect) {
+<span class="nc bnc" id="L10" title="All 2 branches missed.">		if (DRAWIO_DIALECT.equals(dialect)) {</span>
+<span class="nc" id="L11">			JSONObject data = new JSONObject();</span>
+<span class="nc" id="L12">			data.put(&quot;highlight&quot;, &quot;#0000ff&quot;);</span>
+<span class="nc" id="L13">			data.put(&quot;nav&quot;, true);</span>
+<span class="nc" id="L14">			data.put(&quot;resize&quot;,true);</span>
+<span class="nc" id="L15">			data.put(&quot;toolbar&quot;, &quot;zoom layers tags lightbox&quot;);</span>
+<span class="nc" id="L16">			data.put(&quot;edit&quot;,&quot;_blank&quot;);</span>
+			
+<span class="nc" id="L18">			data.put(&quot;xml&quot;, spec);</span>
+			
+<span class="nc" id="L20">			String diagramDiv = &quot;&lt;div class=\&quot;mxgraph\&quot; style=\&quot;max-width:100%;border:1px solid transparent;\&quot; data-mxgraph=\&quot;&quot; + StringEscapeUtils.escapeHtml4(data.toString()) + &quot;\&quot;&gt;&lt;/div&gt;&quot;;</span>
+<span class="nc" id="L21">			String drawioViewer = getDrawioViewer();</span>
+<span class="nc bnc" id="L22" title="All 2 branches missed.">			if (Util.isBlank(drawioViewer)) {</span>
+<span class="nc" id="L23">				return diagramDiv;</span>
+			}
+<span class="nc" id="L25">			String script = &quot;&lt;script type=\&quot;text/javascript\&quot; src=\&quot;&quot; + drawioViewer + &quot;\&quot;&gt;&lt;/script&gt;&quot;;</span>
+<span class="nc" id="L26">			return diagramDiv + System.lineSeparator() + script;		</span>
+		}
+		
+<span class="nc bnc" id="L29" title="All 2 branches missed.">		if (MERMAID_DIALECT.equals(dialect)) {</span>
+<span class="nc" id="L30">			String mermaidDiv = &quot;&lt;div class=\&quot;mermaid\&quot;&gt;&quot;  + System.lineSeparator() + spec + System.lineSeparator() + &quot;&lt;/div&gt;&quot;;</span>
+<span class="nc" id="L31">			String mermaidInitialize = getMermaidInitialize();</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">			if (Util.isBlank(mermaidInitialize)) {</span>
+<span class="nc" id="L33">				return mermaidDiv;</span>
+			}
+<span class="nc" id="L35">			return mermaidDiv</span>
+<span class="nc" id="L36">					+ System.lineSeparator()</span>
+					+ &quot;&lt;script&gt;&quot;
+<span class="nc" id="L38">					+ System.lineSeparator()</span>
+					+ mermaidInitialize
+<span class="nc" id="L40">					+ System.lineSeparator()</span>
+					+ &quot;&lt;/script&gt;&quot;;					
+		}
+		
+<span class="nc" id="L44">		throw new UnsupportedOperationException(&quot;Unsupported dialect: &quot; + dialect);</span>
+	}
+
+	protected String getDrawioViewer() {
+<span class="nc" id="L48">		return &quot;https://cdn.jsdelivr.net/gh/Nasdanika/drawio@dev/src/main/webapp/js/viewer-static.min.js&quot;;</span>
+	}
+	
+	protected String getMermaidInitialize() {
+<span class="nc" id="L52">		return &quot;mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });&quot;;</span>
+	}
+
+	@Override
+	public boolean isSupported(String dialect) {
+<span class="nc bnc" id="L57" title="All 4 branches missed.">		return DRAWIO_DIALECT.equals(dialect) || MERMAID_DIALECT.equals(dialect);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

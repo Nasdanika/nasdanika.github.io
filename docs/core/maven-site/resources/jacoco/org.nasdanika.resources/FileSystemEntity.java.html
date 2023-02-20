@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileSystemEntity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Resources</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.resources</a> &gt; <span class="el_source">FileSystemEntity.java</span></div><h1>FileSystemEntity.java</h1><pre class="source lang-java linenums">package org.nasdanika.resources;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.nasdanika.common.NasdanikaException;
+import org.nasdanika.common.ProgressMonitor;
+
+/**
+ * Wrapper for a file system file.
+ * @author Pavel
+ *
+ */
+public class FileSystemEntity extends FileSystemResource implements BinaryEntity {
+
+	public FileSystemEntity(java.io.File file) {
+<span class="nc" id="L22">		super(file);</span>
+<span class="nc" id="L23">	}</span>
+
+	@Override
+	public InputStream getState(ProgressMonitor monitor) {
+<span class="nc bnc" id="L27" title="All 2 branches missed.">		if (!file.isFile()) {</span>
+<span class="nc" id="L28">			throw new UnsupportedOperationException(&quot;Not a file: &quot;+file.getAbsolutePath());</span>
+		}
+<span class="nc bnc" id="L30" title="All 2 branches missed.">		if (!canRead()) {</span>
+<span class="nc" id="L31">			throw new UnsupportedOperationException(&quot;Cannot read: &quot;+file.getAbsolutePath());			</span>
+		}
+		try {
+<span class="nc" id="L34">			return new FileInputStream(file);</span>
+<span class="nc" id="L35">		} catch (FileNotFoundException e) {</span>
+<span class="nc" id="L36">			throw new NasdanikaException(e);</span>
+		}
+	}
+
+	@Override
+	public void setState(InputStream contents, ProgressMonitor monitor) {
+<span class="nc" id="L42">		java.io.File parent = file.getParentFile();</span>
+<span class="nc bnc" id="L43" title="All 4 branches missed.">		if (!parent.exists() &amp;&amp; !parent.mkdirs()) {</span>
+<span class="nc" id="L44">			throw new NasdanikaException(&quot;Directory does not exist and could not be created: &quot;+parent.getAbsolutePath());</span>
+		}
+<span class="nc" id="L46">		long total = 0;</span>
+<span class="nc" id="L47">		try (BufferedInputStream bin = new BufferedInputStream(contents); BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(file))) {</span>
+			int b;
+<span class="nc bnc" id="L49" title="All 2 branches missed.">			while ((b = bin.read()) != -1) {</span>
+<span class="nc" id="L50">				bout.write(b);</span>
+<span class="nc" id="L51">				++total;</span>
+				// Progress reporting at a regular interval?
+			}
+<span class="nc" id="L54">		} catch (IOException e) {</span>
+<span class="nc" id="L55">			monitor.worked(100, &quot;Error setting contents: &quot;+e+&quot;, stored &quot;+total+&quot; bytes&quot;);</span>
+<span class="nc" id="L56">			throw new NasdanikaException(&quot;Could not set contents of &quot;+file.getAbsolutePath(), e);</span>
+<span class="nc" id="L57">		}</span>
+<span class="nc" id="L58">		monitor.worked(100, &quot;Stored &quot;+total+&quot; bytes&quot;);</span>
+<span class="nc" id="L59">	}</span>
+
+	@Override
+	public void appendState(InputStream contents, ProgressMonitor monitor) {
+<span class="nc" id="L63">		long total = 0;</span>
+<span class="nc" id="L64">		try (BufferedInputStream bin = new BufferedInputStream(contents); BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(file, true))) {</span>
+			int b;
+<span class="nc bnc" id="L66" title="All 2 branches missed.">			while ((b = bin.read()) != -1) {</span>
+<span class="nc" id="L67">				bout.write(b);</span>
+<span class="nc" id="L68">				++total;</span>
+				// Progress reporting at a regular interval?
+			}
+<span class="nc" id="L71">		} catch (IOException e) {</span>
+<span class="nc" id="L72">			monitor.worked(100, &quot;Error appending contents: &quot;+e+&quot;, appended &quot;+total+&quot; bytes&quot;);</span>
+<span class="nc" id="L73">			throw new NasdanikaException(&quot;Could not append contents to &quot;+file.getAbsolutePath(), e);</span>
+<span class="nc" id="L74">		}</span>
+<span class="nc" id="L75">		monitor.worked(100, &quot;Appended &quot;+total+&quot; bytes&quot;);</span>
+<span class="nc" id="L76">	}</span>
+
+	@Override
+	public boolean canRead() {
+<span class="nc" id="L80">		return file.canRead();</span>
+	}
+
+	@Override
+	public boolean canWrite() {
+<span class="nc" id="L85">		return file.canWrite();</span>
+	}
+
+	@Override
+	public long size(ProgressMonitor monitor) {
+<span class="nc bnc" id="L90" title="All 2 branches missed.">		return file.isFile() ? file.length() : 0;</span>
+	}
+
+	// TODO - digest.
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

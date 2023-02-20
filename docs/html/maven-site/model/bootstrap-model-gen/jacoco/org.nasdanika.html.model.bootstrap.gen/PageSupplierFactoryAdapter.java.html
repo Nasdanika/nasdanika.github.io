@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PageSupplierFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Bootstrap Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.bootstrap.gen</a> &gt; <span class="el_source">PageSupplierFactoryAdapter.java</span></div><h1>PageSupplierFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.bootstrap.gen;
+
+import java.util.List;
+
+import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.Function;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.persistence.ConfigurationException;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.HTMLPage;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.model.bootstrap.Page;
+
+public class PageSupplierFactoryAdapter extends org.nasdanika.html.model.html.gen.PageSupplierFactoryAdapter {
+	
+	public PageSupplierFactoryAdapter(Page page) {
+<span class="fc" id="L19">		super(page);</span>
+<span class="fc" id="L20">	}</span>
+	
+	@Override
+	public boolean isAdapterForType(Object type) {
+<span class="nc bnc" id="L24" title="All 2 branches missed.">		return type == SupplierFactory.class;</span>
+	}
+	
+	protected Function&lt;BiSupplier&lt;List&lt;Object&gt;,List&lt;Object&gt;&gt;, HTMLPage&gt; createPageFunction(Context context) {
+<span class="fc" id="L28">		return new Function&lt;BiSupplier&lt;List&lt;Object&gt;,List&lt;Object&gt;&gt;, HTMLPage&gt;() {</span>
+			
+			@Override
+			public double size() {
+<span class="fc" id="L32">				return 1;</span>
+			}
+			
+			@Override
+			public String name() {
+<span class="fc" id="L37">				return &quot;Bootstrap Page&quot;;</span>
+			}
+			
+			@Override
+			public HTMLPage execute(BiSupplier&lt;List&lt;Object&gt;,List&lt;Object&gt;&gt; headAndBody, ProgressMonitor progressMonitor) {
+<span class="fc" id="L42">				BootstrapFactory factory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);</span>
+<span class="fc" id="L43">				HTMLFactory htmlFactory = factory.getHTMLFactory();</span>
+<span class="fc" id="L44">				Page semanticElement = (Page) getTarget();</span>
+<span class="fc" id="L45">				String pageName = context.interpolateToString(semanticElement.getName());</span>
+<span class="fc" id="L46">				HTMLPage ret = htmlFactory.page();</span>
+<span class="fc" id="L47">				ret.title(pageName);</span>
+<span class="fc" id="L48">				ret.lang(semanticElement.getLanguage());</span>
+				
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">				if (semanticElement.isCdn()) {</span>
+<span class="fc" id="L51">					factory.bootstrapCdnHTMLPage(ret, semanticElement.getTheme());</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">				} else if (semanticElement.getTheme() != null) {</span>
+<span class="nc" id="L53">					throw new ConfigurationException(&quot;Theme cannot be specified when 'cdn' is set to 'false'&quot;);			</span>
+				}
+				
+<span class="fc" id="L56">				factory.bootstrapHTMLPage(ret);</span>
+				
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">				for (String styleseet: semanticElement.getStylesheets()) {</span>
+<span class="nc" id="L59">					ret.stylesheet(styleseet);</span>
+<span class="nc" id="L60">				}</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">				for (String script: semanticElement.getScripts()) {</span>
+<span class="nc" id="L62">					ret.script(script);</span>
+<span class="nc" id="L63">				}				</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">				for (Object he: headAndBody.getFirst()) {</span>
+<span class="fc" id="L65">					ret.head(he);</span>
+<span class="fc" id="L66">				}</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">				for (Object he: context.get(PAGE_HEAD_PROPERTY, List.class)) {</span>
+<span class="nc" id="L68">					ret.head(he);</span>
+<span class="nc" id="L69">				}</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">				for (Object be: context.get(PAGE_BODY_PROPERTY, List.class)) {</span>
+<span class="nc" id="L71">					ret.body(be);</span>
+<span class="nc" id="L72">				}</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">				for (Object be: headAndBody.getSecond()) {</span>
+<span class="fc" id="L74">					ret.body(be);</span>
+<span class="fc" id="L75">				}</span>
+<span class="fc" id="L76">				return ret;</span>
+			}
+		};
+		
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

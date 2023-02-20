@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractSplitJoinMap.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">AbstractSplitJoinMap.java</span></div><h1>AbstractSplitJoinMap.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
+<span class="fc" id="L9">public abstract class AbstractSplitJoinMap&lt;S,C,K,V&gt; extends AbstractMap&lt;K, V&gt; {</span>
+	
+	/**
+	 * @return State to be split into chunks.
+	 */
+	protected abstract S getState();
+	
+	/**
+	 * Sets state composed from chunks created from elements.
+	 * @param state
+	 */
+	protected abstract void setState(S state);
+	
+	/**
+	 * Splits state into an array of chunks
+	 * @param state
+	 * @return
+	 */
+	protected abstract List&lt;C&gt; split(S state);
+	
+	/**
+	 * Joins an array of chunks into a state.
+	 * @param chunks
+	 * @return
+	 */
+	protected abstract S join(List&lt;C&gt; chunks);
+	
+	/**
+	 * Loads a chunk - converts it to an unmodifiable entry which does not have to implement setValue()
+	 * as it is not used anyway.
+	 * @param chunk
+	 * @return
+	 */
+	protected abstract Entry&lt;K,V&gt; load(C chunk);
+	
+	/**
+	 * Stores an element - converts it into a chunk  
+	 * @param element
+	 * @return
+	 */
+	protected abstract C store(Entry&lt;K,V&gt; element);
+	
+<span class="fc" id="L51">	private AbstractSplitJoinSet&lt;S, C, Entry&lt;K,V&gt;&gt; entrySet = new AbstractSplitJoinSet&lt;S, C, Entry&lt;K,V&gt;&gt;() {</span>
+
+		@Override
+		protected S getState() {
+<span class="fc" id="L55">			return AbstractSplitJoinMap.this.getState();</span>
+		}
+
+		@Override
+		protected void setState(S state) {
+<span class="fc" id="L60">			AbstractSplitJoinMap.this.setState(state);</span>
+<span class="fc" id="L61">		}</span>
+
+		@Override
+		protected List&lt;C&gt; split(S state) {
+<span class="fc" id="L65">			return AbstractSplitJoinMap.this.split(state);</span>
+		}
+
+		@Override
+		protected S join(List&lt;C&gt; chunks) {
+<span class="fc" id="L70">			return AbstractSplitJoinMap.this.join(chunks);</span>
+		}
+
+		@Override
+		protected Entry&lt;K, V&gt; load(C chunk) {
+<span class="fc" id="L75">			Entry&lt;K, V&gt; valueEntry = AbstractSplitJoinMap.this.load(chunk);			</span>
+<span class="fc" id="L76">			return new Entry&lt;K,V&gt;() {</span>
+<span class="fc" id="L77">				V value = valueEntry.getValue();</span>
+
+				@Override
+				public K getKey() {
+<span class="fc" id="L81">					return valueEntry.getKey();</span>
+				}
+
+				@Override
+				public V getValue() {
+<span class="fc" id="L86">					return value;</span>
+				}
+
+				@Override
+				public V setValue(V value) {
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">					if (Objects.equals(this.value, value)) {</span>
+<span class="nc" id="L92">						return value;</span>
+					}
+<span class="fc" id="L94">					V prevValue = this.value;</span>
+<span class="fc" id="L95">					this.value = value;</span>
+<span class="fc" id="L96">					List&lt;C&gt; chunks = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">					for (C chunk: split(getState())) {</span>
+<span class="fc" id="L98">						Entry&lt;K, V&gt; e = load(chunk);</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">						if (Objects.equals(e.getKey(), valueEntry.getKey())) {</span>
+<span class="fc" id="L100">							chunks.add(store(this));</span>
+						} else {
+<span class="fc" id="L102">							chunks.add(chunk);</span>
+						}
+<span class="fc" id="L104">					}</span>
+<span class="fc" id="L105">					setState(join(chunks));</span>
+<span class="fc" id="L106">					return prevValue;</span>
+				}
+				
+			};
+		}
+
+		@Override
+		protected C store(Entry&lt;K, V&gt; element) {
+<span class="fc" id="L114">			return AbstractSplitJoinMap.this.store(element);</span>
+		}
+		
+	};
+
+	@Override
+	public Set&lt;Entry&lt;K, V&gt;&gt; entrySet() {
+<span class="fc" id="L121">		return entrySet;</span>
+	}
+	
+	@Override
+	public V put(K key, V value) {
+<span class="fc" id="L126">		Set&lt;Entry&lt;K, V&gt;&gt; entrySet = entrySet();</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		for (Entry&lt;K,V&gt; e: entrySet) {</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">			if (Objects.equals(key, e.getKey())) {</span>
+<span class="fc" id="L129">				V prev = e.getValue();</span>
+<span class="fc" id="L130">				e.setValue(value);</span>
+<span class="fc" id="L131">				return prev;</span>
+			}
+<span class="fc" id="L133">		}</span>
+<span class="fc" id="L134">		entrySet.add(new Entry&lt;K,V&gt;() {</span>
+
+			@Override
+			public K getKey() {
+<span class="fc" id="L138">				return key;</span>
+			}
+
+			@Override
+			public V getValue() {
+<span class="fc" id="L143">				return value;</span>
+			}
+
+			@Override
+			public V setValue(V value) {
+<span class="nc" id="L148">				throw new UnsupportedOperationException();</span>
+			}
+			
+		});
+<span class="fc" id="L152">		return null;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

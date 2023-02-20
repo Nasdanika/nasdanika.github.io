@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PropertyImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Execution Model</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.impl</a> &gt; <span class="el_source">PropertyImpl.java</span></div><h1>PropertyImpl.java</h1><pre class="source lang-java linenums">/**
+ */
+package org.nasdanika.exec.impl;
+
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEMap;
+import org.eclipse.emf.common.util.EMap;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.nasdanika.exec.ExecPackage;
+
+/**
+ * &lt;!-- begin-user-doc --&gt;
+ * An implementation of the model object '&lt;em&gt;&lt;b&gt;Property&lt;/b&gt;&lt;/em&gt;'.
+ * &lt;!-- end-user-doc --&gt;
+ * &lt;p&gt;
+ * The following features are implemented:
+ * &lt;/p&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.impl.PropertyImpl#getTypedKey &lt;em&gt;Key&lt;/em&gt;}&lt;/li&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.impl.PropertyImpl#getTypedValue &lt;em&gt;Value&lt;/em&gt;}&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * @generated
+ */
+public class PropertyImpl extends MinimalEObjectImpl.Container implements BasicEMap.Entry&lt;String,EObject&gt; {
+	/**
+	 * The default value of the '{@link #getTypedKey() &lt;em&gt;Key&lt;/em&gt;}' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see #getTypedKey()
+	 * @generated
+	 * @ordered
+	 */
+<span class="fc" id="L37">	protected static final String KEY_EDEFAULT = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected PropertyImpl() {
+<span class="fc" id="L45">		super();</span>
+<span class="fc" id="L46">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+<span class="fc" id="L55">		return ExecPackage.Literals.PROPERTY;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	protected int eStaticFeatureCount() {
+<span class="fc" id="L65">		return 0;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	public String getTypedKey() {
+<span class="fc" id="L74">		return (String)eDynamicGet(ExecPackage.PROPERTY__KEY, ExecPackage.Literals.PROPERTY__KEY, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	public void setTypedKey(String newKey) {
+<span class="fc" id="L83">		eDynamicSet(ExecPackage.PROPERTY__KEY, ExecPackage.Literals.PROPERTY__KEY, newKey);</span>
+<span class="fc" id="L84">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public EObject getTypedValue() {
+<span class="fc" id="L93">		return (EObject)eDynamicGet(ExecPackage.PROPERTY__VALUE, ExecPackage.Literals.PROPERTY__VALUE, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	public NotificationChain basicSetTypedValue(EObject newValue, NotificationChain msgs) {
+<span class="nc" id="L102">		msgs = eDynamicInverseAdd((InternalEObject)newValue, ExecPackage.PROPERTY__VALUE, msgs);</span>
+<span class="nc" id="L103">		return msgs;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	public void setTypedValue(EObject newValue) {
+<span class="fc" id="L112">		eDynamicSet(ExecPackage.PROPERTY__VALUE, ExecPackage.Literals.PROPERTY__VALUE, newValue);</span>
+<span class="fc" id="L113">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		switch (featureID) {</span>
+			case ExecPackage.PROPERTY__VALUE:
+<span class="nc" id="L124">				return basicSetTypedValue(null, msgs);</span>
+		}
+<span class="nc" id="L126">		return super.eInverseRemove(otherEnd, featureID, msgs);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+<span class="pc bpc" id="L136" title="1 of 3 branches missed.">		switch (featureID) {</span>
+			case ExecPackage.PROPERTY__KEY:
+<span class="fc" id="L138">				return getTypedKey();</span>
+			case ExecPackage.PROPERTY__VALUE:
+<span class="fc" id="L140">				return getTypedValue();</span>
+		}
+<span class="nc" id="L142">		return super.eGet(featureID, resolve, coreType);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public void eSet(int featureID, Object newValue) {
+<span class="nc bnc" id="L153" title="All 3 branches missed.">		switch (featureID) {</span>
+			case ExecPackage.PROPERTY__KEY:
+<span class="nc" id="L155">				setTypedKey((String)newValue);</span>
+<span class="nc" id="L156">				return;</span>
+			case ExecPackage.PROPERTY__VALUE:
+<span class="nc" id="L158">				setTypedValue((EObject)newValue);</span>
+<span class="nc" id="L159">				return;</span>
+		}
+<span class="nc" id="L161">		super.eSet(featureID, newValue);</span>
+<span class="nc" id="L162">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+<span class="nc bnc" id="L171" title="All 3 branches missed.">		switch (featureID) {</span>
+			case ExecPackage.PROPERTY__KEY:
+<span class="nc" id="L173">				setTypedKey(KEY_EDEFAULT);</span>
+<span class="nc" id="L174">				return;</span>
+			case ExecPackage.PROPERTY__VALUE:
+<span class="nc" id="L176">				setTypedValue((EObject)null);</span>
+<span class="nc" id="L177">				return;</span>
+		}
+<span class="nc" id="L179">		super.eUnset(featureID);</span>
+<span class="nc" id="L180">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+<span class="pc bpc" id="L189" title="1 of 3 branches missed.">		switch (featureID) {</span>
+			case ExecPackage.PROPERTY__KEY:
+<span class="pc bpc" id="L191" title="4 of 6 branches missed.">				return KEY_EDEFAULT == null ? getTypedKey() != null : !KEY_EDEFAULT.equals(getTypedKey());</span>
+			case ExecPackage.PROPERTY__VALUE:
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">				return getTypedValue() != null;</span>
+		}
+<span class="nc" id="L195">		return super.eIsSet(featureID);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="fc" id="L203">	protected int hash = -1;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public int getHash() {
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">		if (hash == -1) {</span>
+<span class="nc" id="L213">			Object theKey = getKey();</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">			hash = (theKey == null ? 0 : theKey.hashCode());</span>
+		}
+<span class="fc" id="L216">		return hash;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void setHash(int hash) {
+<span class="fc" id="L226">		this.hash = hash;</span>
+<span class="fc" id="L227">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public String getKey() {
+<span class="fc" id="L236">		return getTypedKey();</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void setKey(String key) {
+<span class="fc" id="L246">		setTypedKey(key);</span>
+<span class="fc" id="L247">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EObject getValue() {
+<span class="fc" id="L256">		return getTypedValue();</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public EObject setValue(EObject value) {
+<span class="fc" id="L266">		EObject oldValue = getValue();</span>
+<span class="fc" id="L267">		setTypedValue(value);</span>
+<span class="fc" id="L268">		return oldValue;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public EMap&lt;String, EObject&gt; getEMap() {
+<span class="nc" id="L278">		EObject container = eContainer();</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">		return container == null ? null : (EMap&lt;String, EObject&gt;)container.eGet(eContainmentFeature());</span>
+	}
+
+} //PropertyImpl
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

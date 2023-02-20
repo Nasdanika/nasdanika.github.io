@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TagImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika HTML</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.impl</a> &gt; <span class="el_source">TagImpl.java</span></div><h1>TagImpl.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.impl;
+
+import java.util.List;
+
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
+
+class TagImpl extends HTMLElementImpl&lt;Tag&gt; implements Tag {
+	
+	TagImpl(HTMLFactory factory, String tagName, boolean nonEmpty, Object... content) {
+<span class="fc" id="L12">		super(factory, tagName, nonEmpty);</span>
+<span class="fc bfc" id="L13" title="All 2 branches covered.">		for (Object c: content) {</span>
+<span class="fc" id="L14">			this.content.add(c);</span>
+		}
+<span class="fc" id="L16">	}</span>
+	
+	@Override
+	public Tag content(Object... content) {
+<span class="nc" id="L20">		return super.content(content);</span>
+	}
+	
+	public List&lt;Object&gt; getContent() {
+<span class="fc" id="L24">		return content;</span>
+	}
+	
+	@Override
+	public String getTagName() {
+<span class="fc" id="L29">		return super.getTagName();</span>
+	}
+
+	@Override
+	public boolean is(TagName tagName) {
+<span class="nc" id="L34">		return getTagName().equalsIgnoreCase(tagName.name());</span>
+	}
+	
+	@Override
+	public String produce(int indent) {
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">		for (TagName tagName: TagName.values()) {</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">			if (tagName.name().equalsIgnoreCase(getTagName())) {</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">				return super.produce(tagName.indent ? indent : -1); </span>
+			}
+		}
+<span class="nc" id="L44">		return super.produce(indent);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

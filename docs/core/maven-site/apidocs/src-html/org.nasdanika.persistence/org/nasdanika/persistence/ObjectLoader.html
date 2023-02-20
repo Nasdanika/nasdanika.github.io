@@ -1,0 +1,251 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.persistence;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.io.File;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.io.IOException;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.io.InputStream;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.io.InputStreamReader;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.io.Reader;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import java.net.MalformedURLException;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import java.net.URL;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import java.nio.charset.Charset;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import java.nio.charset.StandardCharsets;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.util.ArrayList;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import java.util.Collection;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.util.LinkedHashMap;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import java.util.List;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import java.util.Map;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import java.util.Map.Entry;</a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">import org.eclipse.emf.common.util.URI;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import org.json.JSONArray;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import org.json.JSONObject;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import org.json.JSONTokener;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import org.nasdanika.common.ExecutionParticipant;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import org.nasdanika.common.ProgressMonitor;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import org.yaml.snakeyaml.Yaml;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import org.yaml.snakeyaml.error.MarkedYAMLException;</a>
+<span class="sourceLineNo">027</span><a id="line.27"></a>
+<span class="sourceLineNo">028</span><a id="line.28">/**</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * Loads objects from configuration, e.g. YAML or JSON.</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * Objects are loaded as follows: </a>
+<span class="sourceLineNo">031</span><a id="line.31"> * </a>
+<span class="sourceLineNo">032</span><a id="line.32"> * * If config value is a map with a single element, then its key is an object type to be instantiated. Type is passed to create() method and is implementation-specific. E.g. a factory may use aliases/logical names for a </a>
+<span class="sourceLineNo">033</span><a id="line.33"> * pre-defined set of supported objects/components.  </a>
+<span class="sourceLineNo">034</span><a id="line.34"> * * If config value is a multi-value map, then the result would be a map with each value instantiated as explained here.</a>
+<span class="sourceLineNo">035</span><a id="line.35"> * * If config value is a list then the result would be a list with each element instantiated as explained here.</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * * Otherwise the value is returned as-is. </a>
+<span class="sourceLineNo">037</span><a id="line.37"> * </a>
+<span class="sourceLineNo">038</span><a id="line.38"> * {@link ExecutionParticipant}'s factory loading methods cast instantiated objects to a specific execution participant type factory and wrap values. Lists, and maps are wrapped into compound execution participants of requested type.</a>
+<span class="sourceLineNo">039</span><a id="line.39"> *   </a>
+<span class="sourceLineNo">040</span><a id="line.40"> * @author Pavel</a>
+<span class="sourceLineNo">041</span><a id="line.41"> *</a>
+<span class="sourceLineNo">042</span><a id="line.42"> */</a>
+<span class="sourceLineNo">043</span><a id="line.43">public interface ObjectLoader {</a>
+<span class="sourceLineNo">044</span><a id="line.44">        </a>
+<span class="sourceLineNo">045</span><a id="line.45">        /**</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * Creates an object of requested type with a given config.</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * @param ObjectLoader for creating object parts. This factory or parent/root loader for chained loaders.</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * @param type</a>
+<span class="sourceLineNo">049</span><a id="line.49">         * @param config</a>
+<span class="sourceLineNo">050</span><a id="line.50">         * @param base Base URL for resolving references.</a>
+<span class="sourceLineNo">051</span><a id="line.51">         * @param progressMonitor </a>
+<span class="sourceLineNo">052</span><a id="line.52">         * @param marker Optional source marker for troubleshooting.  </a>
+<span class="sourceLineNo">053</span><a id="line.53">         * @return</a>
+<span class="sourceLineNo">054</span><a id="line.54">         */</a>
+<span class="sourceLineNo">055</span><a id="line.55">        Object create(ObjectLoader loader, String type, Object config, URI base, ProgressMonitor progressMonitor, List&lt;? extends Marker&gt; markers);</a>
+<span class="sourceLineNo">056</span><a id="line.56">        </a>
+<span class="sourceLineNo">057</span><a id="line.57">        @SuppressWarnings("unchecked")</a>
+<span class="sourceLineNo">058</span><a id="line.58">        default Object load(Object spec, URI base, ProgressMonitor progressMonitor) {</a>
+<span class="sourceLineNo">059</span><a id="line.59">                // map</a>
+<span class="sourceLineNo">060</span><a id="line.60">                if (spec instanceof Map) {</a>
+<span class="sourceLineNo">061</span><a id="line.61">                        Map&lt;String,Object&gt; map = (Map&lt;String,Object&gt;) spec;</a>
+<span class="sourceLineNo">062</span><a id="line.62">                        // single</a>
+<span class="sourceLineNo">063</span><a id="line.63">                        if (map.size() == 1) {</a>
+<span class="sourceLineNo">064</span><a id="line.64">                                for (Entry&lt;String, Object&gt; e: map.entrySet()) {</a>
+<span class="sourceLineNo">065</span><a id="line.65">                                        return create(this, e.getKey(), e.getValue(), base, progressMonitor, Util.getMarkers(map, e.getKey()));</a>
+<span class="sourceLineNo">066</span><a id="line.66">                                }</a>
+<span class="sourceLineNo">067</span><a id="line.67">                        }</a>
+<span class="sourceLineNo">068</span><a id="line.68">                        // otherwise</a>
+<span class="sourceLineNo">069</span><a id="line.69">                        Map&lt;String,Object&gt; ret = new LinkedHashMap&lt;&gt;();</a>
+<span class="sourceLineNo">070</span><a id="line.70">                        for (Entry&lt;String, Object&gt; e: map.entrySet()) {</a>
+<span class="sourceLineNo">071</span><a id="line.71">                                ret.put(e.getKey(), load(e.getValue(), base, progressMonitor));</a>
+<span class="sourceLineNo">072</span><a id="line.72">                        }</a>
+<span class="sourceLineNo">073</span><a id="line.73">                        return ret;</a>
+<span class="sourceLineNo">074</span><a id="line.74">                }</a>
+<span class="sourceLineNo">075</span><a id="line.75">                </a>
+<span class="sourceLineNo">076</span><a id="line.76">                // list</a>
+<span class="sourceLineNo">077</span><a id="line.77">                if (spec instanceof Collection) {</a>
+<span class="sourceLineNo">078</span><a id="line.78">                        List&lt;Object&gt; ret = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">079</span><a id="line.79">                        for (Object e: (Collection&lt;?&gt;) spec) {</a>
+<span class="sourceLineNo">080</span><a id="line.80">                                ret.add(load(e, base, progressMonitor));</a>
+<span class="sourceLineNo">081</span><a id="line.81">                        }</a>
+<span class="sourceLineNo">082</span><a id="line.82">                        return ret;</a>
+<span class="sourceLineNo">083</span><a id="line.83">                }</a>
+<span class="sourceLineNo">084</span><a id="line.84">                </a>
+<span class="sourceLineNo">085</span><a id="line.85">                // Scalar - return AS-IS</a>
+<span class="sourceLineNo">086</span><a id="line.86">                return spec;</a>
+<span class="sourceLineNo">087</span><a id="line.87">        }</a>
+<span class="sourceLineNo">088</span><a id="line.88">        </a>
+<span class="sourceLineNo">089</span><a id="line.89">        default Object loadYaml(String yamlString, URI base, ProgressMonitor progressMonitor) {</a>
+<span class="sourceLineNo">090</span><a id="line.90">                Yaml yaml = MarkingYamlConstructor.createMarkingYaml(base == null ? null : base.toString());</a>
+<span class="sourceLineNo">091</span><a id="line.91">                return load(yaml.load(yamlString), base, progressMonitor);</a>
+<span class="sourceLineNo">092</span><a id="line.92">        }</a>
+<span class="sourceLineNo">093</span><a id="line.93">        </a>
+<span class="sourceLineNo">094</span><a id="line.94">        default Object loadYaml(InputStream in, URI base, ProgressMonitor progressMonitor) throws IOException {</a>
+<span class="sourceLineNo">095</span><a id="line.95">                try (Reader reader = new InputStreamReader(in, getCharset())) {</a>
+<span class="sourceLineNo">096</span><a id="line.96">                        return loadYaml(reader, base, progressMonitor);</a>
+<span class="sourceLineNo">097</span><a id="line.97">                }</a>
+<span class="sourceLineNo">098</span><a id="line.98">        }</a>
+<span class="sourceLineNo">099</span><a id="line.99">        </a>
+<span class="sourceLineNo">100</span><a id="line.100">        default Object loadYaml(Reader reader, URI base, ProgressMonitor progressMonitor) {</a>
+<span class="sourceLineNo">101</span><a id="line.101">                Yaml yaml = MarkingYamlConstructor.createMarkingYaml(base == null ? null : base.toString());</a>
+<span class="sourceLineNo">102</span><a id="line.102">                return load(yaml.load(reader), base, progressMonitor);</a>
+<span class="sourceLineNo">103</span><a id="line.103">        }</a>
+<span class="sourceLineNo">104</span><a id="line.104">        </a>
+<span class="sourceLineNo">105</span><a id="line.105">        default Object loadYaml(URL url, ProgressMonitor progressMonitor) throws Exception {</a>
+<span class="sourceLineNo">106</span><a id="line.106">                progressMonitor.worked(1, "Loading YAML from " + url);</a>
+<span class="sourceLineNo">107</span><a id="line.107">                Yaml yaml = MarkingYamlConstructor.createMarkingYaml(url.toString());</a>
+<span class="sourceLineNo">108</span><a id="line.108">                try (Reader reader = new InputStreamReader(url.openStream(), getCharset())) {</a>
+<span class="sourceLineNo">109</span><a id="line.109">                        return load(yaml.load(reader), URI.createURI(url.toString()), progressMonitor);</a>
+<span class="sourceLineNo">110</span><a id="line.110">                } catch (MarkedYAMLException e) {</a>
+<span class="sourceLineNo">111</span><a id="line.111">                        throw new ConfigurationException(e.getMessage(), e, new MarkerImpl(url.toString(), e.getProblemMark()));</a>
+<span class="sourceLineNo">112</span><a id="line.112">                }</a>
+<span class="sourceLineNo">113</span><a id="line.113">        }</a>
+<span class="sourceLineNo">114</span><a id="line.114">        </a>
+<span class="sourceLineNo">115</span><a id="line.115">        default Object loadYaml(File file, ProgressMonitor progressMonitor) throws MalformedURLException, Exception {</a>
+<span class="sourceLineNo">116</span><a id="line.116">                return loadYaml(file.toURI().toURL(), progressMonitor);</a>
+<span class="sourceLineNo">117</span><a id="line.117">        }</a>
+<span class="sourceLineNo">118</span><a id="line.118">                </a>
+<span class="sourceLineNo">119</span><a id="line.119">        default Object loadJsonObject(String str, URI base, ProgressMonitor progressMonitor) {</a>
+<span class="sourceLineNo">120</span><a id="line.120">                JSONObject jsonObject = new JSONObject(new JSONTokener(str));</a>
+<span class="sourceLineNo">121</span><a id="line.121">                return load(jsonObject.toMap(), base, progressMonitor);</a>
+<span class="sourceLineNo">122</span><a id="line.122">        }</a>
+<span class="sourceLineNo">123</span><a id="line.123">        </a>
+<span class="sourceLineNo">124</span><a id="line.124">        default Object loadJsonObject(InputStream in, URI base, ProgressMonitor progressMonitor) throws IOException {</a>
+<span class="sourceLineNo">125</span><a id="line.125">                try (Reader reader = new InputStreamReader(in, getCharset())) { </a>
+<span class="sourceLineNo">126</span><a id="line.126">                        return loadJsonObject(reader, base, progressMonitor);</a>
+<span class="sourceLineNo">127</span><a id="line.127">                }</a>
+<span class="sourceLineNo">128</span><a id="line.128">        }</a>
+<span class="sourceLineNo">129</span><a id="line.129">        </a>
+<span class="sourceLineNo">130</span><a id="line.130">        default Object loadJsonObject(Reader reader, URI base, ProgressMonitor progressMonitor) {</a>
+<span class="sourceLineNo">131</span><a id="line.131">                JSONObject jsonObject = new JSONObject(new JSONTokener(reader));</a>
+<span class="sourceLineNo">132</span><a id="line.132">                return load(jsonObject.toMap(), base, progressMonitor);</a>
+<span class="sourceLineNo">133</span><a id="line.133">        }</a>
+<span class="sourceLineNo">134</span><a id="line.134">        </a>
+<span class="sourceLineNo">135</span><a id="line.135">        default Object loadJsonObject(URL url, ProgressMonitor progressMonitor) throws IOException {</a>
+<span class="sourceLineNo">136</span><a id="line.136">                progressMonitor.worked(1, "Loading JSON object from " + url);</a>
+<span class="sourceLineNo">137</span><a id="line.137">                return loadJsonObject(url.openStream(), URI.createURI(url.toString()), progressMonitor);</a>
+<span class="sourceLineNo">138</span><a id="line.138">        }</a>
+<span class="sourceLineNo">139</span><a id="line.139">                </a>
+<span class="sourceLineNo">140</span><a id="line.140">        default Object loadJsonArray(String str, URI base, ProgressMonitor progressMonitor) {</a>
+<span class="sourceLineNo">141</span><a id="line.141">                JSONArray jsonArray = new JSONArray(new JSONTokener(str));</a>
+<span class="sourceLineNo">142</span><a id="line.142">                return load(jsonArray.toList(), base, progressMonitor);</a>
+<span class="sourceLineNo">143</span><a id="line.143">        }</a>
+<span class="sourceLineNo">144</span><a id="line.144">        </a>
+<span class="sourceLineNo">145</span><a id="line.145">        default Object loadJsonArray(InputStream in, URI base, ProgressMonitor progressMonitor) throws IOException {</a>
+<span class="sourceLineNo">146</span><a id="line.146">                try (Reader reader = new InputStreamReader(in, getCharset())) {</a>
+<span class="sourceLineNo">147</span><a id="line.147">                        return loadJsonArray(reader,  base, progressMonitor);</a>
+<span class="sourceLineNo">148</span><a id="line.148">                }</a>
+<span class="sourceLineNo">149</span><a id="line.149">        }</a>
+<span class="sourceLineNo">150</span><a id="line.150">        </a>
+<span class="sourceLineNo">151</span><a id="line.151">        default Object loadJsonArray(Reader reader, URI base, ProgressMonitor progressMonitor) {</a>
+<span class="sourceLineNo">152</span><a id="line.152">                JSONArray jsonArray = new JSONArray(new JSONTokener(reader));</a>
+<span class="sourceLineNo">153</span><a id="line.153">                return load(jsonArray.toList(), base, progressMonitor);</a>
+<span class="sourceLineNo">154</span><a id="line.154">        }</a>
+<span class="sourceLineNo">155</span><a id="line.155">        </a>
+<span class="sourceLineNo">156</span><a id="line.156">        default Object loadJsonArray(URL url, ProgressMonitor progressMonitor) throws Exception {</a>
+<span class="sourceLineNo">157</span><a id="line.157">                progressMonitor.worked(1, "Loading JSON array from " + url);</a>
+<span class="sourceLineNo">158</span><a id="line.158">                return loadJsonArray(url.openStream(), URI.createURI(url.toString()), progressMonitor);</a>
+<span class="sourceLineNo">159</span><a id="line.159">        }</a>
+<span class="sourceLineNo">160</span><a id="line.160">        </a>
+<span class="sourceLineNo">161</span><a id="line.161">        /**</a>
+<span class="sourceLineNo">162</span><a id="line.162">         * Override to customize charset.</a>
+<span class="sourceLineNo">163</span><a id="line.163">         * @return</a>
+<span class="sourceLineNo">164</span><a id="line.164">         */</a>
+<span class="sourceLineNo">165</span><a id="line.165">        default Charset getCharset() {</a>
+<span class="sourceLineNo">166</span><a id="line.166">                return StandardCharsets.UTF_8;</a>
+<span class="sourceLineNo">167</span><a id="line.167">        }</a>
+<span class="sourceLineNo">168</span><a id="line.168">        </a>
+<span class="sourceLineNo">169</span><a id="line.169">        /*</a>
+<span class="sourceLineNo">170</span><a id="line.170">         * TODO - loading from Excel using Apache POI - https://search.maven.org/artifact/org.apache.poi/poi/5.0.0/jar</a>
+<span class="sourceLineNo">171</span><a id="line.171">         * Use URL fragment to address Sheets and ranges. E.g. myworkbook.xslx#Sheet1:A1:C100</a>
+<span class="sourceLineNo">172</span><a id="line.172">         * If no fragment - a map of sheet names to lists of maps with first row as key names and subsequent rows as data.</a>
+<span class="sourceLineNo">173</span><a id="line.173">         * For streams - pass sheet and range as method parameters.</a>
+<span class="sourceLineNo">174</span><a id="line.174">         * Figure out how to get the type, e.g. if the type is known beforehand.</a>
+<span class="sourceLineNo">175</span><a id="line.175">         */</a>
+<span class="sourceLineNo">176</span><a id="line.176">        </a>
+<span class="sourceLineNo">177</span><a id="line.177">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Button.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika HTML</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html</a> &gt; <span class="el_source">Button.java</span></div><h1>Button.java</h1><pre class="source lang-java linenums">package org.nasdanika.html;
+
+public interface Button extends HTMLElement&lt;Button&gt;, Container&lt;Button&gt; {
+	
+<span class="nc" id="L5">	enum Type { BUTTON, SUBMIT, RESET }</span>
+	
+	Button type(Type type);
+
+	Button disabled(boolean disabled);
+	
+	Button disabled();
+
+	/* TODO - other attributes.
+	
+	autofocus	autofocus	Specifies that a button should automatically get focus when the page loads
+	form	form_id	Specifies one or more forms the button belongs to
+	formaction	URL	Specifies where to send the form-data when a form is submitted. Only for type=&quot;submit&quot;
+	formenctype	application/x-www-form-urlencoded
+	multipart/form-data
+	text/plain	Specifies how form-data should be encoded before sending it to a server. Only for type=&quot;submit&quot;
+	formmethod	get
+	post	Specifies how to send the form-data (which HTTP method to use). Only for type=&quot;submit&quot;
+	formnovalidate	formnovalidate	Specifies that the form-data should not be validated on submission. Only for type=&quot;submit&quot;
+	formtarget	_blank
+	_self
+	_parent
+	_top
+	framename	Specifies where to display the response after submitting the form. Only for type=&quot;submit&quot;
+	name	name	Specifies a name for the button
+	value	text
+	*/	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

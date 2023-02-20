@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika EMF</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.emf.localization</a> &gt; <span class="el_source">UI.java</span></div><h1>UI.java</h1><pre class="source lang-java linenums">package org.nasdanika.emf.localization;
+
+import org.nasdanika.common.ResourceLocator;
+
+/**
+ * Holds built-in localizations
+ * @author Pavel
+ *
+ */
+<span class="nc" id="L10">public enum UI implements ResourceLocator, PropertyKeys {</span>
+	
+<span class="nc" id="L12">	RU() {</span>
+
+		@Override
+		public Object get(String key) {
+<span class="nc bnc" id="L16" title="All 15 branches missed.">			switch (key) {</span>
+			case UI_DESCRIPTION:
+<span class="nc" id="L18">				return &quot;Описание&quot;;</span>
+			case UI_SUMMARY:
+<span class="nc" id="L20">				return &quot;Краткое описание&quot;;</span>
+			case UI_NAME:
+<span class="nc" id="L22">				return &quot;Наименование&quot;;</span>
+			case UI_TYPE:
+<span class="nc" id="L24">				return &quot;Тип&quot;;</span>
+			case UI_CARDINALITY:
+<span class="nc" id="L26">				return &quot;Мощность&quot;;</span>
+			case UI_PACKAGE:
+<span class="nc" id="L28">				return &quot;Пакет&quot;;</span>
+			case UI_SUPERTYPES:
+<span class="nc" id="L30">				return &quot;Супертипы&quot;;</span>
+			case UI_SUBTYPES:
+<span class="nc" id="L32">				return &quot;Подтипы&quot;;						</span>
+			case UI_DIAGRAM:
+<span class="nc" id="L34">				return &quot;Диаграмма&quot;;						</span>
+			case UI_CONTENTS:
+<span class="nc" id="L36">				return &quot;Содержание&quot;;						</span>
+			case UI_NAMESPACE_URI:
+<span class="nc" id="L38">				return &quot;URI пространства имён&quot;;						</span>
+			case UI_OPPOSITE:
+<span class="nc" id="L40">				return &quot;Противоположная сссылка&quot;;						</span>
+			case UI_ABSTRACT:
+<span class="nc" id="L42">				return &quot;Абстрактный&quot;;						</span>
+			case UI_INTERFACE:
+<span class="nc" id="L44">				return &quot;Интерфейс&quot;;						</span>
+			default:
+<span class="nc" id="L46">				return null;</span>
+			}
+		}
+		
+	};
+	
+	@Override
+	public &lt;T&gt; T get(Class&lt;T&gt; type) {
+<span class="nc" id="L54">		return null;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

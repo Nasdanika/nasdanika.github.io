@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EModelElementActionSupplier.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika HTML Ecore documentation</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.ecore</a> &gt; <span class="el_source">EModelElementActionSupplier.java</span></div><h1>EModelElementActionSupplier.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.ecore;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import org.apache.commons.codec.binary.Hex;
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.ETypeParameter;
+import org.eclipse.emf.ecore.ETypedElement;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.DiagramGenerator;
+import org.nasdanika.common.MarkdownHelper;
+import org.nasdanika.common.MutableContext;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.PropertyComputer;
+import org.nasdanika.common.Util;
+import org.nasdanika.emf.EmfUtil;
+import org.nasdanika.emf.EmfUtil.EModelElementDocumentation;
+import org.nasdanika.emf.persistence.MarkerFactory;
+import org.nasdanika.exec.content.ContentFactory;
+import org.nasdanika.exec.content.Interpolator;
+import org.nasdanika.exec.content.Markdown;
+import org.nasdanika.exec.content.Text;
+import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.ncore.util.NcoreUtil; 
+
+public class EModelElementActionSupplier&lt;T extends EModelElement&gt; extends EObjectActionSupplier&lt;T&gt; {
+		
+	protected BiFunction&lt;ENamedElement, String, String&gt; labelProvider;	
+	
+<span class="fc" id="L56">	protected Comparator&lt;ENamedElement&gt; eNamedElementComparator = (a,b) -&gt; labelProvider.apply(a, a.getName()).compareTo(labelProvider.apply(b, b.getName()));</span>
+	
+	public static final String ICONS_BASE = &quot;https://www.nasdanika.org/resources/images/ecore/&quot;;
+		
+	/**
+	 * Descriptions shorter than this value are put on the top of the tabs, longer
+	 * ones end up in their own tab. 
+	 */
+<span class="fc" id="L64">	protected int descriptionTabLengthThreshold = 2500;</span>
+
+	protected Context context;
+
+	protected java.util.function.Function&lt;EPackage,String&gt; ePackagePathComputer;
+	protected Predicate&lt;EModelElement&gt; elementPredicate;
+		
+	public EModelElementActionSupplier(
+			T value, 
+			Context context, 
+			java.util.function.Function&lt;EPackage,String&gt; ePackagePathComputer,
+			Predicate&lt;EModelElement&gt; elementPredicate,
+			BiFunction&lt;ENamedElement, String, String&gt; labelProvider) {
+<span class="fc" id="L77">		super(value);</span>
+<span class="fc" id="L78">		this.context = context.fork();</span>
+<span class="fc" id="L79">		PropertyComputer eClassifierPropertyComputer = new PropertyComputer() {</span>
+			
+			@SuppressWarnings(&quot;unchecked&quot;)
+			@Override
+			public &lt;P&gt; P compute(Context context, String key, String path, Class&lt;P&gt; type) {
+<span class="fc" id="L84">				Resource contextResource = value.eResource();</span>
+<span class="fc" id="L85">				EObject contextElement = value;</span>
+<span class="pc bpc" id="L86" title="2 of 4 branches missed.">				while (contextElement != null &amp;&amp; !(contextElement instanceof EPackage)) {</span>
+<span class="nc" id="L87">					contextElement = contextElement.eContainer();</span>
+				}
+				
+<span class="fc" id="L90">				EClassifier targetClassifier = null;</span>
+<span class="fc" id="L91">				int atIdx = path.indexOf('@');</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">				if (atIdx == -1) {</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">					if (contextElement == null) {</span>
+<span class="nc" id="L94">						return null;</span>
+					}
+					
+<span class="nc" id="L97">					targetClassifier = ((EPackage) contextElement).getEClassifier(path);</span>
+				} else {
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">					if (contextResource == null) {</span>
+<span class="nc" id="L100">						return null;</span>
+					}
+<span class="fc" id="L102">					ResourceSet resourceSet = contextResource.getResourceSet();</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">					if (resourceSet == null) {</span>
+<span class="nc" id="L104">						return null;</span>
+					}
+<span class="fc" id="L106">					TreeIterator&lt;Notifier&gt; cit = resourceSet.getAllContents();</span>
+<span class="fc" id="L107">					String targetNsUri = path.substring(atIdx + 1);</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">					while (cit.hasNext()) {</span>
+<span class="fc" id="L109">						Notifier next = cit.next();</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">						if (next instanceof EPackage) {</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">							if (((EPackage) next).getNsURI().equals(targetNsUri)) {</span>
+<span class="fc" id="L112">								targetClassifier = ((EPackage) next).getEClassifier(path.substring(0, atIdx));</span>
+<span class="fc" id="L113">								break;</span>
+							}
+						}
+<span class="fc" id="L116">					}</span>
+				}
+				
+<span class="fc bfc" id="L119" title="All 2 branches covered.">				if (targetClassifier == null) {</span>
+<span class="fc" id="L120">					return null;</span>
+				}
+
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">				return (P) path(targetClassifier, value instanceof EClassifier ? (EClassifier) value : null);</span>
+			}
+			
+		};
+<span class="fc" id="L127">		((MutableContext) this.context).put(&quot;classifier&quot;, eClassifierPropertyComputer);</span>
+<span class="fc" id="L128">		this.ePackagePathComputer = ePackagePathComputer;</span>
+<span class="fc" id="L129">		this.elementPredicate = elementPredicate;</span>
+<span class="fc" id="L130">		this.labelProvider = labelProvider;</span>
+<span class="fc" id="L131">	}</span>
+
+	@Override
+	public Action execute(EClass contextClass, ProgressMonitor progressMonitor) {		
+		// TODO - refactor to 
+//		EObject actionPrototype = NcoreUtil.getNasdanikaAnnotationDetail(eObject, &quot;action-prototype&quot;);
+//		if (actionPrototype instanceof Action) {
+//			return EcoreUtil.copy((Action) actionPrototype);
+//		}
+//		if (actionPrototype != null) {
+//			ActionProvider actionProvider = Objects.requireNonNull((ActionProvider) EcoreUtil.getRegisteredAdapter(actionPrototype, ActionProvider.class), &quot;Cannot adapt &quot; + actionPrototype + &quot; to &quot; + ActionProvider.class);
+//			return actionProvider.execute(registry, progressMonitor);
+//		}
+//		return AppFactory.eINSTANCE.createAction();
+		
+		
+<span class="fc" id="L147">		Action ret = AppFactory.eINSTANCE.createAction();</span>
+<span class="fc" id="L148">		ret.setIcon(ICONS_BASE+eObject.eClass().getName()+&quot;.gif&quot;);</span>
+		
+<span class="fc" id="L150">		header(ret, progressMonitor);</span>
+		
+<span class="fc" id="L152">		EModelElementDocumentation documentation = EmfUtil.getDocumentation(eObject); //EObjectAdaptable.getResourceContext(eObject).getString(&quot;documentation&quot;, EcoreUtil.getDocumentation(eObject));</span>
+//		if (Util.isBlank(markdown)) {
+//			markdown = EmfUtil.getDocumentation(eObject);
+//		}
+		
+<span class="fc" id="L157">		MarkdownHelper markdownHelper = new MarkdownHelper() {</span>
+			
+			@Override
+			protected URI getResourceBase() {
+<span class="fc" id="L161">				return documentation.getLocation();</span>
+			}
+			
+			@Override
+			protected DiagramGenerator getDiagramGenerator() {
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">				return context == null ? super.getDiagramGenerator() : context.get(DiagramGenerator.class, super.getDiagramGenerator()); </span>
+			}
+			
+		};
+		
+<span class="fc bfc" id="L171" title="All 2 branches covered.">		if (documentation != null) {</span>
+<span class="fc" id="L172">			ret.getContent().add(interpolatedMarkdown(context.interpolateToString(documentation.getDocumentation()), documentation.getLocation(), progressMonitor));</span>
+<span class="fc" id="L173">			ret.setTooltip(markdownHelper.firstPlainTextSentence(documentation.getDocumentation()));</span>
+		}
+		
+<span class="fc" id="L176">		return ret;</span>
+	}
+	
+	/**
+	 * Content before documentation.
+	 * @param action
+	 * @param progressMonitor
+	 */
+<span class="fc" id="L184">	protected void header(Action action, ProgressMonitor progressMonitor) {}</span>
+
+	@Override
+	public double size() {
+<span class="nc" id="L188">		return 1;</span>
+	}
+
+	@Override
+	public String name() {
+<span class="nc" id="L193">		return eObject.eClass().getName();</span>
+	}
+	
+	/**
+	 * @param markdown Markdown text
+	 * @return Spec for interpolating markdown and then converting to HTML. 
+	 */
+	protected Markdown interpolatedMarkdown(String markdown, URI location, ProgressMonitor progressMonitor) {
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">		if (Util.isBlank(markdown)) {</span>
+<span class="nc" id="L202">			return null;</span>
+		}
+<span class="fc" id="L204">		Markdown ret = ContentFactory.eINSTANCE.createMarkdown();</span>
+<span class="fc" id="L205">		Interpolator interpolator = ContentFactory.eINSTANCE.createInterpolator();</span>
+<span class="fc" id="L206">		Text text = ContentFactory.eINSTANCE.createText();</span>
+<span class="fc" id="L207">		text.setContent(markdown);</span>
+<span class="fc" id="L208">		interpolator.setSource(text);</span>
+<span class="fc" id="L209">		ret.setSource(interpolator);</span>
+<span class="fc" id="L210">		ret.setStyle(true);</span>
+		
+		// Creating a marker with EObject resource location for resource resolution in Markdown
+<span class="fc bfc" id="L213" title="All 2 branches covered.">		if (location != null) {</span>
+<span class="fc" id="L214">			org.nasdanika.ncore.Marker marker = context.get(MarkerFactory.class, MarkerFactory.INSTANCE).createMarker(location.toString(), progressMonitor);</span>
+<span class="fc" id="L215">			ret.getMarkers().add(marker); </span>
+		}
+		
+<span class="fc" id="L218">		return ret;</span>
+	}
+	
+	protected String getEModelElementFirstDocSentence(EModelElement modelElement) {
+<span class="fc" id="L222">		EModelElementDocumentation documentation = EmfUtil.getDocumentation(modelElement);</span>
+//		String markdown = EObjectAdaptable.getResourceContext(modelElement).getString(&quot;documentation&quot;, EcoreUtil.getDocumentation(modelElement));
+//		if (Util.isBlank(markdown)) {
+//			markdown = EmfUtil.getDocumentation(modelElement);
+//		}
+<span class="fc bfc" id="L227" title="All 2 branches covered.">		if (documentation == null) {</span>
+<span class="fc" id="L228">			return null;</span>
+		}
+		
+<span class="fc" id="L231">		MarkdownHelper markdownHelper = new MarkdownHelper() {</span>
+			
+			@Override
+			protected URI getResourceBase() {
+<span class="nc" id="L235">				return documentation.getLocation();</span>
+			}
+			
+			@Override
+			protected DiagramGenerator getDiagramGenerator() {
+<span class="nc bnc" id="L240" title="All 2 branches missed.">				return context == null ? super.getDiagramGenerator() : context.get(DiagramGenerator.class, super.getDiagramGenerator()); </span>
+			}
+			
+		};
+		
+<span class="fc" id="L245">		String ret = /* context.computingContext().get(MarkdownHelper.class, markdownHelper) */ markdownHelper.firstPlainTextSentence(documentation.getDocumentation());</span>
+<span class="fc" id="L246">		return String.join(&quot; &quot;, ret.split(&quot;\\R&quot;)); // Replacing new lines, shall they be in the first sentence, with spaces.		</span>
+	}
+
+	/**
+	 * In situations where classes referencing this class are known this method can be overridden. 
+	 * @return
+	 */	
+	protected Collection&lt;EClass&gt; getReferrers(EClass eClass) {
+<span class="fc" id="L254">		return getReferrers(eClass, true);</span>
+	}
+	
+	/**
+	 * In situations where classes referencing this class are known this method can be overridden. 
+	 * @return
+	 */	
+	private Collection&lt;EClass&gt; getReferrers(EClass eClass, boolean includeAssociations) {
+		TreeIterator&lt;?&gt; acit;
+<span class="fc" id="L263">		Resource eResource = eClass.eResource();</span>
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">		if (eResource == null) {</span>
+<span class="nc" id="L265">			EPackage ePackage = eClass.getEPackage();</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">			if (ePackage == null) {</span>
+<span class="nc" id="L267">				return Collections.emptySet();</span>
+			}
+<span class="nc" id="L269">			acit = ePackage.eAllContents();</span>
+<span class="nc" id="L270">		} else {</span>
+<span class="fc" id="L271">			ResourceSet resourceSet = eResource.getResourceSet();</span>
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">			acit = resourceSet == null ? eResource.getAllContents() : resourceSet.getAllContents();</span>
+		}
+<span class="fc" id="L274">		Set&lt;EClass&gt; ret = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L275">		acit.forEachRemaining(obj -&gt; {</span>
+<span class="fc bfc" id="L276" title="All 4 branches covered.">			if (obj instanceof EReference &amp;&amp; ((EReference) obj).getEReferenceType() == eClass) {</span>
+<span class="fc" id="L277">				EClass referrer = ((EReference) obj).getEContainingClass();</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">				if (includeAssociations) {</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">					for (EClass superReferrer: getReferrers(referrer, false)) {</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">						for (EReference superReference: superReferrer.getEReferences()) {</span>
+<span class="pc bpc" id="L281" title="1 of 2 branches missed.">							if (superReference.getEReferenceType() == referrer) {</span>
+<span class="fc" id="L282">								EClass associationTarget = NcoreUtil.getAssociationTarget(superReference);</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">								if (associationTarget == eClass) {</span>
+<span class="nc" id="L284">									ret.add(superReferrer);</span>
+								}
+							}
+<span class="fc" id="L287">						}</span>
+<span class="fc" id="L288">					}</span>
+				}
+<span class="fc" id="L290">				ret.add(referrer);</span>
+			}
+<span class="fc" id="L292">		});</span>
+<span class="fc" id="L293">		return ret;</span>
+	}
+	
+	/**
+	 * Finds all type uses in the resourceset. 
+	 * @return
+	 */
+	protected Collection&lt;EClass&gt; getUses(EClassifier eClassifier) {
+		TreeIterator&lt;?&gt; acit;
+<span class="fc" id="L302">		Resource eResource = eClassifier.eResource();</span>
+<span class="pc bpc" id="L303" title="1 of 2 branches missed.">		if (eResource == null) {</span>
+<span class="nc" id="L304">			EPackage ePackage = eClassifier.getEPackage();</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">			if (ePackage == null) {</span>
+<span class="nc" id="L306">				return Collections.emptySet();</span>
+			}
+<span class="nc" id="L308">			acit = ePackage.eAllContents();</span>
+<span class="nc" id="L309">		} else {</span>
+<span class="fc" id="L310">			ResourceSet resourceSet = eResource.getResourceSet();</span>
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">			acit = resourceSet == null ? eResource.getAllContents() : resourceSet.getAllContents();</span>
+		}
+<span class="fc" id="L313">		Set&lt;EClass&gt; ret = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L314">		acit.forEachRemaining(obj -&gt; {</span>
+<span class="fc bfc" id="L315" title="All 4 branches covered.">			if (obj instanceof EClass &amp;&amp; (org.nasdanika.emf.EmfUtil.collectTypeDependencies((EClass) obj).contains(eClassifier))) {</span>
+<span class="fc" id="L316">				ret.add((EClass) obj);</span>
+			}
+<span class="fc" id="L318">		});</span>
+<span class="fc" id="L319">		return ret;</span>
+	}
+		
+	protected static String cardinality(ETypedElement typedElement) {
+<span class="fc" id="L323">		int lowerBound = typedElement.getLowerBound();</span>
+<span class="fc" id="L324">		int upperBound = typedElement.getUpperBound();</span>
+		String cardinality;
+<span class="fc bfc" id="L326" title="All 2 branches covered.">		if (lowerBound == upperBound) {</span>
+<span class="fc" id="L327">			cardinality = String.valueOf(lowerBound);</span>
+		} else {
+<span class="fc bfc" id="L329" title="All 2 branches covered.">			cardinality = lowerBound + &quot;..&quot; + (upperBound == -1 ? &quot;*&quot; : String.valueOf(upperBound));</span>
+		}
+<span class="fc bfc" id="L331" title="All 4 branches covered.">		if (typedElement instanceof EReference &amp;&amp; ((EReference) typedElement).isContainment()) {</span>
+<span class="fc" id="L332">			cardinality = &quot;&lt;B&gt;&quot;+cardinality+&quot;&lt;/B&gt;&quot;;</span>
+		}
+<span class="fc" id="L334">		return cardinality;</span>
+	}
+	
+	// --- Handling generic types in action text --- 
+
+	protected String computeLabel(EGenericType genericType, ProgressMonitor monitor) {
+<span class="fc" id="L340">		EObject container = genericType.eContainer();</span>
+<span class="fc" id="L341">		EClassifier rawType = genericType.getERawType();</span>
+<span class="fc" id="L342">		String rawTypeText = labelProvider.apply(rawType, rawType.getName()); // rawTypeViewActionSupplierFactory == null ? rawType.getName() : rawTypeViewActionSupplierFactory.create(context).execute(monitor).getText();</span>
+<span class="pc bpc" id="L343" title="1 of 4 branches missed.">		if (container == null || !container.eIsSet(genericType.eContainingFeature())) {</span>
+<span class="fc" id="L344">			return rawTypeText;</span>
+		}
+		
+<span class="fc" id="L347">		StringBuilder label = new StringBuilder();</span>
+<span class="pc bpc" id="L348" title="1 of 2 branches missed.">		if (genericType.getEClassifier() != null) {</span>
+<span class="nc" id="L349">			label.append(rawTypeText);</span>
+
+<span class="nc bnc" id="L351" title="All 2 branches missed.">			if (!genericType.getETypeArguments().isEmpty()) {</span>
+<span class="nc" id="L352">				label.append(&quot;&amp;lt;&quot;);</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">				for (Iterator&lt;EGenericType&gt; i = genericType.getETypeArguments().iterator(); i.hasNext();) {</span>
+<span class="nc" id="L354">					EGenericType typeArgument = i.next();</span>
+<span class="nc" id="L355">					label.append(computeLabel(typeArgument, monitor));</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">					if (i.hasNext()) {</span>
+<span class="nc" id="L357">						label.append(&quot;, &quot;);</span>
+					}
+<span class="nc" id="L359">				}</span>
+<span class="nc" id="L360">				label.append(&quot;&amp;gt;&quot;);</span>
+			}
+		} else {
+<span class="fc" id="L363">			ETypeParameter typeParameter = genericType.getETypeParameter();</span>
+<span class="pc bpc" id="L364" title="1 of 2 branches missed.">			String name = typeParameter != null ? labelProvider.apply(typeParameter, typeParameter.getName()) : &quot;?&quot;;</span>
+<span class="fc" id="L365">			label.append(name);</span>
+
+<span class="pc bpc" id="L367" title="1 of 2 branches missed.">			if (genericType.getELowerBound() != null) {</span>
+<span class="nc" id="L368">				label.append(&quot; super &quot;);</span>
+<span class="nc" id="L369">				label.append(computeLabel(genericType.getELowerBound(),  monitor));</span>
+<span class="pc bpc" id="L370" title="1 of 2 branches missed.">			} else if (genericType.getEUpperBound() != null) {</span>
+<span class="nc" id="L371">				label.append(&quot; extends &quot;);</span>
+<span class="nc" id="L372">				label.append(computeLabel(genericType.getEUpperBound(), monitor));</span>
+			}
+		}
+<span class="fc" id="L375">		return label.toString();</span>
+	}
+	
+	// --- Generics ---
+	
+	/**
+	 * @param eClassifier
+	 * @return Type parameters string.
+	 */
+	protected String typeParameters(EClassifier eClassifier) {
+<span class="fc bfc" id="L385" title="All 2 branches covered.">		if (eClassifier.getETypeParameters().isEmpty()) {</span>
+<span class="fc" id="L386">			return &quot;&quot;;</span>
+		}
+<span class="fc" id="L388">		StringBuilder typeParameters = new StringBuilder();</span>
+<span class="fc bfc" id="L389" title="All 2 branches covered.">		for (ETypeParameter typeParameter: eClassifier.getETypeParameters()) {</span>
+<span class="pc bpc" id="L390" title="1 of 2 branches missed.">			if (typeParameters.length() &gt; 0) {</span>
+<span class="nc" id="L391">				typeParameters.append(&quot;,&quot;);</span>
+			}
+<span class="fc" id="L393">			typeParameters.append(genericName(typeParameter));</span>
+<span class="fc" id="L394">		}		</span>
+		
+<span class="fc" id="L396">		return &quot;&amp;lt;&quot; + typeParameters +&quot;&amp;gt;&quot;;</span>
+	}	
+	
+	protected String genericName(ETypeParameter typeParameter) {
+<span class="fc" id="L400">		StringBuilder ret = new StringBuilder(labelProvider.apply(typeParameter, typeParameter.getName()));</span>
+<span class="pc bpc" id="L401" title="1 of 2 branches missed.">		for (EGenericType bound : typeParameter.getEBounds()) {</span>
+<span class="nc bnc" id="L402" title="All 2 branches missed.">			if (bound.getEUpperBound() != null) {</span>
+<span class="nc" id="L403">				ret.append(&quot; extends &quot;).append(genericName(bound.getEUpperBound()));</span>
+			}
+<span class="nc bnc" id="L405" title="All 2 branches missed.">			if (bound.getELowerBound() != null) {</span>
+<span class="nc" id="L406">				ret.append(&quot; super &quot;).append(genericName(bound.getELowerBound()));</span>
+			}
+<span class="nc" id="L408">		}</span>
+		
+<span class="fc" id="L410">		return ret.toString();</span>
+	}
+	
+	protected String genericName(EGenericType eGenericType) {
+<span class="nc" id="L414">		StringBuilder ret = new StringBuilder();</span>
+<span class="nc" id="L415">		ETypeParameter eTypeParameter = eGenericType.getETypeParameter();</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">		if (eTypeParameter != null) {			</span>
+<span class="nc" id="L417">			ret.append(labelProvider.apply(eTypeParameter, eTypeParameter.getName()));</span>
+		} else {
+<span class="nc" id="L419">			EClassifier eClassifier = eGenericType.getEClassifier();</span>
+<span class="nc bnc" id="L420" title="All 2 branches missed.">			if (eClassifier != null) {</span>
+<span class="nc" id="L421">				ret.append(labelProvider.apply(eClassifier, eClassifier.getName()));			</span>
+			}
+		}
+<span class="nc" id="L424">		ret.append(genericTypeArguments(eGenericType));</span>
+<span class="nc" id="L425">		return ret.toString();</span>
+	}
+
+	protected String genericTypeArguments(EGenericType eGenericType) {
+<span class="nc" id="L429">		StringBuilder ret = new StringBuilder();</span>
+<span class="nc" id="L430">		Iterator&lt;EGenericType&gt; it = eGenericType.getETypeArguments().iterator();</span>
+<span class="nc bnc" id="L431" title="All 2 branches missed.">		if (it.hasNext()) {</span>
+<span class="nc" id="L432">			ret.append(&quot;&lt;&quot;);</span>
+<span class="nc bnc" id="L433" title="All 2 branches missed.">			while (it.hasNext()) {</span>
+<span class="nc" id="L434">				ret.append(genericName(it.next()));</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">				if (it.hasNext()) {</span>
+<span class="nc" id="L436">					ret.append(&quot;,&quot;);</span>
+				}
+			}
+<span class="nc" id="L439">			ret.append(&quot;&gt;&quot;);</span>
+		}
+<span class="nc" id="L441">		return ret.toString();</span>
+	}
+
+	/**
+	 * Generates generic type text with links to classifiers.
+	 * @param eGenericType
+	 * @param accumulator 
+	 */
+	protected void genericType(EGenericType eGenericType, EClassifier contextClassifier, Consumer&lt;String&gt; accumulator, ProgressMonitor monitor) {
+<span class="pc bpc" id="L450" title="1 of 2 branches missed.">		if (eGenericType == null) {</span>
+<span class="nc" id="L451">			accumulator.accept(&quot;void&quot;);</span>
+		} else {
+<span class="fc" id="L453">			ETypeParameter eTypeParameter = eGenericType.getETypeParameter();</span>
+<span class="fc bfc" id="L454" title="All 2 branches covered.">			if (eTypeParameter != null) {</span>
+<span class="fc" id="L455">				accumulator.accept(labelProvider.apply(eTypeParameter, eTypeParameter.getName()));</span>
+<span class="pc bpc" id="L456" title="1 of 2 branches missed.">			} else if (eGenericType.getEClassifier() != null) {</span>
+<span class="fc" id="L457">				accumulator.accept(link(eGenericType.getEClassifier(), contextClassifier));</span>
+<span class="fc" id="L458">				genericTypeArguments(eGenericType, contextClassifier, accumulator, monitor);</span>
+			} else {
+<span class="nc" id="L460">				accumulator.accept(&quot;?&quot;);</span>
+<span class="nc bnc" id="L461" title="All 2 branches missed.">				if (eGenericType.getELowerBound() != null) {</span>
+<span class="nc" id="L462">					accumulator.accept(&quot; super &quot;);</span>
+<span class="nc" id="L463">					genericType(eGenericType.getELowerBound(), contextClassifier, accumulator, monitor);</span>
+<span class="nc bnc" id="L464" title="All 2 branches missed.">				} else if (eGenericType.getEUpperBound() != null) {</span>
+<span class="nc" id="L465">					accumulator.accept(&quot; extends &quot;);</span>
+<span class="nc" id="L466">					genericType(eGenericType.getEUpperBound(), contextClassifier, accumulator, monitor);</span>
+				}
+			}
+		}
+<span class="fc" id="L470">	}</span>
+	
+	/**
+	 * @param eClassifier
+	 * @return Relative path to the argument {@link EClassifier} or null if the classifier is not part of the documentation resource set.
+	 */
+	protected String path(EClassifier eClassifier, EClassifier contextClassifier) {
+<span class="pc bpc" id="L477" title="1 of 2 branches missed.">		if (!elementPredicate.test(eClassifier)) {</span>
+<span class="nc" id="L478">			return null;</span>
+		}
+		// TODO - resolution of external eClassifiers for federated/hierarchical documentation - from the adapter factory.
+<span class="fc" id="L481">		Resource targetResource = eClassifier.eResource();</span>
+<span class="pc bpc" id="L482" title="1 of 2 branches missed.">		if (targetResource == null) {</span>
+<span class="nc" id="L483">			return null;</span>
+		}
+<span class="fc" id="L485">		ResourceSet targetResourceSet = targetResource.getResourceSet();</span>
+<span class="fc bfc" id="L486" title="All 2 branches covered.">		if (targetResourceSet != eObject.eResource().getResourceSet()) {</span>
+<span class="fc" id="L487">			return null;</span>
+		}		
+
+<span class="fc" id="L490">		String targetEPackagePath = encodeEPackage(eClassifier.getEPackage());</span>
+<span class="pc bpc" id="L491" title="1 of 2 branches missed.">		if (Util.isBlank(targetEPackagePath)) {</span>
+<span class="nc" id="L492">			return null;</span>
+		}
+		
+<span class="fc" id="L495">		String targetPath = targetEPackagePath + &quot;/&quot; + eClassifier.getName() + &quot;.html&quot;;</span>
+<span class="fc" id="L496">		String thisPath = null;</span>
+<span class="fc bfc" id="L497" title="All 2 branches covered.">		if (contextClassifier == null) {</span>
+<span class="fc bfc" id="L498" title="All 2 branches covered.">			if (eObject instanceof EClassifier) {</span>
+<span class="fc" id="L499">				contextClassifier = (EClassifier) eObject;</span>
+<span class="fc bfc" id="L500" title="All 2 branches covered.">			} else if (eObject.eContainer() instanceof EClassifier) {</span>
+<span class="fc" id="L501">				contextClassifier = (EClassifier) eObject.eContainer();</span>
+<span class="fc bfc" id="L502" title="All 2 branches covered.">			} else if (eObject.eContainer() instanceof EOperation) {</span>
+<span class="fc" id="L503">				contextClassifier = (EClassifier) eObject.eContainer().eContainer();</span>
+			} 
+		}
+			
+<span class="fc bfc" id="L507" title="All 2 branches covered.">		if (contextClassifier != null) {	</span>
+<span class="fc" id="L508">			thisPath = encodeEPackage(contextClassifier.getEPackage()) + &quot;/&quot; + contextClassifier.getName() + &quot;.html&quot;;</span>
+<span class="pc bpc" id="L509" title="1 of 2 branches missed.">		} else if (eObject instanceof EPackage) {</span>
+<span class="fc" id="L510">			thisPath = encodeEPackage(((EPackage) eObject)) + &quot;/package-summary.html&quot;;					</span>
+		}
+		
+<span class="pc bpc" id="L513" title="1 of 2 branches missed.">		if (thisPath == null) {</span>
+<span class="nc" id="L514">			return null;</span>
+		}
+		
+<span class="fc" id="L517">		URI base = URI.createURI(context.getString(Context.BASE_URI_PROPERTY, &quot;tmp://base/doc/&quot;));</span>
+<span class="fc" id="L518">		URI target = URI.createURI(targetPath).resolve(base);</span>
+<span class="fc" id="L519">		URI source = URI.createURI(thisPath).resolve(base);</span>
+<span class="fc" id="L520">		URI relativeTarget = target.deresolve(source, true, true, true);</span>
+<span class="fc" id="L521">		return relativeTarget.toString();		</span>
+	}
+	
+	/**
+	 * @return Link to {@link EClassifier} if it is part of the doc or plain text if it is not.
+	 */
+	protected String link(EClassifier eClassifier, EClassifier contextClassifier) {
+<span class="fc" id="L528">		String path = path(eClassifier, contextClassifier);</span>
+<span class="fc" id="L529">		String label = labelProvider.apply(eClassifier, eClassifier.getName());</span>
+<span class="fc bfc" id="L530" title="All 2 branches covered.">		return Util.isBlank(path) ? label : &quot;&lt;a href=\&quot;&quot; + path + &quot;\&quot;&gt;&quot; + label + &quot;&lt;/a&gt;&quot;;</span>
+	}
+	
+	/**
+	 * @return Link to {@link EClassifier} if it is part of the doc or plain text if it is not.
+	 */
+	protected String link(EStructuralFeature feature, EClassifier contextClassifier) {
+<span class="fc" id="L537">		String path = path(feature.getEContainingClass(), contextClassifier);</span>
+<span class="fc" id="L538">		String fragment = &quot;#&quot; + feature.eClass().getName() + &quot;-&quot; + feature.getName();</span>
+<span class="fc bfc" id="L539" title="All 2 branches covered.">		path = Util.isBlank(path) ? fragment : path + fragment;</span>
+<span class="fc" id="L540">		return  &quot;&lt;a href=\&quot;&quot; + path + &quot;\&quot;&gt;&quot; + labelProvider.apply(feature, feature.getName()) + &quot;&lt;/a&gt;&quot;;</span>
+	}
+
+	protected void genericTypeArguments(EGenericType eGenericType, EClassifier contextClassifier, Consumer&lt;String&gt; accumulator, ProgressMonitor monitor) {
+<span class="fc" id="L544">		Iterator&lt;EGenericType&gt; it = eGenericType.getETypeArguments().iterator();</span>
+<span class="pc bpc" id="L545" title="1 of 2 branches missed.">		if (it.hasNext()) {</span>
+<span class="nc" id="L546">			accumulator.accept(&quot;&amp;lt;&quot;);</span>
+<span class="nc bnc" id="L547" title="All 2 branches missed.">			while (it.hasNext()) {</span>
+<span class="nc" id="L548">				genericType(it.next(), contextClassifier, accumulator, monitor);</span>
+<span class="nc bnc" id="L549" title="All 2 branches missed.">				if (it.hasNext()) {</span>
+<span class="nc" id="L550">					accumulator.accept(&quot;,&quot;);</span>
+				}
+			}
+<span class="nc" id="L553">			accumulator.accept(&quot;&amp;gt;&quot;);</span>
+		}
+<span class="fc" id="L555">	}</span>
+	
+	/**
+	 * Encodes ePackage path.
+	 * @param ePackage
+	 * @return
+	 */
+	public String encodeEPackage(EPackage ePackage) {
+<span class="fc" id="L563">		String ret = null;</span>
+				
+<span class="fc bfc" id="L565" title="All 2 branches covered.">		for (EPackage p = ePackage; p != null; p = p.getESuperPackage()) {</span>
+<span class="pc bpc" id="L566" title="1 of 2 branches missed.">			String segment = ePackagePathComputer == null ? Hex.encodeHexString(p.getNsURI().getBytes(StandardCharsets.UTF_8)) : ePackagePathComputer.apply(p);</span>
+<span class="fc bfc" id="L567" title="All 2 branches covered.">			if (ret == null) {</span>
+<span class="fc" id="L568">				ret = segment;</span>
+			} else {
+<span class="fc" id="L570">				ret = segment + &quot;/&quot; + ret;</span>
+			}
+		}
+		
+<span class="fc" id="L574">		return ret;</span>
+	}
+	
+	/**
+	 * Adds textual content.
+	 * @param content
+	 */
+	protected static void addContent(Action action, String content) {
+<span class="fc" id="L582">		Text text = ContentFactory.eINSTANCE.createText();</span>
+<span class="fc" id="L583">		text.setContent(content);</span>
+<span class="fc" id="L584">		action.getContent().add(text);</span>
+<span class="fc" id="L585">	}</span>
+	
+	/**
+	 * Filters the collection retaining only model elements which shall be documented.
+	 * @param &lt;M&gt;
+	 * @param elements
+	 * @return
+	 */
+	protected &lt;M extends EModelElement&gt; List&lt;M&gt; retainDocumentable(Collection&lt;M&gt; elements) {
+<span class="fc" id="L594">		return elements.stream().filter(elementPredicate).collect(Collectors.toList());</span>
+	}		
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

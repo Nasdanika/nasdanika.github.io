@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Event.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika HTML</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html</a> &gt; <span class="el_source">Event.java</span></div><h1>Event.java</h1><pre class="source lang-java linenums">package org.nasdanika.html;
+
+/**
+ * Enumeration for frequently used HTML events
+ * @author Pavel
+ *
+ */
+<span class="nc" id="L8">public enum Event {</span>
+	// Form Events
+	// Events triggered by actions inside a HTML form (applies to almost all HTML elements, but is most used in form elements):
+
+	/** Fires the moment that the element loses focus **/
+<span class="nc" id="L13">	blur, </span>
+	
+	/** Fires the moment when the value of the element is changed **/
+<span class="nc" id="L16">	change,</span>
+	
+	/** Script to be run when a context menu is triggered **/
+<span class="nc" id="L19">	contextmenu, </span>
+	
+	/** Fires the moment when the element gets focus **/
+<span class="nc" id="L22">	focus, </span>
+	
+	/** Script to be run when a form changes **/
+<span class="nc" id="L25">	formchange,</span>
+	
+	/** Script to be run when a form gets user input **/
+<span class="nc" id="L28">	forminput,</span>
+	
+	/** Script to be run when an element gets user input **/
+<span class="nc" id="L31">	input, </span>
+	
+	/** Script to be run when an element is invalid **/
+<span class="nc" id="L34">	invalid, </span>
+	
+	/** Fires when the Reset button in a form is clicked **/
+<span class="nc" id="L37">	reset, </span>
+	
+	/** Fires after some text has been selected in an element **/
+<span class="nc" id="L40">	select, </span>
+	
+	/** Fires when a form is submitted **/
+<span class="nc" id="L43">	submit, </span>
+
+	// Keyboard Events
+	
+	/** Fires when a user is pressing a key **/
+<span class="nc" id="L48">	keydown, </span>
+	
+	/** Fires when a user presses a key **/
+<span class="nc" id="L51">	keypress,</span>
+	
+	/** Fires when a user releases a key **/
+<span class="nc" id="L54">	keyup, </span>
+
+	// Mouse Events
+	// Events triggered by a mouse, or similar user actions:
+
+	/** Fires on a mouse click on the element **/
+<span class="nc" id="L60">	click, </span>
+	
+	/** Fires on a mouse double-click on the element **/
+<span class="nc" id="L63">	dblclick,</span>
+	
+	/** Script to be run when an element is dragged **/
+<span class="nc" id="L66">	drag, </span>
+	
+	/** Script to be run at the end of a drag operation **/
+<span class="nc" id="L69">	dragend, </span>
+	
+	/** Script to be run when an element has been dragged to a valid drop target **/
+<span class="nc" id="L72">	dragenter, </span>
+	
+	/** Script to be run when an element leaves a valid drop target **/
+<span class="nc" id="L75">	dragleave, </span>
+	
+	/** Script to be run when an element is being dragged over a valid drop target **/
+<span class="nc" id="L78">	dragover, </span>
+	
+	/** Script to be run at the start of a drag operation **/
+<span class="nc" id="L81">	dragstart, </span>
+	
+	/** Script to be run when dragged element is being dropped **/
+<span class="nc" id="L84">	drop, </span>
+	
+	/** Fires when a mouse button is pressed down on an element **/
+<span class="nc" id="L87">	mousedown, </span>
+	
+	/** Fires when the mouse pointer moves over an element **/
+<span class="nc" id="L90">	mousemove, </span>
+	
+	/** Fires when the mouse pointer moves out of an element **/
+<span class="nc" id="L93">	mouseout, </span>
+	
+	/** Fires when the mouse pointer moves over an element **/
+<span class="nc" id="L96">	mouseover, </span>
+	
+	/** Fires when a mouse button is released over an element **/
+<span class="nc" id="L99">	mouseup, </span>
+	
+	/** Script to be run when the mouse wheel is being rotated **/
+<span class="nc" id="L102">	mousewheel, </span>
+	
+	/** Script to be run when an element's scrollbar is being scrolled **/
+<span class="nc" id="L105">	scroll 		</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

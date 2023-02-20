@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ElementIdentityMapCompoundFunctionFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">ElementIdentityMapCompoundFunctionFactory.java</span></div><h1>ElementIdentityMapCompoundFunctionFactory.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ElementIdentityMapCompoundFunctionFactory&lt;T,R&gt; implements FunctionFactory&lt;T, java.util.function.Function&lt;FunctionFactory&lt;T,R&gt;,R&gt;&gt; {
+
+	private String name;
+<span class="nc" id="L12">	private List&lt;FunctionFactory&lt;T,R&gt;&gt; elements = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L14">	public ElementIdentityMapCompoundFunctionFactory(String name, Collection&lt;FunctionFactory&lt;T,R&gt;&gt; functionsFactories) {</span>
+<span class="nc" id="L15">		this.name = name;</span>
+<span class="nc" id="L16">		this.elements.addAll(elements);</span>
+<span class="nc" id="L17">	}</span>
+	
+<span class="nc" id="L19">	public ElementIdentityMapCompoundFunctionFactory(String name) {</span>
+<span class="nc" id="L20">		this.name = name;</span>
+<span class="nc" id="L21">	}</span>
+
+	@Override
+	public Function&lt;T, java.util.function.Function&lt;FunctionFactory&lt;T, R&gt;, R&gt;&gt; create(Context context) {
+<span class="nc" id="L25">		Map&lt;FunctionFactory&lt;T,R&gt;, Function&lt;T,R&gt;&gt; functionMap = new IdentityHashMap&lt;&gt;();</span>
+<span class="nc" id="L26">		ElementIdentityMapCompoundFunction&lt;T,R&gt; compoundFunction = new ElementIdentityMapCompoundFunction&lt;&gt;(name);		</span>
+		
+<span class="nc bnc" id="L28" title="All 2 branches missed.">		for (FunctionFactory&lt;T,R&gt; e: elements) {</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">			if (e != null) {</span>
+<span class="nc" id="L30">				Function&lt;T,R&gt; supplier = e.create(context);</span>
+<span class="nc" id="L31">				functionMap.put(e, supplier);</span>
+<span class="nc" id="L32">				compoundFunction.put(supplier);</span>
+			}
+<span class="nc" id="L34">		}</span>
+		
+		class Filter extends FilterExecutionParticipant&lt;Function&lt;T, java.util.function.Function&lt;Function&lt;T,R&gt;,R&gt;&gt;&gt; implements Function&lt;T,java.util.function.Function&lt;FunctionFactory&lt;T,R&gt;,R&gt;&gt; {
+
+<span class="nc" id="L38">			public Filter(Function&lt;T,java.util.function.Function&lt;Function&lt;T,R&gt;,R&gt;&gt; target) {</span>
+<span class="nc" id="L39">				super(target);</span>
+<span class="nc" id="L40">			}</span>
+
+			@Override
+			public java.util.function.Function&lt;FunctionFactory&lt;T, R&gt;, R&gt; execute(T arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L44">				return ((java.util.function.Function&lt;FunctionFactory&lt;T, R&gt;, Function&lt;T, R&gt;&gt;) functionMap::get).andThen(target.execute(arg, progressMonitor));</span>
+			}
+			
+		}
+		
+<span class="nc" id="L49">		return new Filter(compoundFunction);</span>
+	}
+	
+	public void put(FunctionFactory&lt;T,R&gt; element) {
+<span class="nc bnc" id="L53" title="All 2 branches missed.">		if (element != null) {</span>
+<span class="nc" id="L54">			elements.add(element);</span>
+		}
+<span class="nc" id="L56">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

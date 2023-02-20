@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLElement.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika HTML</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html</a> &gt; <span class="el_source">HTMLElement.java</span></div><h1>HTMLElement.java</h1><pre class="source lang-java linenums">package org.nasdanika.html;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+/**
+ * Abstraction of a UI element. toString() produces HTML markup.
+ * @author Pavel
+ *
+ */
+public interface HTMLElement&lt;T extends HTMLElement&lt;T&gt;&gt; extends Producer, Markup {
+	
+	/**
+	 * 
+	 * @param event Event type.
+	 * @param handler Handler script. 
+	 * @return
+	 */
+	T on(Event event, Object handler);
+
+	/**
+	 * 
+	 * @param event Event name without 'on' prefix, e.g. 'click' for 'onclick' handler
+	 * @param handler Handler script.
+	 * @return
+	 */
+	T on(String event, Object handler);
+
+	/**
+	 * 
+	 * @param event Event type.
+	 * @param handler Handler script.
+	 * @return
+	 */
+	T on(Event event, Reader handler) throws IOException;
+
+	/**
+	 * 
+	 * @param event Event name without 'on' prefix, e.g. 'click' for 'onclick' handler
+	 * @param handler Handler script. 
+	 * @return
+	 */
+	T on(String event, Reader handler) throws IOException;
+
+	/**
+	 * 
+	 * @param event Event type.
+	 * @param handler Handler script. 
+	 * @return
+	 */
+	T on(Event event, InputStream handler) throws IOException;
+
+	/**
+	 * 
+	 * @param event Event name without 'on' prefix, e.g. 'click' for 'onclick' handler
+	 * @param handler Handler script. 
+	 * @return
+	 */
+	T on(String event, InputStream handler) throws IOException;
+		
+	/**
+	 * Sets element id.
+	 * @param id
+	 * @return
+	 */
+	T id(Object id);
+	
+	Object getId();
+	
+	/**
+	 * Sets element attribute
+	 * @param name  if name is 'id' then value replaces value set through id() and vice versa. If attribute name is 'style' then
+	 * this definition is merged with styles defined through style() method.
+	 * @param value Attribute value. This method HTML-escapes the value, e.g. replaces &quot; with &amp;quot;
+	 * @return
+	 * 
+	 */
+	T attribute(String name, Object value);
+	
+	/**
+	 * Conditionally sets attribute. A convenience method for writing more compact code.
+	 * @return
+	 * 
+	 */
+	T attribute(String name, Object value, boolean condition);	
+	
+	String getAttribute(String name);
+	
+	/**
+	 * Sets style attribute
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	T style(String name, Object value);
+	
+	Style&lt;T&gt; style();
+	
+	/**
+	 * Adds class definition.
+	 * @param clazz
+	 * @return
+	 */
+	T addClass(Object... clazz);
+
+	/**
+	 * Removes class definition.
+	 * @param clazz
+	 * @return
+	 */
+	T removeClass(Object... clazz);	
+	
+	/**
+	 * Adds class definition if condition is true. Convenience method to write shorter code.
+	 * @param clazz
+	 * @return
+	 */
+	T addClassConditional(boolean condition, Object... clazz);
+	
+	
+	T comment(String comment);
+	
+	/**
+	 * 
+	 * @return Factory used to create this element.
+	 */
+	HTMLFactory getFactory();	
+
+	/**
+	 * Convenience method for constructing ``jQuery('#&lt;element id&gt;').&lt;expr&gt;`` strings.
+	 * If id is not set, it is set to ``factory.nextId()``.
+	 * @param expr Expression to add after ``jQuery('#&lt;element id&gt;').``.
+	 * @return
+	 */
+	String jQuery(String expr);
+	
+	/**
+	 * Sets the application defined UI element data. This data is not used for rendering by UI elements.
+	 * Applications may put arbitrary objects in this field. 
+	 * @param data
+	 * @return this UI element.
+	 */
+	T setData(Object data);
+	
+	/**
+	 * Returns the application defined UI element data, or null if it has not been set. 
+	 * @return
+	 */
+	Object getData();
+	
+	/**
+	 * Sets the application defined property of the UI element with the specified name to the given value.
+	 * Applications may associate arbitrary objects with the UI element. This data is not used for rendering by UI elements.
+	 * @param key
+	 * @param data
+	 * @return this UI element.
+	 */
+	T setData(Object key, Object data);
+	
+	/**
+	 * Returns the application defined property of the UI element with the specified name, or null if it has not been set.
+	 * @param Key
+	 * @return
+	 */
+	Object getData(Object key);
+	
+	/**
+	 * @return Element content.
+	 */
+	List&lt;Object&gt; getContent();
+	
+	/**
+	 * Loads HTML attributes from a map.
+	 * For all top-level keys except ``class``, ``style``, and ``data`` attribute value is produced by converting the value to string for scalars and to JSON string for lists and maps.
+	 * &quot;children&quot; key is ignored - it is used to define a hierarchy of attributes.
+	 * For class attribute its value is formed by concatenating elements using space as a separator. If elements are hierarchical then class name is formed by concatenation with a dash (``-``) as a separator.
+	 * If value of ``data`` attribute is a map then keys of that map get concatenated with ``data`` using dash (``-``) as a separator, the same applies to nested maps. Non-map values become attribute values - scalars are converted to string, 
+	 * lists are converted to JSON string.
+	 * Style can be defined as a string, list or map. If style is defined as a list, all list values are concatenated with a space as a separator - it is a convent way for long unstructured definitions.
+	 * If style value is a map then the value and its contained map values are processed in the following fashion:
+	 * a) Keys are concatenated with dash as a separator.
+	 * b) List values are concatenated with space as a separator.
+	 * 
+	 * @param attributes
+	 * @return
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	default T attributes(Map&lt;?,?&gt; attributes) {
+		
+<span class="nc" id="L198">		class Util {</span>
+			
+			void setDataAttribute(HTMLElement&lt;?&gt; htmlElement, String key, Object value) {
+<span class="nc bnc" id="L201" title="All 2 branches missed.">				if (value instanceof Map) {</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">					for (Entry&lt;?, ?&gt; entry: ((Map&lt;?,?&gt;) value).entrySet()) {</span>
+<span class="nc" id="L203">						setDataAttribute(htmlElement, key+&quot;-&quot;+entry.getKey(), value);</span>
+<span class="nc" id="L204">					}</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">				} else if (value instanceof Collection) {</span>
+<span class="nc" id="L206">					JSONArray jsonArray = new JSONArray((Collection&lt;?&gt;) value);</span>
+<span class="nc" id="L207">					htmlElement.attribute(key, jsonArray); 																</span>
+<span class="nc" id="L208">				} else {</span>
+<span class="nc" id="L209">					htmlElement.attribute(key, value);</span>
+				}				
+<span class="nc" id="L211">			}</span>
+
+			void setStyle(HTMLElement&lt;?&gt; htmlElement, String key, Object value) {
+<span class="nc bnc" id="L214" title="All 2 branches missed.">				if (value instanceof Map) {</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">					for (Entry&lt;?, ?&gt; entry: ((Map&lt;?,?&gt;) value).entrySet()) {</span>
+<span class="nc" id="L216">						setStyle(htmlElement, key + &quot;-&quot; + entry.getKey(), entry.getValue());</span>
+<span class="nc" id="L217">					}</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">				} else if (value instanceof Collection) {</span>
+<span class="nc" id="L219">					StringBuilder styleBuilder = new StringBuilder();</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">					for (Object e: (Collection&lt;?&gt;) value) {</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">						if (styleBuilder.length() &gt; 0) {</span>
+<span class="nc" id="L222">							styleBuilder.append(&quot; &quot;);</span>
+						}
+<span class="nc" id="L224">						styleBuilder.append(e);</span>
+<span class="nc" id="L225">					}</span>
+<span class="nc" id="L226">					htmlElement.style(key, styleBuilder.toString());</span>
+<span class="nc" id="L227">				} else {</span>
+<span class="nc" id="L228">					htmlElement.style(key, value);</span>
+				}				
+<span class="nc" id="L230">			}</span>
+
+			void addClass(HTMLElement&lt;?&gt; htmlElement, String prefix, Object value) {
+<span class="nc bnc" id="L233" title="All 2 branches missed.">				if (value instanceof Map) {</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">					for (Entry&lt;?, ?&gt; entry: ((Map&lt;?,?&gt;) value).entrySet()) {</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">						addClass(htmlElement, prefix == null ? String.valueOf(entry.getKey()) : prefix + &quot;-&quot; + entry.getKey(), entry.getValue());</span>
+<span class="nc" id="L236">					}</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">				} else if (value instanceof Collection) {</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">					for (Object e: (Collection&lt;?&gt;) value) {</span>
+<span class="nc" id="L239">						addClass(htmlElement, prefix, e);</span>
+<span class="nc" id="L240">					}</span>
+				} else {
+<span class="nc bnc" id="L242" title="All 2 branches missed.">					if (value instanceof Boolean) {</span>
+<span class="nc bnc" id="L243" title="All 4 branches missed.">						if (Boolean.TRUE.equals(value) &amp;&amp; prefix != null) {</span>
+<span class="nc" id="L244">							htmlElement.addClass(prefix);</span>
+						}
+					} else {
+<span class="nc bnc" id="L247" title="All 2 branches missed.">						htmlElement.addClass(prefix == null ? String.valueOf(value) : prefix + &quot;-&quot; + value);</span>
+					}
+				}				
+<span class="nc" id="L250">			}</span>
+			
+			void setAttributes() {
+<span class="nc bnc" id="L253" title="All 2 branches missed.">				for (Entry&lt;?, ?&gt; entry: attributes.entrySet()) {</span>
+<span class="nc" id="L254">					Object value = entry.getValue();</span>
+<span class="nc" id="L255">					String key = entry.getKey().toString();</span>
+<span class="nc bnc" id="L256" title="All 5 branches missed.">					switch (key) {</span>
+					case &quot;children&quot;:
+<span class="nc" id="L258">						break;</span>
+					case &quot;class&quot;:
+<span class="nc" id="L260">						addClass(HTMLElement.this, null, value);</span>
+<span class="nc" id="L261">						break;</span>
+					case &quot;style&quot;:
+<span class="nc bnc" id="L263" title="All 2 branches missed.">						if (value instanceof Collection) {</span>
+<span class="nc" id="L264">							StringBuilder styleBuilder = new StringBuilder();</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">							for (Object e: (Collection&lt;?&gt;) value) {</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">								if (styleBuilder.length() &gt; 0) {</span>
+<span class="nc" id="L267">									styleBuilder.append(&quot; &quot;);</span>
+								}
+<span class="nc" id="L269">								styleBuilder.append(e);</span>
+<span class="nc" id="L270">							}</span>
+<span class="nc" id="L271">							HTMLElement.this.attribute(key, styleBuilder.toString());								</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">						} else if (value instanceof Map) {</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">							for (Entry&lt;?, ?&gt; se: ((Map&lt;?,?&gt;) value).entrySet()) {</span>
+<span class="nc" id="L274">								setStyle(HTMLElement.this, se.getKey().toString(), se.getValue());</span>
+<span class="nc" id="L275">							}</span>
+						} else {
+<span class="nc" id="L277">							HTMLElement.this.attribute(key, value);								</span>
+						}
+<span class="nc" id="L279">						break;</span>
+					case &quot;data&quot;:
+<span class="nc" id="L281">						setDataAttribute(HTMLElement.this, key, value);</span>
+<span class="nc" id="L282">						break;</span>
+					default:
+<span class="nc bnc" id="L284" title="All 2 branches missed.">						if (value instanceof Map) {</span>
+<span class="nc" id="L285">							JSONObject jsonObject = new JSONObject((Map&lt;?,?&gt;) value);</span>
+<span class="nc" id="L286">							HTMLElement.this.attribute(key, jsonObject); 								</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">						} else if (value instanceof Collection) {</span>
+<span class="nc" id="L288">							JSONArray jsonArray = new JSONArray((Collection&lt;?&gt;) value);</span>
+<span class="nc" id="L289">							HTMLElement.this.attribute(key, jsonArray); 																</span>
+<span class="nc" id="L290">						} else {</span>
+<span class="nc" id="L291">							HTMLElement.this.attribute(key, value);</span>
+						}
+					}
+<span class="nc" id="L294">				}</span>
+<span class="nc" id="L295">			}</span>
+		}
+		
+<span class="nc" id="L298">		new Util().setAttributes();</span>
+	
+<span class="nc" id="L300">		return (T) this;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

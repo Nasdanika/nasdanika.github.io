@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InputBaseImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika HTML</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.impl</a> &gt; <span class="el_source">InputBaseImpl.java</span></div><h1>InputBaseImpl.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.impl;
+
+import org.nasdanika.html.Form;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.InputBase;
+import org.nasdanika.html.TagName;
+
+abstract class InputBaseImpl&lt;T extends InputBase&lt;T&gt;&gt; extends HTMLElementImpl&lt;T&gt; implements InputBase&lt;T&gt; {
+	
+	InputBaseImpl(HTMLFactory factory, String tagName) {
+<span class="nc" id="L11">		super(factory, tagName, false);</span>
+<span class="nc" id="L12">	}</span>
+
+	InputBaseImpl(HTMLFactory factory, TagName tagName) {
+<span class="nc" id="L15">		this(factory, tagName.name());</span>
+<span class="nc" id="L16">	}</span>
+
+	@Override
+	public T autofocus(boolean autofocus) {		
+<span class="nc bnc" id="L20" title="All 2 branches missed.">		return attribute(&quot;autofocus&quot;, autofocus ? Boolean.TRUE : null);</span>
+	}
+
+	@Override
+	public T autofocus() {
+<span class="nc" id="L25">		return autofocus(true);</span>
+	}
+
+	@Override
+	public T disabled(boolean disabled) {		
+<span class="nc bnc" id="L30" title="All 2 branches missed.">		return attribute(&quot;disabled&quot;, disabled ? Boolean.TRUE : null);</span>
+	}
+
+	@Override
+	public T disabled() {
+<span class="nc" id="L35">		return disabled(true);</span>
+	}
+
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public T form(Form... form) {
+<span class="nc" id="L41">		String existingForm = (String) attributes.get(&quot;form&quot;);</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">		for (Form f: form) {</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">			if (f.getId()==null) {</span>
+<span class="nc" id="L44">				f.id(factory.nextId());</span>
+			}
+<span class="nc bnc" id="L46" title="All 4 branches missed.">			if (existingForm!=null &amp;&amp; existingForm.trim().length()&gt;0) {</span>
+<span class="nc" id="L47">				existingForm+=&quot; &quot;;</span>
+			}
+<span class="nc bnc" id="L49" title="All 2 branches missed.">			if (existingForm==null) {</span>
+<span class="nc" id="L50">				existingForm = f.getId().toString();</span>
+			} else {
+<span class="nc" id="L52">				existingForm+= f.getId();</span>
+			}			
+		}
+<span class="nc" id="L55">		return (T) this;</span>
+	}
+	@Override
+	public T name(Object name) {
+<span class="nc" id="L59">		return attribute(&quot;name&quot;, name);</span>
+	}
+
+	@Override
+	public T required(boolean required) {
+<span class="nc bnc" id="L64" title="All 2 branches missed.">		return attribute(&quot;required&quot;, required ? Boolean.TRUE : null);</span>
+	}
+
+	@Override
+	public T required() {
+<span class="nc" id="L69">		return required(true);</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

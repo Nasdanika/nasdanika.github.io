@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CallImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Execution Model</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.impl</a> &gt; <span class="el_source">CallImpl.java</span></div><h1>CallImpl.java</h1><pre class="source lang-java linenums">/**
+ */
+package org.nasdanika.exec.impl;
+
+import java.util.Collection;
+
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.EMap;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.nasdanika.exec.Call;
+import org.nasdanika.exec.ExecPackage;
+import org.nasdanika.ncore.impl.ModelElementImpl;
+
+/**
+ * &lt;!-- begin-user-doc --&gt;
+ * An implementation of the model object '&lt;em&gt;&lt;b&gt;Call&lt;/b&gt;&lt;/em&gt;'.
+ * &lt;!-- end-user-doc --&gt;
+ * &lt;p&gt;
+ * The following features are implemented:
+ * &lt;/p&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.impl.CallImpl#getType &lt;em&gt;Type&lt;/em&gt;}&lt;/li&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.impl.CallImpl#getProperty &lt;em&gt;Property&lt;/em&gt;}&lt;/li&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.impl.CallImpl#getService &lt;em&gt;Service&lt;/em&gt;}&lt;/li&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.impl.CallImpl#getMethod &lt;em&gt;Method&lt;/em&gt;}&lt;/li&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.impl.CallImpl#getProperties &lt;em&gt;Properties&lt;/em&gt;}&lt;/li&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.impl.CallImpl#getInit &lt;em&gt;Init&lt;/em&gt;}&lt;/li&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.impl.CallImpl#getArguments &lt;em&gt;Arguments&lt;/em&gt;}&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * @generated
+ */
+public class CallImpl extends ModelElementImpl implements Call {
+	/**
+	 * The default value of the '{@link #getType() &lt;em&gt;Type&lt;/em&gt;}' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
+<span class="nc" id="L47">	protected static final String TYPE_EDEFAULT = null;</span>
+
+	/**
+	 * The default value of the '{@link #getProperty() &lt;em&gt;Property&lt;/em&gt;}' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see #getProperty()
+	 * @generated
+	 * @ordered
+	 */
+<span class="nc" id="L57">	protected static final String PROPERTY_EDEFAULT = null;</span>
+
+	/**
+	 * The default value of the '{@link #getService() &lt;em&gt;Service&lt;/em&gt;}' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see #getService()
+	 * @generated
+	 * @ordered
+	 */
+<span class="nc" id="L67">	protected static final String SERVICE_EDEFAULT = null;</span>
+
+	/**
+	 * The default value of the '{@link #getMethod() &lt;em&gt;Method&lt;/em&gt;}' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see #getMethod()
+	 * @generated
+	 * @ordered
+	 */
+<span class="nc" id="L77">	protected static final String METHOD_EDEFAULT = null;</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected CallImpl() {
+<span class="nc" id="L85">		super();</span>
+<span class="nc" id="L86">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+<span class="nc" id="L95">		return ExecPackage.Literals.CALL;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public String getType() {
+<span class="nc" id="L105">		return (String)eDynamicGet(ExecPackage.CALL__TYPE, ExecPackage.Literals.CALL__TYPE, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void setType(String newType) {
+<span class="nc" id="L115">		eDynamicSet(ExecPackage.CALL__TYPE, ExecPackage.Literals.CALL__TYPE, newType);</span>
+<span class="nc" id="L116">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public String getProperty() {
+<span class="nc" id="L125">		return (String)eDynamicGet(ExecPackage.CALL__PROPERTY, ExecPackage.Literals.CALL__PROPERTY, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void setProperty(String newProperty) {
+<span class="nc" id="L135">		eDynamicSet(ExecPackage.CALL__PROPERTY, ExecPackage.Literals.CALL__PROPERTY, newProperty);</span>
+<span class="nc" id="L136">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public String getService() {
+<span class="nc" id="L145">		return (String)eDynamicGet(ExecPackage.CALL__SERVICE, ExecPackage.Literals.CALL__SERVICE, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void setService(String newService) {
+<span class="nc" id="L155">		eDynamicSet(ExecPackage.CALL__SERVICE, ExecPackage.Literals.CALL__SERVICE, newService);</span>
+<span class="nc" id="L156">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public String getMethod() {
+<span class="nc" id="L165">		return (String)eDynamicGet(ExecPackage.CALL__METHOD, ExecPackage.Literals.CALL__METHOD, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void setMethod(String newMethod) {
+<span class="nc" id="L175">		eDynamicSet(ExecPackage.CALL__METHOD, ExecPackage.Literals.CALL__METHOD, newMethod);</span>
+<span class="nc" id="L176">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public EMap&lt;String, EObject&gt; getProperties() {
+<span class="nc" id="L186">		return (EMap&lt;String, EObject&gt;)eDynamicGet(ExecPackage.CALL__PROPERTIES, ExecPackage.Literals.CALL__PROPERTIES, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public EList&lt;EObject&gt; getInit() {
+<span class="nc" id="L197">		return (EList&lt;EObject&gt;)eDynamicGet(ExecPackage.CALL__INIT, ExecPackage.Literals.CALL__INIT, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public EList&lt;EObject&gt; getArguments() {
+<span class="nc" id="L208">		return (EList&lt;EObject&gt;)eDynamicGet(ExecPackage.CALL__ARGUMENTS, ExecPackage.Literals.CALL__ARGUMENTS, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+<span class="nc bnc" id="L218" title="All 4 branches missed.">		switch (featureID) {</span>
+			case ExecPackage.CALL__PROPERTIES:
+<span class="nc" id="L220">				return ((InternalEList&lt;?&gt;)getProperties()).basicRemove(otherEnd, msgs);</span>
+			case ExecPackage.CALL__INIT:
+<span class="nc" id="L222">				return ((InternalEList&lt;?&gt;)getInit()).basicRemove(otherEnd, msgs);</span>
+			case ExecPackage.CALL__ARGUMENTS:
+<span class="nc" id="L224">				return ((InternalEList&lt;?&gt;)getArguments()).basicRemove(otherEnd, msgs);</span>
+		}
+<span class="nc" id="L226">		return super.eInverseRemove(otherEnd, featureID, msgs);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+<span class="nc bnc" id="L236" title="All 8 branches missed.">		switch (featureID) {</span>
+			case ExecPackage.CALL__TYPE:
+<span class="nc" id="L238">				return getType();</span>
+			case ExecPackage.CALL__PROPERTY:
+<span class="nc" id="L240">				return getProperty();</span>
+			case ExecPackage.CALL__SERVICE:
+<span class="nc" id="L242">				return getService();</span>
+			case ExecPackage.CALL__METHOD:
+<span class="nc" id="L244">				return getMethod();</span>
+			case ExecPackage.CALL__PROPERTIES:
+<span class="nc bnc" id="L246" title="All 2 branches missed.">				if (coreType) return getProperties();</span>
+<span class="nc" id="L247">				else return getProperties().map();</span>
+			case ExecPackage.CALL__INIT:
+<span class="nc" id="L249">				return getInit();</span>
+			case ExecPackage.CALL__ARGUMENTS:
+<span class="nc" id="L251">				return getArguments();</span>
+		}
+<span class="nc" id="L253">		return super.eGet(featureID, resolve, coreType);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public void eSet(int featureID, Object newValue) {
+<span class="nc bnc" id="L264" title="All 8 branches missed.">		switch (featureID) {</span>
+			case ExecPackage.CALL__TYPE:
+<span class="nc" id="L266">				setType((String)newValue);</span>
+<span class="nc" id="L267">				return;</span>
+			case ExecPackage.CALL__PROPERTY:
+<span class="nc" id="L269">				setProperty((String)newValue);</span>
+<span class="nc" id="L270">				return;</span>
+			case ExecPackage.CALL__SERVICE:
+<span class="nc" id="L272">				setService((String)newValue);</span>
+<span class="nc" id="L273">				return;</span>
+			case ExecPackage.CALL__METHOD:
+<span class="nc" id="L275">				setMethod((String)newValue);</span>
+<span class="nc" id="L276">				return;</span>
+			case ExecPackage.CALL__PROPERTIES:
+<span class="nc" id="L278">				((EStructuralFeature.Setting)getProperties()).set(newValue);</span>
+<span class="nc" id="L279">				return;</span>
+			case ExecPackage.CALL__INIT:
+<span class="nc" id="L281">				getInit().clear();</span>
+<span class="nc" id="L282">				getInit().addAll((Collection&lt;? extends EObject&gt;)newValue);</span>
+<span class="nc" id="L283">				return;</span>
+			case ExecPackage.CALL__ARGUMENTS:
+<span class="nc" id="L285">				getArguments().clear();</span>
+<span class="nc" id="L286">				getArguments().addAll((Collection&lt;? extends EObject&gt;)newValue);</span>
+<span class="nc" id="L287">				return;</span>
+		}
+<span class="nc" id="L289">		super.eSet(featureID, newValue);</span>
+<span class="nc" id="L290">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+<span class="nc bnc" id="L299" title="All 8 branches missed.">		switch (featureID) {</span>
+			case ExecPackage.CALL__TYPE:
+<span class="nc" id="L301">				setType(TYPE_EDEFAULT);</span>
+<span class="nc" id="L302">				return;</span>
+			case ExecPackage.CALL__PROPERTY:
+<span class="nc" id="L304">				setProperty(PROPERTY_EDEFAULT);</span>
+<span class="nc" id="L305">				return;</span>
+			case ExecPackage.CALL__SERVICE:
+<span class="nc" id="L307">				setService(SERVICE_EDEFAULT);</span>
+<span class="nc" id="L308">				return;</span>
+			case ExecPackage.CALL__METHOD:
+<span class="nc" id="L310">				setMethod(METHOD_EDEFAULT);</span>
+<span class="nc" id="L311">				return;</span>
+			case ExecPackage.CALL__PROPERTIES:
+<span class="nc" id="L313">				getProperties().clear();</span>
+<span class="nc" id="L314">				return;</span>
+			case ExecPackage.CALL__INIT:
+<span class="nc" id="L316">				getInit().clear();</span>
+<span class="nc" id="L317">				return;</span>
+			case ExecPackage.CALL__ARGUMENTS:
+<span class="nc" id="L319">				getArguments().clear();</span>
+<span class="nc" id="L320">				return;</span>
+		}
+<span class="nc" id="L322">		super.eUnset(featureID);</span>
+<span class="nc" id="L323">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+<span class="nc bnc" id="L332" title="All 8 branches missed.">		switch (featureID) {</span>
+			case ExecPackage.CALL__TYPE:
+<span class="nc bnc" id="L334" title="All 6 branches missed.">				return TYPE_EDEFAULT == null ? getType() != null : !TYPE_EDEFAULT.equals(getType());</span>
+			case ExecPackage.CALL__PROPERTY:
+<span class="nc bnc" id="L336" title="All 6 branches missed.">				return PROPERTY_EDEFAULT == null ? getProperty() != null : !PROPERTY_EDEFAULT.equals(getProperty());</span>
+			case ExecPackage.CALL__SERVICE:
+<span class="nc bnc" id="L338" title="All 6 branches missed.">				return SERVICE_EDEFAULT == null ? getService() != null : !SERVICE_EDEFAULT.equals(getService());</span>
+			case ExecPackage.CALL__METHOD:
+<span class="nc bnc" id="L340" title="All 6 branches missed.">				return METHOD_EDEFAULT == null ? getMethod() != null : !METHOD_EDEFAULT.equals(getMethod());</span>
+			case ExecPackage.CALL__PROPERTIES:
+<span class="nc bnc" id="L342" title="All 2 branches missed.">				return !getProperties().isEmpty();</span>
+			case ExecPackage.CALL__INIT:
+<span class="nc bnc" id="L344" title="All 2 branches missed.">				return !getInit().isEmpty();</span>
+			case ExecPackage.CALL__ARGUMENTS:
+<span class="nc bnc" id="L346" title="All 2 branches missed.">				return !getArguments().isEmpty();</span>
+		}
+<span class="nc" id="L348">		return super.eIsSet(featureID);</span>
+	}
+
+} //CallImpl
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapCompoundConsumerFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">MapCompoundConsumerFactory.java</span></div><h1>MapCompoundConsumerFactory.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+/**
+ * @author Pavel
+ *
+ * @param &lt;K&gt;
+ * @param &lt;T&gt;
+ */
+public class MapCompoundConsumerFactory&lt;K,T&gt; implements ConsumerFactory&lt;Map&lt;K,T&gt;&gt; {
+
+	private String name;
+<span class="nc" id="L16">	private Map&lt;K,ConsumerFactory&lt;? super T&gt;&gt; elements = new LinkedHashMap&lt;&gt;();</span>
+
+<span class="nc" id="L18">	public MapCompoundConsumerFactory(String name, Map&lt;K,ConsumerFactory&lt;? super T&gt;&gt; elements) {</span>
+<span class="nc" id="L19">		this.name = name;</span>
+<span class="nc" id="L20">		this.elements.putAll(elements);</span>
+<span class="nc" id="L21">	}</span>
+	
+<span class="nc" id="L23">	public MapCompoundConsumerFactory(String name) {</span>
+<span class="nc" id="L24">		this.name = name;</span>
+<span class="nc" id="L25">	}</span>
+
+	@Override
+	public Consumer&lt;Map&lt;K,T&gt;&gt; create(Context context) {
+<span class="nc" id="L29">		MapCompoundConsumer&lt;K,T&gt; ret = new MapCompoundConsumer&lt;K,T&gt;(name);</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">		for (Entry&lt;K, ConsumerFactory&lt;? super T&gt;&gt; e: elements.entrySet()) {</span>
+<span class="nc" id="L31">			ConsumerFactory&lt;? super T&gt; value = e.getValue();</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">			if (value != null) {</span>
+<span class="nc" id="L33">				ret.put(e.getKey(), value.create(context));</span>
+			}
+<span class="nc" id="L35">		}</span>
+<span class="nc" id="L36">		return ret;</span>
+	}
+	
+	public void put(K key, ConsumerFactory&lt;? super T&gt; element) {
+<span class="nc" id="L40">		elements.put(key, element);</span>
+<span class="nc" id="L41">	}	</span>
+	
+	public void putAll(Map&lt;? extends K, ? extends ConsumerFactory&lt;? super T&gt;&gt; elements) {
+<span class="nc" id="L44">		elements.entrySet().forEach(e -&gt; put(e.getKey(), e.getValue()));</span>
+<span class="nc" id="L45">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

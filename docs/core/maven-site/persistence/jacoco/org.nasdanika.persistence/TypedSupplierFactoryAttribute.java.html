@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TypedSupplierFactoryAttribute.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Persistence</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.persistence</a> &gt; <span class="el_source">TypedSupplierFactoryAttribute.java</span></div><h1>TypedSupplierFactoryAttribute.java</h1><pre class="source lang-java linenums">package org.nasdanika.persistence;
+
+import java.io.InputStream;
+
+import org.nasdanika.common.Converter;
+import org.nasdanika.common.DefaultConverter;
+import org.nasdanika.common.Function;
+import org.nasdanika.common.FunctionFactory;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.Util;
+
+public class TypedSupplierFactoryAttribute&lt;T&gt; extends AbstractFeatureDelegate&lt;SupplierFactoryFeature&lt;?&gt;&gt; implements SupplierFactoryFeature&lt;T&gt; {
+
+	private boolean interpolate;
+	private Class&lt;T&gt; type;
+	private Function&lt;Object, T&gt; converter;
+
+	public TypedSupplierFactoryAttribute(Class&lt;T&gt; type, SupplierFactoryFeature&lt;?&gt; delegate, boolean interpolate, Function&lt;Object,T&gt; converter) {
+<span class="nc" id="L20">		super(delegate);</span>
+<span class="nc" id="L21">		this.type = type;</span>
+<span class="nc" id="L22">		this.interpolate = interpolate;</span>
+<span class="nc" id="L23">		this.converter = converter;</span>
+<span class="nc" id="L24">	}</span>
+
+	public TypedSupplierFactoryAttribute(Class&lt;T&gt; type, Feature&lt;?&gt; delegate, boolean interpolate, Function&lt;Object,T&gt; converter) {
+<span class="nc bnc" id="L27" title="All 2 branches missed.">		this(type, interpolate ? new InputStreamSupplierFactoryAttribute(delegate) : new DelegatingSupplierFactoryFeature&lt;&gt;(delegate), interpolate, converter);</span>
+<span class="nc" id="L28">	}</span>
+
+	@Override
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public SupplierFactory&lt;T&gt; getValue() {
+<span class="nc bnc" id="L33" title="All 2 branches missed.">		if (!delegate.isLoaded()) {</span>
+<span class="nc" id="L34">			return SupplierFactory.from(null, &quot;Null from not loaded feature &quot; + getKey()); </span>
+		}
+		
+<span class="nc" id="L37">		FunctionFactory&lt;Object,T&gt; converter = context -&gt; {</span>
+<span class="nc" id="L38">			return new Function&lt;Object, T&gt;() {</span>
+
+				@Override
+				public double size() {
+<span class="nc" id="L42">					return 1;</span>
+				}
+
+				@Override
+				public String name() {
+<span class="nc" id="L47">					return &quot;Converting String to &quot; + type;</span>
+				}
+
+				@Override
+				public T execute(Object obj, ProgressMonitor progressMonitor) {					
+<span class="nc bnc" id="L52" title="All 2 branches missed.">					if (TypedSupplierFactoryAttribute.this.converter != null) {</span>
+<span class="nc" id="L53">						return TypedSupplierFactoryAttribute.this.converter.apply(obj, progressMonitor);</span>
+					}
+					
+<span class="nc bnc" id="L56" title="All 2 branches missed.">					if (obj == null) {</span>
+<span class="nc" id="L57">						return null;</span>
+					}
+					
+<span class="nc bnc" id="L60" title="All 2 branches missed.">					if (type.isInstance(obj)) {</span>
+<span class="nc" id="L61">						return (T) obj;</span>
+					}
+					
+<span class="nc" id="L64">					Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE);</span>
+<span class="nc" id="L65">					T ret = converter.convert(obj, type);</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">					if (ret == null) {</span>
+<span class="nc" id="L67">						throw new ConfigurationException(&quot;Cannot convert &quot; + obj + &quot; to &quot; + type, TypedSupplierFactoryAttribute.this);</span>
+					}
+<span class="nc" id="L69">					return ret;</span>
+				}
+			};
+			
+		};		
+		
+<span class="nc bnc" id="L75" title="All 2 branches missed.">		if (interpolate) {				</span>
+<span class="nc" id="L76">			SupplierFactory&lt;String&gt; ssf = ((SupplierFactory&lt;InputStream&gt;) delegate.getValue()).then(Util.TO_STRING);									</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">			return (interpolate ? ssf.then(Util.INTERPOLATE_TO_STRING) : ssf).then(converter);</span>
+		}
+		
+<span class="nc" id="L80">		return delegate.getValue().then(converter);		</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

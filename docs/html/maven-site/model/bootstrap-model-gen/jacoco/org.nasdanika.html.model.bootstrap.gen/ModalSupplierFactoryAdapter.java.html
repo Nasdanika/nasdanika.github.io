@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModalSupplierFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Bootstrap Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.bootstrap.gen</a> &gt; <span class="el_source">ModalSupplierFactoryAdapter.java</span></div><h1>ModalSupplierFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.bootstrap.gen;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Consumer;
+import org.nasdanika.common.ConsumerFactory;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.FunctionFactory;
+import org.nasdanika.common.MapCompoundConsumerFactory;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Supplier;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.Util;
+import org.nasdanika.persistence.ConfigurationException;
+import org.nasdanika.persistence.Marked;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.Button;
+import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Modal;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
+import org.nasdanika.html.model.bootstrap.BootstrapPackage;
+
+public class ModalSupplierFactoryAdapter extends BootstrapElementSupplierFactoryAdapter&lt;org.nasdanika.html.model.bootstrap.Modal, org.nasdanika.html.bootstrap.Modal&gt; {
+	
+	public ModalSupplierFactoryAdapter(org.nasdanika.html.model.bootstrap.Modal modal, AdapterFactory adapterFactory) {
+<span class="fc" id="L33">		super(modal, adapterFactory);</span>
+<span class="fc" id="L34">	}</span>
+	
+	protected Supplier&lt;BiSupplier&lt;Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt;, org.nasdanika.html.bootstrap.Modal&gt;&gt; createModalSupplier(Context context) {
+<span class="fc" id="L37">		return new Supplier&lt;BiSupplier&lt;Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt;, org.nasdanika.html.bootstrap.Modal&gt;&gt;() {</span>
+	
+			@Override
+			public double size() {
+<span class="fc" id="L41">				return 1;</span>
+			}
+	
+			@Override
+			public String name() {
+<span class="fc" id="L46">				return &quot;Modal&quot;;</span>
+			}
+	
+			@Override
+			public BiSupplier&lt;Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt;, org.nasdanika.html.bootstrap.Modal&gt; execute(ProgressMonitor progressMonitor) {
+<span class="fc" id="L51">				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);</span>
+<span class="fc" id="L52">				org.nasdanika.html.bootstrap.Modal modal = bootstrapFactory.modal();</span>
+<span class="fc" id="L53">				org.nasdanika.html.model.bootstrap.Modal semanticElement = getTarget();</span>
+				
+<span class="fc" id="L55">				modal.centered(semanticElement.isCentered());</span>
+<span class="fc" id="L56">				modal.scrollable(semanticElement.isScrollable());</span>
+				
+<span class="fc" id="L58">				String size = semanticElement.getSize();</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">				if (!Util.isBlank(size)) {</span>
+<span class="nc bnc" id="L60" title="All 4 branches missed.">					switch (size) {</span>
+					case &quot;small&quot;:
+<span class="nc" id="L62">						modal.size(Breakpoint.SMALL);</span>
+<span class="nc" id="L63">						break;</span>
+					case &quot;large&quot;:
+<span class="nc" id="L65">						modal.size(Breakpoint.LARGE);</span>
+<span class="nc" id="L66">						break;</span>
+					case &quot;extra-large&quot;:
+<span class="nc" id="L68">						modal.size(Breakpoint.EXTRA_LARGE);</span>
+<span class="nc" id="L69">						break;</span>
+					default:
+<span class="nc" id="L71">						throw new ConfigurationException(&quot;Unsupported modal size: &quot; + size, EObjectAdaptable.adaptTo(semanticElement, Marked.class)); </span>
+					}
+				}
+				
+<span class="fc" id="L75">				Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt; parts = new LinkedHashMap&lt;&gt;();</span>
+				
+<span class="fc bfc" id="L77" title="All 2 branches covered.">				if (semanticElement.getHeader() != null) {</span>
+<span class="fc" id="L78">					parts.put(BootstrapPackage.Literals.MODAL__HEADER, modal.getHeader().toHTMLElement());</span>
+				}
+				
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">				if (semanticElement.getBody() != null) {</span>
+<span class="fc" id="L82">					parts.put(BootstrapPackage.Literals.MODAL__BODY, modal.getBody().toHTMLElement());</span>
+				}
+				
+<span class="fc bfc" id="L85" title="All 2 branches covered.">				if (semanticElement.getFooter() != null) {</span>
+<span class="fc" id="L86">					parts.put(BootstrapPackage.Literals.MODAL__FOOTER, modal.getFooter().toHTMLElement());</span>
+				}
+				
+<span class="fc" id="L89">				return new BiSupplier&lt;Map&lt;EStructuralFeature,HTMLElement&lt;?&gt;&gt;, org.nasdanika.html.bootstrap.Modal&gt;() {</span>
+	
+					@Override
+					public Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt; getFirst() {
+<span class="fc" id="L93">						return parts;</span>
+					}
+	
+					@Override
+					public org.nasdanika.html.bootstrap.Modal getSecond() {
+<span class="fc" id="L98">						return modal;</span>
+					}
+				};
+			}
+			
+		};
+	}
+	
+	@SuppressWarnings({ &quot;unchecked&quot;, &quot;rawtypes&quot; })
+	@Override
+	protected Supplier&lt;org.nasdanika.html.bootstrap.Modal&gt; createBootstrapElementSupplier(Context context) {
+<span class="fc" id="L109">		MapCompoundConsumerFactory&lt;EStructuralFeature,HTMLElement&lt;?&gt;&gt; partsFactory = new MapCompoundConsumerFactory&lt;&gt;(&quot;Parts&quot;);</span>
+<span class="fc" id="L110">		org.nasdanika.html.model.bootstrap.Modal semanticElement = getTarget();</span>
+		
+<span class="fc" id="L112">		BootstrapElement header = semanticElement.getHeader();</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">		if (header != null) {</span>
+<span class="fc" id="L114">			partsFactory.put(BootstrapPackage.Literals.MODAL__HEADER, (ConsumerFactory&lt;HTMLElement&lt;?&gt;&gt;) (ConsumerFactory) EObjectAdaptable.adaptToConsumerFactoryNonNull(header, org.nasdanika.html.HTMLElement.class));</span>
+		}
+		
+<span class="fc" id="L117">		BootstrapElement body = semanticElement.getBody();</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (body != null) {</span>
+<span class="fc" id="L119">			partsFactory.put(BootstrapPackage.Literals.MODAL__BODY, (ConsumerFactory&lt;HTMLElement&lt;?&gt;&gt;) (ConsumerFactory) EObjectAdaptable.adaptToConsumerFactoryNonNull(body, org.nasdanika.html.HTMLElement.class));</span>
+		}
+		
+<span class="fc" id="L122">		BootstrapElement footer = semanticElement.getFooter();</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		if (footer != null) {</span>
+<span class="fc" id="L124">			partsFactory.put(BootstrapPackage.Literals.MODAL__FOOTER, (ConsumerFactory&lt;HTMLElement&lt;?&gt;&gt;) (ConsumerFactory) EObjectAdaptable.adaptToConsumerFactoryNonNull(footer, org.nasdanika.html.HTMLElement.class));</span>
+		}
+		
+<span class="fc" id="L127">		SupplierFactory&lt;BiSupplier&lt;Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt;, org.nasdanika.html.bootstrap.Modal&gt;&gt; modalSupplierFactory = this::createModalSupplier;</span>
+<span class="fc" id="L128">		FunctionFactory&lt;BiSupplier&lt;Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt;, org.nasdanika.html.bootstrap.Modal&gt;, org.nasdanika.html.bootstrap.Modal&gt; partsFunctionFactory = partsFactory.asBiSupplierFunctionFactory();</span>
+		
+		@SuppressWarnings(&quot;resource&quot;)
+<span class="fc" id="L131">		Consumer&lt;org.nasdanika.html.bootstrap.Modal&gt; dismisserBinder = new Consumer&lt;org.nasdanika.html.bootstrap.Modal&gt;() {</span>
+
+			@Override
+			public double size() {
+<span class="fc" id="L135">				return 1;</span>
+			}
+
+			@Override
+			public String name() {
+<span class="fc" id="L140">				return &quot;Binding dismisser&quot;;</span>
+			}
+
+			@Override
+			public void execute(org.nasdanika.html.bootstrap.Modal modal, ProgressMonitor progressMonitor) {
+<span class="fc" id="L145">				Button dismisser = context.get(HTMLFactory.class, HTMLFactory.INSTANCE).button(&quot;x&quot;).addClass(&quot;close&quot;);</span>
+<span class="fc" id="L146">				modal.getHeader().toHTMLElement().content(dismisser);</span>
+<span class="fc" id="L147">				modal.bindDismisser(dismisser);					</span>
+<span class="fc" id="L148">			}</span>
+			
+		};
+		
+<span class="fc" id="L152">		Supplier&lt;Modal&gt; modalSupplier = modalSupplierFactory.then(partsFunctionFactory).create(context);</span>
+<span class="pc bpc" id="L153" title="1 of 4 branches missed.">		if (semanticElement.isDismisser() &amp;&amp; header != null) {</span>
+<span class="fc" id="L154">			return modalSupplier.then(dismisserBinder.asFunction());</span>
+		}
+<span class="fc" id="L156">		return modalSupplier;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

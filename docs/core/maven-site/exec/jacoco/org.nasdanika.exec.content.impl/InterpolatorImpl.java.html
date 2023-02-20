@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InterpolatorImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Execution Model</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.content.impl</a> &gt; <span class="el_source">InterpolatorImpl.java</span></div><h1>InterpolatorImpl.java</h1><pre class="source lang-java linenums">/**
+ */
+package org.nasdanika.exec.content.impl;
+
+import org.eclipse.emf.ecore.EClass;
+import org.nasdanika.exec.content.ContentPackage;
+import org.nasdanika.exec.content.Interpolator;
+
+/**
+ * &lt;!-- begin-user-doc --&gt;
+ * An implementation of the model object '&lt;em&gt;&lt;b&gt;Interpolator&lt;/b&gt;&lt;/em&gt;'.
+ * &lt;!-- end-user-doc --&gt;
+ * &lt;p&gt;
+ * The following features are implemented:
+ * &lt;/p&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.content.impl.InterpolatorImpl#isProcessIncludes &lt;em&gt;Process Includes&lt;/em&gt;}&lt;/li&gt;
+ *   &lt;li&gt;{@link org.nasdanika.exec.content.impl.InterpolatorImpl#getBase &lt;em&gt;Base&lt;/em&gt;}&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * @generated
+ */
+public class InterpolatorImpl extends FilterImpl implements Interpolator {
+	/**
+	 * The default value of the '{@link #isProcessIncludes() &lt;em&gt;Process Includes&lt;/em&gt;}' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see #isProcessIncludes()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean PROCESS_INCLUDES_EDEFAULT = true;
+	/**
+	 * The default value of the '{@link #getBase() &lt;em&gt;Base&lt;/em&gt;}' attribute.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @see #getBase()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String BASE_EDEFAULT = &quot;&quot;;
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected InterpolatorImpl() {
+<span class="nc" id="L49">		super();</span>
+<span class="nc" id="L50">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+<span class="nc" id="L59">		return ContentPackage.Literals.INTERPOLATOR;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public boolean isProcessIncludes() {
+<span class="nc" id="L69">		return (Boolean)eDynamicGet(ContentPackage.INTERPOLATOR__PROCESS_INCLUDES, ContentPackage.Literals.INTERPOLATOR__PROCESS_INCLUDES, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void setProcessIncludes(boolean newProcessIncludes) {
+<span class="nc" id="L79">		eDynamicSet(ContentPackage.INTERPOLATOR__PROCESS_INCLUDES, ContentPackage.Literals.INTERPOLATOR__PROCESS_INCLUDES, newProcessIncludes);</span>
+<span class="nc" id="L80">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public String getBase() {
+<span class="nc" id="L89">		return (String)eDynamicGet(ContentPackage.INTERPOLATOR__BASE, ContentPackage.Literals.INTERPOLATOR__BASE, true, true);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void setBase(String newBase) {
+<span class="nc" id="L99">		eDynamicSet(ContentPackage.INTERPOLATOR__BASE, ContentPackage.Literals.INTERPOLATOR__BASE, newBase);</span>
+<span class="nc" id="L100">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+<span class="nc bnc" id="L109" title="All 3 branches missed.">		switch (featureID) {</span>
+			case ContentPackage.INTERPOLATOR__PROCESS_INCLUDES:
+<span class="nc" id="L111">				return isProcessIncludes();</span>
+			case ContentPackage.INTERPOLATOR__BASE:
+<span class="nc" id="L113">				return getBase();</span>
+		}
+<span class="nc" id="L115">		return super.eGet(featureID, resolve, coreType);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void eSet(int featureID, Object newValue) {
+<span class="nc bnc" id="L125" title="All 3 branches missed.">		switch (featureID) {</span>
+			case ContentPackage.INTERPOLATOR__PROCESS_INCLUDES:
+<span class="nc" id="L127">				setProcessIncludes((Boolean)newValue);</span>
+<span class="nc" id="L128">				return;</span>
+			case ContentPackage.INTERPOLATOR__BASE:
+<span class="nc" id="L130">				setBase((String)newValue);</span>
+<span class="nc" id="L131">				return;</span>
+		}
+<span class="nc" id="L133">		super.eSet(featureID, newValue);</span>
+<span class="nc" id="L134">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+<span class="nc bnc" id="L143" title="All 3 branches missed.">		switch (featureID) {</span>
+			case ContentPackage.INTERPOLATOR__PROCESS_INCLUDES:
+<span class="nc" id="L145">				setProcessIncludes(PROCESS_INCLUDES_EDEFAULT);</span>
+<span class="nc" id="L146">				return;</span>
+			case ContentPackage.INTERPOLATOR__BASE:
+<span class="nc" id="L148">				setBase(BASE_EDEFAULT);</span>
+<span class="nc" id="L149">				return;</span>
+		}
+<span class="nc" id="L151">		super.eUnset(featureID);</span>
+<span class="nc" id="L152">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+<span class="nc bnc" id="L161" title="All 3 branches missed.">		switch (featureID) {</span>
+			case ContentPackage.INTERPOLATOR__PROCESS_INCLUDES:
+<span class="nc bnc" id="L163" title="All 2 branches missed.">				return isProcessIncludes() != PROCESS_INCLUDES_EDEFAULT;</span>
+			case ContentPackage.INTERPOLATOR__BASE:
+<span class="nc bnc" id="L165" title="All 6 branches missed.">				return BASE_EDEFAULT == null ? getBase() != null : !BASE_EDEFAULT.equals(getBase());</span>
+		}
+<span class="nc" id="L167">		return super.eIsSet(featureID);</span>
+	}
+
+} //InterpolatorImpl
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

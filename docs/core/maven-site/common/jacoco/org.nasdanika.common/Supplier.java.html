@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Supplier.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">Supplier.java</span></div><h1>Supplier.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+
+/**
+ * By convention Supplier does not split the monitor for itself - this is the responsibility of the caller.
+ * 
+ * {@link ProgressMonitor} allocation pattern - the caller creates a monitor with work's size and name and passes it to work's execute:
+ * 
+ * ```
+ * try (Supplier supplier = ...; ProgressMonitor workMonitor = monitor.split(supplier.getName(), supplier.getSize(), supplier)) {
+ *     work.execute(workMonitor);
+ *     
+ *     // If success
+ *     work.commit();
+ *     
+ *     // If something went wrong
+ *     work.rollback();
+ *     
+ * }
+ * ```
+ * 
+ * @author Pavel Vlasov
+ * @param C context type.
+ * @param T result type.
+ */
+public interface Supplier&lt;T&gt; extends ExecutionParticipant, ExecutionParticipantInfo, java.util.function.Function&lt;ProgressMonitor,T&gt; {
+	
+	/**
+	 * Executes the Supplier.
+	 * @param monitor Monitor to use.
+	 * @return
+	 */
+	T execute(ProgressMonitor progressMonitor);	
+	
+	default T splitAndExecute(ProgressMonitor progressMonitor) {
+<span class="fc" id="L39">		try (ProgressMonitor subMonitor = split(progressMonitor, &quot;Executing &quot; + name())) {</span>
+<span class="fc" id="L40">			return execute(subMonitor);</span>
+		}
+	}
+	
+	default T splitAndExecute(double size, ProgressMonitor progressMonitor) {
+<span class="nc" id="L45">		try (ProgressMonitor subMonitor = split(size, progressMonitor, &quot;Executing &quot; + name())) {</span>
+<span class="nc" id="L46">			return execute(subMonitor);</span>
+		}
+	}
+	
+<span class="fc" id="L50">	Supplier&lt;Object&gt; EMPTY = new Supplier&lt;Object&gt;() {</span>
+
+		@Override
+		public double size() {
+<span class="nc" id="L54">			return 0;</span>
+		}
+		
+		@Override
+		public String name() {
+<span class="nc" id="L59">			return &quot;Empty supplier&quot;;</span>
+		}
+
+		@Override
+		public Object execute(ProgressMonitor monitor) {
+<span class="nc" id="L64">			return null;</span>
+		}
+		
+	};
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	static &lt;T&gt; Supplier&lt;T&gt; empty() {
+<span class="nc" id="L71">		return (Supplier&lt;T&gt;) EMPTY;</span>
+	}
+	
+	default &lt;R&gt; Supplier&lt;R&gt; then(java.util.function.Function&lt;? super T,R&gt; then) {
+<span class="nc" id="L75">		return new Supplier&lt;R&gt;() {</span>
+			
+			@Override
+			public R execute(ProgressMonitor progressMonitor) {
+<span class="nc" id="L79">				return then.apply(Supplier.this.execute(progressMonitor));</span>
+			}
+			
+			@Override
+			public Diagnostic diagnose(ProgressMonitor progressMonitor) {
+<span class="nc" id="L84">				return Supplier.this.diagnose(progressMonitor);</span>
+			}
+			
+			@Override
+			public void close() {
+<span class="nc" id="L89">				Supplier.this.close();</span>
+<span class="nc" id="L90">			}</span>
+			
+			@Override
+			public void commit(ProgressMonitor progressMonitor) {
+<span class="nc" id="L94">				Supplier.this.commit(progressMonitor);</span>
+<span class="nc" id="L95">			}</span>
+			
+			@Override
+			public boolean rollback(ProgressMonitor progressMonitor) {
+<span class="nc" id="L99">				return Supplier.this.rollback(progressMonitor);</span>
+			}
+			
+			@Override
+			public double size() {
+<span class="nc" id="L104">				return Supplier.this.size();</span>
+			}
+			
+			@Override
+			public String name() {
+<span class="nc" id="L109">				return Supplier.this.name();</span>
+			}
+			
+		};
+	}
+	
+	default &lt;V&gt; Supplier&lt;V&gt; then(Function&lt;? super T,V&gt; then) {
+<span class="nc" id="L116">		List&lt;ExecutionParticipant&gt; elements = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L117">		elements.add(this);</span>
+<span class="nc" id="L118">		elements.add(then);</span>
+		class Then extends CompoundExecutionParticipant&lt;ExecutionParticipant&gt; implements Supplier&lt;V&gt; {
+
+<span class="nc" id="L121">			protected Then(String name) {</span>
+<span class="nc" id="L122">				super(name, true);</span>
+<span class="nc" id="L123">			}</span>
+			
+			@Override
+			public V execute(ProgressMonitor progressMonitor) {
+<span class="nc" id="L127">				return then.splitAndExecute(Supplier.this.splitAndExecute(progressMonitor), progressMonitor);</span>
+			}
+
+			@Override
+			protected List&lt;ExecutionParticipant&gt; getElements() {
+<span class="nc" id="L132">				return elements;</span>
+			}			
+		}
+		
+<span class="nc" id="L136">		StringBuilder nameBuilder = new StringBuilder();</span>
+<span class="nc" id="L137">		nameBuilder.append(Supplier.this.name()).append(&quot; =&gt; &quot;).append(then.name());</span>
+<span class="nc" id="L138">		return new Then(nameBuilder.toString());</span>
+	}
+	
+	default Command then(Consumer&lt;? super T&gt; then) {
+<span class="nc" id="L142">		List&lt;ExecutionParticipant&gt; elements = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L143">		elements.add(this);</span>
+<span class="nc" id="L144">		elements.add(then);</span>
+		class Then extends CompoundExecutionParticipant&lt;ExecutionParticipant&gt; implements Command {
+
+<span class="nc" id="L147">			protected Then(String name) {</span>
+<span class="nc" id="L148">				super(name, true);</span>
+<span class="nc" id="L149">			}</span>
+			
+			@Override
+			public void execute(ProgressMonitor progressMonitor) {
+<span class="nc" id="L153">				then.splitAndExecute(Supplier.this.splitAndExecute(progressMonitor), progressMonitor);</span>
+<span class="nc" id="L154">			}</span>
+
+			@Override
+			protected List&lt;ExecutionParticipant&gt; getElements() {
+<span class="nc" id="L158">				return elements;</span>
+			}			
+		}
+		
+<span class="nc" id="L162">		StringBuilder nameBuilder = new StringBuilder();</span>
+<span class="nc" id="L163">		nameBuilder.append(Supplier.this.name()).append(&quot; =&gt; &quot;).append(then.name());</span>
+<span class="nc" id="L164">		return new Then(nameBuilder.toString());</span>
+	}
+	
+	static &lt;T&gt; Supplier&lt;T&gt; fromFunction(java.util.function.Function&lt;ProgressMonitor, T&gt; function, String name, double size) {
+<span class="nc" id="L168">		return new Supplier&lt;T&gt;() {</span>
+			
+			@Override
+			public double size() {
+<span class="nc" id="L172">				return size;</span>
+			}
+			
+			@Override
+			public String name() {
+<span class="nc" id="L177">				return name;</span>
+			}
+			
+			@Override
+			public T execute(ProgressMonitor progressMonitor) {
+<span class="nc" id="L182">				return function.apply(progressMonitor);</span>
+			}
+		};
+	}
+	
+	static &lt;T&gt; Supplier&lt;T&gt; fromSupplier(java.util.function.Supplier&lt;T&gt; supplier, String name, double size) {
+<span class="nc" id="L188">		return fromFunction((p) -&gt; supplier.get(), name, size);		</span>
+	}
+	
+	static &lt;T&gt; Supplier&lt;T&gt; from(T value, String name) {
+<span class="nc" id="L192">		return fromFunction((p) -&gt; value, name, 0);		</span>
+	}
+		
+	static &lt;T&gt; Supplier&lt;T&gt; fromCallable(Callable&lt;T&gt; callable, String name, double size) {
+<span class="nc" id="L196">		return new Supplier&lt;T&gt;() {</span>
+			
+			@Override
+			public double size() {
+<span class="nc" id="L200">				return size;</span>
+			}
+			
+			@Override
+			public String name() {
+<span class="nc" id="L205">				return name;</span>
+			}
+			
+			@Override
+			public T execute(ProgressMonitor progressMonitor) {
+				try {
+<span class="nc" id="L211">					return callable.call();</span>
+<span class="nc" id="L212">				} catch (Exception e) {</span>
+<span class="nc" id="L213">					throw new ExecutionException(e, this);</span>
+				}
+			}
+		};
+	}
+	
+	/**
+	 * Diagnoses, executes, commits/rollsback, closes.
+	 * @param progressMonitor
+	 * @return
+	 */
+	@Override
+	default public T apply(ProgressMonitor progressMonitor) {
+		try {
+<span class="fc" id="L227">			progressMonitor.setWorkRemaining(size()*3); // diagnose, execute, commit or rollback</span>
+<span class="fc" id="L228">			diagnose(progressMonitor.split(&quot;Diagnosing&quot;, size())).checkError(&quot;Diagnostic failed: &quot;+name());</span>
+			try {
+<span class="fc" id="L230">				T result = execute(progressMonitor.split(&quot;Executing&quot;, size()));</span>
+<span class="fc" id="L231">				commit(progressMonitor.split(&quot;Committing&quot;, size()));</span>
+<span class="fc" id="L232">				return result;</span>
+<span class="nc" id="L233">			} catch (Exception e) {</span>
+				try {
+<span class="nc" id="L235">					rollback(progressMonitor.split(&quot;Rolling back: &quot;+e, size(), e));</span>
+<span class="nc" id="L236">				} catch (Exception re) {</span>
+<span class="nc" id="L237">					e.addSuppressed(re);</span>
+<span class="nc" id="L238">				}</span>
+<span class="nc" id="L239">				throw e;</span>
+			}
+		} finally {
+<span class="fc" id="L242">			close();</span>
+		}
+	}
+	
+	/**
+	 * Calls apply() with a {@link NullProgressMonitor}.
+	 * @return
+	 */
+	default java.util.function.Supplier&lt;T&gt; asSupplier() {
+<span class="nc" id="L251">		return () -&gt; apply(new NullProgressMonitor());</span>
+	}
+	
+	/**
+	 * Creates work, diagnoses it, executes, commits if there is no exception and rolls back if there is, closes, returns result.
+	 * Uses  null progress monitor.
+	 * @return
+	 */
+	default Callable&lt;T&gt; asCallable() {
+<span class="nc" id="L260">		return new Callable&lt;T&gt;() {</span>
+	
+			@Override
+			public T call() throws Exception {
+<span class="nc" id="L264">				try (ProgressMonitor progressMonitor = new NullProgressMonitor()) {</span>
+<span class="nc" id="L265">					progressMonitor.setWorkRemaining(size()*3); // diagnose, execute, commit or rollback</span>
+<span class="nc" id="L266">					diagnose(progressMonitor.split(&quot;Diagnosing&quot;, size())).checkError(&quot;Diagnostic failed: &quot;+name());</span>
+					try {
+<span class="nc" id="L268">						T result = execute(progressMonitor.split(&quot;Executing&quot;, size()));</span>
+<span class="nc" id="L269">						commit(progressMonitor.split(&quot;Committing&quot;, size()));</span>
+<span class="nc" id="L270">						return result;</span>
+<span class="nc" id="L271">					} catch (Exception e) {</span>
+						try {
+<span class="nc" id="L273">							rollback(progressMonitor.split(&quot;Rolling back: &quot;+e, size(), e));</span>
+<span class="nc" id="L274">						} catch (Exception re) {</span>
+<span class="nc" id="L275">							e.addSuppressed(re);</span>
+<span class="nc" id="L276">						}</span>
+<span class="nc" id="L277">						throw e;</span>
+					}
+				} finally {
+<span class="nc" id="L280">					close();</span>
+				}
+			}
+		};
+	}	
+	
+	/**
+	 * @return Function which executes this supplier and returns the argument and the result as a {@link BiSupplier}.
+	 * This method can be used for embedding suppliers into function chains.
+	 */
+	default &lt;V&gt; Function&lt;V,BiSupplier&lt;V,T&gt;&gt; asFunction() {
+<span class="nc" id="L291">		return new Function&lt;V,BiSupplier&lt;V,T&gt;&gt;() {</span>
+			
+			@Override
+			public BiSupplier&lt;V,T&gt; execute(V arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L295">				T result = Supplier.this.execute(progressMonitor);</span>
+<span class="nc" id="L296">				return new BiSupplier&lt;V, T&gt;() {</span>
+
+					@Override
+					public V getFirst() {
+<span class="nc" id="L300">						return arg;</span>
+					}
+
+					@Override
+					public T getSecond() {
+<span class="nc" id="L305">						return result;</span>
+					}
+				};
+			}
+			
+			@Override
+			public Diagnostic diagnose(ProgressMonitor progressMonitor) {
+<span class="nc" id="L312">				return Supplier.this.diagnose(progressMonitor);</span>
+			}
+			
+			@Override
+			public void close() {
+<span class="nc" id="L317">				Supplier.this.close();</span>
+<span class="nc" id="L318">			}</span>
+			
+			@Override
+			public void commit(ProgressMonitor progressMonitor) {
+<span class="nc" id="L322">				Supplier.this.commit(progressMonitor);</span>
+<span class="nc" id="L323">			}</span>
+			
+			@Override
+			public boolean rollback(ProgressMonitor progressMonitor) {
+<span class="nc" id="L327">				return Supplier.this.rollback(progressMonitor);</span>
+			}
+			
+			@Override
+			public double size() {
+<span class="nc" id="L332">				return Supplier.this.size();</span>
+			}
+			
+			@Override
+			public String name() {
+<span class="nc" id="L337">				return Supplier.this.name();</span>
+			}
+			
+		};
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

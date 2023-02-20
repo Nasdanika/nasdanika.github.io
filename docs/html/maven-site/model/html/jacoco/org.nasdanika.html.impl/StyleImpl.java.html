@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StyleImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika HTML</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.impl</a> &gt; <span class="el_source">StyleImpl.java</span></div><h1>StyleImpl.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.impl;
+
+import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.Style;
+
+class StyleImpl&lt;T extends HTMLElement&lt;T&gt;&gt; implements Style&lt;T&gt; {
+	
+	/**
+	 * Helper base class
+	 * @author Pavel Vlasov
+	 *
+	 * @param &lt;T&gt;
+	 */
+	private class NormalNoneInitialInheritImpl implements NormalInitialInherit&lt;T&gt;, NoneInitialInherit&lt;T&gt; {
+		
+		private String styleName;
+
+<span class="nc" id="L18">		NormalNoneInitialInheritImpl(String styleName) {</span>
+<span class="nc" id="L19">			this.styleName = styleName;</span>
+<span class="nc" id="L20">		}</span>
+		
+		protected T value(Object value) {
+<span class="nc" id="L23">			return StyleImpl.this.style(styleName, value);</span>
+		}
+
+		@Override
+		public T initial() {
+<span class="nc" id="L28">			return value(&quot;initial&quot;);</span>
+		}
+
+		@Override
+		public T inherit() {
+<span class="nc" id="L33">			return value(&quot;inherit&quot;);</span>
+		}
+
+		@Override
+		public T normal() {
+<span class="nc" id="L38">			return value(&quot;normal&quot;);</span>
+		}
+
+		@Override
+		public T none() {
+<span class="nc" id="L43">			return value(&quot;none&quot;);</span>
+		}		
+		
+	}
+		
+	private T owner;
+
+<span class="fc" id="L50">	public StyleImpl(T owner) {</span>
+<span class="fc" id="L51">		this.owner = owner;</span>
+<span class="fc" id="L52">	}</span>
+	
+	protected T style(String name, Object value) {
+<span class="nc" id="L55">		return owner.style(name, value);</span>
+	}
+
+	@Override
+	public T width(Object width) {
+<span class="nc" id="L60">		return style(&quot;width&quot;, width);</span>
+	}
+
+	@Override
+	public T height(Object height) {
+<span class="nc" id="L65">		return style(&quot;height&quot;, height);</span>
+	}
+
+	@Override
+	public Font&lt;T&gt; font() {
+		 
+<span class="nc" id="L71">		return new Font&lt;T&gt;() {</span>
+
+			@Override
+			public T size(Object size) {
+<span class="nc" id="L75">				return StyleImpl.this.style(&quot;font-size&quot;, size);</span>
+			}
+
+			@Override
+			public T family(Object family) {
+<span class="nc" id="L80">				return StyleImpl.this.style(&quot;font-family&quot;, family);</span>
+			}
+
+			@Override
+			public FontStyle&lt;T&gt; style() {
+				class FontStyleImpl extends NormalNoneInitialInheritImpl implements FontStyle&lt;T&gt; {
+
+<span class="nc" id="L87">					FontStyleImpl() {</span>
+<span class="nc" id="L88">						super(&quot;font-style&quot;);</span>
+<span class="nc" id="L89">					}</span>
+
+					@Override
+					public T italic() {
+<span class="nc" id="L93">						return value(&quot;italic&quot;);</span>
+					}
+
+					@Override
+					public T oblique() {
+<span class="nc" id="L98">						return value(&quot;oblique&quot;);</span>
+					}
+					
+				}
+
+<span class="nc" id="L103">				return new FontStyleImpl();	</span>
+			}
+
+			@Override
+			public FontVariant&lt;T&gt; variant() {
+				class FontVariantImpl extends NormalNoneInitialInheritImpl implements FontVariant&lt;T&gt; {
+
+<span class="nc" id="L110">					FontVariantImpl() {</span>
+<span class="nc" id="L111">						super(&quot;font-variant&quot;);</span>
+<span class="nc" id="L112">					}</span>
+
+					@Override
+					public T smallCaps() {
+<span class="nc" id="L116">						return value(&quot;small-caps&quot;);</span>
+					}
+
+					
+				}
+
+<span class="nc" id="L122">				return new FontVariantImpl();	</span>
+			}
+
+			@Override
+			public FontWeight&lt;T&gt; weight() {
+				class FontWeightImpl extends NormalNoneInitialInheritImpl implements FontWeight&lt;T&gt; {
+
+<span class="nc" id="L129">					FontWeightImpl() {</span>
+<span class="nc" id="L130">						super(&quot;font-weight&quot;);</span>
+<span class="nc" id="L131">					}</span>
+
+					@Override
+					public T bold() {
+<span class="nc" id="L135">						return value(&quot;bold&quot;);</span>
+					}
+
+					@Override
+					public T bolder() {
+<span class="nc" id="L140">						return value(&quot;bolder&quot;);</span>
+					}
+
+					@Override
+					public T lighter() {
+<span class="nc" id="L145">						return value(&quot;lighter&quot;);</span>
+					}
+
+					@Override
+					public T number(Object weight) {
+<span class="nc" id="L150">						return value(weight);</span>
+					}
+					
+				}
+
+<span class="nc" id="L155">				return new FontWeightImpl();	</span>
+			}
+			
+		};
+	}
+	
+	private class BoxImpl implements Box&lt;T&gt; {
+		
+		private String category;
+
+<span class="fc" id="L165">		public BoxImpl(String category) {</span>
+<span class="fc" id="L166">			this.category = category;</span>
+<span class="fc" id="L167">		}</span>
+
+		@Override
+		public T left(Object spec) {
+<span class="nc" id="L171">			return style(category+&quot;-left&quot;, spec);</span>
+		}
+
+		@Override
+		public T right(Object spec) {
+<span class="nc" id="L176">			return style(category+&quot;-right&quot;, spec);</span>
+		}
+
+		@Override
+		public T top(Object spec) {
+<span class="nc" id="L181">			return style(category+&quot;-top&quot;, spec);</span>
+		}
+
+		@Override
+		public T bottom(Object spec) {
+<span class="nc" id="L186">			return style(category+&quot;-bottom&quot;, spec);</span>
+		}
+		
+		
+	}
+
+	@Override
+	public T margin(Object spec) {
+<span class="nc" id="L194">		return style(&quot;margin&quot;, spec);</span>
+	}
+	
+<span class="fc" id="L197">	private Box&lt;T&gt; marginBox = new BoxImpl(&quot;margin&quot;);</span>
+
+	@Override
+	public Box&lt;T&gt; margin() {
+<span class="nc" id="L201">		return marginBox;</span>
+	}
+
+	@Override
+	public T padding(Object spec) {
+<span class="nc" id="L206">		return style(&quot;padding&quot;, spec);</span>
+	}
+
+<span class="fc" id="L209">	private Box&lt;T&gt; paddingBox = new BoxImpl(&quot;padding&quot;);</span>
+
+	@Override
+	public Box&lt;T&gt; padding() {
+<span class="nc" id="L213">		return paddingBox;</span>
+	}
+
+	@Override
+	public T border(Object spec) {
+<span class="nc" id="L218">		return style(&quot;border&quot;, spec);</span>
+	}
+
+<span class="fc" id="L221">	private Box&lt;T&gt; borderBox = new BoxImpl(&quot;border&quot;);</span>
+
+	@Override
+	public Box&lt;T&gt; border() {
+<span class="nc" id="L225">		return borderBox;</span>
+	}
+
+	@Override
+	public Text&lt;T&gt; text() {
+<span class="nc" id="L230">		return new Text&lt;T&gt;() {</span>
+
+			@Override
+			public TextAlign&lt;T&gt; align() {
+				class TextAlignImpl extends NormalNoneInitialInheritImpl implements TextAlign&lt;T&gt; {
+
+<span class="nc" id="L236">					TextAlignImpl() {</span>
+<span class="nc" id="L237">						super(&quot;text-align&quot;);</span>
+<span class="nc" id="L238">					}</span>
+
+					@Override
+					public T left() {
+<span class="nc" id="L242">						return value(&quot;left&quot;);</span>
+					}
+
+					@Override
+					public T right() {
+<span class="nc" id="L247">						return value(&quot;right&quot;);</span>
+					}
+
+					@Override
+					public T center() {
+<span class="nc" id="L252">						return value(&quot;center&quot;);</span>
+					}
+
+					@Override
+					public T justify() {
+<span class="nc" id="L257">						return value(&quot;justify&quot;);</span>
+					}
+					
+				}
+
+<span class="nc" id="L262">				return new TextAlignImpl();	</span>
+			}
+
+			@Override
+			public TextDecoration&lt;T&gt; decoration() {
+				class TextDecorationImpl extends NormalNoneInitialInheritImpl implements TextDecoration&lt;T&gt; {
+
+<span class="nc" id="L269">					TextDecorationImpl() {</span>
+<span class="nc" id="L270">						super(&quot;text-decoration&quot;);</span>
+<span class="nc" id="L271">					}</span>
+
+					@Override
+					public T underline() {
+<span class="nc" id="L275">						return value(&quot;underline&quot;);</span>
+					}
+
+					@Override
+					public T overline() {
+<span class="nc" id="L280">						return value(&quot;overline&quot;);</span>
+					}
+
+					@Override
+					public T lineThrough() {
+<span class="nc" id="L285">						return value(&quot;line-through&quot;);</span>
+					}
+					
+				}
+
+<span class="nc" id="L290">				return new TextDecorationImpl();	</span>
+			}
+
+			@Override
+			public TextJustify&lt;T&gt; justify() {
+				class TextJustifyImpl extends NormalNoneInitialInheritImpl implements TextJustify&lt;T&gt; {
+
+<span class="nc" id="L297">					TextJustifyImpl() {</span>
+<span class="nc" id="L298">						super(&quot;text-justify&quot;);</span>
+<span class="nc" id="L299">					}</span>
+
+					@Override
+					public T auto() {
+<span class="nc" id="L303">						return value(&quot;auto&quot;);</span>
+					}
+
+					@Override
+					public T interWord() {
+<span class="nc" id="L308">						return value(&quot;inter-word&quot;);</span>
+					}
+
+					@Override
+					public T interIdeograph() {
+<span class="nc" id="L313">						return value(&quot;inder-ideograph&quot;);</span>
+					}
+
+					@Override
+					public T interCluster() {
+<span class="nc" id="L318">						return value(&quot;inter-cluster&quot;);</span>
+					}
+
+					@Override
+					public T distribute() {
+<span class="nc" id="L323">						return value(&quot;distribute&quot;);</span>
+					}
+
+					@Override
+					public T kashida() {
+<span class="nc" id="L328">						return value(&quot;kashida&quot;);</span>
+					}
+
+					@Override
+					public T trim() {
+<span class="nc" id="L333">						return value(&quot;trim&quot;);</span>
+					}
+					
+				}
+
+<span class="nc" id="L338">				return new TextJustifyImpl();	</span>
+			}
+
+			@Override
+			public TextOverflow&lt;T&gt; overflow() {
+				class TextOverflowImpl extends NormalNoneInitialInheritImpl implements TextOverflow&lt;T&gt; {
+
+<span class="nc" id="L345">					TextOverflowImpl() {</span>
+<span class="nc" id="L346">						super(&quot;text-overflow&quot;);</span>
+<span class="nc" id="L347">					}</span>
+
+					@Override
+					public T clip() {
+<span class="nc" id="L351">						return value(&quot;clip&quot;);</span>
+					}
+
+					@Override
+					public T ellipsis() {
+<span class="nc" id="L356">						return value(&quot;ellipsis&quot;);</span>
+					}
+
+					@Override
+					public T string(Object value) {
+<span class="nc" id="L361">						return value(value);</span>
+					}
+					
+				}
+
+<span class="nc" id="L366">				return new TextOverflowImpl();	</span>
+			}
+			
+		};
+	};
+	
+	class ColorImpl extends NormalNoneInitialInheritImpl implements Color&lt;T&gt; {
+		
+		public ColorImpl() {
+<span class="nc" id="L375">			this(&quot;color&quot;);</span>
+<span class="nc" id="L376">		}</span>
+
+<span class="nc" id="L378">		protected ColorImpl(String name) {</span>
+<span class="nc" id="L379">			super(name);</span>
+<span class="nc" id="L380">		}</span>
+
+		@Override
+		public T value(Object color) {
+<span class="nc" id="L384">			return super.value(color);</span>
+		}
+
+		@Override
+		public T color(org.nasdanika.html.Color color) {
+<span class="nc" id="L389">			return super.value(color.name());</span>
+		}
+		
+	}
+		
+	@Override
+	public Color&lt;T&gt; color() {
+<span class="nc" id="L396">		return new ColorImpl();	</span>
+	}
+	
+	@Override
+	public Background&lt;T&gt; background() {
+		class BackgroundImpl extends NormalNoneInitialInheritImpl implements Background&lt;T&gt; {
+
+<span class="nc" id="L403">			BackgroundImpl() {</span>
+<span class="nc" id="L404">				super(&quot;background&quot;);</span>
+<span class="nc" id="L405">			}</span>
+
+			@Override
+			public BackgroundColor&lt;T&gt; color() {
+				class BackgroundColorImpl extends ColorImpl implements Background.BackgroundColor&lt;T&gt; {
+					
+<span class="nc" id="L411">					public BackgroundColorImpl() {</span>
+<span class="nc" id="L412">						super(&quot;background-color&quot;);</span>
+<span class="nc" id="L413">					}</span>
+
+					@Override
+					public T transparent() {
+<span class="nc" id="L417">						return value(&quot;transparent&quot;);</span>
+					}
+					
+				}
+				
+<span class="nc" id="L422">				return new BackgroundColorImpl();</span>
+			}
+			
+		}
+<span class="nc" id="L426">		return new BackgroundImpl();</span>
+	}
+	
+	@Override
+	public T background(Object spec) {
+<span class="nc" id="L431">		return style(&quot;background&quot;, spec);</span>
+	}
+	
+	@Override
+	public Display&lt;T&gt; display() {
+		class DisplayImpl extends NormalNoneInitialInheritImpl implements Display&lt;T&gt; {
+
+<span class="nc" id="L438">			DisplayImpl() {</span>
+<span class="nc" id="L439">				super(&quot;display&quot;);</span>
+<span class="nc" id="L440">			}</span>
+
+			@Override
+			public T inline() {
+<span class="nc" id="L444">				return value(&quot;inline&quot;);</span>
+			}
+
+			@Override
+			public T block() {
+<span class="nc" id="L449">				return value(&quot;block&quot;);</span>
+			}
+
+			@Override
+			public T flex() {
+<span class="nc" id="L454">				return value(&quot;flex&quot;);</span>
+			}
+
+			@Override
+			public T inlineBlock() {
+<span class="nc" id="L459">				return value(&quot;inline-block&quot;);</span>
+			}
+
+			@Override
+			public T inlineFlex() {
+<span class="nc" id="L464">				return value(&quot;inline-flex&quot;);</span>
+			}
+
+			@Override
+			public T inlineTable() {
+<span class="nc" id="L469">				return value(&quot;inline-table&quot;);</span>
+			}
+
+			@Override
+			public T listItem() {
+<span class="nc" id="L474">				return value(&quot;list-item&quot;);</span>
+			}
+
+			@Override
+			public T runIn() {
+<span class="nc" id="L479">				return value(&quot;run-in&quot;);</span>
+			}
+
+			@Override
+			public T table() {
+<span class="nc" id="L484">				return value(&quot;table&quot;);</span>
+			}
+
+			@Override
+			public T tableCaption() {
+<span class="nc" id="L489">				return value(&quot;table-caption&quot;);</span>
+			}
+
+			@Override
+			public T tableColumnGroup() {
+<span class="nc" id="L494">				return value(&quot;table-column-group&quot;);</span>
+			}
+
+			@Override
+			public T tableHeaderGroup() {
+<span class="nc" id="L499">				return value(&quot;table-header-group&quot;);</span>
+			}
+
+			@Override
+			public T tableFooterGroup() {
+<span class="nc" id="L504">				return value(&quot;table-footer-group&quot;);</span>
+			}
+
+			@Override
+			public T tableRowGroup() {
+<span class="nc" id="L509">				return value(&quot;table-row-group&quot;);</span>
+			}
+
+			@Override
+			public T tableCell() {
+<span class="nc" id="L514">				return value(&quot;table-cell&quot;);</span>
+			}
+
+			@Override
+			public T tableColumn() {
+<span class="nc" id="L519">				return value(&quot;table-column&quot;);</span>
+			}
+
+			@Override
+			public T tableRow() {
+<span class="nc" id="L524">				return value(&quot;table-row&quot;);</span>
+			}
+			
+		}
+<span class="nc" id="L528">		return new DisplayImpl();</span>
+	}
+	
+	@Override
+	public Float&lt;T&gt; float_() {
+		class FloatImpl extends NormalNoneInitialInheritImpl implements Float&lt;T&gt; {
+
+<span class="nc" id="L535">			FloatImpl() {</span>
+<span class="nc" id="L536">				super(&quot;float&quot;);</span>
+<span class="nc" id="L537">			}</span>
+
+			@Override
+			public T left() {
+<span class="nc" id="L541">				return value(&quot;left&quot;);</span>
+			}
+
+			@Override
+			public T right() {
+<span class="nc" id="L546">				return value(&quot;right&quot;);</span>
+			}
+			
+		}
+<span class="nc" id="L550">		return new FloatImpl();</span>
+	}
+	
+	@Override
+	public org.nasdanika.html.Style.WhiteSpace&lt;T&gt; whiteSpace() {
+		class WhiteSpaceImpl extends NormalNoneInitialInheritImpl implements WhiteSpace&lt;T&gt; {
+
+<span class="nc" id="L557">			WhiteSpaceImpl() {</span>
+<span class="nc" id="L558">				super(&quot;white-space&quot;);</span>
+<span class="nc" id="L559">			}</span>
+
+			@Override
+			public T nowrap() {
+<span class="nc" id="L563">				return value(&quot;nowrap&quot;);</span>
+			}
+
+			@Override
+			public T pre() {
+<span class="nc" id="L568">				return value(&quot;pre&quot;);</span>
+			}
+
+			@Override
+			public T preLine() {
+<span class="nc" id="L573">				return value(&quot;pre-line&quot;);</span>
+			}
+
+			@Override
+			public T preWrap() {
+<span class="nc" id="L578">				return value(&quot;pre-wrap&quot;);</span>
+			}
+
+			
+		}
+<span class="nc" id="L583">		return new WhiteSpaceImpl();</span>
+	}
+		
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

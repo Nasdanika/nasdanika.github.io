@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProcessorFactoryVisitor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Graph</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.graph.processor</a> &gt; <span class="el_source">ProcessorFactoryVisitor.java</span></div><h1>ProcessorFactoryVisitor.java</h1><pre class="source lang-java linenums">package org.nasdanika.graph.processor;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.function.Consumer;
+
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.graph.Connection;
+import org.nasdanika.graph.Element;
+import org.nasdanika.graph.Node;
+
+/**
+ * 
+ * @author Pavel
+ *
+ * @param &lt;P&gt; Processor type.
+ * @param &lt;H&gt; Handler type.
+ * @param &lt;E&gt; Endpoint type.
+ */
+class ProcessorFactoryVisitor&lt;P,H,E&gt; {
+	
+	private ProcessorFactory&lt;P,H,E&gt; factory;
+<span class="nc" id="L27">	private Map&lt;Element, ProcessorInfo&lt;P&gt;&gt; registry = new LinkedHashMap&lt;&gt;();</span>
+	
+	// Endpoints for connection source to call the connection
+<span class="nc" id="L30">	private Map&lt;Connection,CompletableFuture&lt;E&gt;&gt; sourceEndpoints = new LinkedHashMap&lt;&gt;();</span>
+	
+	// Endpoints for connection target to call the connection
+<span class="nc" id="L33">	private Map&lt;Connection, CompletableFuture&lt;E&gt;&gt; targetEndpoints = new LinkedHashMap&lt;&gt;();</span>
+	
+	// Endpoints for incoming connections to call the target node
+<span class="nc" id="L36">	private Map&lt;Node, Map&lt;Connection, CompletableFuture&lt;E&gt;&gt;&gt; incomingEndpoints = new LinkedHashMap&lt;&gt;();</span>
+	
+	// Endpoints for outgoing connections to call the source node
+<span class="nc" id="L39">	private Map&lt;Node, Map&lt;Connection, CompletableFuture&lt;E&gt;&gt;&gt; outgoingEndpoints = new LinkedHashMap&lt;&gt;();	</span>
+
+<span class="nc" id="L41">	ProcessorFactoryVisitor(ProcessorFactory&lt;P,H,E&gt; factory) {</span>
+<span class="nc" id="L42">		this.factory = factory;</span>
+<span class="nc" id="L43">	}</span>
+		
+	Map&lt;Element, ProcessorInfo&lt;P&gt;&gt; getRegistry() {
+<span class="nc" id="L46">		return registry;</span>
+	}	
+
+	Helper&lt;P&gt; createElementProcessor(Element element, Map&lt;? extends Element, Helper&lt;P&gt;&gt; childProcessors, ProgressMonitor progressMonitor) {
+<span class="nc bnc" id="L50" title="All 2 branches missed.">		if (progressMonitor.isCancelled()) {</span>
+<span class="nc" id="L51">			throw new CancellationException();</span>
+		}		
+<span class="nc" id="L53">		try (ProgressMonitor subMonitor =  progressMonitor.split(&quot;Creating element processor&quot;, 1, element)) {</span>
+<span class="nc" id="L54">			CompletableFuture&lt;ProcessorInfo&lt;P&gt;&gt; parentProcessorInfoCompletableFuture = new CompletableFuture&lt;&gt;();</span>
+<span class="nc" id="L55">			CompletableFuture&lt;Map&lt;Element, ProcessorInfo&lt;P&gt;&gt;&gt; registryCompletableFuture = new CompletableFuture&lt;&gt;();</span>
+			ProcessorConfig&lt;P&gt; config;
+<span class="nc bnc" id="L57" title="All 2 branches missed.">			if (element instanceof Node) {</span>
+<span class="nc" id="L58">				Node node = (Node) element;</span>
+<span class="nc" id="L59">				Map&lt;Connection, Consumer&lt;H&gt;&gt; incomingHandlerConsumers = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">				for (Connection incomingConnection: node.getIncomingConnections()) {</span>
+					// Incoming endpoint - creating if not there
+<span class="nc" id="L62">					incomingEndpoints</span>
+<span class="nc" id="L63">						.computeIfAbsent(node, n -&gt; new LinkedHashMap&lt;&gt;())</span>
+<span class="nc" id="L64">						.computeIfAbsent(incomingConnection, ic -&gt; new CompletableFuture&lt;E&gt;());</span>
+					
+					// Incoming handler consumer - wiring to the connection target endpoint or to the node outgoing endpoint
+					CompletableFuture&lt;E&gt; endpoint;
+<span class="nc bnc" id="L68" title="All 2 branches missed.">					if (factory.isPassThrough(incomingConnection)) {</span>
+						// Wiring to the source node outgoing endpoint
+<span class="nc" id="L70">						Node source = incomingConnection.getSource();</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">						if (source == null) {</span>
+<span class="nc" id="L72">							endpoint = null;</span>
+						} else {
+<span class="nc" id="L74">							endpoint = outgoingEndpoints</span>
+<span class="nc" id="L75">									.computeIfAbsent(source, n -&gt; new LinkedHashMap&lt;&gt;())</span>
+<span class="nc" id="L76">									.computeIfAbsent(incomingConnection, ic -&gt; new CompletableFuture&lt;E&gt;());</span>
+						}
+<span class="nc" id="L78">					} else {</span>
+						// Wiring to the connection target endpoint
+<span class="nc" id="L80">						endpoint = targetEndpoints.computeIfAbsent(incomingConnection, ic -&gt; new CompletableFuture&lt;E&gt;()); </span>
+					}
+					
+<span class="nc" id="L83">					incomingHandlerConsumers.put(incomingConnection, handler -&gt; {</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">						if (endpoint != null) {</span>
+<span class="nc" id="L85">							endpoint.complete(factory.createEndpoint(incomingConnection, handler, HandlerType.INCOMING));</span>
+						}
+<span class="nc" id="L87">					});</span>
+<span class="nc" id="L88">				}</span>
+				
+<span class="nc" id="L90">				Map&lt;Connection, Consumer&lt;H&gt;&gt; outgoingHandlerConsumers = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">				for (Connection outgoingConnection: node.getOutgoingConnections()) {</span>
+<span class="nc" id="L92">					outgoingEndpoints</span>
+<span class="nc" id="L93">						.computeIfAbsent(node, n -&gt; new LinkedHashMap&lt;&gt;())</span>
+<span class="nc" id="L94">						.computeIfAbsent(outgoingConnection, ic -&gt; new CompletableFuture&lt;E&gt;());</span>
+					
+					// Outgoing handler consumer - wiring to the connection source endpoint or to the node incoming endpoint
+					CompletableFuture&lt;E&gt; endpoint;
+<span class="nc bnc" id="L98" title="All 2 branches missed.">					if (factory.isPassThrough(outgoingConnection)) {</span>
+						// Wiring to the source node outgoing endpoint
+<span class="nc" id="L100">						Node target = outgoingConnection.getTarget();</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">						if (target == null) {</span>
+<span class="nc" id="L102">							endpoint = null;</span>
+						} else {
+<span class="nc" id="L104">							endpoint = incomingEndpoints</span>
+<span class="nc" id="L105">									.computeIfAbsent(target, n -&gt; new LinkedHashMap&lt;&gt;())</span>
+<span class="nc" id="L106">									.computeIfAbsent(outgoingConnection, ic -&gt; new CompletableFuture&lt;E&gt;());</span>
+						}
+<span class="nc" id="L108">					} else {</span>
+						// Wiring to the connection target endpoint
+<span class="nc" id="L110">						endpoint = sourceEndpoints.computeIfAbsent(outgoingConnection, ic -&gt; new CompletableFuture&lt;E&gt;()); </span>
+					}
+					
+<span class="nc" id="L113">					outgoingHandlerConsumers.put(outgoingConnection, handler -&gt; {</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">						if (endpoint != null) {</span>
+<span class="nc" id="L115">							endpoint.complete(factory.createEndpoint(outgoingConnection, handler, HandlerType.OUTGOING));</span>
+						}
+<span class="nc" id="L117">					});</span>
+<span class="nc" id="L118">				}</span>
+				
+<span class="nc" id="L120">				config = new NodeProcessorConfig&lt;P, H, E&gt;() {</span>
+					
+					@Override
+					public Node getElement() {
+<span class="nc" id="L124">						return node;</span>
+					}
+	
+					@Override
+					public Map&lt;Element, ProcessorInfo&lt;P&gt;&gt; getChildProcessorsInfo() {
+<span class="nc" id="L129">						Map&lt;Element,ProcessorInfo&lt;P&gt;&gt; ret = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L130">						childProcessors.entrySet().forEach(e -&gt; ret.put(e.getKey(), e.getValue().getProcessorInfo()));</span>
+<span class="nc" id="L131">						return ret;</span>
+					}
+					
+					@Override
+					public CompletableFuture&lt;ProcessorInfo&lt;P&gt;&gt; getParentProcessorInfo() {
+<span class="nc" id="L136">						return parentProcessorInfoCompletableFuture;</span>
+					}
+	
+					@Override
+					public CompletableFuture&lt;Map&lt;Element, ProcessorInfo&lt;P&gt;&gt;&gt; getRegistry() {
+<span class="nc" id="L141">						return registryCompletableFuture;</span>
+					}
+	
+					@Override
+					public Map&lt;Connection, CompletionStage&lt;E&gt;&gt; getIncomingEndpoints() {
+<span class="nc" id="L146">						return Collections.unmodifiableMap(incomingEndpoints.computeIfAbsent(node, e -&gt; new LinkedHashMap&lt;&gt;()));</span>
+					}
+	
+					@Override
+					public Map&lt;Connection, Consumer&lt;H&gt;&gt; getIncomingHandlerConsumers() {
+<span class="nc" id="L151">						return Collections.unmodifiableMap(incomingHandlerConsumers);</span>
+					}
+	
+					@Override
+					public Map&lt;Connection, CompletionStage&lt;E&gt;&gt; getOutgoingEndpoints() {
+<span class="nc" id="L156">						return Collections.unmodifiableMap(outgoingEndpoints.computeIfAbsent(node, e -&gt; new LinkedHashMap&lt;&gt;()));</span>
+					}
+	
+					@Override
+					public Map&lt;Connection, Consumer&lt;H&gt;&gt; getOutgoingHandlerConsumers() {
+<span class="nc" id="L161">						return Collections.unmodifiableMap(outgoingHandlerConsumers);</span>
+					}
+				};
+	
+<span class="nc bnc" id="L165" title="All 2 branches missed.">			} else if (element instanceof Connection) {</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">				if (factory.isPassThrough((Connection) element)) {</span>
+<span class="nc" id="L167">					config = null;</span>
+				} else {
+<span class="nc" id="L169">					Connection connection = (Connection) element;</span>
+<span class="nc" id="L170">					Node source = connection.getSource();</span>
+<span class="nc" id="L171">					Node target = connection.getTarget();</span>
+					
+<span class="nc bnc" id="L173" title="All 2 branches missed.">					CompletableFuture&lt;E&gt; sourceEndpoint = source == null ? null : sourceEndpoints.computeIfAbsent(connection, ic -&gt; new CompletableFuture&lt;E&gt;());</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">					CompletableFuture&lt;E&gt; targetEndpoint = target == null ? null : targetEndpoints.computeIfAbsent(connection, ic -&gt; new CompletableFuture&lt;E&gt;());</span>
+												
+<span class="nc bnc" id="L176" title="All 2 branches missed.">					CompletableFuture&lt;E&gt; outgoingEndpoint = source == null ? null : outgoingEndpoints.computeIfAbsent(source, n -&gt; new LinkedHashMap&lt;&gt;()).computeIfAbsent(connection, ic -&gt; new CompletableFuture&lt;E&gt;());</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">					CompletableFuture&lt;E&gt; incomingEndpoint = target == null ? null : incomingEndpoints.computeIfAbsent(target, n -&gt; new LinkedHashMap&lt;&gt;()).computeIfAbsent(connection, ic -&gt; new CompletableFuture&lt;E&gt;());</span>
+					
+<span class="nc" id="L179">					config = new ConnectionProcessorConfig&lt;P, H, E&gt;() {</span>
+						
+						@Override
+						public Connection getElement() {
+<span class="nc" id="L183">							return connection;</span>
+						}
+	
+						@Override
+						public Map&lt;Element, ProcessorInfo&lt;P&gt;&gt; getChildProcessorsInfo() {
+<span class="nc" id="L188">							Map&lt;Element,ProcessorInfo&lt;P&gt;&gt; ret = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L189">							childProcessors.entrySet().forEach(e -&gt; ret.put(e.getKey(), e.getValue().getProcessorInfo()));</span>
+<span class="nc" id="L190">							return ret;</span>
+						}
+	
+						@Override
+						public CompletableFuture&lt;ProcessorInfo&lt;P&gt;&gt; getParentProcessorInfo() {
+<span class="nc" id="L195">							return parentProcessorInfoCompletableFuture;</span>
+						}
+	
+						@Override
+						public CompletableFuture&lt;Map&lt;Element, ProcessorInfo&lt;P&gt;&gt;&gt; getRegistry() {
+<span class="nc" id="L200">							return registryCompletableFuture;</span>
+						}
+	
+						@Override
+						public CompletionStage&lt;E&gt; getSourceEndpoint() {
+<span class="nc" id="L205">							return sourceEndpoint;</span>
+						}
+	
+						@Override
+						public void setSourceHandler(H sourceHandler) {
+<span class="nc bnc" id="L210" title="All 2 branches missed.">							if (outgoingEndpoint != null) {</span>
+<span class="nc" id="L211">								outgoingEndpoint.complete(factory.createEndpoint(connection, sourceHandler, HandlerType.SOURCE));</span>
+							}
+<span class="nc" id="L213">						}</span>
+	
+						@Override
+						public CompletionStage&lt;E&gt; getTargetEndpoint() {
+<span class="nc" id="L217">							return targetEndpoint;</span>
+						}
+	
+						@Override
+						public void setTargetHandler(H targetHandler) {
+<span class="nc bnc" id="L222" title="All 2 branches missed.">							if (incomingEndpoint != null) {</span>
+<span class="nc" id="L223">								incomingEndpoint.complete(factory.createEndpoint(connection, targetHandler, HandlerType.TARGET));</span>
+							}
+<span class="nc" id="L225">						}</span>
+					};
+<span class="nc" id="L227">				}</span>
+			} else {
+<span class="nc" id="L229">				config = new ProcessorConfig&lt;P&gt;() {</span>
+					
+					@Override
+					public Element getElement() {
+<span class="nc" id="L233">						return element;</span>
+					}
+	
+					@Override
+					public Map&lt;Element, ProcessorInfo&lt;P&gt;&gt; getChildProcessorsInfo() {
+<span class="nc" id="L238">						Map&lt;Element,ProcessorInfo&lt;P&gt;&gt; ret = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L239">						childProcessors.entrySet().forEach(e -&gt; ret.put(e.getKey(), e.getValue().getProcessorInfo()));</span>
+<span class="nc" id="L240">						return ret;</span>
+					}
+	
+					@Override
+					public CompletableFuture&lt;ProcessorInfo&lt;P&gt;&gt; getParentProcessorInfo() {
+<span class="nc" id="L245">						return parentProcessorInfoCompletableFuture;</span>
+					}
+	
+					@Override
+					public CompletableFuture&lt;Map&lt;Element, ProcessorInfo&lt;P&gt;&gt;&gt; getRegistry() {
+<span class="nc" id="L250">						return registryCompletableFuture;</span>
+					}
+					
+				};
+			}
+			
+<span class="nc bnc" id="L256" title="All 2 branches missed.">			ProcessorInfo&lt;P&gt; processorInfo = config == null ? null : factory.createProcessor(config, subMonitor);</span>
+			
+<span class="nc bnc" id="L258" title="All 2 branches missed.">			if (childProcessors != null) {</span>
+<span class="nc" id="L259">				childProcessors.values().forEach(ch -&gt; ch.setParentProcessorInfo(processorInfo));</span>
+			}
+<span class="nc bnc" id="L261" title="All 2 branches missed.">			if (processorInfo != null) {</span>
+<span class="nc" id="L262">				registry.put(element, processorInfo);</span>
+			}
+			
+<span class="nc" id="L265">			subMonitor.worked(0, &quot;Created a processor&quot;, element, processorInfo);</span>
+			
+<span class="nc" id="L267">			return new Helper&lt;&gt;(processorInfo) {</span>
+	
+				@Override
+				void setParentProcessorInfo(ProcessorInfo&lt;P&gt; parentProcessorInfo) {
+<span class="nc" id="L271">					parentProcessorInfoCompletableFuture.complete(parentProcessorInfo);</span>
+<span class="nc" id="L272">				}</span>
+	
+				@Override
+				void setRegistry(Map&lt;Element, ProcessorInfo&lt;P&gt;&gt; registry) {
+<span class="nc" id="L276">					childProcessors.values().forEach(ch -&gt; ch.setRegistry(registry));</span>
+<span class="nc" id="L277">					registryCompletableFuture.complete(registry);</span>
+<span class="nc" id="L278">				}</span>
+				
+			};
+		} 
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

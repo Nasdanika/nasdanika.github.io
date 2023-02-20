@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BlockCommandFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Exec Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.gen</a> &gt; <span class="el_source">BlockCommandFactoryAdapter.java</span></div><h1>BlockCommandFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.exec.gen;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import org.nasdanika.common.Command;
+import org.nasdanika.common.CommandFactory;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Reference;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.Util;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.exec.Block;
+
+public class BlockCommandFactoryAdapter extends BlockExecutionParticipantAdapter implements CommandFactory {
+	
+	public BlockCommandFactoryAdapter(Block block) {
+<span class="nc" id="L20">		super(block);</span>
+<span class="nc" id="L21">	}</span>
+	
+	@Override
+	public boolean isAdapterForType(Object type) {
+<span class="nc bnc" id="L25" title="All 2 branches missed.">		return type == SupplierFactory.class;</span>
+	}
+		
+	private static class BlockCommand extends BlockExecutionParticipant&lt;Command&gt; implements Command {
+
+		private Reference&lt;Exception&gt; eRef;
+
+		BlockCommand(
+				Command tryParticipant,
+				Command catchParticipant,
+				Command finallyParticipant,
+				Reference&lt;Exception&gt; eRef) {
+<span class="nc" id="L37">			super(tryParticipant, catchParticipant, finallyParticipant);</span>
+<span class="nc" id="L38">			this.eRef = eRef;</span>
+<span class="nc" id="L39">		}</span>
+
+		@Override
+		public void execute(ProgressMonitor progressMonitor) {
+			try {
+<span class="nc" id="L44">				tryParticipant.splitAndExecute(progressMonitor);</span>
+<span class="nc" id="L45">			} catch (Exception e) {</span>
+<span class="nc" id="L46">				tryParticipant.splitAndRollback(progressMonitor);</span>
+<span class="nc" id="L47">				eRef.set(e);</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">				if (catchParticipant == null) {</span>
+<span class="nc" id="L49">					throw e;</span>
+				}
+<span class="nc" id="L51">				catchParticipant.splitAndExecute(progressMonitor);</span>
+			} finally {
+<span class="nc bnc" id="L53" title="All 2 branches missed.">				if (finallyParticipant != null) {</span>
+<span class="nc" id="L54">					finallyParticipant.splitAndExecute(progressMonitor);</span>
+				}
+			}			
+<span class="nc" id="L57">		}</span>
+		
+	}	
+	
+	@Override
+	public Command create(Context context) {
+<span class="nc" id="L63">		Reference&lt;Exception&gt; eRef = new Reference&lt;Exception&gt;();</span>
+<span class="nc" id="L64">		Block target = (Block) getTarget();</span>
+		
+<span class="nc" id="L66">		List&lt;CommandFactory&gt; tryBlock = target.getTry().stream().map(e -&gt; Objects.requireNonNull(EObjectAdaptable.adaptTo(e, CommandFactory.class), &quot;Cannot adapt to CommandFactory: &quot; + e)).collect(Collectors.toList());</span>
+<span class="nc" id="L67">		Command tryCommand = Util.asCommandFactory(tryBlock).create(context);</span>
+		
+<span class="nc" id="L69">		Command catchCommand = null; 		</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">		if (!target.getCatch().isEmpty()) {</span>
+<span class="nc" id="L71">			List&lt;CommandFactory&gt; catchBlock = target.getCatch().stream().map(e -&gt; Objects.requireNonNull(EObjectAdaptable.adaptTo(e, CommandFactory.class), &quot;Cannot adapt to CommandFactory: &quot; + e)).collect(Collectors.toList());</span>
+<span class="nc" id="L72">			catchCommand = Util.asCommandFactory(catchBlock).contextify(ctx -&gt; createCatchContextSupplier(ctx, eRef)).create(context);</span>
+		}
+		
+<span class="nc" id="L75">		Command finallyCommand = null;</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">		if (!target.getFinally().isEmpty()) {</span>
+<span class="nc" id="L77">			List&lt;CommandFactory&gt; finallyBlock = target.getFinally().stream().map(e -&gt; Objects.requireNonNull(EObjectAdaptable.adaptTo(e, CommandFactory.class), &quot;Cannot adapt to CommandFactory: &quot; + e)).collect(Collectors.toList());</span>
+<span class="nc" id="L78">			finallyCommand = Util.asCommandFactory(finallyBlock).contextify(ctx -&gt; createCatchContextSupplier(ctx, eRef)).create(context);</span>
+		}		
+		
+<span class="nc" id="L81">		return new BlockCommand(tryCommand, catchCommand, finallyCommand, eRef);		</span>
+	}
+	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

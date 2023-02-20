@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SemanticMapResourceFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Application Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.app.gen</a> &gt; <span class="el_source">SemanticMapResourceFactory.java</span></div><h1>SemanticMapResourceFactory.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.app.gen;
+
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.nasdanika.html.model.app.Label;
+import org.nasdanika.ncore.ModelElement;
+
+/**
+ * Loads semantic map JSON or YAML as resources.
+ * @author Pavel
+ */
+<span class="fc" id="L19">public class SemanticMapResourceFactory extends ResourceFactoryImpl {</span>
+	
+	/**
+	 * Override to pass semantic mapping to URI resolver
+	 * @param semanticMap
+	 */
+	protected void onLoad(Map&lt;ModelElement, Label&gt; semanticMap, Resource resource) {
+		
+<span class="fc" id="L27">	}</span>
+	
+	private class SemanticMapResource extends ResourceImpl {
+		
+<span class="fc" id="L31">		SemanticMapResource(URI uri) {</span>
+<span class="fc" id="L32">			super(uri);</span>
+<span class="fc" id="L33">		}</span>
+		
+		/**
+		 * URL decodes the opaque part and loads data from the decoded URL as YAML or JSON
+		 */
+		@SuppressWarnings(&quot;unchecked&quot;)
+		@Override
+		public void load(java.util.Map&lt;?,?&gt; options) throws IOException {
+<span class="fc" id="L41">			String opaquePart = getURI().opaquePart();</span>
+<span class="fc" id="L42">			String uriStr = URLDecoder.decode(opaquePart, StandardCharsets.UTF_8.name());</span>
+<span class="fc" id="L43">			URI semanticMapURI = URI.createURI(uriStr);</span>
+<span class="fc" id="L44">			Map&lt;ModelElement, Label&gt; semanticMap = Util.loadSemanticMap(semanticMapURI, resourceSet);</span>
+<span class="fc" id="L45">			onLoad(semanticMap, this);</span>
+<span class="fc" id="L46">			getContents().addAll(semanticMap.keySet());</span>
+<span class="fc" id="L47">		}</span>
+		
+	}
+	
+	@Override
+	public Resource createResource(URI uri) {
+<span class="fc" id="L53">		return new SemanticMapResource(uri);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

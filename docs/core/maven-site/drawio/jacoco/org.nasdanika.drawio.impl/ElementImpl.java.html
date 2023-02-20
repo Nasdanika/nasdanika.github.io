@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Java API for working with Drawio diagrams</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.drawio.impl</a> &gt; <span class="el_source">ElementImpl.java</span></div><h1>ElementImpl.java</h1><pre class="source lang-java linenums">package org.nasdanika.drawio.impl;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import org.nasdanika.drawio.Connection;
+import org.nasdanika.drawio.ConnectionBase;
+import org.nasdanika.drawio.Element;
+import org.nasdanika.persistence.Marker;
+import org.nasdanika.persistence.MarkerImpl;
+
+<span class="fc" id="L18">abstract class ElementImpl implements Element {</span>
+	
+	static final String ATTRIBUTE_ID = &quot;id&quot;;
+	
+	protected org.w3c.dom.Element element; 
+
+	@Override
+	public org.w3c.dom.Element getElement() {
+<span class="fc" id="L26">		return element;</span>
+	}
+	
+	/**
+	 * @return Child elements to pass to the visitor. This implementation returns empty list.
+	 */
+	protected List&lt;? extends Element&gt; getChildren() {
+<span class="nc" id="L33">		return Collections.emptyList();</span>
+	}
+
+	@Override
+	public &lt;T&gt; T accept(BiFunction&lt;Element, Map&lt;Element, T&gt;, T&gt; visitor, ConnectionBase connectionBase) {
+<span class="fc" id="L38">		Map&lt;org.nasdanika.drawio.Element, T&gt; childResults = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">		for (Element child: getLogicalChildren(connectionBase)) {</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">			if (child != null) {</span>
+<span class="fc" id="L41">				childResults.put(child, child.accept(visitor, connectionBase));</span>
+			}
+<span class="fc" id="L43">		}</span>
+<span class="fc" id="L44">		return visitor.apply(this, childResults);</span>
+	}
+	
+	protected List&lt;? extends Element&gt; getLogicalChildren(ConnectionBase connectionBase) {
+<span class="fc bfc" id="L48" title="All 4 branches covered.">		if (connectionBase == null || connectionBase == ConnectionBase.PARENT) {</span>
+<span class="fc" id="L49">			return getChildren();</span>
+		}
+		
+<span class="fc" id="L52">		Predicate&lt;Element&gt; isConnection = Connection.class::isInstance;</span>
+<span class="fc" id="L53">		return getChildren().stream().filter(isConnection.negate()).collect(Collectors.toList());</span>
+	}
+	
+	@Override
+	public int hashCode() {
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">		if (element == null) {</span>
+<span class="nc" id="L59">			return super.hashCode();</span>
+		}
+<span class="fc bfc" id="L61" title="All 2 branches covered.">		int hc = element.hasAttribute(ATTRIBUTE_ID) ? element.getAttribute(ATTRIBUTE_ID).hashCode() : element.hashCode();  </span>
+<span class="fc" id="L62">		return hc ^ getClass().hashCode();</span>
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+<span class="fc bfc" id="L67" title="All 2 branches covered.">		if (this == obj)</span>
+<span class="fc" id="L68">			return true;</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">		if (obj == null)</span>
+<span class="nc" id="L70">			return false;</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">		if (getClass() != obj.getClass())</span>
+<span class="fc" id="L72">			return false;</span>
+<span class="fc" id="L73">		ElementImpl other = (ElementImpl) obj;</span>
+		
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">		if (element == other.element) {</span>
+<span class="nc" id="L76">			return true;</span>
+		}
+		
+<span class="pc bpc" id="L79" title="2 of 4 branches missed.">		if (element == null || other.element == null) {</span>
+<span class="nc" id="L80">			return super.equals(obj);</span>
+		}
+		
+<span class="pc bpc" id="L83" title="2 of 4 branches missed.">		if (element.hasAttribute(ATTRIBUTE_ID) &amp;&amp; other.element.hasAttribute(ATTRIBUTE_ID)) {</span>
+<span class="fc" id="L84">			return Objects.equals(element.getAttribute(ATTRIBUTE_ID), other.element.getAttribute(ATTRIBUTE_ID));			</span>
+		}
+
+<span class="nc" id="L87">		return false;</span>
+	}
+	
+	@Override
+	public List&lt;Marker&gt; getMarkers() {
+<span class="nc" id="L92">		String markerLocation = getMarkerLocation();</span>
+<span class="nc" id="L93">		String markerPosition = getMarkerPosition();</span>
+<span class="nc bnc" id="L94" title="All 4 branches missed.">		if (org.nasdanika.common.Util.isBlank(markerLocation) &amp;&amp; org.nasdanika.common.Util.isBlank(markerPosition)) {</span>
+<span class="nc" id="L95">			return Collections.emptyList();</span>
+		}
+<span class="nc" id="L97">		return Collections.singletonList(new MarkerImpl(markerLocation, markerPosition));</span>
+	}
+		
+	protected String getMarkerPosition() {
+<span class="nc" id="L101">		return null;</span>
+	}	
+	
+	protected String getMarkerLocation() {
+<span class="nc" id="L105">		return null;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

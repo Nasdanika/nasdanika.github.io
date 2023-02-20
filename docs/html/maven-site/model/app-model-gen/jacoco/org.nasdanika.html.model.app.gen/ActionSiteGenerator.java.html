@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionSiteGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Application Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.app.gen</a> &gt; <span class="el_source">ActionSiteGenerator.java</span></div><h1>ActionSiteGenerator.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.app.gen;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.BiConsumer;
+
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.PrintStreamProgressMonitor;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.ActionReference;
+import org.nasdanika.html.model.app.Label;
+
+/**
+ * Generates a web site from an action model as a semantic model.
+ * @author Pavel
+ *
+ */
+<span class="fc" id="L30">public class ActionSiteGenerator extends SiteGenerator {</span>
+	
+	/**
+	 * Generates a resource model from an action model.
+	 * @throws IOException 
+	 * @throws Exception
+	 */
+	protected Resource generateResourceModel(
+			Resource actionResource, 
+			Map&lt;EObject, Label&gt; registry,
+			URI rootActionURI,
+			URI pageTemplateURI,
+			URI resourceURI, 
+			String containerName,
+			File resourceWorkDir,
+			BiConsumer&lt;String, String&gt; representationLinkResolutionErrorConsumer,						
+			Context context, 
+			ProgressMonitor progressMonitor) throws IOException {
+		
+		Action root;
+<span class="nc bnc" id="L50" title="All 2 branches missed.">		if (rootActionURI == null) {</span>
+<span class="nc" id="L51">			Context rootActionContext = context.compose(Context.singleton(&quot;action-resource&quot;, actionResource.getURI().toString()));</span>
+<span class="nc" id="L52">			ResourceSet rootActionResourceSet = createResourceSet(rootActionContext, progressMonitor);</span>
+<span class="nc" id="L53">			root = (Action) rootActionResourceSet.getEObject(rootActionURI, true);</span>
+<span class="nc" id="L54">		} else {</span>
+<span class="nc" id="L55">			root = (Action) actionResource.getContents().get(0);</span>
+		}
+		
+<span class="nc" id="L58">		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) actionResource.getResourceSet().getEObject(pageTemplateURI, true);</span>
+		
+<span class="nc" id="L60">		return generateResourceModel(root, registry, pageTemplate, resourceURI, containerName, resourceWorkDir, representationLinkResolutionErrorConsumer, context, progressMonitor);</span>
+	}	
+	
+	protected Context createContext(ProgressMonitor progressMonitor) {
+<span class="fc" id="L64">		return Context.EMPTY_CONTEXT;</span>
+	}
+
+	protected ProgressMonitor createProgressMonitor() {
+<span class="fc" id="L68">		return new PrintStreamProgressMonitor();</span>
+	}
+			
+	public Map&lt;String, Collection&lt;String&gt;&gt; generate(
+		URI rootActionURI,
+		URI pageTemplateURI,
+		String siteMapDomain,
+		File outputDir,
+		File workDir,
+		boolean cleanWorkDir) throws IOException, org.eclipse.emf.common.util.DiagnosticException  {
+		
+<span class="fc" id="L79">		String modelName = rootActionURI.lastSegment();</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">		if (org.nasdanika.common.Util.isBlank(modelName)) {</span>
+<span class="nc" id="L81">			modelName = &quot;action-model&quot;;</span>
+		}
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">		if (workDir == null) {</span>
+<span class="nc" id="L84">			workDir = Files.createTempDirectory(modelName).toFile();</span>
+<span class="nc" id="L85">			cleanWorkDir = true;</span>
+		}
+		
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (!workDir.isDirectory()) {</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">			if (!workDir.mkdirs()) {</span>
+<span class="nc" id="L90">				throw new IOException(&quot;Cannot create a working directory: &quot; + workDir.getAbsolutePath());</span>
+			}
+		}
+		
+		try {
+<span class="fc" id="L95">			File resourceModelsDir = new File(workDir, &quot;resources&quot;);</span>
+<span class="fc" id="L96">			File siteWorkDir = new File(workDir, &quot;site&quot;);			</span>
+			
+<span class="fc" id="L98">			org.nasdanika.common.Util.delete(resourceModelsDir);</span>
+<span class="fc" id="L99">			org.nasdanika.common.Util.delete(siteWorkDir);</span>
+			
+<span class="fc" id="L101">			resourceModelsDir.mkdirs();</span>
+	
+<span class="fc" id="L103">			try (ProgressMonitor progressMonitor = createProgressMonitor()) {				</span>
+<span class="fc" id="L104">				Context context = Context.singleton(&quot;model-name&quot;, modelName).compose(createContext(progressMonitor));		</span>
+				
+<span class="fc" id="L106">				ResourceSet rootActionResourceSet = createResourceSet(context, progressMonitor);</span>
+<span class="fc" id="L107">				Action root = (Action) rootActionResourceSet.getEObject(rootActionURI, true);	</span>
+				
+<span class="fc" id="L109">				Map&lt;EObject,Label&gt; registry = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L110">				buildRegistry(root, registry);</span>
+				
+<span class="fc" id="L112">				org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) rootActionResourceSet.getEObject(pageTemplateURI, true);</span>
+				
+<span class="fc" id="L114">				URI resourceModelsURI = URI.createFileURI(resourceModelsDir.getAbsolutePath() + &quot;/&quot;);	</span>
+<span class="fc" id="L115">				URI resourceURI = URI.createURI(modelName + &quot;.xml&quot;).resolve(resourceModelsURI);</span>
+				
+<span class="fc" id="L117">				Map&lt;String, Collection&lt;String&gt;&gt; errors = new TreeMap&lt;&gt;();</span>
+				
+<span class="fc" id="L119">				Resource resourceModel = generateResourceModel(</span>
+						root, 
+						registry, 
+						pageTemplate,
+						resourceURI, 
+						modelName, 
+						resourceModelsDir,
+						(location, error) -&gt;  {
+<span class="nc" id="L127">							errors.computeIfAbsent(location, p -&gt; new ArrayList&lt;&gt;()).add(error);</span>
+<span class="nc" id="L128">						},</span>
+						context, 
+<span class="fc" id="L130">						progressMonitor.split(&quot;Generating resource model&quot;, 1));</span>
+				
+<span class="fc" id="L132">				Map&lt;String, Collection&lt;String&gt;&gt; containerErrors = generateContainer(</span>
+						resourceModel,
+						siteWorkDir,
+						outputDir,
+						this::isDeleteOutputPath,
+						siteMapDomain,
+						modelName, 
+						context, 
+<span class="fc" id="L140">						progressMonitor.split(&quot;Generating container&quot;, 1));</span>
+				
+<span class="fc" id="L142">				containerErrors.forEach((path, pathErrors) -&gt; errors.computeIfAbsent(path, p -&gt; new ArrayList&lt;&gt;()).addAll(pathErrors));</span>
+<span class="fc" id="L143">				return errors;</span>
+			}
+		} finally {
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">			if (cleanWorkDir) {</span>
+<span class="nc" id="L147">				org.nasdanika.common.Util.delete(workDir);</span>
+			}
+		}
+	}
+	
+	/**
+	 * Clean predicate for the output directory. This implementation returns true. 
+	 * Override to return false for paths which shall not be cleaned (deleted).
+	 * @param path File/directory path in the output directory.
+	 * @return
+	 */
+	protected boolean isDeleteOutputPath(String path) {
+<span class="nc" id="L159">		return true;</span>
+	}
+
+	/**
+	 * Builds registry from the action and its contained labels.
+	 * @param action
+	 * @param registry
+	 */
+	protected void buildRegistry(Action action, Map&lt;EObject, Label&gt; registry) {
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if (!registry.containsKey(action)) {</span>
+<span class="fc" id="L169">			registry.put(action, action);</span>
+<span class="fc" id="L170">			TreeIterator&lt;EObject&gt; ait = action.eAllContents();</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">			while (ait.hasNext()) {</span>
+<span class="fc" id="L172">				EObject next = ait.next();</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">				if (next instanceof Label) {</span>
+<span class="fc" id="L174">					registry.put(next, (Label) next);</span>
+				}
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">				if (next instanceof ActionReference) {</span>
+<span class="nc" id="L177">					Action refTarget = ((ActionReference) next).getTarget();</span>
+<span class="nc" id="L178">					registry.put(next, null);</span>
+<span class="nc" id="L179">					buildRegistry(refTarget, registry);</span>
+				}
+<span class="fc" id="L181">			}</span>
+		}
+<span class="fc" id="L183">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

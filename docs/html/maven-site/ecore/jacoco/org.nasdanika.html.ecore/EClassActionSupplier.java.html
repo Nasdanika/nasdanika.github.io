@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EClassActionSupplier.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika HTML Ecore documentation</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.ecore</a> &gt; <span class="el_source">EClassActionSupplier.java</span></div><h1>EClassActionSupplier.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.ecore;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.BooleanSupplier;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.DiagramGenerator;
+import org.nasdanika.common.MarkdownHelper;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Util;
+import org.nasdanika.emf.DiagramTextGenerator;
+import org.nasdanika.emf.DiagramTextGenerator.RelationshipDirection;
+import org.nasdanika.emf.EmfUtil;
+import org.nasdanika.emf.EmfUtil.EModelElementDocumentation;
+import org.nasdanika.emf.MermaidTextGenerator;
+import org.nasdanika.emf.PlantUmlTextGenerator;
+import org.nasdanika.emf.persistence.EObjectLoader;
+import org.nasdanika.html.Fragment;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.html.model.app.SectionStyle;
+import org.nasdanika.html.model.app.gen.DynamicTableBuilder;
+import org.nasdanika.ncore.util.NcoreUtil;
+
+public class EClassActionSupplier extends EClassifierActionSupplier&lt;EClass&gt; {
+	
+	private BooleanSupplier isGenerateLoadSpecification;
+	private Supplier&lt;String&gt; diagramDialectSupplier;
+
+	public EClassActionSupplier(
+			EClass value, 
+			Context context, 
+			java.util.function.Function&lt;EPackage,String&gt; ePackagePathComputer,
+			java.util.function.Function&lt;String, String&gt; javadocResolver,
+			java.util.function.Function&lt;String, Object&gt; ePackageResolver,
+			Predicate&lt;EModelElement&gt; elementPredicate,
+			BiFunction&lt;ENamedElement, String, String&gt; labelProvider,
+			BooleanSupplier isGenerateLoadSpecification,
+			Supplier&lt;String&gt; diagramDialectSupplier) {
+<span class="fc" id="L72">		super(value, context, ePackagePathComputer, javadocResolver, ePackageResolver, elementPredicate, labelProvider);</span>
+<span class="fc" id="L73">		this.elementPredicate = elementPredicate;</span>
+<span class="fc" id="L74">		this.isGenerateLoadSpecification = isGenerateLoadSpecification;</span>
+<span class="fc" id="L75">		this.diagramDialectSupplier = diagramDialectSupplier;</span>
+<span class="fc" id="L76">	}</span>
+	
+	@Override
+	public org.nasdanika.html.model.app.Action execute(EClass contextEClass, ProgressMonitor progressMonitor) {
+<span class="fc" id="L80">		Action action = super.execute(contextEClass, progressMonitor);</span>
+		
+<span class="fc" id="L82">		action.setSectionStyle(SectionStyle.HEADER);</span>
+		
+		// Diagram
+<span class="fc" id="L85">		String diagramMode = NcoreUtil.getNasdanikaAnnotationDetail(eObject, &quot;diagram&quot;, &quot;navigation&quot;);</span>
+<span class="fc" id="L86">		String diagram = generateDiagram(1, RelationshipDirection.both, true, true, progressMonitor);</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">		if (!Util.isBlank(diagram)) {</span>
+<span class="nc bnc" id="L88" title="All 5 branches missed.">			switch (diagramMode) {</span>
+			case &quot;content&quot;:
+<span class="nc" id="L90">				addContent(action, diagram);</span>
+<span class="nc" id="L91">				break;</span>
+			case &quot;none&quot;:
+<span class="nc" id="L93">				break;</span>
+			case &quot;navigation&quot;: {
+<span class="nc" id="L95">				Action diagramAction = AppFactory.eINSTANCE.createAction();</span>
+<span class="nc" id="L96">				action.getNavigation().add(diagramAction);</span>
+<span class="nc" id="L97">				diagramAction.setText(&quot;Diagram&quot;);</span>
+<span class="nc" id="L98">				diagramAction.setIcon(&quot;fas fa-project-diagram&quot;);</span>
+<span class="nc" id="L99">				diagramAction.setLocation(eObject.getName() + &quot;-diagram.html&quot;);</span>
+<span class="nc" id="L100">				addContent(diagramAction, diagram);</span>
+<span class="nc" id="L101">				break;</span>
+			}
+			case &quot;anonymous&quot;: {
+<span class="nc" id="L104">				Action diagramAction = AppFactory.eINSTANCE.createAction();</span>
+<span class="nc" id="L105">				action.getAnonymous().add(diagramAction);</span>
+<span class="nc" id="L106">				diagramAction.setText(&quot;Diagram&quot;);</span>
+<span class="nc" id="L107">				diagramAction.setIcon(&quot;fas fa-project-diagram&quot;);</span>
+<span class="nc" id="L108">				diagramAction.setLocation(eObject.getName() + &quot;-diagram.html&quot;);</span>
+<span class="nc" id="L109">				addContent(diagramAction, diagram);</span>
+<span class="nc" id="L110">				break;			</span>
+			}
+			default:
+<span class="nc" id="L113">				throw new IllegalArgumentException(&quot;Unsupported diagram annotation value '&quot; + diagramMode +&quot;' on EClass &quot; + eObject); 			</span>
+			}
+		}
+
+		// Generic supertypes
+<span class="fc" id="L118">		List&lt;EGenericType&gt; eGenericSuperTypes =  eObject.getEGenericSuperTypes().stream().filter(gst -&gt; elementPredicate.test(gst.getEClassifier())).collect(Collectors.toList());</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">		if (!eGenericSuperTypes.isEmpty()) {</span>
+<span class="fc" id="L120">			HTMLFactory htmlFactory = context.get(HTMLFactory.class);</span>
+<span class="fc" id="L121">			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create(&quot;Supertypes&quot;)).attribute(&quot;name&quot;, &quot;supertypes&quot;));</span>
+
+<span class="fc" id="L123">			Tag list = TagName.ul.create();</span>
+<span class="fc" id="L124">			gstf.content(list);</span>
+			
+<span class="fc bfc" id="L126" title="All 2 branches covered.">			for (EGenericType superType: eGenericSuperTypes) {</span>
+<span class="fc" id="L127">				Tag listItem = TagName.li.create();</span>
+<span class="fc" id="L128">				list.content(listItem);</span>
+<span class="fc" id="L129">				genericType(superType, eObject, listItem.getContent()::add, progressMonitor);</span>
+<span class="fc" id="L130">			}</span>
+<span class="fc" id="L131">			addContent(action, gstf.toString());</span>
+		}
+		
+		// Subtypes
+<span class="fc" id="L135">		Collection&lt;EClass&gt; eSubTypes = getSubTypes(eObject).stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		if (!eSubTypes.isEmpty()) {</span>
+<span class="fc" id="L137">			HTMLFactory htmlFactory = context.get(HTMLFactory.class);</span>
+<span class="fc" id="L138">			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create(&quot;Subtypes&quot;)).attribute(&quot;name&quot;, &quot;subtypes&quot;));</span>
+
+<span class="fc" id="L140">			Tag list = TagName.ul.create();</span>
+<span class="fc" id="L141">			gstf.content(list);</span>
+			
+<span class="fc bfc" id="L143" title="All 2 branches covered.">			for (EClass subType: eSubTypes) {</span>
+<span class="fc" id="L144">				list.content(TagName.li.create(link(subType, eObject)));</span>
+<span class="fc" id="L145">			}</span>
+<span class="fc" id="L146">			addContent(action, gstf.toString());</span>
+		}
+		
+		// Referrers
+<span class="fc" id="L150">		Collection&lt;EClass&gt; referrers = getReferrers().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		if (!referrers.isEmpty()) {</span>
+<span class="fc" id="L152">			HTMLFactory htmlFactory = context.get(HTMLFactory.class);</span>
+<span class="fc" id="L153">			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create(&quot;Referrers&quot;)).attribute(&quot;name&quot;, &quot;referrers&quot;));</span>
+
+<span class="fc" id="L155">			Tag list = TagName.ul.create();</span>
+<span class="fc" id="L156">			gstf.content(list);</span>
+			
+<span class="fc bfc" id="L158" title="All 2 branches covered.">			for (EClass referrer: referrers) {</span>
+<span class="fc" id="L159">				list.content(TagName.li.create(link(referrer, eObject)));</span>
+<span class="fc" id="L160">			}</span>
+<span class="fc" id="L161">			addContent(action, gstf.toString());</span>
+		}
+		
+		// Uses
+<span class="fc" id="L165">		Collection&lt;EClass&gt; uses = getUses().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">		if (!uses.isEmpty()) {</span>
+<span class="fc" id="L167">			HTMLFactory htmlFactory = context.get(HTMLFactory.class);</span>
+<span class="fc" id="L168">			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create(&quot;Uses&quot;)).attribute(&quot;name&quot;, &quot;uses&quot;));</span>
+
+<span class="fc" id="L170">			Tag list = TagName.ul.create();</span>
+<span class="fc" id="L171">			gstf.content(list);</span>
+			
+<span class="fc bfc" id="L173" title="All 2 branches covered.">			for (EClass use: uses) {</span>
+<span class="fc" id="L174">				list.content(TagName.li.create(link(use, eObject)));</span>
+<span class="fc" id="L175">			}</span>
+<span class="fc" id="L176">			addContent(action, gstf.toString());</span>
+		}
+		
+<span class="fc" id="L179">		List&lt;EAttribute&gt; allAttributes = eObject.getEAllAttributes().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());</span>
+<span class="fc" id="L180">		List&lt;EReference&gt; allReferences = eObject.getEAllReferences().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());</span>
+<span class="fc" id="L181">		List&lt;EOperation&gt; allOperations = eObject.getEAllOperations().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());		</span>
+<span class="fc" id="L182">		List&lt;EGenericType&gt; allGenericSupertypes = eObject.getEAllGenericSuperTypes().stream().filter(gst -&gt; elementPredicate.test(gst.getEClassifier())).collect(Collectors.toList());</span>
+		
+<span class="fc bfc" id="L184" title="All 2 branches covered.">		if (allAttributes.size() + allReferences.size() + allOperations.size() + allGenericSupertypes.size()  != 0) { 	</span>
+<span class="fc" id="L185">			Action allGroup = AppFactory.eINSTANCE.createAction();</span>
+<span class="fc" id="L186">			allGroup.setText(&quot;All&quot;);</span>
+<span class="fc" id="L187">			allGroup.setUuid(action.getUuid() + &quot;-all&quot;);</span>
+<span class="fc" id="L188">			action.getNavigation().add(allGroup);</span>
+			
+<span class="fc" id="L190">			generateAllAttributes(allAttributes, allGroup, progressMonitor);</span>
+<span class="fc" id="L191">			generateAllReferences(allReferences, allGroup, progressMonitor);</span>
+<span class="fc" id="L192">			generateAllOperations(allOperations, allGroup, progressMonitor);			</span>
+<span class="fc" id="L193">			generateAllGenericSupertypes(allGenericSupertypes, allGroup, progressMonitor);			</span>
+		}
+	
+		// No load specification for EMap entries.
+<span class="pc bpc" id="L197" title="1 of 4 branches missed.">		if (isGenerateLoadSpecification.getAsBoolean() &amp;&amp; Map.Entry.class != instanceClass) { </span>
+<span class="fc" id="L198">			generateLoadSpecification(action, eNamedElementComparator, progressMonitor);</span>
+		}
+		
+<span class="fc" id="L201">		List&lt;EAttribute&gt; sortedAttributes = eObject.getEAttributes().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());</span>
+		
+<span class="fc" id="L203">		EList&lt;Action&gt; sections = action.getSections();</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">		if (!sortedAttributes.isEmpty()) {</span>
+<span class="fc" id="L205">			Action attributeSummaryCategory = AppFactory.eINSTANCE.createAction();</span>
+<span class="fc" id="L206">			attributeSummaryCategory.setText(&quot;Attribute summary&quot;);</span>
+<span class="fc" id="L207">			attributeSummaryCategory.setName(&quot;attribute-summary&quot;);</span>
+<span class="fc" id="L208">			attributeSummaryCategory.setSectionStyle(SectionStyle.HEADER);</span>
+<span class="fc" id="L209">			sections.add(attributeSummaryCategory);</span>
+<span class="fc" id="L210">			attributeSummaryCategory.getContent().add(buildDynamicAttributesTable(sortedAttributes, progressMonitor));			</span>
+		}
+		
+<span class="fc" id="L213">		List&lt;EReference&gt; sortedReferences = eObject.getEReferences().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">		if (!sortedReferences.isEmpty()) {</span>
+<span class="fc" id="L215">			Action referenceSummaryCategory = AppFactory.eINSTANCE.createAction();</span>
+<span class="fc" id="L216">			referenceSummaryCategory.setText(&quot;Reference summary&quot;);</span>
+<span class="fc" id="L217">			referenceSummaryCategory.setName(&quot;reference-summary&quot;);</span>
+<span class="fc" id="L218">			referenceSummaryCategory.setSectionStyle(SectionStyle.HEADER);</span>
+<span class="fc" id="L219">			sections.add(referenceSummaryCategory);</span>
+<span class="fc" id="L220">			referenceSummaryCategory.getContent().add(buildDynamicReferencesTable(sortedReferences, progressMonitor));			</span>
+		}
+		
+<span class="fc bfc" id="L223" title="All 2 branches covered.">		if (!sortedAttributes.isEmpty()) {</span>
+<span class="fc" id="L224">			Action attributeDetailsCategory = AppFactory.eINSTANCE.createAction();</span>
+<span class="fc" id="L225">			attributeDetailsCategory.setText(&quot;Attribute details&quot;);</span>
+<span class="fc" id="L226">			attributeDetailsCategory.setName(&quot;attribute-details&quot;);</span>
+<span class="fc" id="L227">			attributeDetailsCategory.setSectionStyle(SectionStyle.HEADER);</span>
+<span class="fc" id="L228">			sections.add(attributeDetailsCategory);</span>
+<span class="fc" id="L229">			EList&lt;Action&gt; attributes = attributeDetailsCategory.getSections();</span>
+			
+<span class="fc bfc" id="L231" title="All 2 branches covered.">			for (EStructuralFeature sf: sortedAttributes) {</span>
+<span class="fc" id="L232">				attributes.add(adaptChild(sf).execute(null, progressMonitor));</span>
+<span class="fc" id="L233">			}</span>
+		}
+		
+<span class="fc bfc" id="L236" title="All 2 branches covered.">		if (!sortedReferences.isEmpty()) {</span>
+<span class="fc" id="L237">			Action referenceDetailsCategory = AppFactory.eINSTANCE.createAction();</span>
+<span class="fc" id="L238">			referenceDetailsCategory.setText(&quot;Reference details&quot;);</span>
+<span class="fc" id="L239">			referenceDetailsCategory.setName(&quot;reference-details&quot;);</span>
+<span class="fc" id="L240">			referenceDetailsCategory.setSectionStyle(SectionStyle.HEADER);</span>
+<span class="fc" id="L241">			sections.add(referenceDetailsCategory);</span>
+<span class="fc" id="L242">			EList&lt;Action&gt; references = referenceDetailsCategory.getSections();			</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">			for (EStructuralFeature sf: sortedReferences) {</span>
+<span class="fc" id="L244">				references.add(adaptChild(sf).execute(null, progressMonitor));</span>
+<span class="fc" id="L245">			}</span>
+		}
+		
+<span class="fc" id="L248">		List&lt;EOperation&gt; sortedOperations = eObject.getEOperations().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">		if (!sortedOperations.isEmpty()) {</span>
+<span class="fc" id="L250">			Action operationsCategory = AppFactory.eINSTANCE.createAction();</span>
+<span class="fc" id="L251">			operationsCategory.setText(&quot;Operations&quot;);</span>
+<span class="fc" id="L252">			operationsCategory.setName(&quot;operations&quot;);</span>
+<span class="fc" id="L253">			operationsCategory.setSectionStyle(SectionStyle.HEADER);</span>
+<span class="fc" id="L254">			sections.add(operationsCategory);</span>
+<span class="fc" id="L255">			EList&lt;Action&gt; operations = operationsCategory.getSections();			</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">			for (EOperation eOp: sortedOperations) {</span>
+<span class="fc" id="L257">				operations.add(adaptChild(eOp).execute(null, progressMonitor));			</span>
+<span class="fc" id="L258">			}</span>
+		}
+		
+<span class="fc bfc" id="L261" title="All 2 branches covered.">		if (eObject.isInterface()) {</span>
+<span class="fc" id="L262">			action.setIcon(ICONS_BASE + &quot;EInterface.gif&quot;);			</span>
+		}		
+		
+<span class="fc" id="L265">		return action;</span>
+	}
+
+	private void generateAllGenericSupertypes(List&lt;EGenericType&gt; allGenericSupertypes, Action allGroup, ProgressMonitor progressMonitor) {		
+<span class="fc bfc" id="L269" title="All 2 branches covered.">		if (!allGenericSupertypes.isEmpty()) {</span>
+<span class="fc" id="L270">			String inheritanceDiagram = generateInheritanceDiagram(0, RelationshipDirection.both, true, true, progressMonitor);</span>
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">			if (!Util.isBlank(inheritanceDiagram)) {</span>
+<span class="nc" id="L272">				Action allSupertypesAction = AppFactory.eINSTANCE.createAction();</span>
+<span class="nc" id="L273">				allSupertypesAction.setText(&quot;Supertypes&quot;);</span>
+<span class="nc" id="L274">				allSupertypesAction.setLocation(eObject.getName() + &quot;-all-supertypes.html&quot;);</span>
+<span class="nc" id="L275">				allSupertypesAction.setSectionStyle(SectionStyle.HEADER);</span>
+<span class="nc" id="L276">				allGroup.getChildren().add(allSupertypesAction);</span>
+				
+<span class="nc" id="L278">				Tag list = TagName.ul.create();</span>
+				
+<span class="nc bnc" id="L280" title="All 2 branches missed.">				for (EGenericType superType: allGenericSupertypes) {</span>
+<span class="nc" id="L281">					Tag listItem = TagName.li.create();</span>
+<span class="nc" id="L282">					list.content(listItem);</span>
+<span class="nc" id="L283">					genericType(superType, eObject, listItem.getContent()::add, progressMonitor);</span>
+<span class="nc" id="L284">				}</span>
+<span class="nc" id="L285">				addContent(allSupertypesAction, list.toString());			</span>
+<span class="nc" id="L286">				addContent(allSupertypesAction, inheritanceDiagram);</span>
+			}			
+		}
+<span class="fc" id="L289">	}</span>
+	
+	protected String generateInheritanceDiagram(
+			int depth, 
+			RelationshipDirection relationshipDirection,
+			boolean appendAttributes,
+			boolean appendOperations,
+			ProgressMonitor monitor) {
+		
+<span class="fc" id="L298">		StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L299">		DiagramTextGenerator gen = getDiagramTextGenerator(sb, appendAttributes, appendOperations);</span>
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">		if (gen == null) {</span>
+<span class="fc" id="L301">			return null;</span>
+		}
+<span class="nc" id="L303">		List&lt;EClass&gt; diagramElements = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L304">		diagramElements.add(eObject);</span>
+<span class="nc" id="L305">		diagramElements.addAll(eObject.getEAllSuperTypes());</span>
+<span class="nc" id="L306">		gen.appendWithRelationships(diagramElements, relationshipDirection, depth);</span>
+		
+<span class="nc" id="L308">		return context.get(DiagramGenerator.class).generateUmlDiagram(sb.toString());</span>
+	}
+	
+	
+	private void generateAllOperations(List&lt;EOperation&gt; allOperations, Action allGroup, ProgressMonitor progressMonitor) {		
+<span class="fc bfc" id="L313" title="All 2 branches covered.">		if (!allOperations.isEmpty()) {</span>
+<span class="fc" id="L314">			Action allOperationsAction = AppFactory.eINSTANCE.createAction();</span>
+<span class="fc" id="L315">			allOperationsAction.setText(&quot;Operations&quot;);</span>
+<span class="fc" id="L316">			allOperationsAction.setLocation(eObject.getName() + &quot;-all-operations.html&quot;);</span>
+<span class="fc" id="L317">			allOperationsAction.setSectionStyle(SectionStyle.HEADER);</span>
+<span class="fc" id="L318">			allGroup.getChildren().add(allOperationsAction);</span>
+			
+<span class="fc" id="L320">			EList&lt;Action&gt; operations = allOperationsAction.getSections();			</span>
+<span class="fc bfc" id="L321" title="All 2 branches covered.">			for (EOperation eOp: allOperations) {</span>
+<span class="fc" id="L322">				operations.add(adaptChild(eOp).execute(eObject, progressMonitor));			</span>
+<span class="fc" id="L323">			}</span>
+		}
+<span class="fc" id="L325">	}</span>
+
+	private void generateAllReferences(List&lt;EReference&gt; allReferences,	Action allGroup, ProgressMonitor progressMonitor) {		
+<span class="fc bfc" id="L328" title="All 2 branches covered.">		if (!allReferences.isEmpty()) {</span>
+<span class="fc" id="L329">			Action allReferencesAction = AppFactory.eINSTANCE.createAction();</span>
+<span class="fc" id="L330">			allReferencesAction.setText(&quot;References&quot;);</span>
+<span class="fc" id="L331">			allReferencesAction.setLocation(eObject.getName() + &quot;-all-references.html&quot;);</span>
+<span class="fc" id="L332">			allReferencesAction.setSectionStyle(SectionStyle.HEADER);</span>
+<span class="fc" id="L333">			allGroup.getChildren().add(allReferencesAction);</span>
+			
+<span class="fc" id="L335">			allReferencesAction.getContent().add(buildDynamicReferencesTable(allReferences, progressMonitor));</span>
+		}
+<span class="fc" id="L337">	}</span>
+
+	private void generateAllAttributes(List&lt;EAttribute&gt; allAttributes, Action allGroup,	ProgressMonitor progressMonitor) {		
+<span class="fc bfc" id="L340" title="All 2 branches covered.">		if (!allAttributes.isEmpty()) {</span>
+<span class="fc" id="L341">			Action allAttributesAction = AppFactory.eINSTANCE.createAction();</span>
+<span class="fc" id="L342">			allAttributesAction.setText(&quot;Attributes&quot;);</span>
+<span class="fc" id="L343">			allAttributesAction.setLocation(eObject.getName() + &quot;-all-attributes.html&quot;);</span>
+<span class="fc" id="L344">			allAttributesAction.setSectionStyle(SectionStyle.HEADER);</span>
+<span class="fc" id="L345">			allGroup.getChildren().add(allAttributesAction);</span>
+			
+<span class="fc" id="L347">			allAttributesAction.getContent().add(buildDynamicAttributesTable(allAttributes,	progressMonitor));</span>
+		}
+<span class="fc" id="L349">	}</span>
+
+	protected org.nasdanika.html.model.html.Tag buildDynamicAttributesTable(List&lt;EAttribute&gt; attributes,	ProgressMonitor progressMonitor) {
+		@SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L353">		DynamicTableBuilder&lt;EAttribute&gt; attributesTableBuilder = new DynamicTableBuilder&lt;&gt;();</span>
+<span class="fc" id="L354">		attributesTableBuilder</span>
+<span class="fc" id="L355">			.addStringColumnBuilder(&quot;name&quot;, true, true, &quot;Name&quot;, attr -&gt; link(attr, eObject))</span>
+<span class="fc" id="L356">			.addStringColumnBuilder(&quot;type&quot;, true, true, &quot;Type&quot;, attr -&gt; {</span>
+<span class="fc" id="L357">				EGenericType genericType = attr.getEGenericType(); </span>
+<span class="pc bpc" id="L358" title="1 of 2 branches missed.">				if (genericType == null) {</span>
+<span class="nc" id="L359">					return null;</span>
+				}
+<span class="fc" id="L361">				StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L362">				genericType(genericType, eObject, sb::append, progressMonitor);</span>
+<span class="fc" id="L363">				return sb.toString();</span>
+			})
+<span class="fc" id="L365">			.addStringColumnBuilder(&quot;cardinality&quot;, true, true, &quot;Cardinality&quot;, EModelElementActionSupplier::cardinality)</span>
+<span class="fc" id="L366">			.addBooleanColumnBuilder(&quot;changeable&quot;, true, true, &quot;Changeable&quot;, EStructuralFeature::isChangeable)</span>
+<span class="fc" id="L367">			.addBooleanColumnBuilder(&quot;derived&quot;, true, true, &quot;Derived&quot;, EStructuralFeature::isDerived)</span>
+<span class="fc" id="L368">			.addStringColumnBuilder(&quot;declaring-class&quot;, true, true, &quot;Declaring Class&quot;, attr -&gt; link(attr.getEContainingClass(), eObject))</span>
+<span class="fc" id="L369">			.addStringColumnBuilder(&quot;description&quot;, true, false, &quot;Description&quot;, this::getEModelElementFirstDocSentence);</span>
+			// Other things not visible?
+		
+<span class="fc" id="L372">		org.nasdanika.html.model.html.Tag attributesTable = attributesTableBuilder.build(attributes, eObject.getEPackage().getNsURI().hashCode() + &quot;-&quot; + eObject.getName() + &quot;-attributes&quot;, &quot;attributes-table&quot;, progressMonitor);</span>
+<span class="fc" id="L373">		return attributesTable;</span>
+	}
+	
+	protected org.nasdanika.html.model.html.Tag buildDynamicReferencesTable(List&lt;EReference&gt; references, ProgressMonitor progressMonitor) {
+		@SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L378">		DynamicTableBuilder&lt;EReference&gt; referencesTableBuilder = new DynamicTableBuilder&lt;&gt;();</span>
+<span class="fc" id="L379">		referencesTableBuilder</span>
+<span class="fc" id="L380">			.addStringColumnBuilder(&quot;name&quot;, true, true, &quot;Name&quot;, ref -&gt; link(ref, eObject))</span>
+<span class="fc" id="L381">			.addStringColumnBuilder(&quot;type&quot;, true, true, &quot;Type&quot;, ref -&gt; {</span>
+<span class="fc" id="L382">				EGenericType genericType = ref.getEGenericType(); </span>
+<span class="pc bpc" id="L383" title="1 of 2 branches missed.">				if (genericType == null) {</span>
+<span class="nc" id="L384">					return null;</span>
+				}
+<span class="fc" id="L386">				StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L387">				genericType(genericType, eObject, sb::append, progressMonitor);</span>
+<span class="fc" id="L388">				return sb.toString();</span>
+			})
+<span class="fc" id="L390">			.addStringColumnBuilder(&quot;cardinality&quot;, true, true, &quot;Cardinality&quot;, EModelElementActionSupplier::cardinality)</span>
+<span class="fc" id="L391">			.addBooleanColumnBuilder(&quot;changeable&quot;, true, true, &quot;Changeable&quot;, EStructuralFeature::isChangeable)</span>
+<span class="fc" id="L392">			.addBooleanColumnBuilder(&quot;derived&quot;, true, true, &quot;Derived&quot;, EStructuralFeature::isDerived)</span>
+<span class="fc" id="L393">			.addStringColumnBuilder(&quot;declaring-class&quot;, true, true, &quot;Declaring Class&quot;, ref -&gt; link(ref.getEContainingClass(), eObject))</span>
+<span class="fc" id="L394">			.addStringColumnBuilder(&quot;opposite&quot;, true, true, &quot;Opposite&quot;, ref -&gt; {</span>
+<span class="fc" id="L395">				EReference opposite = NcoreUtil.getOpposite(ref);</span>
+<span class="fc bfc" id="L396" title="All 2 branches covered.">				return opposite == null ? null : link(opposite, eObject);				</span>
+			})
+<span class="fc" id="L398">			.addStringColumnBuilder(&quot;description&quot;, true, false, &quot;Description&quot;, this::getEModelElementFirstDocSentence);</span>
+			// Other things not visible?
+		
+<span class="fc" id="L401">		org.nasdanika.html.model.html.Tag referencesTable = referencesTableBuilder.build(references, eObject.getEPackage().getNsURI().hashCode() + &quot;-&quot; + eObject.getName() + &quot;-references&quot;, &quot;references-table&quot;, progressMonitor);</span>
+<span class="fc" id="L402">		return referencesTable;</span>
+	}
+	
+	private void generateLoadSpecification(
+			Action action, 
+			Comparator&lt;ENamedElement&gt; namedElementComparator,
+			ProgressMonitor progressMonitor) {
+		
+		// Load specification
+<span class="pc bpc" id="L411" title="1 of 4 branches missed.">		if (!eObject.isAbstract() &amp;&amp; &quot;true&quot;.equals(NcoreUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.IS_LOADABLE, &quot;true&quot;))) {</span>
+<span class="fc" id="L412">			Action loadSpecificationAction = AppFactory.eINSTANCE.createAction();</span>
+<span class="fc" id="L413">			loadSpecificationAction.setText(&quot;Load specification&quot;);</span>
+<span class="fc" id="L414">			loadSpecificationAction.setLocation(eObject.getName() + &quot;-load-specification.html&quot;);			</span>
+<span class="fc" id="L415">			action.getNavigation().add(loadSpecificationAction);</span>
+			
+<span class="fc" id="L417">			EModelElementDocumentation loadDoc = EmfUtil.getLoadDocumentation(eObject);</span>
+<span class="fc bfc" id="L418" title="All 2 branches covered.">			if (loadDoc != null) {</span>
+<span class="fc" id="L419">				loadSpecificationAction.getContent().add(interpolatedMarkdown(loadDoc.getDocumentation(), loadDoc.getLocation(), progressMonitor));</span>
+			}
+			
+<span class="pc bpc" id="L422" title="1 of 4 branches missed.">			Predicate&lt;EStructuralFeature&gt; predicate = sf -&gt; sf.isChangeable() &amp;&amp; &quot;true&quot;.equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_LOADABLE, &quot;true&quot;));</span>
+<span class="fc" id="L423">			List&lt;EStructuralFeature&gt; sortedFeatures = eObject.getEAllStructuralFeatures().stream().filter(predicate.and(elementPredicate)).sorted(namedElementComparator).collect(Collectors.toList());</span>
+			
+<span class="fc" id="L425">			Function&lt;EStructuralFeature, String&gt; keyExtractor = sf -&gt; NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, NcoreUtil.getFeatureKey(eObject, sf));</span>
+<span class="fc bfc" id="L426" title="All 4 branches covered.">			Predicate&lt;EStructuralFeature&gt; homogenousPredicate = sf -&gt; &quot;true&quot;.equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_HOMOGENOUS)) || NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.REFERENCE_TYPE) != null;</span>
+<span class="fc" id="L427">			Predicate&lt;EStructuralFeature&gt; strictContainmentPredicate = homogenousPredicate.and(sf -&gt; &quot;true&quot;.equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_STRICT_CONTAINMENT)));</span>
+<span class="fc" id="L428">			Function&lt;EStructuralFeature, Object[]&gt; exclusiveWithExtractor = sf -&gt; EObjectLoader.getExclusiveWith(eObject, sf, EObjectLoader.LOAD_KEY_PROVIDER);</span>
+			
+			@SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L431">			DynamicTableBuilder&lt;EStructuralFeature&gt; loadSpecificationTableBuilder = new DynamicTableBuilder&lt;&gt;();</span>
+<span class="fc" id="L432">			loadSpecificationTableBuilder</span>
+<span class="fc" id="L433">				.addStringColumnBuilder(&quot;key&quot;, true, true, &quot;Key&quot;, sf -&gt; {</span>
+<span class="fc" id="L434">					String key = keyExtractor.apply(sf);</span>
+<span class="fc" id="L435">					return TagName.a.create(key).attribute(&quot;href&quot;, &quot;#key-section-&quot; + key).attribute(&quot;style&quot;, &quot;font-weight:bold&quot;, EObjectLoader.isDefaultFeature(eObject, sf)).toString();</span>
+				})
+<span class="fc" id="L437">				.addStringColumnBuilder(&quot;type&quot;, true, true, &quot;Type&quot;, attr -&gt; {</span>
+<span class="fc" id="L438">					EGenericType genericType = attr.getEGenericType(); </span>
+<span class="pc bpc" id="L439" title="1 of 2 branches missed.">					if (genericType == null) {</span>
+<span class="nc" id="L440">						return null;</span>
+					}
+<span class="fc" id="L442">					StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L443">					genericType(genericType, eObject, sb::append, progressMonitor);</span>
+<span class="fc" id="L444">					return sb.toString();</span>
+				})
+<span class="fc" id="L446">				.addStringColumnBuilder(&quot;cardinality&quot;, true, false, &quot;Cardinality&quot;, EModelElementActionSupplier::cardinality)</span>
+<span class="fc" id="L447">				.addBooleanColumnBuilder(&quot;homogenous&quot;, true, false, &quot;Homogenous&quot;, homogenousPredicate)</span>
+<span class="fc" id="L448">				.addBooleanColumnBuilder(&quot;strict-containment&quot;, true, false, &quot;Strict Containment&quot;, strictContainmentPredicate)</span>
+<span class="fc" id="L449">				.addStringColumnBuilder(&quot;exclusive-with&quot;, true, false, &quot;Exclusive With&quot;, sf -&gt; {</span>
+<span class="fc" id="L450">					Object[] exclusiveWith = exclusiveWithExtractor.apply(sf);</span>
+<span class="fc bfc" id="L451" title="All 2 branches covered.">					if (exclusiveWith.length == 0) {</span>
+<span class="fc" id="L452">						return null;</span>
+					}
+<span class="fc" id="L454">					Tag ul = TagName.ul.create();</span>
+<span class="fc bfc" id="L455" title="All 2 branches covered.">					for (Object exw: exclusiveWith) {</span>
+<span class="fc" id="L456">						ul.content(TagName.li.create(exw));</span>
+					}
+<span class="fc" id="L458">					return ul.toString();				</span>
+				})
+<span class="fc" id="L460">				.addStringColumnBuilder(&quot;description&quot;, true, false, &quot;Description&quot;, this::getEStructuralFeatureFirstLoadDocSentence);</span>
+				// Other things not visible?
+			
+<span class="fc" id="L463">			org.nasdanika.html.model.html.Tag loadSpecificationTable = loadSpecificationTableBuilder.build(sortedFeatures, eObject.getEPackage().getNsURI().hashCode() + &quot;-&quot; + eObject.getName() + &quot;-load-specification&quot;, &quot;load-specification-table&quot;, progressMonitor);						</span>
+			
+<span class="fc bfc" id="L465" title="All 2 branches covered.">			for (EStructuralFeature sf: sortedFeatures) {</span>
+<span class="fc" id="L466">				Action featureAction = AppFactory.eINSTANCE.createAction();</span>
+<span class="fc" id="L467">				String key = keyExtractor.apply(sf);</span>
+<span class="fc" id="L468">				featureAction.setText(key);</span>
+<span class="fc" id="L469">				String sectionAnchor = &quot;key-section-&quot; + key;</span>
+				
+<span class="fc" id="L471">				featureAction.setName(sectionAnchor);			</span>
+<span class="fc" id="L472">				loadSpecificationAction.getSections().add(featureAction);</span>
+
+				// Properties table
+<span class="fc" id="L475">				Table table = context.get(BootstrapFactory.class).table();</span>
+<span class="fc" id="L476">				table.toHTMLElement().style().width(&quot;auto&quot;);</span>
+				
+<span class="fc" id="L478">				genericType(sf.getEGenericType(), eObject, ETypedElementActionSupplier.addRow(table, &quot;Type&quot;)::add, progressMonitor);</span>
+				
+<span class="fc" id="L480">				boolean isDefaultFeature = EObjectLoader.isDefaultFeature(eObject, sf);</span>
+<span class="fc bfc" id="L481" title="All 2 branches covered.">				if (isDefaultFeature) {</span>
+<span class="fc" id="L482">					ETypedElementActionSupplier.addRow(table, &quot;Default&quot;).add(&quot;true&quot;);				</span>
+				}
+				
+<span class="fc" id="L485">				boolean isHomogenous = homogenousPredicate.test(sf);</span>
+<span class="fc bfc" id="L486" title="All 2 branches covered.">				if (isHomogenous) {</span>
+<span class="fc" id="L487">					ETypedElementActionSupplier.addRow(table, &quot;Homogenous&quot;).add(&quot;true&quot;);									</span>
+				}
+				
+<span class="fc" id="L490">				boolean isStrictContainment = strictContainmentPredicate.test(sf);			</span>
+<span class="fc bfc" id="L491" title="All 2 branches covered.">				if (isStrictContainment) {</span>
+<span class="fc" id="L492">					ETypedElementActionSupplier.addRow(table, &quot;Strict containment&quot;).add(&quot;true&quot;);									</span>
+				}
+				
+<span class="fc" id="L495">				Object[] exclusiveWith = exclusiveWithExtractor.apply(sf);</span>
+<span class="fc bfc" id="L496" title="All 2 branches covered.">				if (exclusiveWith.length != 0) {</span>
+<span class="fc" id="L497">					Tag ul = TagName.ul.create();</span>
+<span class="fc bfc" id="L498" title="All 2 branches covered.">					for (Object exw: exclusiveWith) {</span>
+<span class="fc" id="L499">						ul.content(TagName.li.create(exw));</span>
+					}
+<span class="fc" id="L501">					ETypedElementActionSupplier.addRow(table, &quot;Exclusive with&quot;).add(ul);				</span>
+				}
+
+<span class="fc" id="L504">				addContent(featureAction, table.toString());</span>
+				
+<span class="fc" id="L506">				EModelElementDocumentation featureLoadDoc = getFeatureLoadDoc(sf);</span>
+<span class="fc bfc" id="L507" title="All 2 branches covered.">				if (featureLoadDoc != null) {</span>
+<span class="fc" id="L508">					featureAction.getContent().add(interpolatedMarkdown(context.interpolateToString(featureLoadDoc.getDocumentation()), featureLoadDoc.getLocation(), progressMonitor));</span>
+				}
+<span class="fc" id="L510">			}	</span>
+			
+<span class="fc" id="L512">			loadSpecificationAction.getContent().add(loadSpecificationTable);</span>
+		}
+<span class="fc" id="L514">	}</span>
+	
+	protected EModelElementDocumentation getFeatureLoadDoc(EStructuralFeature sf) {
+<span class="fc" id="L517">		EModelElementDocumentation featureLoadDoc = EmfUtil.getLoadDocumentation(sf);</span>
+<span class="fc bfc" id="L518" title="All 2 branches covered.">		return featureLoadDoc == null ? EmfUtil.getDocumentation(sf) : featureLoadDoc;</span>
+	}	
+	
+	protected String getEStructuralFeatureFirstLoadDocSentence(EStructuralFeature sf) {
+<span class="fc" id="L522">		EModelElementDocumentation documentation = getFeatureLoadDoc(sf);</span>
+<span class="fc bfc" id="L523" title="All 2 branches covered.">		if (documentation == null) {</span>
+<span class="fc" id="L524">			return null;</span>
+		}
+		
+<span class="fc" id="L527">		MarkdownHelper markdownHelper = new MarkdownHelper() {</span>
+			
+			@Override
+			protected URI getResourceBase() {
+<span class="nc" id="L531">				return documentation.getLocation();</span>
+			}
+			
+			@Override
+			protected DiagramGenerator getDiagramGenerator() {
+<span class="nc bnc" id="L536" title="All 2 branches missed.">				return context == null ? super.getDiagramGenerator() : context.get(DiagramGenerator.class, super.getDiagramGenerator()); </span>
+			}
+			
+		};
+		
+<span class="fc" id="L541">		String ret = markdownHelper.firstPlainTextSentence(documentation.getDocumentation());</span>
+<span class="fc" id="L542">		return String.join(&quot; &quot;, ret.split(&quot;\\R&quot;)); // Replacing new lines, shall they be in the first sentence, with spaces.		</span>
+	}
+	
+	
+	protected DiagramTextGenerator getDiagramTextGenerator(StringBuilder sb, boolean appendAttributes, boolean appendOperations) {
+<span class="fc" id="L547">		String dialect = diagramDialectSupplier.get();</span>
+<span class="pc bpc" id="L548" title="1 of 2 branches missed.">		if (Util.isBlank(dialect)) {</span>
+<span class="fc" id="L549">			return null;</span>
+		}
+<span class="nc bnc" id="L551" title="All 3 branches missed.">		switch (dialect) {</span>
+		case DiagramGenerator.UML_DIALECT:
+<span class="nc" id="L553">			return new PlantUmlTextGenerator(sb, elementPredicate, ec -&gt; path(ec, eObject), this::getEModelElementFirstDocSentence, labelProvider) {</span>
+				
+				@Override
+				protected Collection&lt;EClass&gt; getSubTypes(EClass eClass) {
+<span class="nc" id="L557">					return EClassActionSupplier.this.getSubTypes(eClass);</span>
+				}
+				
+				@Override
+				protected Collection&lt;EClass&gt; getReferrers(EClass eClass) {
+<span class="nc" id="L562">					return EClassActionSupplier.this.getReferrers(eClass);</span>
+				}
+				
+				@Override
+				protected Collection&lt;EClass&gt; getUses(EClassifier eClassifier) {
+<span class="nc" id="L567">					return EClassActionSupplier.this.getUses(eClassifier);</span>
+				}
+				
+				@Override
+				protected boolean isAppendAttributes(EClass eClass) {
+<span class="nc" id="L572">					return appendAttributes;</span>
+				}
+				
+				@Override
+				protected boolean isAppendOperations(EClass eClass) {
+<span class="nc" id="L577">					return appendOperations;</span>
+				}
+				
+			};
+		case DiagramGenerator.MERMAID_DIALECT:
+<span class="nc" id="L582">			return new MermaidTextGenerator(sb, elementPredicate, ec -&gt; path(ec, eObject), this::getEModelElementFirstDocSentence) {</span>
+				
+				@Override
+				protected Collection&lt;EClass&gt; getSubTypes(EClass eClass) {
+<span class="nc" id="L586">					return EClassActionSupplier.this.getSubTypes(eClass);</span>
+				}
+				
+				@Override
+				protected Collection&lt;EClass&gt; getReferrers(EClass eClass) {
+<span class="nc" id="L591">					return EClassActionSupplier.this.getReferrers(eClass);</span>
+				}
+				
+				@Override
+				protected Collection&lt;EClass&gt; getUses(EClassifier eClassifier) {
+<span class="nc" id="L596">					return EClassActionSupplier.this.getUses(eClassifier);</span>
+				}
+				
+				@Override
+				protected boolean isAppendAttributes(EClass eClass) {
+<span class="nc" id="L601">					return appendAttributes;</span>
+				}
+				
+				@Override
+				protected boolean isAppendOperations(EClass eClass) {
+<span class="nc" id="L606">					return appendOperations;</span>
+				}
+				
+			};
+		default:
+<span class="nc" id="L611">			throw new UnsupportedOperationException(&quot;Unsupported dialect: &quot; + dialect);</span>
+		}					
+	}
+	
+	protected String generateDiagram(
+			int depth, 
+			DiagramTextGenerator.RelationshipDirection relationshipDirection,
+			boolean appendAttributes,
+			boolean appendOperations,
+			ProgressMonitor monitor) {
+
+<span class="fc" id="L622">		DiagramGenerator diagramGenerator = context.get(DiagramGenerator.class);		</span>
+		
+<span class="fc" id="L624">		StringBuilder sb = new StringBuilder();</span>
+
+<span class="fc" id="L626">		DiagramTextGenerator gen = getDiagramTextGenerator(sb, appendAttributes, appendOperations);</span>
+<span class="pc bpc" id="L627" title="1 of 2 branches missed.">		if (gen == null) {</span>
+<span class="fc" id="L628">			return null;</span>
+		}
+<span class="nc" id="L630">		gen.appendWithRelationships(Collections.singleton(eObject), relationshipDirection, depth);</span>
+		
+<span class="nc" id="L632">		return diagramGenerator.generateUmlDiagram(sb.toString());</span>
+	}
+		
+	/**
+	 * Override to return a list of sub-types of given EClass. 
+	 * This implementation returns all sub-types found in the resource set. 
+	 * @param eClass
+	 * @return
+	 */
+	protected Collection&lt;EClass&gt; getSubTypes(EClass eClass) {
+		TreeIterator&lt;?&gt; acit;
+<span class="fc" id="L643">		Resource eResource = eClass.eResource();</span>
+<span class="pc bpc" id="L644" title="1 of 2 branches missed.">		if (eResource == null) {</span>
+<span class="nc" id="L645">			EPackage ePackage = eClass.getEPackage();</span>
+<span class="nc bnc" id="L646" title="All 2 branches missed.">			if (ePackage == null) {</span>
+<span class="nc" id="L647">				return Collections.emptySet();</span>
+			}
+<span class="nc" id="L649">			acit = ePackage.eAllContents();</span>
+<span class="nc" id="L650">		} else {</span>
+<span class="fc" id="L651">			ResourceSet resourceSet = eResource.getResourceSet();</span>
+<span class="pc bpc" id="L652" title="1 of 2 branches missed.">			acit = resourceSet == null ? eResource.getAllContents() : resourceSet.getAllContents();</span>
+		}
+<span class="fc" id="L654">		Set&lt;EClass&gt; ret = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L655">		acit.forEachRemaining(obj -&gt; {</span>
+<span class="fc bfc" id="L656" title="All 4 branches covered.">			if (obj instanceof EClass &amp;&amp; ((EClass) obj).getESuperTypes().contains(eClass)) {</span>
+<span class="fc" id="L657">				ret.add((EClass) obj);</span>
+			}
+<span class="fc" id="L659">		});</span>
+<span class="fc" id="L660">		return ret;</span>
+	}
+			
+	/**
+	 * @return Referrers to this class
+	 */	
+	protected Collection&lt;EClass&gt; getReferrers() {
+<span class="fc" id="L667">		return getReferrers(eObject);</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

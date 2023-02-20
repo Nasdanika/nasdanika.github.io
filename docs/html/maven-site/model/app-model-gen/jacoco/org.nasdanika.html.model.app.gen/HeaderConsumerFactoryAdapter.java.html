@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HeaderConsumerFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Application Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.app.gen</a> &gt; <span class="el_source">HeaderConsumerFactoryAdapter.java</span></div><h1>HeaderConsumerFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.app.gen;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.ConsumerFactory;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.Function;
+import org.nasdanika.common.ListCompoundSupplierFactory;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.exec.content.ContentFactory;
+import org.nasdanika.exec.content.Text;
+import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.Tag;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Navs;
+import org.nasdanika.html.model.app.Header;
+import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.bootstrap.Appearance;
+
+public class HeaderConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter&lt;Header&gt; {
+
+	protected HeaderConsumerFactoryAdapter(Header header, AdapterFactory adapterFactory) {
+<span class="fc" id="L31">		super(header, adapterFactory);</span>
+<span class="fc" id="L32">	}</span>
+	
+	@Override
+	protected List&lt;EObject&gt; getContent() {		
+		// A bit convoluted, refactor later to use a function and add class to the title tag - similar to NavBar
+<span class="fc" id="L37">		List&lt;EObject&gt; ret = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L38">		Label title = getTarget().getTitle();</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">		if (title != null) {</span>
+<span class="fc" id="L40">			Label cTitle = EcoreUtil.copy(title);</span>
+<span class="fc" id="L41">			cTitle.eAdapters().add(AppAdapterFactory.INSTANCE.adapt(cTitle, SupplierFactory.Provider.class));</span>
+			
+<span class="fc" id="L43">			Appearance titleAppearance = org.nasdanika.html.model.bootstrap.BootstrapFactory.eINSTANCE.createAppearance();</span>
+<span class="fc" id="L44">			titleAppearance.eAdapters().add(AppAdapterFactory.INSTANCE.adapt(titleAppearance, ConsumerFactory.class));</span>
+<span class="fc" id="L45">			cTitle.setAppearance(titleAppearance);</span>
+			
+<span class="fc" id="L47">			Text cText = ContentFactory.eINSTANCE.createText();</span>
+<span class="fc" id="L48">			cText.eAdapters().add(AppAdapterFactory.INSTANCE.adapt(cText, SupplierFactory.class));</span>
+<span class="fc" id="L49">			cText.setContent(&quot;nsd-app-header-title&quot;);</span>
+<span class="fc" id="L50">			titleAppearance.getAttributes().put(&quot;class&quot;, cText);</span>
+<span class="fc" id="L51">			ret.add(cTitle);</span>
+		}
+<span class="fc" id="L53">		ret.addAll(super.getContent());		</span>
+<span class="fc" id="L54">		return ret;</span>
+	}
+	
+	private Function&lt;BiSupplier&lt;HTMLElement&lt;?&gt;, List&lt;Object&gt;&gt;, HTMLElement&lt;?&gt;&gt; createNavsFunction(Context context) {
+<span class="fc" id="L58">		return new Function&lt;BiSupplier&lt;HTMLElement&lt;?&gt;,List&lt;Object&gt;&gt;, HTMLElement&lt;?&gt;&gt;() {</span>
+			
+			@Override
+			public double size() {
+<span class="fc" id="L62">				return 1;</span>
+			}
+			
+			@Override
+			public String name() {
+<span class="fc" id="L67">				return &quot;Navs&quot;;</span>
+			}
+			
+			@Override
+			public HTMLElement&lt;?&gt; execute(BiSupplier&lt;HTMLElement&lt;?&gt;, List&lt;Object&gt;&gt; input, ProgressMonitor progressMonitor) {
+<span class="fc" id="L72">				Tag ret = (Tag) input.getFirst();</span>
+<span class="fc" id="L73">				Tag navs = Util.navs(input.getSecond(), context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE));</span>
+<span class="fc" id="L74">				navs.addClass(&quot;nsd-app-header-navs&quot;);</span>
+<span class="fc" id="L75">				ret.content(navs);				</span>
+<span class="fc" id="L76">				return ret;</span>
+			}
+		};
+	}
+	
+	/**
+	 * Adapts items to suppliers, builds {@link Navs} from items and adds them to the header.
+	 */
+	@Override
+	protected Function&lt;HTMLElement&lt;?&gt;, HTMLElement&lt;?&gt;&gt; createConfigureFunction(Context context) {
+<span class="fc" id="L86">		EList&lt;EObject&gt; items = getTarget().getItems();</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">		if (items.isEmpty()) {</span>
+<span class="fc" id="L88">			return super.createConfigureFunction(context);</span>
+		}
+<span class="fc" id="L90">		Function&lt;HTMLElement&lt;?&gt;, BiSupplier&lt;HTMLElement&lt;?&gt;, List&lt;Object&gt;&gt;&gt; itemsFunction = new ListCompoundSupplierFactory&lt;&gt;(&quot;Items&quot;, EObjectAdaptable.adaptToSupplierFactoryNonNull(items, Object.class)).&lt;HTMLElement&lt;?&gt;&gt;asFunctionFactory().create(context);</span>
+<span class="fc" id="L91">		return super.createConfigureFunction(context).then(itemsFunction).then(createNavsFunction(context));</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LayerImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Java API for working with Drawio diagrams</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.drawio.impl</a> &gt; <span class="el_source">LayerImpl.java</span></div><h1>LayerImpl.java</h1><pre class="source lang-java linenums">package org.nasdanika.drawio.impl;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.nasdanika.drawio.Connection;
+import org.nasdanika.drawio.Layer;
+import org.nasdanika.drawio.LayerElement;
+import org.nasdanika.drawio.Node;
+import org.w3c.dom.Element;
+
+class LayerImpl extends ModelElementImpl implements Layer {
+	
+	LayerImpl(Element element, ModelImpl model) {
+<span class="fc" id="L15">		super(element, model);</span>
+<span class="fc" id="L16">	}</span>
+
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public List&lt;LayerElement&gt; getElements() {
+<span class="fc" id="L21">		return (List&lt;LayerElement&gt;) getChildren();</span>
+	}
+
+	@Override
+	public Node createNode() {
+<span class="fc" id="L26">		Element nodeElement = element.getOwnerDocument().createElement(&quot;mxCell&quot;);</span>
+<span class="fc" id="L27">		nodeElement.setAttribute(ATTRIBUTE_ID, UUID.randomUUID().toString());</span>
+<span class="fc" id="L28">		nodeElement.setAttribute(ATTRIBUTE_PARENT, element.getAttribute(ATTRIBUTE_ID));</span>
+<span class="fc" id="L29">		nodeElement.setAttribute(ModelImpl.ATTRIBUTE_VERTEX, &quot;1&quot;);</span>
+<span class="fc" id="L30">		element.getParentNode().appendChild(nodeElement);</span>
+<span class="fc" id="L31">		List&lt;LayerElement&gt; elements = getElements();</span>
+<span class="fc" id="L32">		return (Node) elements.get(elements.size() - 1);</span>
+	}
+
+	@Override
+	public Connection createConnection(Node source, Node target) {
+<span class="fc" id="L37">		Element connectionElement = element.getOwnerDocument().createElement(&quot;mxCell&quot;);</span>
+<span class="fc" id="L38">		connectionElement.setAttribute(ATTRIBUTE_ID, UUID.randomUUID().toString());</span>
+<span class="fc" id="L39">		connectionElement.setAttribute(ATTRIBUTE_PARENT, element.getAttribute(ATTRIBUTE_ID));</span>
+<span class="fc" id="L40">		connectionElement.setAttribute(ModelImpl.ATTRIBUTE_EDGE, &quot;1&quot;);</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">		if (source != null) {</span>
+<span class="fc" id="L42">			connectionElement.setAttribute(ATTRIBUTE_SOURCE, source.getElement().getAttribute(ATTRIBUTE_ID));</span>
+		}
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">		if (target != null) {</span>
+<span class="fc" id="L45">			connectionElement.setAttribute(ATTRIBUTE_TARGET, target.getElement().getAttribute(ATTRIBUTE_ID));</span>
+		}
+		
+<span class="fc" id="L48">		Element geometryElement = element.getOwnerDocument().createElement(&quot;mxGeometry&quot;);</span>
+<span class="fc" id="L49">		connectionElement.appendChild(geometryElement);</span>
+<span class="fc" id="L50">		geometryElement.setAttribute(&quot;relative&quot;, &quot;1&quot;);</span>
+<span class="fc" id="L51">		geometryElement.setAttribute(&quot;as&quot;, &quot;geometry&quot;);</span>
+		
+<span class="fc" id="L53">		element.getParentNode().appendChild(connectionElement);</span>
+<span class="fc" id="L54">		List&lt;LayerElement&gt; elements = getElements();</span>
+<span class="fc" id="L55">		return (Connection) elements.get(elements.size() - 1);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

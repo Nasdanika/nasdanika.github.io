@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ElementIdentityMapCompoundFunction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">ElementIdentityMapCompoundFunction.java</span></div><h1>ElementIdentityMapCompoundFunction.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+import java.util.Collection;
+import java.util.IdentityHashMap;
+import java.util.Map;
+
+public class ElementIdentityMapCompoundFunction&lt;T,R&gt; extends ElementIdentityMapCompoundExecutionParticipant&lt;Function&lt;T,R&gt;,R&gt; implements Function&lt;T,java.util.function.Function&lt;Function&lt;T,R&gt;,R&gt;&gt;  {
+
+	public ElementIdentityMapCompoundFunction(String name) {
+<span class="nc" id="L10">		super(name);</span>
+<span class="nc" id="L11">	}</span>
+
+	public ElementIdentityMapCompoundFunction(String name, Collection&lt;Function&lt;T,R&gt;&gt; functions) {
+<span class="nc" id="L14">		super(name);</span>
+<span class="nc" id="L15">		functions.forEach(this::put);</span>
+<span class="nc" id="L16">	}</span>
+
+	@Override
+	public java.util.function.Function&lt;Function&lt;T, R&gt;, R&gt; execute(T arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L20">		progressMonitor.setWorkRemaining(size());</span>
+<span class="nc" id="L21">		Map&lt;Function&lt;T,R&gt;,R&gt; result = new IdentityHashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L22" title="All 2 branches missed.">		for (Function&lt;T,R&gt; e: elements) {</span>
+<span class="nc" id="L23">			result.put(e, e.splitAndExecute(arg, progressMonitor));			</span>
+<span class="nc" id="L24">		}</span>
+<span class="nc" id="L25">		return result::get; </span>
+	}	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

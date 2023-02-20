@@ -1,0 +1,47 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Nasdanika Execution Model,org.nasdanika.exec.impl,MapImpl,82,0,14,0,24,0,15,0,8,0
+Nasdanika Execution Model,org.nasdanika.exec.impl,CallImpl,347,0,68,0,82,0,66,0,19,0
+Nasdanika Execution Model,org.nasdanika.exec.impl,ExecPackageImpl,15,1466,4,8,1,203,5,37,1,35
+Nasdanika Execution Model,org.nasdanika.exec.impl,EvalImpl,55,75,10,11,16,20,11,13,3,8
+Nasdanika Execution Model,org.nasdanika.exec.impl,ListImpl,80,0,12,0,24,0,14,0,8,0
+Nasdanika Execution Model,org.nasdanika.exec.impl,ExecFactoryImpl,46,64,5,6,15,22,10,12,5,8
+Nasdanika Execution Model,org.nasdanika.exec.impl,PropertyImpl,99,94,20,8,25,29,19,18,5,16
+Nasdanika Execution Model,org.nasdanika.exec.impl,ExecPackageImpl.new EValidator.Descriptor() {...},0,5,0,0,0,2,0,2,0,2
+Nasdanika Execution Model,org.nasdanika.exec.impl,ConfiguratorImpl,50,80,9,12,14,22,10,14,3,8
+Nasdanika Execution Model,org.nasdanika.exec.impl,BlockImpl,55,105,12,14,16,26,12,16,2,8
+Nasdanika Execution Model,org.nasdanika.exec.impl,FailImpl,25,54,7,7,7,16,6,10,1,8
+Nasdanika Execution Model,org.nasdanika.exec.content.util,ContentAdapterFactory.new ContentSwitch() {...},50,0,0,0,12,0,12,0,12,0
+Nasdanika Execution Model,org.nasdanika.exec.content.util,ContentSwitch,294,0,77,0,69,0,55,0,14,0
+Nasdanika Execution Model,org.nasdanika.exec.content.util,ContentAdapterFactory,62,0,8,0,22,0,18,0,14,0
+Nasdanika Execution Model,org.nasdanika.exec.util,ExecSwitch,334,0,85,0,80,0,62,0,16,0
+Nasdanika Execution Model,org.nasdanika.exec.util,ExecAdapterFactory,66,0,8,0,24,0,20,0,16,0
+Nasdanika Execution Model,org.nasdanika.exec.util,ExecAdapterFactory.new ExecSwitch() {...},58,0,0,0,14,0,14,0,14,0
+Nasdanika Execution Model,org.nasdanika.exec.util,ExecObjectLoaderSupplier,0,22,0,0,0,5,0,3,0,3
+Nasdanika Execution Model,org.nasdanika.exec.util,ExecObjectLoaderExecutionParticipant,0,21,0,0,0,7,0,2,0,2
+Nasdanika Execution Model,org.nasdanika.exec.util,ExecValidator,230,78,62,5,30,15,39,13,6,9
+Nasdanika Execution Model,org.nasdanika.exec.content,ContentPackage,0,3,0,0,0,1,0,1,0,1
+Nasdanika Execution Model,org.nasdanika.exec.content,ContentFactory,0,3,0,0,0,1,0,1,0,1
+Nasdanika Execution Model,org.nasdanika.exec.content,ContentPackage.Literals,0,43,0,0,0,14,0,1,0,1
+Nasdanika Execution Model,org.nasdanika.exec.resources,ResourcesFactory,0,3,0,0,0,1,0,1,0,1
+Nasdanika Execution Model,org.nasdanika.exec.resources,ResourcesPackage.Literals,0,34,0,0,0,11,0,1,0,1
+Nasdanika Execution Model,org.nasdanika.exec.resources,ResourcesPackage,0,3,0,0,0,1,0,1,0,1
+Nasdanika Execution Model,org.nasdanika.exec.resources,ReconcileAction,37,141,11,3,13,21,10,8,2,7
+Nasdanika Execution Model,org.nasdanika.exec.content.impl,ContentPackageImpl,15,825,4,8,1,129,5,23,1,21
+Nasdanika Execution Model,org.nasdanika.exec.content.impl,InterpolatorImpl,114,0,20,0,31,0,22,0,10,0
+Nasdanika Execution Model,org.nasdanika.exec.content.impl,TextImpl,24,93,7,13,7,25,6,17,1,10
+Nasdanika Execution Model,org.nasdanika.exec.content.impl,Base64Impl,5,0,0,0,3,0,2,0,2,0
+Nasdanika Execution Model,org.nasdanika.exec.content.impl,ContentFactoryImpl,55,36,6,3,18,13,12,6,6,5
+Nasdanika Execution Model,org.nasdanika.exec.content.impl,ResourceImpl,43,73,10,10,12,20,10,13,2,9
+Nasdanika Execution Model,org.nasdanika.exec.content.impl,FilterImpl,88,0,12,0,27,0,16,0,10,0
+Nasdanika Execution Model,org.nasdanika.exec.content.impl,MarkdownImpl,69,0,10,0,22,0,13,0,8,0
+Nasdanika Execution Model,org.nasdanika.exec.resources.util,ResourcesSwitch,165,0,42,0,41,0,33,0,11,0
+Nasdanika Execution Model,org.nasdanika.exec.resources.util,ResourcesAdapterFactory,56,0,8,0,19,0,15,0,11,0
+Nasdanika Execution Model,org.nasdanika.exec.resources.util,ResourcesAdapterFactory.new ResourcesSwitch() {...},38,0,0,0,9,0,9,0,9,0
+Nasdanika Execution Model,org.nasdanika.exec.resources.impl,ResourceImpl,99,112,19,16,29,27,22,18,6,10
+Nasdanika Execution Model,org.nasdanika.exec.resources.impl,FileImpl,0,5,0,0,0,3,0,2,0,2
+Nasdanika Execution Model,org.nasdanika.exec.resources.impl,ResourcesPackageImpl,14,714,4,8,1,115,5,20,1,18
+Nasdanika Execution Model,org.nasdanika.exec.resources.impl,ContainerImpl,293,5,52,0,69,3,31,2,4,2
+Nasdanika Execution Model,org.nasdanika.exec.resources.impl,ResourcesFactoryImpl,65,51,9,5,14,18,12,8,5,7
+Nasdanika Execution Model,org.nasdanika.exec,ExecPackage.Literals,0,82,0,0,0,27,0,1,0,1
+Nasdanika Execution Model,org.nasdanika.exec,ExecFactory,0,3,0,0,0,1,0,1,0,1
+Nasdanika Execution Model,org.nasdanika.exec,ExecPackage,0,3,0,0,0,1,0,1,0,1

@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReferenceFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika EMF</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.emf.persistence</a> &gt; <span class="el_source">ReferenceFactory.java</span></div><h1>ReferenceFactory.java</h1><pre class="source lang-java linenums">package org.nasdanika.emf.persistence;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EPackage.Registry;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Supplier;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.Util;
+import org.nasdanika.ncore.util.NcoreUtil;
+import org.nasdanika.persistence.ConfigurationException;
+import org.nasdanika.persistence.Marker;
+import org.nasdanika.persistence.ObjectFactory;
+import org.nasdanika.persistence.ObjectLoader;
+import org.yaml.snakeyaml.Yaml;
+
+import io.github.azagniotov.matcher.AntPathMatcher;
+import io.github.azagniotov.matcher.AntPathMatcher.Builder;
+
+/**
+ * Creates reference value/element - {@link EObject} or proxy.
+ * May create zero or more elements for filesets and resourcesets.
+ * @author Pavel
+ *
+ */
+public class ReferenceFactory implements ObjectFactory&lt;List&lt;?&gt;&gt; {
+	
+	private static final String FILESET_EXCLUDE_KEY = &quot;exclude&quot;;
+	private static final String FILESET_INCLUDE_KEY = &quot;include&quot;;
+	private static final String FILESET_BASE_KEY = &quot;base&quot;;
+	public static final String FILESET_SCHEME = &quot;fileset:&quot;;
+	public static final String FACTORY_SCHEME = &quot;factory:&quot;;
+	
+	private EObjectLoader resolver;
+	private BiFunction&lt;EClass,ENamedElement, String&gt; keyProvider;
+	private boolean isStrictContainment;
+	private boolean referenceSupplierFactory;
+	private boolean resolveProxies;
+	private boolean isHomogenous;
+	private EReference eReference;
+	private EClass eClass;
+	private Object eReferenceKey;
+	
+	public EReference getEReference() {
+<span class="nc" id="L65">		return eReference;</span>
+	}
+	
+	public boolean isHomogenous() {
+<span class="nc" id="L69">		return isHomogenous;</span>
+	}
+
+	/**
+	 * 
+	 * @param eClass
+	 * @param eReference
+	 * @param eReferenceKey Reference key for loading type from annotations. If null, defautls to eReference name. Used by EMap's.
+	 * @param resolver
+	 * @param referenceSupplierFactory
+	 * @param keyProvider
+	 */
+	public ReferenceFactory(
+			EClass eClass,
+			EReference eReference,
+			String eReferenceKey,  
+			EObjectLoader resolver,
+			boolean referenceSupplierFactory,
+<span class="nc" id="L87">			BiFunction&lt;EClass,ENamedElement,String&gt; keyProvider) {</span>
+		
+<span class="nc" id="L89">		this.eClass = eClass;</span>
+<span class="nc" id="L90">		this.eReference = eReference;</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">		this.eReferenceKey = Util.isBlank(eReferenceKey) ? eReference.getName() : eReferenceKey;</span>
+<span class="nc" id="L92">		this.resolver = resolver;</span>
+<span class="nc" id="L93">		this.referenceSupplierFactory = referenceSupplierFactory;</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">		this.resolveProxies = !eReference.isResolveProxies();</span>
+<span class="nc" id="L95">		this.keyProvider = keyProvider;</span>
+		
+<span class="nc bnc" id="L97" title="All 4 branches missed.">		this.isHomogenous = &quot;true&quot;.equals(NcoreUtil.getNasdanikaAnnotationDetail(eReference, EObjectLoader.IS_HOMOGENOUS)) || NcoreUtil.getNasdanikaAnnotationDetail(eReference, EObjectLoader.REFERENCE_TYPE) != null;			</span>
+<span class="nc bnc" id="L98" title="All 4 branches missed.">		this.isStrictContainment = isHomogenous &amp;&amp; &quot;true&quot;.equals(NcoreUtil.getNasdanikaAnnotationDetail(eReference, EObjectLoader.IS_STRICT_CONTAINMENT));			</span>
+<span class="nc" id="L99">	}</span>
+	
+	@Override
+	public List&lt;?&gt; create(ObjectLoader loader, Object element, URI base, ProgressMonitor progressMonitor, List&lt;? extends Marker&gt; markers) {
+		try {
+			// Strings are references if not strict containment.
+<span class="nc bnc" id="L105" title="All 4 branches missed.">			if (element instanceof String &amp;&amp; !isStrictContainment) {</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">				if (referenceSupplierFactory) {</span>
+<span class="nc" id="L107">					return Collections.singletonList(new SupplierFactory&lt;List&lt;EObject&gt;&gt;() {  </span>
+	
+						@Override
+						public Supplier&lt;List&lt;EObject&gt;&gt; create(Context context) {
+<span class="nc" id="L111">							String ref = context.interpolateToString((String) element);</span>
+<span class="nc" id="L112">							return new Supplier&lt;List&lt;EObject&gt;&gt;() {</span>
+	
+								@Override
+								public double size() {
+<span class="nc" id="L116">									return 1;</span>
+								}
+	
+								@Override
+								public String name() {
+<span class="nc" id="L121">									return &quot;Loading &quot; + ref;</span>
+								}
+	
+								@Override
+								public List&lt;EObject&gt; execute(ProgressMonitor progressMonitor) {
+<span class="nc" id="L126">									return loadReference(ref, base, markers, progressMonitor);</span>
+								}
+								
+							};
+						}
+						
+					});
+				}
+<span class="nc" id="L134">				return loadReference((String) element, base, markers, progressMonitor);</span>
+			}
+<span class="nc bnc" id="L136" title="All 2 branches missed.">			Object ret = isHomogenous ? resolver.create(loader, effectiveReferenceType(element), element, base, progressMonitor, markers, keyProvider, null) : loader.load(element, base, progressMonitor);</span>
+<span class="nc bnc" id="L137" title="All 6 branches missed.">			if (resolveProxies &amp;&amp; ret instanceof EObject &amp;&amp; ((EObject) ret).eIsProxy()) {</span>
+<span class="nc" id="L138">				return Collections.singletonList(resolver.resolve((EObject) ret));</span>
+			}
+<span class="nc" id="L140">			return Collections.singletonList(ret);</span>
+<span class="nc" id="L141">		} catch (ConfigurationException e) {</span>
+<span class="nc" id="L142">			throw e;</span>
+<span class="nc" id="L143">		} catch (Exception e) {</span>
+<span class="nc bnc" id="L144" title="All 4 branches missed.">			if (markers == null || markers.isEmpty()) {</span>
+<span class="nc" id="L145">				throw e;</span>
+			}
+<span class="nc" id="L147">			throw new ConfigurationException(&quot;Error loading reference: &quot; + e, e, markers);</span>
+		}
+	}
+		
+	/**
+	 * Loads reference. Creates a proxy if reference type is not abstract and resolve proxies is true.
+	 * @param ref
+	 * @param base
+	 * @param marker
+	 * @return
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	protected List&lt;EObject&gt; loadReference(
+			String ref, 
+			URI base,
+			List&lt;? extends Marker&gt; markers, 
+			ProgressMonitor progressMonitor) {
+		
+<span class="nc bnc" id="L165" title="All 2 branches missed.">		if (ref.startsWith(FILESET_SCHEME)) {</span>
+			// Includes, excludes, factory, prototype
+<span class="nc" id="L167">			String spec = ref.substring(FILESET_SCHEME.length());</span>
+<span class="nc" id="L168">			Yaml yaml = new Yaml();</span>
+<span class="nc" id="L169">			Object filesetSpec = yaml.load(spec);			</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">			if (filesetSpec instanceof String) {				</span>
+<span class="nc" id="L171">				return loadMatches(base, Collections.singleton((String) filesetSpec), null, base, markers, progressMonitor);</span>
+			} 
+			
+<span class="nc bnc" id="L174" title="All 2 branches missed.">			if (filesetSpec instanceof List) {</span>
+<span class="nc" id="L175">				return loadMatches(base, (List&lt;String&gt;) filesetSpec, null, base, markers, progressMonitor);				</span>
+			}
+			
+<span class="nc bnc" id="L178" title="All 2 branches missed.">			if (filesetSpec instanceof Map) {</span>
+<span class="nc" id="L179">				Map&lt;String,Object&gt; specMap = (Map&lt;String,Object&gt;) filesetSpec;</span>
+<span class="nc" id="L180">				org.nasdanika.persistence.Util.checkUnsupportedKeys(specMap, FILESET_BASE_KEY, FILESET_INCLUDE_KEY, FILESET_EXCLUDE_KEY);</span>
+<span class="nc" id="L181">				Object fsBase = specMap.get(FILESET_BASE_KEY);</span>
+<span class="nc bnc" id="L182" title="All 4 branches missed.">				if (fsBase == null || fsBase instanceof String) {</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">					URI fsBaseURI = fsBase == null ? base : URI.createFileURI((String) fsBase).resolve(base);</span>
+<span class="nc" id="L184">					java.util.function.Function&lt;Object, Collection&lt;String&gt;&gt; asCollection = obj -&gt; {</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">						if (obj == null) {</span>
+<span class="nc" id="L186">							return null;</span>
+						}
+<span class="nc bnc" id="L188" title="All 2 branches missed.">						if (obj instanceof String) {</span>
+<span class="nc" id="L189">							return Collections.singletonList((String) obj);</span>
+						}
+<span class="nc bnc" id="L191" title="All 2 branches missed.">						if (obj instanceof Collection) {</span>
+<span class="nc" id="L192">							return (Collection&lt;String&gt;) obj;</span>
+						}
+<span class="nc" id="L194">						throw new ConfigurationException(&quot;Expected a string or an array of strings, got &quot; + obj.getClass() + &quot;: &quot; + obj, markers);</span>
+					};
+<span class="nc" id="L196">					return loadMatches(fsBaseURI, asCollection.apply(specMap.get(FILESET_INCLUDE_KEY)), asCollection.apply(specMap.get(FILESET_EXCLUDE_KEY)), base, markers, progressMonitor);				</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">				} else if (fsBase != null) {</span>
+<span class="nc" id="L198">					throw new ConfigurationException(&quot;FileSet base shall be a string: &quot; + fsBase.getClass() + &quot;: &quot; + fsBase, markers);			</span>
+				}
+			}
+			
+<span class="nc" id="L202">			throw new ConfigurationException(&quot;Unsupported FileSet specification type: &quot; + filesetSpec.getClass() + &quot;: &quot; + filesetSpec, markers);			</span>
+		}
+		
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		if (ref.startsWith(FACTORY_SCHEME)) {</span>
+			// Factory
+		
+<span class="nc" id="L208">			throw new UnsupportedOperationException(&quot;Factories are not supported yet&quot;);</span>
+		}		
+		
+		// Single value
+<span class="nc" id="L212">		URI refURI = URI.createURI(ref);</span>
+<span class="nc bnc" id="L213" title="All 4 branches missed.">		if (base != null &amp;&amp; !ref.startsWith(EObjectLoader.LATE_PROXY_RESOLUTION_URI_PREFIX)) {</span>
+<span class="nc" id="L214">			refURI = refURI.resolve(base);</span>
+		}
+<span class="nc" id="L216">		ConfigurationException.pushThreadMarker(markers);</span>
+		try {
+<span class="nc" id="L218">			EClass eReferenceType = effectiveReferenceType(ref);</span>
+<span class="nc bnc" id="L219" title="All 4 branches missed.">			if (!eReferenceType.isAbstract() &amp;&amp; !resolveProxies) {</span>
+				// Can create proxy, if possible, instead of loading object
+<span class="nc" id="L221">				EObject proxy = resolver.createProxy(eReferenceType, Collections.singletonMap(EObjectLoader.HREF_KEY, refURI), base, markers, progressMonitor);</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">				if (proxy != null) {</span>
+<span class="nc bnc" id="L223" title="All 4 branches missed.">					if (markers != null &amp;&amp; !markers.isEmpty()) {</span>
+<span class="nc" id="L224">						proxy.eAdapters().add(new MarkedAdapter(markers));</span>
+					}
+<span class="nc" id="L226">					return Collections.singletonList(proxy);</span>
+				}
+			}
+<span class="nc" id="L229">			return Collections.singletonList(resolver.getResourceSet().getEObject(refURI, true));</span>
+		} finally {
+<span class="nc" id="L231">			ConfigurationException.popThreadMarker();</span>
+		}	
+	}
+
+	private List&lt;EObject&gt; loadMatches(
+			URI fileSetBase,
+			Collection&lt;String&gt; includes, 
+			Collection&lt;String&gt; excludes, 
+			URI base,
+			List&lt;? extends Marker&gt; markers,
+			ProgressMonitor progressMonitor) {
+<span class="nc bnc" id="L242" title="All 2 branches missed.">		if (!fileSetBase.isFile()) {</span>
+<span class="nc" id="L243">			throw new ConfigurationException(&quot;Base URI for a fileset is not a file URI: &quot; + fileSetBase, markers);</span>
+		}
+<span class="nc" id="L245">		String baseFileStr = fileSetBase.toFileString();				</span>
+<span class="nc" id="L246">		File baseDir = new File(baseFileStr);</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">		if (baseDir.isFile()) {</span>
+<span class="nc" id="L248">			baseDir = baseDir.getParentFile();</span>
+		}
+<span class="nc" id="L250">		return match(baseDir, includes, excludes).stream().map(f -&gt; loadReference(f.toURI().toString(), base, markers, progressMonitor)).flatMap(objs -&gt; objs.stream()).collect(Collectors.toList());		</span>
+	}
+	
+	private static Collection&lt;File&gt; match(File baseDir, Collection&lt;String&gt; includes, Collection&lt;String&gt; excludes) {
+<span class="nc" id="L254">		Builder builder = new AntPathMatcher.Builder();</span>
+<span class="nc" id="L255">		AntPathMatcher matcher = builder.build();</span>
+<span class="nc" id="L256">		Map&lt;String,File&gt; collector = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L257" title="All 4 branches missed.">		if (includes == null || includes.isEmpty()) {</span>
+<span class="nc" id="L258">			include(baseDir, (file,path) -&gt; true, collector);</span>
+		} else {
+<span class="nc bnc" id="L260" title="All 2 branches missed.">			for (String include: includes) {</span>
+<span class="nc" id="L261">				include(baseDir, (file,path) -&gt; matcher.isMatch(peel(include), path), collector);</span>
+<span class="nc" id="L262">			}</span>
+		}
+<span class="nc bnc" id="L264" title="All 2 branches missed.">		if (excludes != null) {</span>
+<span class="nc" id="L265">			collector.keySet().removeIf(path -&gt; excludes.stream().filter(exclude -&gt; matcher.isMatch(peel(exclude), path)).findAny().isPresent());</span>
+		}				
+<span class="nc" id="L267">		return collector.values();</span>
+	}
+	
+	/**
+	 * Removes leading ./ if it is present
+	 * @param baseDir
+	 * @param pattern
+	 * @return
+	 */
+	private static String peel(String pattern) {
+<span class="nc bnc" id="L277" title="All 4 branches missed.">		return pattern != null &amp;&amp; pattern.startsWith(&quot;./&quot;) ? peel(pattern.substring(2)) : pattern;</span>
+	}
+	
+	private static void include(File baseDir, BiPredicate&lt;File,String&gt; predicate, Map&lt;String, File&gt; collector) {
+<span class="nc" id="L281">		BiConsumer&lt;File, String&gt; listener = new BiConsumer&lt;File, String&gt;() {</span>
+			
+			@Override
+			public void accept(File file, String path) {
+<span class="nc bnc" id="L285" title="All 2 branches missed.">				if (predicate.test(file, path)) {</span>
+<span class="nc" id="L286">					collector.put(path, file);</span>
+				}						
+<span class="nc" id="L288">			}</span>
+		};
+<span class="nc" id="L290">		org.nasdanika.common.Util.walk(null, listener, baseDir.listFiles());		</span>
+<span class="nc" id="L291">	}	</span>
+	
+	protected String referenceTypeName(Object element) {
+<span class="nc bnc" id="L294" title="All 2 branches missed.">		if (element instanceof String) {</span>
+<span class="nc" id="L295">			return &quot;string&quot;;</span>
+		}
+<span class="nc bnc" id="L297" title="All 2 branches missed.">		if (element instanceof Integer) {</span>
+<span class="nc" id="L298">			return &quot;integer&quot;;</span>
+		}
+<span class="nc bnc" id="L300" title="All 2 branches missed.">		if (element instanceof Map) {</span>
+<span class="nc" id="L301">			return &quot;map&quot;;</span>
+		}
+<span class="nc bnc" id="L303" title="All 2 branches missed.">		if (element instanceof Collection) {</span>
+<span class="nc" id="L304">			return &quot;list&quot;;</span>
+		}
+<span class="nc bnc" id="L306" title="All 2 branches missed.">		if (element instanceof Boolean) {</span>
+<span class="nc" id="L307">			return &quot;boolean&quot;;</span>
+		}
+<span class="nc bnc" id="L309" title="All 2 branches missed.">		if (element instanceof Date) {</span>
+<span class="nc" id="L310">			return &quot;date&quot;;</span>
+		}
+		// More types?
+<span class="nc" id="L313">		return null;</span>
+	}
+		
+	/**
+	 * @return Effective reference type which defaults to the reference type, but can be overridden by the &lt;code&gt;reference-types&lt;/code&gt; annotation. 
+	 */
+	public EClass effectiveReferenceType(Object element) {
+<span class="nc" id="L320">		EGenericType eGenericReferenceType = eClass.getFeatureType(eReference);</span>
+<span class="nc" id="L321">		EClass eReferenceType = (EClass) eGenericReferenceType.getEClassifier();</span>
+		
+<span class="nc" id="L323">		String rTypes = NcoreUtil.getNasdanikaAnnotationDetail(eReference, EObjectLoader.REFERENCE_TYPE);</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">		if (!Util.isBlank(rTypes)) {</span>
+<span class="nc" id="L325">			Yaml yaml = new Yaml();</span>
+<span class="nc" id="L326">			Map&lt;String,Object&gt; rTypesMap = yaml.load(rTypes);</span>
+<span class="nc" id="L327">			String valueFeature = EObjectLoader.getValueFeature(eReference);</span>
+			Object refType;
+<span class="nc bnc" id="L329" title="All 4 branches missed.">			if (!Util.isBlank(valueFeature) &amp;&amp; element instanceof Map) {</span>
+<span class="nc" id="L330">				refType = rTypesMap.get(referenceTypeName(((Map&lt;?,?&gt;) element).get(valueFeature)));</span>
+			} else {
+<span class="nc" id="L332">				refType = rTypesMap.get(referenceTypeName(element));				</span>
+			}
+<span class="nc bnc" id="L334" title="All 2 branches missed.">			if (refType != null) {</span>
+<span class="nc" id="L335">				return resolveEClass(refType, eReference.getEContainingClass().getEPackage());</span>
+			}				
+		}
+		
+<span class="nc bnc" id="L339" title="All 2 branches missed.">		for (EClass ec: NcoreUtil.lineage(eClass)) {</span>
+<span class="nc" id="L340">			String refTypes = NcoreUtil.getNasdanikaAnnotationDetail(ec, EObjectLoader.REFERENCE_TYPES);</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">			if (!Util.isBlank(refTypes)) {</span>
+<span class="nc" id="L342">				Yaml yaml = new Yaml();</span>
+<span class="nc" id="L343">				Map&lt;String,Object&gt; refTypesMap = yaml.load(refTypes);</span>
+<span class="nc" id="L344">				Object refType = refTypesMap.get(eReferenceKey);</span>
+<span class="nc bnc" id="L345" title="All 2 branches missed.">				if (refType != null) {</span>
+<span class="nc" id="L346">					return resolveEClass(refType, ec.getEPackage());</span>
+				}				
+			}
+<span class="nc" id="L349">		}</span>
+<span class="nc" id="L350">		return eReferenceType;</span>
+	}	
+	
+	public EStructuralFeature effectiveDefaultFeature(Object element) { 
+<span class="nc" id="L354">		EClass effectiveReferenceType = effectiveReferenceType(element);</span>
+<span class="nc bnc" id="L355" title="All 2 branches missed.">		for (EStructuralFeature feature: effectiveReferenceType.getEAllStructuralFeatures()) {</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">			if (EObjectLoader.isDefaultFeature(effectiveReferenceType, feature)) {</span>
+<span class="nc" id="L357">				return feature;</span>
+			}
+<span class="nc" id="L359">		}</span>
+<span class="nc" id="L360">		return null;</span>
+	}
+	
+	protected EClass resolveEClass(Object typeSpec, EPackage ePackage) {
+		String typeName;
+<span class="nc bnc" id="L365" title="All 2 branches missed.">		if (typeSpec instanceof String) {</span>
+<span class="nc" id="L366">			typeName = (String) typeSpec;</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">		} else if (typeSpec instanceof Map) {</span>
+			@SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L369">			Map&lt;String, Object&gt; refTypeMap = (Map&lt;String,Object&gt;) typeSpec;</span>
+<span class="nc" id="L370">			Object nsURI = refTypeMap.get(&quot;ns-uri&quot;);</span>
+<span class="nc bnc" id="L371" title="All 2 branches missed.">			if (nsURI instanceof String) {</span>
+<span class="nc" id="L372">				ResourceSet resourceSet = resolver.getResourceSet();</span>
+<span class="nc" id="L373">				Registry packageRegistry = resourceSet.getPackageRegistry();</span>
+<span class="nc" id="L374">				ePackage = packageRegistry.getEPackage((String) nsURI); </span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">				if (ePackage == null) {</span>
+<span class="nc" id="L376">					throw new IllegalArgumentException(&quot;EPackage not found: &quot; + nsURI);													</span>
+				}
+<span class="nc" id="L378">				Object className = refTypeMap.get(&quot;name&quot;);</span>
+<span class="nc bnc" id="L379" title="All 2 branches missed.">				if (className instanceof String) {</span>
+<span class="nc" id="L380">					typeName = (String) className;</span>
+				} else {
+<span class="nc" id="L382">					throw new IllegalArgumentException(&quot;Reference type specification name shall be a String, got: &quot; + className);													</span>
+				}
+<span class="nc" id="L384">			} else {</span>
+<span class="nc" id="L385">				throw new IllegalArgumentException(&quot;Reference type specification ns-uri shall be a String, got: &quot; + nsURI);						</span>
+			}					
+<span class="nc" id="L387">		} else {</span>
+<span class="nc" id="L388">			throw new IllegalArgumentException(&quot;Unsupported reference type specification: &quot; + typeSpec.getClass() + &quot;: &quot; + typeSpec);</span>
+		}					
+		
+<span class="nc" id="L391">		EClass ret = (EClass) ePackage.getEClassifier(typeName);</span>
+<span class="nc bnc" id="L392" title="All 2 branches missed.">		if (ret == null) {</span>
+<span class="nc" id="L393">			throw new IllegalArgumentException(&quot;Reference type &quot; + typeName + &quot; not found in EPackage &quot; + ePackage.getNsURI());						</span>
+		}
+<span class="nc" id="L395">		return ret;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LabelTagSupplierFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Application Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.app.gen</a> &gt; <span class="el_source">LabelTagSupplierFactoryAdapter.java</span></div><h1>LabelTagSupplierFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.app.gen;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.Function;
+import org.nasdanika.common.ListCompoundSupplierFactory;
+import org.nasdanika.common.MapCompoundSupplierFactory;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Supplier;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.Util;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
+import org.nasdanika.html.bootstrap.BootstrapElement;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.NavigationPanel;
+import org.nasdanika.html.model.bootstrap.gen.BootstrapElementSupplierFactoryAdapter;
+
+public class LabelTagSupplierFactoryAdapter&lt;M extends Label&gt; extends BootstrapElementSupplierFactoryAdapter&lt;M, BootstrapElement&lt;?,?&gt;&gt; {
+	
+	public LabelTagSupplierFactoryAdapter(M label, AdapterFactory adapterFactory) {
+<span class="fc" id="L34">		super(label, adapterFactory);</span>
+<span class="fc" id="L35">	}</span>
+		
+	@Override
+	public Supplier&lt;HTMLElement&lt;?&gt;&gt; createHTMLElementSupplier(Context context) {
+<span class="fc" id="L39">		Function&lt;Map&lt;EStructuralFeature, Object&gt;, HTMLElement&lt;?&gt;&gt; labelFunction = new Function&lt;Map&lt;EStructuralFeature, Object&gt;, HTMLElement&lt;?&gt;&gt;() {</span>
+
+			@Override
+			public double size() {
+<span class="fc" id="L43">				return 1;</span>
+			}
+
+			@Override
+			public String name() {
+<span class="fc" id="L48">				return &quot;Label&quot;;</span>
+			}
+
+			@Override
+			public HTMLElement&lt;?&gt; execute(Map&lt;EStructuralFeature, Object&gt; features, ProgressMonitor progressMonitor) {
+<span class="fc" id="L53">				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);</span>
+					
+<span class="fc" id="L55">				Tag ret = (Tag) features.get(AppPackage.Literals.LABEL__TEXT);</span>
+				
+<span class="fc" id="L57">				Label semanticElement = getTarget();</span>
+<span class="fc" id="L58">				Color color = semanticElement.getColor();								</span>
+<span class="fc" id="L59">				String notification = semanticElement.getNotification();</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">				if (!Util.isBlank(notification)) {</span>
+<span class="fc" id="L61">					Color notificationColor = Color.PRIMARY;</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">					if (color == Color.PRIMARY) {</span>
+<span class="nc" id="L63">						notificationColor = Color.SECONDARY;</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">					} else if (color == Color.DANGER) {</span>
+<span class="nc" id="L65">						notificationColor = Color.DANGER;				</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">					} else if (color == Color.WARNING) {</span>
+<span class="nc" id="L67">						notificationColor = Color.WARNING;				</span>
+					} 
+<span class="fc" id="L69">					Tag badge = bootstrapFactory.badge(true, notificationColor, notification);</span>
+<span class="fc" id="L70">					badge.addClass(&quot;nsd-label-notification&quot;);</span>
+<span class="fc" id="L71">					ret.accept(badge);</span>
+				}
+				
+<span class="fc" id="L74">				String tooltip = semanticElement.getTooltip();</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">				if (!Util.isBlank(tooltip)) {</span>
+<span class="fc" id="L76">					ret.attribute(&quot;title&quot;, tooltip);</span>
+				}				
+				
+<span class="fc" id="L79">				Object decorator = features.get(AppPackage.Literals.LABEL__DECORATOR);</span>
+<span class="fc" id="L80">				HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">				if (decorator != null) {					</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">					if (TagName.span.name().equalsIgnoreCase(ret.getTagName())) {</span>
+<span class="fc" id="L83">						ret.accept(decorator);</span>
+					} else {
+<span class="fc" id="L85">						ret = htmlFactory.span(ret, decorator);</span>
+					}
+				}
+								
+				@SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L90">				List&lt;Object&gt; children = (List&lt;Object&gt;) features.get(AppPackage.Literals.LABEL__CHILDREN);</span>
+<span class="fc bfc" id="L91" title="All 4 branches covered.">				if (children == null || semanticElement.eContainer() instanceof Label) {				</span>
+<span class="fc" id="L92">					setData(ret, semanticElement, features);</span>
+<span class="fc" id="L93">					return ret;</span>
+				}
+				
+				// Navigation drop-down
+<span class="fc" id="L97">				Tag dropdown = htmlFactory.tag(TagName.li).addClass(&quot;dropdown&quot;);</span>
+<span class="fc" id="L98">				ret</span>
+<span class="fc" id="L99">					.addClass(&quot;nav-link&quot;, &quot;dropdown-toggle&quot;)</span>
+<span class="fc" id="L100">					.attribute(&quot;role&quot;, &quot;button&quot;)</span>
+<span class="fc" id="L101">					.attribute(&quot;data-toggle&quot;, &quot;dropdown&quot;);</span>
+				
+<span class="fc" id="L103">				dropdown.accept(ret);</span>
+								
+<span class="fc" id="L105">				Tag dropdownMenu = htmlFactory.div().addClass(&quot;dropdown-menu&quot;);</span>
+<span class="fc" id="L106">				dropdown.accept(dropdownMenu);				</span>
+<span class="fc" id="L107">				addDropdownItems(dropdownMenu, children);</span>
+				
+<span class="fc" id="L109">				setData(dropdown, semanticElement, features);				</span>
+<span class="fc" id="L110">				return dropdown;</span>
+			}
+
+			protected void setData(Tag ret, Label semanticElement, Map&lt;EStructuralFeature, Object&gt; features) {
+<span class="fc" id="L114">				ret.setData(semanticElement);</span>
+				
+				/**
+				 * Storing feature data to use downstream.
+				 */
+<span class="fc bfc" id="L119" title="All 2 branches covered.">				for (Entry&lt;EStructuralFeature, Object&gt; fe: features.entrySet()) {</span>
+<span class="fc" id="L120">					ret.setData(fe.getKey(), fe.getValue());</span>
+<span class="fc" id="L121">				}</span>
+<span class="fc" id="L122">			}</span>
+			
+			@SuppressWarnings(&quot;unchecked&quot;)
+			private void addDropdownItems(Tag dropdownMenu, List&lt;Object&gt; items) {
+<span class="fc bfc" id="L126" title="All 2 branches covered.">				for (Object item: items) {					</span>
+<span class="fc" id="L127">					dropdownMenu.accept(item);</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">					if (item instanceof Tag) {</span>
+<span class="fc" id="L129">						Tag itemTag = (Tag) item;</span>
+<span class="fc bfc" id="L130" title="All 4 branches covered.">						switch (itemTag.getTagName().toLowerCase()) {</span>
+						case &quot;a&quot;: 
+<span class="fc" id="L132">							itemTag.addClass(&quot;dropdown-item&quot;);</span>
+<span class="fc" id="L133">							break;</span>
+						case &quot;div&quot;: 
+<span class="fc" id="L135">							itemTag.addClass(&quot;dropdown-divider&quot;);</span>
+<span class="fc" id="L136">							break;</span>
+						case &quot;h6&quot;: 
+<span class="fc" id="L138">							itemTag.addClass(&quot;dropdown-header&quot;);</span>
+							break;
+						}
+<span class="fc" id="L141">						List&lt;Object&gt; children = (List&lt;Object&gt;) itemTag.getData(AppPackage.Literals.LABEL__CHILDREN);</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">						if (children != null) {</span>
+<span class="fc" id="L143">							addDropdownItems(dropdownMenu, children);</span>
+						}					
+					}
+<span class="fc" id="L146">				}</span>
+<span class="fc" id="L147">			}</span>
+			
+		};
+		
+<span class="fc" id="L151">		MapCompoundSupplierFactory&lt;EStructuralFeature, Object&gt; featuresFactory = new MapCompoundSupplierFactory&lt;&gt;(&quot;Features&quot;);</span>
+		
+<span class="fc" id="L153">		M semanticElement = getTarget();</span>
+<span class="fc" id="L154">		Label decorator = semanticElement.getDecorator();</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		if (decorator != null) {</span>
+<span class="fc" id="L156">			featuresFactory.put(AppPackage.Literals.LABEL__DECORATOR, EObjectAdaptable.adaptToSupplierFactoryNonNull(decorator, Object.class));</span>
+		}
+		
+<span class="fc" id="L159">		List&lt;EObject&gt; children = semanticElement.getChildren();</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">		if (!children.isEmpty()) {</span>
+<span class="fc" id="L161">			featuresFactory.put(AppPackage.Literals.LABEL__CHILDREN, new ListCompoundSupplierFactory&lt;&gt;(&quot;Children&quot;, EObjectAdaptable.adaptToSupplierFactoryNonNull(children, Object.class)));			</span>
+		}
+		
+<span class="fc" id="L164">		SupplierFactory&lt;Tag&gt; textSupplierFactory = this::createTextAndIconSupplier;</span>
+<span class="fc" id="L165">		featuresFactory.put(AppPackage.Literals.LABEL__TEXT, textSupplierFactory);</span>
+		
+<span class="fc" id="L167">		return featuresFactory.create(context).then(labelFunction);</span>
+	}
+	
+	/**
+	 * Override in Link to create a link.
+	 * @param context
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected Supplier&lt;Tag&gt; createTextAndIconSupplier(Context context) {
+<span class="fc" id="L177">		Function&lt;Tag,Tag&gt; textAndIconFunction = new Function&lt;Tag, Tag&gt;() {</span>
+				
+			@Override
+			public double size() {
+<span class="fc" id="L181">				return 1;</span>
+			}
+
+			@Override
+			public String name() {
+<span class="fc" id="L186">				return &quot;Label text and icon&quot;;</span>
+			}
+
+			@Override
+			public Tag execute(Tag modal, ProgressMonitor progressMonitor) {
+<span class="fc" id="L191">				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);</span>
+<span class="fc" id="L192">				HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);</span>
+<span class="fc" id="L193">				Label semanticElement = getTarget();</span>
+				
+<span class="fc" id="L195">				String text = context.interpolateToString(getTarget().getText());</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">				for (EObject semanticAncestor = semanticElement.eContainer(); semanticAncestor != null; semanticAncestor = semanticAncestor.eContainer()) {</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">					if (semanticAncestor instanceof NavigationPanel) {</span>
+<span class="fc" id="L198">						int labelTrimLength = ((NavigationPanel) semanticAncestor).getLabelTrimLength();</span>
+<span class="pc bpc" id="L199" title="3 of 6 branches missed.">						if (labelTrimLength &gt; 0 &amp;&amp; !Util.isBlank(text) &amp;&amp; text.length() &gt; labelTrimLength) {</span>
+<span class="nc" id="L200">							text = text.substring(0, labelTrimLength - 3) + &quot;...&quot;;</span>
+						}
+						break;
+					}						
+				}
+				
+<span class="fc" id="L206">				String icon = semanticElement.getIcon();</span>
+<span class="fc" id="L207">				Tag iconTag = null;</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">				if (icon != null) {</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">					if (icon.contains(&quot;/&quot;)) {</span>
+						// Image
+<span class="fc" id="L211">						iconTag = htmlFactory.tag(TagName.img).attribute(&quot;src&quot;, icon); //.style().height(&quot;1em&quot;);</span>
+					} else {
+						// Class
+<span class="fc" id="L214">						iconTag = htmlFactory.span().addClass(icon);</span>
+					}
+				}
+				
+<span class="fc" id="L218">				Tag ret = createTextAndIconTag(iconTag, text, modal, context, progressMonitor);</span>
+
+<span class="fc" id="L220">				Color color = semanticElement.getColor();				</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">				if (color != null) {</span>
+<span class="fc" id="L222">					bootstrapFactory.wrap(ret).text().color(color);</span>
+				}	
+												
+<span class="fc" id="L225">				return ret;</span>
+			}
+			
+		};
+		
+<span class="fc" id="L230">		return getModalFactory().create(context).then(textAndIconFunction);				</span>
+	}
+	
+	/**
+	 * @param icon Icon
+	 * @param text text
+	 * @param modal Modal for binding to links, not applicalbe to labels.
+	 * @param context
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected Tag createTextAndIconTag(Tag icon, String text, Tag modal, Context context, ProgressMonitor progressMonitor) {
+<span class="fc" id="L242">		HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);</span>
+		TagName tagName;
+<span class="fc bfc" id="L244" title="All 2 branches covered.">		if (getTarget().getChildren().isEmpty()) {</span>
+<span class="fc" id="L245">			tagName = TagName.span; // A regular label.</span>
+		} else {
+			// Drop-down activator or drop-down header if contained in a label
+<span class="fc bfc" id="L248" title="All 2 branches covered.">			tagName = getTarget().eContainer() instanceof Label ? TagName.h6 : TagName.a;</span>
+		}
+		
+<span class="fc bfc" id="L251" title="All 2 branches covered.">		if (Util.isBlank(text)) {</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">			if (icon == null) {</span>
+				// Drop-down divider
+<span class="fc" id="L254">				return htmlFactory.div();</span>
+			}
+			
+			// Wrap into a header for drop-down headers
+<span class="pc bpc" id="L258" title="1 of 2 branches missed.">			return tagName == TagName.h6 ? htmlFactory.tag(tagName, icon) : icon;</span>
+		}
+<span class="fc bfc" id="L260" title="All 2 branches covered.">		if (icon == null) {</span>
+<span class="fc" id="L261">			return htmlFactory.tag(tagName, text);</span>
+		}
+		
+<span class="fc" id="L264">		icon.addClass(&quot;nsd-app-label-icon&quot;);</span>
+<span class="fc" id="L265">		return htmlFactory.tag(tagName, icon, text);	</span>
+	}
+	
+	/**
+	 * For links. Placing here to simplify code. This implementation returns empty supplier.
+	 * @return
+	 */
+	protected SupplierFactory&lt;Tag&gt; getModalFactory() {
+<span class="fc" id="L273">		return SupplierFactory.empty();</span>
+	}
+		
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

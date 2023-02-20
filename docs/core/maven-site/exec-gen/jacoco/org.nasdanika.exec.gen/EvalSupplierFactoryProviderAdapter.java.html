@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EvalSupplierFactoryProviderAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Exec Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.gen</a> &gt; <span class="el_source">EvalSupplierFactoryProviderAdapter.java</span></div><h1>EvalSupplierFactoryProviderAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.exec.gen;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.EMap;
+import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.DefaultConverter;
+import org.nasdanika.common.ExecutionException;
+import org.nasdanika.common.Function;
+import org.nasdanika.common.FunctionFactory;
+import org.nasdanika.common.MapCompoundSupplierFactory;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.Util;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.exec.Eval;
+
+public class EvalSupplierFactoryProviderAdapter extends AdapterImpl implements SupplierFactory.Provider {
+	
+	private static final String CONTEXT_BINDING = &quot;context&quot;;
+	private static final String PROGRESS_MONITOR_BINDING = &quot;progressMonitor&quot;;
+	
+<span class="nc" id="L30">	public EvalSupplierFactoryProviderAdapter(Eval eval) {</span>
+<span class="nc" id="L31">		setTarget(eval);</span>
+<span class="nc" id="L32">	}</span>
+	
+	@Override
+	public boolean isAdapterForType(Object type) {
+<span class="nc bnc" id="L36" title="All 2 branches missed.">		return type == SupplierFactory.class;</span>
+	}
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public &lt;T&gt; SupplierFactory&lt;T&gt; getFactory(Class&lt;T&gt; type) {
+<span class="nc" id="L42">		Eval eval = (Eval) getTarget();</span>
+		
+<span class="nc" id="L44">		MapCompoundSupplierFactory&lt;String, Object&gt; bindingsFactory = new MapCompoundSupplierFactory&lt;String, Object&gt;(&quot;Bindings&quot;);</span>
+<span class="nc" id="L45">		EMap&lt;String, EObject&gt; bindings = eval.getBindings();</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">		for (Entry&lt;String, EObject&gt; ce: bindings.entrySet()) {</span>
+<span class="nc" id="L47">			EObject value = ce.getValue();</span>
+<span class="nc" id="L48">			SupplierFactory&lt;?&gt; sf = Objects.requireNonNull(EObjectAdaptable.adaptToSupplierFactory(value, Object.class), &quot;Cannot adapt &quot; + value + &quot; to SupplierFactory&quot;);				</span>
+<span class="nc" id="L49">			bindingsFactory.put(ce.getKey(), sf.then(Util.OBJECT_TO_STRING_FACTORY));</span>
+<span class="nc" id="L50">		}</span>
+		
+<span class="nc" id="L52">		SupplierFactory&lt;InputStream&gt; scriptFactory = Objects.requireNonNull(EObjectAdaptable.adaptToSupplierFactory(eval.getScript(), InputStream.class), &quot;Cannot adapt &quot; + eval.getScript() + &quot; to SupplierFactory&quot;);		</span>
+		
+		
+		
+<span class="nc bnc" id="L56" title="All 4 branches missed.">		if (type == null || type == Object.class) {</span>
+<span class="nc" id="L57">			FunctionFactory&lt;BiSupplier&lt;InputStream, Map&lt;String,Object&gt;&gt;, Object&gt; functionFactory = context -&gt; new Function&lt;BiSupplier&lt;InputStream, Map&lt;String,Object&gt;&gt;, Object&gt;() {</span>
+
+				@Override
+				public double size() {
+<span class="nc" id="L61">					return 1;</span>
+				}
+
+				@Override
+				public String name() {
+<span class="nc" id="L66">					return &quot;eval&quot;;</span>
+				}
+
+				@Override
+				public Object execute(BiSupplier&lt;InputStream, Map&lt;String,Object&gt;&gt; input, ProgressMonitor progressMonitor) {
+<span class="nc" id="L71">					Map&lt;String,Object&gt; bindings = new HashMap&lt;&gt;(input.getSecond());</span>
+<span class="nc" id="L72">					bindings.put(CONTEXT_BINDING, context);</span>
+<span class="nc" id="L73">					bindings.put(PROGRESS_MONITOR_BINDING, progressMonitor);					</span>
+<span class="nc" id="L74">					throw new UnsupportedOperationException(&quot;TODO - implement with Spring Expression language or drop eval&quot;);</span>
+//					try {
+//						return Util.eval(input.getFirst(), bindings);
+//					} catch (IOException e) {
+//						throw new ExecutionException(e, this);
+//					}
+				}
+			};
+			
+<span class="nc" id="L83">			return (SupplierFactory&lt;T&gt;) scriptFactory.then(bindingsFactory.asFunctionFactory()).then(functionFactory);</span>
+		}
+		
+<span class="nc bnc" id="L86" title="All 2 branches missed.">		if (type == Boolean.class) {</span>
+<span class="nc" id="L87">			FunctionFactory&lt;Object, Boolean&gt; booleanFactory = context -&gt; new Function&lt;Object,Boolean&gt;() {</span>
+
+				@Override
+				public double size() {
+<span class="nc" id="L91">					return 1;</span>
+				}
+
+				@Override
+				public String name() {
+<span class="nc" id="L96">					return &quot;boolean&quot;;</span>
+				}
+
+				@Override
+				public Boolean execute(Object obj, ProgressMonitor progressMonitor) {
+<span class="nc" id="L101">					return Boolean.TRUE.equals(obj);</span>
+				}
+			};
+			
+<span class="nc" id="L105">			return (SupplierFactory&lt;T&gt;) getFactory(Object.class).then(booleanFactory);			</span>
+		}
+		
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (type == InputStream.class) {</span>
+<span class="nc" id="L109">			FunctionFactory&lt;Object, InputStream&gt; booleanFactory = context -&gt; new Function&lt;Object,InputStream&gt;() {</span>
+
+				@Override
+				public double size() {
+<span class="nc" id="L113">					return 1;</span>
+				}
+
+				@Override
+				public String name() {
+<span class="nc" id="L118">					return &quot;stream&quot;;</span>
+				}
+
+				@Override
+				public InputStream execute(Object obj, ProgressMonitor progressMonitor) {
+<span class="nc" id="L123">					InputStream ret = DefaultConverter.INSTANCE.convert(obj, InputStream.class);</span>
+<span class="nc bnc" id="L124" title="All 4 branches missed.">					if (obj != null &amp;&amp; ret == null) {</span>
+						try {
+<span class="nc" id="L126">							ret = Util.toStream(context, obj.toString());</span>
+<span class="nc" id="L127">						} catch (IOException e) {</span>
+<span class="nc" id="L128">							throw new ExecutionException(e, this);</span>
+<span class="nc" id="L129">						}</span>
+					}
+<span class="nc" id="L131">					return ret;</span>
+				}
+			};
+			
+<span class="nc" id="L135">			return (SupplierFactory&lt;T&gt;) getFactory(Object.class).then(booleanFactory);			</span>
+		}
+		
+<span class="nc" id="L138">		throw new IllegalArgumentException(&quot;Unsupported type: &quot; + type);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

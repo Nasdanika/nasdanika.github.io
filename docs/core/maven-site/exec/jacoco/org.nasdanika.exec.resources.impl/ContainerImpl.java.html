@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ContainerImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Execution Model</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.resources.impl</a> &gt; <span class="el_source">ContainerImpl.java</span></div><h1>ContainerImpl.java</h1><pre class="source lang-java linenums">/**
+ */
+package org.nasdanika.exec.resources.impl;
+
+import java.lang.reflect.InvocationTargetException;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.exec.resources.File;
+import org.nasdanika.exec.resources.Resource;
+import org.nasdanika.exec.resources.ResourcesFactory;
+import org.nasdanika.exec.resources.ResourcesPackage;
+
+/**
+ * &lt;!-- begin-user-doc --&gt;
+ * An implementation of the model object '&lt;em&gt;&lt;b&gt;Container&lt;/b&gt;&lt;/em&gt;'.
+ * &lt;!-- end-user-doc --&gt;
+ *
+ * @generated
+ */
+public class ContainerImpl extends ResourceImpl implements org.nasdanika.exec.resources.Container {
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected ContainerImpl() {
+<span class="fc" id="L29">		super();</span>
+<span class="fc" id="L30">	}</span>
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+<span class="fc" id="L39">		return ResourcesPackage.Literals.CONTAINER;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated NOT
+	 */
+	@Override
+	public org.nasdanika.exec.resources.Container getContainer(String path) {
+<span class="nc bnc" id="L49" title="All 2 branches missed.">		if (path.startsWith(&quot;../&quot;)) {</span>
+<span class="nc" id="L50">			EObject ec = eContainer();</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">			if (ec instanceof org.nasdanika.exec.resources.Container) {</span>
+<span class="nc" id="L52">				return ((org.nasdanika.exec.resources.Container) ec).getContainer(path.substring(3));</span>
+			}
+<span class="nc" id="L54">			return null;</span>
+		}
+<span class="nc bnc" id="L56" title="All 2 branches missed.">		if (path.startsWith(&quot;./&quot;)) {</span>
+<span class="nc" id="L57">			path = path.substring(2);</span>
+		}
+		
+<span class="nc" id="L60">		Object existing = find(path);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">		if (existing instanceof org.nasdanika.exec.resources.Container) {</span>
+<span class="nc" id="L62">			return (org.nasdanika.exec.resources.Container) existing;</span>
+		}
+<span class="nc bnc" id="L64" title="All 2 branches missed.">		if (existing != null) {</span>
+			// non-container - can't have another resource with the same name.
+<span class="nc" id="L66">			return null;</span>
+		}
+<span class="nc" id="L68">		int sPos = path.indexOf(SEPARATOR);</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">		if (sPos == -1) {</span>
+<span class="nc" id="L70">			org.nasdanika.exec.resources.Container ret = ResourcesFactory.eINSTANCE.createContainer();</span>
+<span class="nc" id="L71">			ret.setName(path);</span>
+<span class="nc" id="L72">			getContents().add(ret);</span>
+<span class="nc" id="L73">			return ret;</span>
+		}
+		
+<span class="nc" id="L76">		String firstSegment = path.substring(0, sPos);</span>
+<span class="nc" id="L77">		org.nasdanika.exec.resources.Container container = getContainer(firstSegment);</span>
+<span class="nc" id="L78">		String pathTail = path.substring(sPos + 1);</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">		return container == null ? null : container.getContainer(pathTail);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated NOT
+	 */
+	@Override
+	public File getFile(String path) {
+<span class="nc bnc" id="L89" title="All 2 branches missed.">		if (path.startsWith(&quot;../&quot;)) {</span>
+<span class="nc" id="L90">			EObject ec = eContainer();</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">			if (ec instanceof org.nasdanika.exec.resources.Container) {</span>
+<span class="nc" id="L92">				return ((org.nasdanika.exec.resources.Container) ec).getFile(path.substring(3));</span>
+			}
+<span class="nc" id="L94">			return null;</span>
+		}
+<span class="nc bnc" id="L96" title="All 2 branches missed.">		if (path.startsWith(&quot;./&quot;)) {</span>
+<span class="nc" id="L97">			path = path.substring(2);</span>
+		}
+		
+<span class="nc" id="L100">		Object existing = find(path);</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">		if (existing instanceof File) {</span>
+<span class="nc" id="L102">			return (File) existing;</span>
+		}
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		if (existing != null) {</span>
+			// non-container - can't have another resource with the same name.
+<span class="nc" id="L106">			return null;</span>
+		}
+		
+<span class="nc" id="L109">		int sPos = path.indexOf(SEPARATOR);</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (sPos == -1) {</span>
+<span class="nc" id="L111">			File ret = ResourcesFactory.eINSTANCE.createFile();</span>
+<span class="nc" id="L112">			ret.setName(path);</span>
+<span class="nc" id="L113">			getContents().add(ret);</span>
+<span class="nc" id="L114">			return ret;</span>
+		}
+		
+<span class="nc" id="L117">		String pathHead = path.substring(0, sPos);</span>
+<span class="nc" id="L118">		org.nasdanika.exec.resources.Container container = getContainer(pathHead);</span>
+<span class="nc" id="L119">		String pathTail = path.substring(sPos + 1);</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		return container == null ? null : container.getFile(pathTail);</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated NOT
+	 */
+	@Override
+	public Resource find(String path) {
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (path.startsWith(&quot;../&quot;)) {</span>
+<span class="nc" id="L131">			EObject ec = eContainer();</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">			if (ec instanceof org.nasdanika.exec.resources.Container) {</span>
+<span class="nc" id="L133">				return ((org.nasdanika.exec.resources.Container) ec).find(path.substring(3));</span>
+			}
+<span class="nc" id="L135">			return null;</span>
+		}
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (path.startsWith(&quot;./&quot;)) {</span>
+<span class="nc" id="L138">			path = path.substring(2);</span>
+		}
+		
+<span class="nc" id="L141">		int sPos = path.indexOf(SEPARATOR);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (sPos == -1) {</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			for (EObject c: getContents()) {</span>
+<span class="nc bnc" id="L144" title="All 4 branches missed.">				if (c instanceof Resource &amp;&amp; path.equals(((Resource) c).getName())) {</span>
+<span class="nc" id="L145">					return (Resource) c;</span>
+				}
+<span class="nc" id="L147">			}</span>
+<span class="nc" id="L148">			return null; </span>
+		}
+<span class="nc" id="L150">		String firstSegment = path.substring(0, sPos);</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		for (EObject c: getContents()) {</span>
+<span class="nc bnc" id="L152" title="All 4 branches missed.">			if (c instanceof org.nasdanika.exec.resources.Container &amp;&amp; firstSegment.equals(((Resource) c).getName())) {</span>
+<span class="nc" id="L153">				return ((org.nasdanika.exec.resources.Container) c).find(path.substring(sPos+1));</span>
+			}
+<span class="nc" id="L155">		}</span>
+<span class="nc" id="L156">		return null;</span>
+	}
+
+	/**
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList&lt;?&gt; arguments) throws InvocationTargetException {
+<span class="nc bnc" id="L166" title="All 4 branches missed.">		switch (operationID) {</span>
+			case ResourcesPackage.CONTAINER___GET_CONTAINER__STRING:
+<span class="nc" id="L168">				return getContainer((String)arguments.get(0));</span>
+			case ResourcesPackage.CONTAINER___GET_FILE__STRING:
+<span class="nc" id="L170">				return getFile((String)arguments.get(0));</span>
+			case ResourcesPackage.CONTAINER___FIND__STRING:
+<span class="nc" id="L172">				return find((String)arguments.get(0));</span>
+		}
+<span class="nc" id="L174">		return super.eInvoke(operationID, arguments);</span>
+	}
+
+} //ContainerImpl
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

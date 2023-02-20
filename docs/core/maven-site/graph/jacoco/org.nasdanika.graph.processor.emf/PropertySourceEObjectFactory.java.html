@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PropertySourceEObjectFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Graph</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.graph.processor.emf</a> &gt; <span class="el_source">PropertySourceEObjectFactory.java</span></div><h1>PropertySourceEObjectFactory.java</h1><pre class="source lang-java linenums">package org.nasdanika.graph.processor.emf;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Consumer;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.DefaultConverter;
+import org.nasdanika.common.NasdanikaException;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.PropertySource;
+import org.nasdanika.graph.Connection;
+import org.nasdanika.graph.Element;
+import org.nasdanika.graph.processor.ConnectionProcessorConfig;
+import org.nasdanika.graph.processor.NodeProcessorConfig;
+import org.nasdanika.graph.processor.ProcessorConfig;
+import org.nasdanika.graph.processor.ProcessorInfo;
+import org.nasdanika.persistence.ConfigurationException;
+import org.nasdanika.persistence.Marked;
+import org.nasdanika.persistence.Marker;
+import org.nasdanika.persistence.MarkerImpl;
+import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.EvaluationException;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.yaml.snakeyaml.Yaml;
+
+/**
+ * Resolves references from properties.
+ * @author Pavel
+ *
+ */
+<span class="nc" id="L50">public abstract class PropertySourceEObjectFactory&lt;T extends EObject, P extends SemanticProcessor&lt;T&gt;&gt; extends AbstractEObjectFactory&lt;T,P&gt; {</span>
+	
+	protected String getPropertyValue(org.nasdanika.graph.Element element, String propertyName) {
+<span class="nc bnc" id="L53" title="All 4 branches missed.">		if (!org.nasdanika.common.Util.isBlank(propertyName) &amp;&amp; element instanceof PropertySource) {</span>
+			@SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L55">			PropertySource&lt;Object,?&gt; propertySource = (PropertySource&lt;Object,?&gt;) element;</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">			for (String propertyPrefix: getPropertyPrefixes()) {</span>
+<span class="nc" id="L57">				Object propertyValue = propertySource.getProperty(propertyPrefix + propertyName);</span>
+<span class="nc bnc" id="L58" title="All 4 branches missed.">				if (propertyValue instanceof String &amp;&amp; !org.nasdanika.common.Util.isBlank((String) propertyValue)) {</span>
+<span class="nc" id="L59">					return (String) propertyValue;</span>
+				}
+<span class="nc" id="L61">			}</span>
+		}
+<span class="nc" id="L63">		return null;</span>
+	}
+	
+	/**
+	 * Prefixes added to property names. Override to implement namespacing of properties for elements with multiple semantic mappings. 
+	 * Multiple prefixes may be used for profiles.
+	 * For example, an element may have one mapping for documentation, another for code generation, and one more for status updates - pulling runtime information from monitoring systems and updating diagram elements with health status. 
+	 * @return This implementation returns a singleton list of an empty string;
+	 */
+	protected List&lt;String&gt; getPropertyPrefixes() {
+<span class="nc" id="L73">		return Collections.singletonList(&quot;&quot;);</span>
+	}
+	
+	// Loading spec
+
+	/**
+	 * Base URI for resolving spec references. This implementation returns null.
+	 * @return
+	 */
+	protected abstract URI getBaseURI();
+	
+	@Override
+	protected Collection&lt;T&gt; createSemanticElements(ProcessorConfig&lt;P&gt; config, ProgressMonitor progressMonitor) {
+<span class="nc" id="L86">		String spec = getPropertyValue(config.getElement(), getSpecPropertyName());</span>
+<span class="nc" id="L87">		String specFormat = getPropertyValue(config.getElement(), getSpecFormatPropertyName());</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">		if (!org.nasdanika.common.Util.isBlank(spec)) {</span>
+<span class="nc" id="L89">			return load(spec, specFormat, getBaseURI(), config, getLoadingContext(config, progressMonitor), progressMonitor);</span>
+		}
+				
+		// Spec URI
+<span class="nc" id="L93">		String specUriStr = getPropertyValue(config.getElement(), getSpecUriPropertyName());</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">		if (!org.nasdanika.common.Util.isBlank(specUriStr)) {</span>
+<span class="nc" id="L95">			URI specURI = URI.createURI(specUriStr);</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">			if (specURI.isRelative()) {</span>
+<span class="nc" id="L97">				URI baseURI = getBaseURI();</span>
+<span class="nc bnc" id="L98" title="All 6 branches missed.">				if (baseURI != null &amp;&amp; !baseURI.isRelative() &amp;&amp; baseURI.isHierarchical()) {</span>
+<span class="nc" id="L99">					specURI = specURI.resolve(baseURI);</span>
+				}
+			}
+<span class="nc" id="L102">			return load(specURI, specFormat, config, getLoadingContext(config, progressMonitor), progressMonitor);</span>
+		}		
+		
+		// Semantic URI
+<span class="nc" id="L106">		String semanticUriStr = getPropertyValue(config.getElement(), getSemanticUriPropertyName());</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		if (!org.nasdanika.common.Util.isBlank(semanticUriStr)) {</span>
+<span class="nc" id="L108">			URI semanticURI = URI.createURI(semanticUriStr);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">			if (semanticURI.isRelative()) {</span>
+<span class="nc" id="L110">				URI baseURI = getBaseURI();</span>
+<span class="nc bnc" id="L111" title="All 6 branches missed.">				if (baseURI != null &amp;&amp; !baseURI.isRelative() &amp;&amp; baseURI.isHierarchical()) {</span>
+<span class="nc" id="L112">					semanticURI = semanticURI.resolve(baseURI);</span>
+				}
+			}
+<span class="nc" id="L115">			return load(semanticURI, specFormat, config, getLoadingContext(config, progressMonitor), progressMonitor);</span>
+		}
+				
+<span class="nc" id="L118">		return Collections.emptyList();</span>
+	}
+	
+	/**
+	 * Override to create a context to be used for semantic element loading.
+	 * @param config
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected Context getLoadingContext(ProcessorConfig&lt;P&gt; config, ProgressMonitor progressMonitor) {
+<span class="nc" id="L128">		return Context.EMPTY_CONTEXT;</span>
+	}
+
+	/**
+	 * Loads semantic element from a URI
+	 * @return
+	 */
+	protected Collection&lt;T&gt; load(URI specURI, String specFormat, ProcessorConfig&lt;P&gt; config, Context context, ProgressMonitor progressMonitor) {
+		try {
+<span class="nc" id="L137">			URL specUrl = new URL(specURI.toString());</span>
+<span class="nc" id="L138">			return load(specUrl, specFormat, config, context, progressMonitor);				</span>
+<span class="nc" id="L139">		} catch (IOException e) {</span>
+<span class="nc" id="L140">			throw new NasdanikaException(&quot;Error loading specification from specification URI &quot; + specURI, e);</span>
+		}			
+	}	
+	
+	/**
+	 * Loads semantic element from a URL
+	 * @return
+	 */
+	protected Collection&lt;T&gt; load(URL url, String specFormat, ProcessorConfig&lt;P&gt; config, Context context, ProgressMonitor progressMonitor) throws IOException {
+<span class="nc" id="L149">		return load(url.openStream(), specFormat, URI.createURI(url.toString()), config, context, progressMonitor);</span>
+	}
+	
+	/**
+	 * Loads semantic element from an input stream.
+	 * @return
+	 */
+	protected Collection&lt;T&gt; load(InputStream inputStream, String specFormat, URI base, ProcessorConfig&lt;P&gt; config, Context context, ProgressMonitor progressMonitor) throws IOException {
+<span class="nc" id="L157">		try (Reader reader = new InputStreamReader(inputStream, getCharset())) {</span>
+<span class="nc" id="L158">			return load(DefaultConverter.INSTANCE.toString(reader), specFormat, base, config, context, progressMonitor);</span>
+		}		
+	}
+	
+	/**
+	 * Loads semantic element from an input stream.
+	 * @return
+	 */
+	protected Collection&lt;T&gt; load(Reader reader, String specFormat, URI base, ProcessorConfig&lt;P&gt; config, Context context, ProgressMonitor progressMonitor) throws IOException {
+<span class="nc" id="L167">		return load(DefaultConverter.INSTANCE.toString(reader), specFormat, base, config, context, progressMonitor);</span>
+	}	
+	
+	/**
+	 * Override to customize charset.
+	 * @return
+	 */
+	protected Charset getCharset() {
+<span class="nc" id="L175">		return StandardCharsets.UTF_8;</span>
+	}	
+	
+	/**
+	 * Loads semantic element from a string specification.
+	 * @param spec Semantic element specification.
+	 * @param specBase Base URI for resolving relative URI's.
+	 * @return
+	 */
+	protected abstract Collection&lt;T&gt; load(String spec, String specFormat, URI specBase, ProcessorConfig&lt;P&gt; config, Context context, ProgressMonitor progressMonitor);
+		
+	protected String getSpecPropertyName() {
+<span class="nc" id="L187">		return &quot;spec&quot;;</span>
+	}
+	
+	protected String getSpecUriPropertyName() {
+<span class="nc" id="L191">		return &quot;spec-uri&quot;;</span>
+	}		
+	
+	protected String getSemanticUriPropertyName() {
+<span class="nc" id="L195">		return &quot;semantic-uri&quot;;</span>
+	}		
+	
+	/**
+	 * Specification format (MIME type). E.g. text/yaml or application/json. It is used to load specification. 
+	 * @return
+	 */
+	protected String getSpecFormatPropertyName() {
+<span class="nc" id="L203">		return &quot;spec-format&quot;;</span>
+	}			
+
+	// Child
+	/**
+	 * Property name of the parent's reference to inject child into 
+	 * @return
+	 */
+	protected String getChildReferencePropertyName() {
+<span class="nc" id="L212">		return &quot;child-reference&quot;;</span>
+	}
+	
+	protected Marked getMarked(ProcessorConfig&lt;P&gt; config) {
+<span class="nc" id="L216">		Element element = config.getElement();</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		if (element instanceof Marked) {</span>
+<span class="nc" id="L218">			return (Marked) element;</span>
+		}
+<span class="nc" id="L220">		return new Marked() {</span>
+
+			@Override
+			public List&lt;? extends Marker&gt; getMarkers() {
+<span class="nc" id="L224">				return Collections.singletonList(new MarkerImpl(null, String.valueOf(config.getElement())));</span>
+			}
+			
+		};
+	}
+
+	@Override
+	protected EReference getChildReference(ProcessorConfig&lt;P&gt; config, P processor, T semanticElement, ProcessorInfo&lt;P&gt; parentProcessorInfo, T parentSemanticElement) {
+<span class="nc bnc" id="L232" title="All 4 branches missed.">		if (parentSemanticElement == null || config == null) {</span>
+<span class="nc" id="L233">			return null;</span>
+		}
+<span class="nc" id="L235">		String value = getPropertyValue(config.getElement(), getChildReferencePropertyName());</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">		if (org.nasdanika.common.Util.isBlank(value)) {</span>
+<span class="nc" id="L237">			return null;</span>
+		}
+<span class="nc" id="L239">		EClass eClass = parentSemanticElement.eClass();</span>
+<span class="nc" id="L240">		EStructuralFeature ref = eClass.getEStructuralFeature(value);</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">		if (ref instanceof EReference) {</span>
+<span class="nc" id="L242">			return (EReference) ref;</span>
+		}
+<span class="nc" id="L244">		throw new ConfigurationException(&quot;Reference '&quot; + value + &quot;' not found in &quot; + eClass.getName() + &quot; &quot; + eClass.getEPackage().getNsURI(), getMarked(config));</span>
+	}
+	
+	// Parent
+	protected String getParentReferencePropertyName() {
+<span class="nc" id="L249">		return &quot;parent-reference&quot;;</span>
+	}
+
+	@Override
+	protected EReference getParentReference(ProcessorConfig&lt;P&gt; config, P processor, T semanticElement,	ProcessorInfo&lt;P&gt; parentProcessorInfo, T parentSemanticElement) {
+<span class="nc bnc" id="L254" title="All 2 branches missed.">		if (config == null) {</span>
+<span class="nc" id="L255">			return null;</span>
+		}
+<span class="nc" id="L257">		String value = getPropertyValue(config.getElement(), getParentReferencePropertyName());</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">		if (org.nasdanika.common.Util.isBlank(value)) {</span>
+<span class="nc" id="L259">			return null;</span>
+		}
+		
+<span class="nc" id="L262">		EClass eClass = semanticElement.eClass();</span>
+<span class="nc" id="L263">		EStructuralFeature ref = eClass.getEStructuralFeature(value);</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">		if (ref instanceof EReference) {</span>
+<span class="nc" id="L265">			return (EReference) ref;</span>
+		}
+<span class="nc" id="L267">		throw new ConfigurationException(&quot;Reference '&quot; + value + &quot;' not found in &quot; + eClass.getName() + &quot; &quot; + eClass.getEPackage().getNsURI(), getMarked(config));</span>
+	}	
+	
+	protected String getParentInjectorPropertyName() {
+<span class="nc" id="L271">		return &quot;parent-injector&quot;;</span>
+	}
+	
+	@Override
+	protected void setParent(ProcessorConfig&lt;P&gt; config, P processor, ProcessorInfo&lt;P&gt; parentProcessorInfo, ProgressMonitor progressMonitor, Consumer&lt;Throwable&gt; failureConsumer) {
+<span class="nc" id="L276">		super.setParent(config, processor, parentProcessorInfo, progressMonitor, failureConsumer);</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">		if (config != null) {</span>
+<span class="nc" id="L278">			String expr = getPropertyValue(config.getElement(), getParentInjectorPropertyName());</span>
+<span class="nc" id="L279">			P parentProcessor = parentProcessorInfo.getProcessor();</span>
+<span class="nc bnc" id="L280" title="All 6 branches missed.">			if (!org.nasdanika.common.Util.isBlank(expr) &amp;&amp; processor != null &amp;&amp; parentProcessor != null) {</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">				for (T semanticElement: processor.getSemanticElements()) {</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">					for (T parentSemanticElement: parentProcessor.getSemanticElements()) {</span>
+<span class="nc" id="L283">						ExpressionParser parser = new SpelExpressionParser();</span>
+<span class="nc" id="L284">						Expression exp = parser.parseExpression(expr);</span>
+<span class="nc" id="L285">						EvaluationContext evaluationContext = createEvaluationContext();</span>
+<span class="nc" id="L286">						evaluationContext.setVariable(&quot;config&quot;, config);</span>
+<span class="nc" id="L287">						evaluationContext.setVariable(&quot;element&quot;, config.getElement());</span>
+<span class="nc" id="L288">						evaluationContext.setVariable(&quot;parentElement&quot;, parentProcessorInfo.getConfig().getElement());			</span>
+<span class="nc" id="L289">						evaluationContext.setVariable(&quot;parentProcessor&quot;, parentProcessor);</span>
+<span class="nc" id="L290">						evaluationContext.setVariable(&quot;parentSemanticElement&quot;, parentSemanticElement);</span>
+<span class="nc" id="L291">						evaluationContext.setVariable(&quot;parentConfig&quot;, parentProcessorInfo.getConfig());			</span>
+<span class="nc" id="L292">						exp.getValue(evaluationContext, semanticElement);					</span>
+<span class="nc" id="L293">					}</span>
+<span class="nc" id="L294">				}</span>
+			}
+		}
+<span class="nc" id="L297">	}</span>
+	
+	protected EvaluationContext createEvaluationContext() {
+<span class="nc" id="L300">		return new StandardEvaluationContext();</span>
+	}	
+		
+	// Source
+	protected String getSourceReferencePropertyName() {
+<span class="nc" id="L305">		return &quot;source-reference&quot;;</span>
+	}
+	
+	@Override
+	protected EReference getSourceReference(ConnectionProcessorConfig&lt;P, ProcessorInfo&lt;P&gt;, ProcessorInfo&lt;P&gt;&gt; config, P processor, T semanticElement, ProcessorInfo&lt;P&gt; sourceProcessorInfo, T sourceSemanticElement) {
+<span class="nc" id="L310">		String value = getPropertyValue(config.getElement(), getSourceReferencePropertyName());</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">		if (org.nasdanika.common.Util.isBlank(value)) {</span>
+<span class="nc" id="L312">			return null;</span>
+		}
+<span class="nc" id="L314">		EClass eClass = semanticElement.eClass();</span>
+<span class="nc" id="L315">		EStructuralFeature ref = eClass.getEStructuralFeature(value);</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">		if (ref instanceof EReference) {</span>
+<span class="nc" id="L317">			return (EReference) ref;</span>
+		}
+<span class="nc" id="L319">		throw new ConfigurationException(&quot;Reference '&quot; + value + &quot;' not found in &quot; + eClass.getName() + &quot; &quot; + eClass.getEPackage().getNsURI(), getMarked(config));</span>
+	}
+	
+	protected String getSourceInjectorPropertyName() {
+<span class="nc" id="L323">		return &quot;source-injector&quot;;</span>
+	}
+	
+	@Override
+	protected void setSource(ConnectionProcessorConfig&lt;P, ProcessorInfo&lt;P&gt;, ProcessorInfo&lt;P&gt;&gt; config, P processor,	ProcessorInfo&lt;P&gt; sourceProcessorInfo, ProgressMonitor progressMonitor) {
+<span class="nc" id="L328">		super.setSource(config, processor, sourceProcessorInfo, progressMonitor);</span>
+<span class="nc" id="L329">		String expr = getPropertyValue(config.getElement(), getSourceInjectorPropertyName());</span>
+<span class="nc" id="L330">		P sourceProcessor = sourceProcessorInfo.getProcessor();</span>
+<span class="nc bnc" id="L331" title="All 6 branches missed.">		if (!org.nasdanika.common.Util.isBlank(expr) &amp;&amp; processor != null &amp;&amp; sourceProcessor != null) {</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">			for (T semanticElement: processor.getSemanticElements()) {</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">				for (T sourceSemanticElement: sourceProcessor.getSemanticElements()) {</span>
+<span class="nc" id="L334">					ExpressionParser parser = new SpelExpressionParser();</span>
+<span class="nc" id="L335">					Expression exp = parser.parseExpression(expr);</span>
+<span class="nc" id="L336">					EvaluationContext evaluationContext = createEvaluationContext();</span>
+<span class="nc" id="L337">					evaluationContext.setVariable(&quot;config&quot;, config);</span>
+<span class="nc" id="L338">					evaluationContext.setVariable(&quot;element&quot;, config.getElement());</span>
+<span class="nc" id="L339">					evaluationContext.setVariable(&quot;sourceProcessor&quot;, sourceProcessor);</span>
+<span class="nc" id="L340">					evaluationContext.setVariable(&quot;sourceSemanticElement&quot;, sourceSemanticElement);</span>
+<span class="nc" id="L341">					evaluationContext.setVariable(&quot;sourceConfig&quot;, sourceProcessorInfo.getConfig());			</span>
+<span class="nc" id="L342">					exp.getValue(evaluationContext, semanticElement);					</span>
+<span class="nc" id="L343">				}</span>
+<span class="nc" id="L344">			}</span>
+		}
+<span class="nc" id="L346">	}</span>
+	
+	// Target
+	protected String getTargetReferencePropertyName() {
+<span class="nc" id="L350">		return &quot;target-reference&quot;;</span>
+	}
+
+	@Override
+	protected EReference getTargetReference(ConnectionProcessorConfig&lt;P, ProcessorInfo&lt;P&gt;, ProcessorInfo&lt;P&gt;&gt; config, P processor, T semanticElement, ProcessorInfo&lt;P&gt; targetProcessorInfo, T targetSemanticElement) {
+<span class="nc" id="L355">		String value = getPropertyValue(config.getElement(), getTargetReferencePropertyName());</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">		if (org.nasdanika.common.Util.isBlank(value)) {</span>
+<span class="nc" id="L357">			return null;</span>
+		}
+<span class="nc" id="L359">		EClass eClass = semanticElement.eClass();</span>
+<span class="nc" id="L360">		EStructuralFeature ref = eClass.getEStructuralFeature(value);</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">		if (ref instanceof EReference) {</span>
+<span class="nc" id="L362">			return (EReference) ref;</span>
+		}
+<span class="nc" id="L364">		throw new ConfigurationException(&quot;Reference '&quot; + value + &quot;' not found in &quot; + eClass.getName() + &quot; &quot; + eClass.getEPackage().getNsURI(), getMarked(config));</span>
+	}
+	
+	protected String getTargetInjectorPropertyName() {
+<span class="nc" id="L368">		return &quot;target-injector&quot;;</span>
+	}
+	
+	@Override
+	protected void setTarget(ConnectionProcessorConfig&lt;P, ProcessorInfo&lt;P&gt;, ProcessorInfo&lt;P&gt;&gt; config, P processor, ProcessorInfo&lt;P&gt; targetProcessorInfo, ProgressMonitor progressMonitor) {
+<span class="nc" id="L373">		super.setTarget(config, processor, targetProcessorInfo, progressMonitor);		</span>
+<span class="nc" id="L374">		String expr = getPropertyValue(config.getElement(), getTargetInjectorPropertyName());</span>
+<span class="nc" id="L375">		P targetProcessor = targetProcessorInfo.getProcessor();</span>
+<span class="nc bnc" id="L376" title="All 6 branches missed.">		if (!org.nasdanika.common.Util.isBlank(expr) &amp;&amp; processor != null &amp;&amp; targetProcessor != null) {</span>
+<span class="nc bnc" id="L377" title="All 2 branches missed.">			for (T semanticElement: processor.getSemanticElements()) {</span>
+<span class="nc bnc" id="L378" title="All 2 branches missed.">				for (T targetSemanticElement: targetProcessor.getSemanticElements()) {</span>
+<span class="nc" id="L379">					ExpressionParser parser = new SpelExpressionParser();</span>
+<span class="nc" id="L380">					Expression exp = parser.parseExpression(expr);</span>
+<span class="nc" id="L381">					EvaluationContext evaluationContext = createEvaluationContext();</span>
+<span class="nc" id="L382">					evaluationContext.setVariable(&quot;config&quot;, config);</span>
+<span class="nc" id="L383">					evaluationContext.setVariable(&quot;element&quot;, config.getElement());</span>
+<span class="nc" id="L384">					evaluationContext.setVariable(&quot;targetProcessor&quot;, targetProcessor);</span>
+<span class="nc" id="L385">					evaluationContext.setVariable(&quot;targetSemanticElement&quot;, targetSemanticElement);</span>
+<span class="nc" id="L386">					evaluationContext.setVariable(&quot;targetConfig&quot;, targetProcessorInfo.getConfig());			</span>
+<span class="nc" id="L387">					exp.getValue(evaluationContext, semanticElement);</span>
+<span class="nc" id="L388">				}</span>
+<span class="nc" id="L389">			}</span>
+		}
+<span class="nc" id="L391">	}</span>
+	
+	// Incoming
+	protected String getIncomingReferencePropertyName() {
+<span class="nc" id="L395">		return &quot;incoming-reference&quot;;</span>
+	}
+	
+	@Override
+	protected EReference getIncomingReference(NodeProcessorConfig&lt;P, ProcessorInfo&lt;P&gt;, ProcessorInfo&lt;P&gt;&gt; config, P processor, T semanticElement, Connection connection, ProcessorInfo&lt;P&gt; incomingProcessorInfo, T incomingSemanticElement) {
+<span class="nc" id="L400">		String value = getPropertyValue(connection, getIncomingReferencePropertyName());</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">		if (org.nasdanika.common.Util.isBlank(value)) {</span>
+<span class="nc" id="L402">			return null;</span>
+		}
+<span class="nc" id="L404">		EClass eClass = semanticElement.eClass();</span>
+<span class="nc" id="L405">		EStructuralFeature ref = eClass.getEStructuralFeature(value);</span>
+<span class="nc bnc" id="L406" title="All 2 branches missed.">		if (ref instanceof EReference) {</span>
+<span class="nc" id="L407">			return (EReference) ref;</span>
+		}
+<span class="nc" id="L409">		throw new ConfigurationException(&quot;Reference '&quot; + value + &quot;' not found in &quot; + eClass.getName() + &quot; &quot; + eClass.getEPackage().getNsURI(), getMarked(config));</span>
+	}
+	
+	protected String getIncomingInjectorPropertyName() {
+<span class="nc" id="L413">		return &quot;incoming-injector&quot;;</span>
+	}
+	
+	@Override
+	protected void setIncoming(NodeProcessorConfig&lt;P, ProcessorInfo&lt;P&gt;, ProcessorInfo&lt;P&gt;&gt; config, P processor,	Connection connection, ProcessorInfo&lt;P&gt; incomingProcessorInfo, ProgressMonitor progressMonitor) {
+<span class="nc" id="L418">		super.setIncoming(config, processor, connection, incomingProcessorInfo, progressMonitor);</span>
+<span class="nc" id="L419">		String expr = getPropertyValue(connection, getIncomingInjectorPropertyName());</span>
+<span class="nc" id="L420">		P incomingProcessor = incomingProcessorInfo.getProcessor();</span>
+<span class="nc bnc" id="L421" title="All 6 branches missed.">		if (!org.nasdanika.common.Util.isBlank(expr) &amp;&amp; processor != null &amp;&amp; incomingProcessor != null) {</span>
+<span class="nc bnc" id="L422" title="All 2 branches missed.">			for (T semanticElement: processor.getSemanticElements()) {</span>
+<span class="nc bnc" id="L423" title="All 2 branches missed.">				for (T incomingSemanticElement: incomingProcessor.getSemanticElements()) {</span>
+<span class="nc" id="L424">					ExpressionParser parser = new SpelExpressionParser();</span>
+<span class="nc" id="L425">					Expression exp = parser.parseExpression(expr);</span>
+<span class="nc" id="L426">					EvaluationContext evaluationContext = createEvaluationContext();</span>
+<span class="nc" id="L427">					evaluationContext.setVariable(&quot;config&quot;, config);</span>
+<span class="nc" id="L428">					evaluationContext.setVariable(&quot;element&quot;, config.getElement());</span>
+<span class="nc" id="L429">					evaluationContext.setVariable(&quot;connection&quot;, connection);</span>
+<span class="nc" id="L430">					evaluationContext.setVariable(&quot;incomingProcessor&quot;, incomingProcessor);</span>
+<span class="nc" id="L431">					evaluationContext.setVariable(&quot;incomingSemanticElement&quot;, incomingSemanticElement);</span>
+<span class="nc" id="L432">					evaluationContext.setVariable(&quot;incomingConfig&quot;, incomingProcessorInfo.getConfig());			</span>
+<span class="nc" id="L433">					exp.getValue(evaluationContext, semanticElement);</span>
+<span class="nc" id="L434">				}</span>
+<span class="nc" id="L435">			}</span>
+		}
+<span class="nc" id="L437">	}</span>
+	
+	// Outgoing
+	protected String getOutgoingReferencePropertyName() {
+<span class="nc" id="L441">		return &quot;outgoing-reference&quot;;</span>
+	}
+	
+	@Override
+	protected EReference getOutgoingReference(NodeProcessorConfig&lt;P, ProcessorInfo&lt;P&gt;, ProcessorInfo&lt;P&gt;&gt; config, P processor, T semanticElement, Connection connection, ProcessorInfo&lt;P&gt; outgoingProcessorInfo, T outgoingSemanticElement) {
+<span class="nc" id="L446">		String value = getPropertyValue(connection, getOutgoingReferencePropertyName());</span>
+<span class="nc bnc" id="L447" title="All 2 branches missed.">		if (org.nasdanika.common.Util.isBlank(value)) {</span>
+<span class="nc" id="L448">			return null;</span>
+		}
+<span class="nc" id="L450">		EClass eClass = semanticElement.eClass();</span>
+<span class="nc" id="L451">		EStructuralFeature ref = eClass.getEStructuralFeature(value);</span>
+<span class="nc bnc" id="L452" title="All 2 branches missed.">		if (ref instanceof EReference) {</span>
+<span class="nc" id="L453">			return (EReference) ref;</span>
+		}
+<span class="nc" id="L455">		throw new ConfigurationException(&quot;Reference '&quot; + value + &quot;' not found in &quot; + eClass.getName() + &quot; &quot; + eClass.getEPackage().getNsURI(), getMarked(config));</span>
+	}
+	
+	protected String getOutgoingInjectorPropertyName() {
+<span class="nc" id="L459">		return &quot;outgoing-injector&quot;;</span>
+	}
+	
+	@Override
+	protected void setOutgoing(NodeProcessorConfig&lt;P, ProcessorInfo&lt;P&gt;, ProcessorInfo&lt;P&gt;&gt; config, P processor, Connection connection, ProcessorInfo&lt;P&gt; outgoingProcessorInfo, ProgressMonitor progressMonitor) {
+<span class="nc" id="L464">		super.setOutgoing(config, processor, connection, outgoingProcessorInfo, progressMonitor);		</span>
+<span class="nc" id="L465">		String expr = getPropertyValue(connection, getOutgoingInjectorPropertyName());</span>
+<span class="nc" id="L466">		P outgoingProcessor = outgoingProcessorInfo.getProcessor();</span>
+<span class="nc bnc" id="L467" title="All 6 branches missed.">		if (!org.nasdanika.common.Util.isBlank(expr) &amp;&amp; processor != null &amp;&amp; outgoingProcessor != null) {</span>
+<span class="nc bnc" id="L468" title="All 2 branches missed.">			for (T semanticElement: processor.getSemanticElements()) {</span>
+<span class="nc bnc" id="L469" title="All 2 branches missed.">				for (T outgoingSemanticElement: outgoingProcessor.getSemanticElements()) {</span>
+<span class="nc" id="L470">					ExpressionParser parser = new SpelExpressionParser();</span>
+<span class="nc" id="L471">					Expression exp = parser.parseExpression(expr);</span>
+<span class="nc" id="L472">					EvaluationContext evaluationContext = createEvaluationContext();</span>
+<span class="nc" id="L473">					evaluationContext.setVariable(&quot;config&quot;, config);</span>
+<span class="nc" id="L474">					evaluationContext.setVariable(&quot;element&quot;, config.getElement());</span>
+<span class="nc" id="L475">					evaluationContext.setVariable(&quot;connection&quot;, connection);</span>
+<span class="nc" id="L476">					evaluationContext.setVariable(&quot;outgoingProcessor&quot;, outgoingProcessor);</span>
+<span class="nc" id="L477">					evaluationContext.setVariable(&quot;outgoingSemanticElement&quot;, outgoingSemanticElement);</span>
+<span class="nc" id="L478">					evaluationContext.setVariable(&quot;outgoingConfig&quot;, outgoingProcessorInfo.getConfig());			</span>
+<span class="nc" id="L479">					exp.getValue(evaluationContext, semanticElement);</span>
+<span class="nc" id="L480">				}</span>
+<span class="nc" id="L481">			}</span>
+		}
+<span class="nc" id="L483">	}</span>
+		
+	// Children
+	
+	/**
+	 * Value of child references property shall be a YAML map with reference names as keys and boolean Spel expressions as values. 
+	 * @return
+	 */
+	protected String getChildReferencesPropertyName() {
+<span class="nc" id="L492">		return &quot;child-references&quot;;</span>
+	}
+	
+	@Override
+	protected EReference getChildReference(ProcessorConfig&lt;P&gt; config, T semanticElement, Element child,	ProcessorInfo&lt;P&gt; childProcessorInfo, T semanticChild) {
+<span class="nc bnc" id="L497" title="All 2 branches missed.">		if (config == null) {</span>
+<span class="nc" id="L498">			return null;</span>
+		}
+<span class="nc" id="L500">		String value = getPropertyValue(config.getElement(), getChildReferencesPropertyName());</span>
+<span class="nc bnc" id="L501" title="All 2 branches missed.">		if (org.nasdanika.common.Util.isBlank(value)) {</span>
+<span class="nc" id="L502">			return null;</span>
+		}
+<span class="nc" id="L504">		Yaml yaml = new Yaml();</span>
+<span class="nc" id="L505">		Object yamlValue = yaml.load(value);</span>
+<span class="nc bnc" id="L506" title="All 2 branches missed.">		if (yamlValue instanceof Map) {</span>
+<span class="nc" id="L507">			Map&lt;?, ?&gt; yamlMap = (Map&lt;?,?&gt;) yamlValue;</span>
+<span class="nc bnc" id="L508" title="All 2 branches missed.">			for (Entry&lt;?, ?&gt; me: yamlMap.entrySet()) {</span>
+<span class="nc" id="L509">				Object key = me.getKey();</span>
+<span class="nc bnc" id="L510" title="All 2 branches missed.">				if (key instanceof String) {</span>
+<span class="nc" id="L511">					Object eValue = me.getValue();</span>
+<span class="nc bnc" id="L512" title="All 2 branches missed.">					if (eValue instanceof String) {</span>
+<span class="nc" id="L513">						ExpressionParser parser = new SpelExpressionParser();</span>
+<span class="nc" id="L514">						Expression exp = parser.parseExpression((String) eValue);</span>
+<span class="nc" id="L515">						EvaluationContext evaluationContext = createEvaluationContext();</span>
+<span class="nc" id="L516">						evaluationContext.setVariable(&quot;parentConfig&quot;, config);</span>
+<span class="nc" id="L517">						evaluationContext.setVariable(&quot;parent&quot;, semanticElement);</span>
+<span class="nc" id="L518">						evaluationContext.setVariable(&quot;parentElement&quot;, config.getElement());</span>
+<span class="nc" id="L519">						evaluationContext.setVariable(&quot;element&quot;, child);</span>
+<span class="nc" id="L520">						evaluationContext.setVariable(&quot;config&quot;, childProcessorInfo.getConfig());</span>
+						try {
+<span class="nc bnc" id="L522" title="All 2 branches missed.">							if (exp.getValue(evaluationContext, childProcessorInfo.getProcessor(), Boolean.class)) {</span>
+<span class="nc" id="L523">								EClass eClass = semanticElement.eClass();</span>
+<span class="nc" id="L524">								EStructuralFeature ref = eClass.getEStructuralFeature((String) key);</span>
+<span class="nc bnc" id="L525" title="All 2 branches missed.">								if (ref instanceof EReference) {</span>
+<span class="nc" id="L526">									return (EReference) ref;</span>
+								}
+<span class="nc" id="L528">								throw new ConfigurationException(&quot;Reference '&quot; + key + &quot;' not found in &quot; + eClass.getName() + &quot; &quot; + eClass.getEPackage().getNsURI(), getMarked(config));</span>
+							}
+<span class="nc" id="L530">						} catch (EvaluationException e) {</span>
+							// NOP - continue
+<span class="nc" id="L532">						}</span>
+<span class="nc" id="L533">					} else {</span>
+<span class="nc" id="L534">						throw new IllegalArgumentException(getChildReferencesPropertyName() + &quot; map values shall be strings, got &quot; + eValue);						</span>
+					}
+<span class="nc" id="L536">				} else {</span>
+<span class="nc" id="L537">					throw new IllegalArgumentException(getChildReferencesPropertyName() + &quot; map keys shall be strings, got &quot; + key);</span>
+				}
+<span class="nc" id="L539">			}						</span>
+		}
+<span class="nc" id="L541">		throw new IllegalArgumentException(getChildReferencesPropertyName() + &quot; value shall be a YAML map, got &quot; + yamlValue);</span>
+	}
+	
+	protected String getChildInjectorsPropertyName() {
+<span class="nc" id="L545">		return &quot;child-injectors&quot;;</span>
+	}
+	
+	@Override
+	protected void setChildren(ProcessorConfig&lt;P&gt; config, P processor, Map&lt;Element, ProcessorInfo&lt;P&gt;&gt; children, ProgressMonitor progressMonitor) {
+<span class="nc" id="L550">		super.setChildren(config, processor, children, progressMonitor);</span>
+<span class="nc bnc" id="L551" title="All 4 branches missed.">		if (config != null &amp;&amp; processor != null) {</span>
+<span class="nc" id="L552">			String expr = getPropertyValue(config.getElement(), getChildInjectorsPropertyName());</span>
+<span class="nc bnc" id="L553" title="All 2 branches missed.">			if (!org.nasdanika.common.Util.isBlank(expr)) {</span>
+<span class="nc bnc" id="L554" title="All 2 branches missed.">				for (T semanticElement: processor.getSemanticElements()) {</span>
+<span class="nc" id="L555">					ExpressionParser parser = new SpelExpressionParser();</span>
+<span class="nc" id="L556">					Expression exp = parser.parseExpression(expr);</span>
+<span class="nc" id="L557">					EvaluationContext evaluationContext = createEvaluationContext();</span>
+<span class="nc" id="L558">					evaluationContext.setVariable(&quot;config&quot;, config);</span>
+<span class="nc" id="L559">					evaluationContext.setVariable(&quot;element&quot;, config.getElement());</span>
+<span class="nc" id="L560">					evaluationContext.setVariable(&quot;children&quot;, children);</span>
+<span class="nc" id="L561">					exp.getValue(evaluationContext, semanticElement);</span>
+<span class="nc" id="L562">				}</span>
+			}
+		}
+<span class="nc" id="L565">	}</span>
+	
+	// Registry
+	protected String getRegistryReferencesPropertyName() {
+<span class="nc" id="L569">		return &quot;registry-references&quot;;</span>
+	}	
+	
+	@Override
+	protected EReference getRegistryReference(ProcessorConfig&lt;P&gt; config, P processor, T semanticElement, Element registryElement, ProcessorInfo&lt;P&gt; registryElementProcessorInfo, T registrySemanticElement) {		
+<span class="nc bnc" id="L574" title="All 2 branches missed.">		if (registrySemanticElement == null) {</span>
+<span class="nc" id="L575">			return null;</span>
+		}
+		
+<span class="nc" id="L578">		String value = getPropertyValue(config.getElement(), getRegistryReferencesPropertyName());</span>
+<span class="nc bnc" id="L579" title="All 2 branches missed.">		if (org.nasdanika.common.Util.isBlank(value)) {</span>
+<span class="nc" id="L580">			return null;</span>
+		}
+<span class="nc" id="L582">		Yaml yaml = new Yaml();</span>
+<span class="nc" id="L583">		Object yamlValue = yaml.load(value);</span>
+<span class="nc bnc" id="L584" title="All 2 branches missed.">		if (yamlValue instanceof Map) {</span>
+<span class="nc" id="L585">			Map&lt;?, ?&gt; yamlMap = (Map&lt;?,?&gt;) yamlValue;</span>
+<span class="nc bnc" id="L586" title="All 2 branches missed.">			for (Entry&lt;?, ?&gt; me: yamlMap.entrySet()) {</span>
+<span class="nc" id="L587">				Object key = me.getKey();</span>
+<span class="nc bnc" id="L588" title="All 2 branches missed.">				if (key instanceof String) {</span>
+<span class="nc" id="L589">					Object eValue = me.getValue();</span>
+<span class="nc bnc" id="L590" title="All 2 branches missed.">					if (eValue instanceof String) {</span>
+<span class="nc" id="L591">						ExpressionParser parser = new SpelExpressionParser();</span>
+<span class="nc" id="L592">						Expression exp = parser.parseExpression((String) eValue);</span>
+<span class="nc" id="L593">						EvaluationContext evaluationContext = createEvaluationContext();</span>
+<span class="nc" id="L594">						evaluationContext.setVariable(&quot;config&quot;, config);</span>
+<span class="nc" id="L595">						evaluationContext.setVariable(&quot;element&quot;, config.getElement());</span>
+<span class="nc" id="L596">						evaluationContext.setVariable(&quot;registryElement&quot;, registryElement);</span>
+<span class="nc" id="L597">						evaluationContext.setVariable(&quot;registryConfig&quot;, registryElementProcessorInfo.getConfig());</span>
+<span class="nc" id="L598">						evaluationContext.setVariable(&quot;semanticElement&quot;, semanticElement);</span>
+						try {
+<span class="nc bnc" id="L600" title="All 2 branches missed.">							if (exp.getValue(evaluationContext, registrySemanticElement, Boolean.class)) {</span>
+<span class="nc" id="L601">								EClass eClass = semanticElement.eClass();</span>
+<span class="nc" id="L602">								EStructuralFeature ref = eClass.getEStructuralFeature((String) key);</span>
+<span class="nc bnc" id="L603" title="All 2 branches missed.">								if (ref instanceof EReference) {</span>
+<span class="nc" id="L604">									return (EReference) ref;</span>
+								}
+<span class="nc" id="L606">								throw new ConfigurationException(&quot;Reference '&quot; + key + &quot;' not found in &quot; + eClass.getName() + &quot; &quot; + eClass.getEPackage().getNsURI(), getMarked(config));</span>
+							}
+<span class="nc" id="L608">						} catch (EvaluationException e) {</span>
+							// NOP - continue
+<span class="nc" id="L610">						}</span>
+<span class="nc" id="L611">					} else {</span>
+<span class="nc" id="L612">						throw new IllegalArgumentException(getRegistryReferencesPropertyName() + &quot; map values shall be strings, got &quot; + eValue);						</span>
+					}
+<span class="nc" id="L614">				} else {</span>
+<span class="nc" id="L615">					throw new IllegalArgumentException(getRegistryReferencesPropertyName() + &quot; map keys shall be strings, got &quot; + key);</span>
+				}
+<span class="nc" id="L617">			}						</span>
+		}
+<span class="nc" id="L619">		throw new IllegalArgumentException(getRegistryReferencesPropertyName() + &quot; value shall be a YAML map, got &quot; + yamlValue);</span>
+	}
+
+	protected String getRegistryInjectorsPropertyName() {
+<span class="nc" id="L623">		return &quot;registry-injectors&quot;;</span>
+	}
+	
+	@Override
+	protected void setRegistry(ProcessorConfig&lt;P&gt; config, P processor, Map&lt;Element, ProcessorInfo&lt;P&gt;&gt; registry, ProgressMonitor progressMonitor) {
+<span class="nc" id="L628">		super.setRegistry(config, processor, registry, progressMonitor);</span>
+<span class="nc" id="L629">		String expr = getPropertyValue(config.getElement(), getRegistryInjectorsPropertyName());</span>
+<span class="nc bnc" id="L630" title="All 4 branches missed.">		if (processor != null &amp;&amp; !org.nasdanika.common.Util.isBlank(expr)) {</span>
+<span class="nc bnc" id="L631" title="All 2 branches missed.">			for (T semanticElement: processor.getSemanticElements()) {</span>
+<span class="nc" id="L632">				ExpressionParser parser = new SpelExpressionParser();</span>
+<span class="nc" id="L633">				Expression exp = parser.parseExpression(expr);</span>
+<span class="nc" id="L634">				EvaluationContext evaluationContext = createEvaluationContext();</span>
+<span class="nc" id="L635">				evaluationContext.setVariable(&quot;config&quot;, config);</span>
+<span class="nc" id="L636">				evaluationContext.setVariable(&quot;element&quot;, config.getElement());</span>
+<span class="nc" id="L637">				evaluationContext.setVariable(&quot;registry&quot;, registry);</span>
+<span class="nc" id="L638">				exp.getValue(evaluationContext, semanticElement);</span>
+<span class="nc" id="L639">			}</span>
+		}								
+<span class="nc" id="L641">	}	</span>
+
+	protected String getLinkPagePropertyName() {
+<span class="nc" id="L644">		return &quot;link-page&quot;;</span>
+	}	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

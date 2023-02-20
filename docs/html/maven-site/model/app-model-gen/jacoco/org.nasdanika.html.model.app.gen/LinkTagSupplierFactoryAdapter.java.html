@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LinkTagSupplierFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Application Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.app.gen</a> &gt; <span class="el_source">LinkTagSupplierFactoryAdapter.java</span></div><h1>LinkTagSupplierFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.app.gen;
+
+import java.util.List;
+
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.ExecutionException;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.Util;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.Event;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
+import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.Link;
+import org.nasdanika.html.model.html.gen.ContentConsumer;
+
+public class LinkTagSupplierFactoryAdapter&lt;M extends Link&gt; extends LabelTagSupplierFactoryAdapter&lt;M&gt; {
+	
+	public LinkTagSupplierFactoryAdapter(M link, AdapterFactory adapterFactory) {
+<span class="fc" id="L23">		super(link, adapterFactory);</span>
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">		if (link instanceof Action) {</span>
+<span class="nc" id="L25">			throw new IllegalArgumentException(&quot;Actions must be converted to links first&quot;);</span>
+		}
+<span class="fc" id="L27">	}</span>
+	
+	@Override
+	protected Tag createTextAndIconTag(Tag icon, String text, Tag modal, Context context, ProgressMonitor progressMonitor) {
+<span class="fc" id="L31">		M semanticElement = getTarget();</span>
+<span class="fc" id="L32">		HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);</span>
+
+<span class="fc" id="L34">		Tag anchor = htmlFactory.tag(TagName.a);</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">		if (icon != null) {</span>
+<span class="fc" id="L36">			icon.addClass(&quot;nsd-app-label-icon&quot;);</span>
+<span class="fc" id="L37">			anchor.accept(icon);</span>
+		}
+<span class="fc bfc" id="L39" title="All 2 branches covered.">		if (!Util.isBlank(text)) {</span>
+<span class="fc" id="L40">			anchor.accept(text);</span>
+		}
+		
+<span class="fc bfc" id="L43" title="All 2 branches covered.">		if (!semanticElement.isDisabled()) {</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">			if (modal != null) {</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">				if (modal.getId() == null) {</span>
+<span class="fc" id="L46">					modal.id(htmlFactory.nextId());</span>
+				}
+<span class="fc" id="L48">				anchor.attribute(&quot;data-toggle&quot;, &quot;modal&quot;);</span>
+<span class="fc" id="L49">				anchor.attribute(&quot;data-target&quot;, &quot;#&quot; + modal.getId());</span>
+<span class="fc" id="L50">				anchor.attribute(&quot;href&quot;, &quot;#&quot;);</span>
+	
+				@SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L53">				List&lt;Object&gt; pageBody = context.get(org.nasdanika.html.model.html.gen.PageSupplierFactoryAdapter.PAGE_BODY_PROPERTY, List.class);</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">				if (pageBody != null) {</span>
+<span class="fc" id="L55">					pageBody.add(modal);</span>
+				} else {
+<span class="nc" id="L57">					ContentConsumer contentConsumer = context.get(ContentConsumer.class);</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">					if (contentConsumer == null) {</span>
+<span class="nc" id="L59">						throw new ExecutionException(&quot;Cannot contribute a modal - there is neither page body nor content consumer in the context&quot;);</span>
+					}
+<span class="nc" id="L61">					contentConsumer.accept(modal);</span>
+				}
+<span class="fc" id="L63">			} else {	</span>
+<span class="fc" id="L64">				String name = context.interpolateToString(semanticElement.getName());</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">				if (!Util.isBlank(name)) {</span>
+<span class="fc" id="L66">					anchor.attribute(&quot;name&quot;, name);</span>
+				} else {				
+<span class="fc" id="L68">					String location = context.interpolateToString(semanticElement.getLocation());</span>
+<span class="fc" id="L69">					String confirmation = context.interpolateToString(semanticElement.getConfirmation());</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">					if (!Util.isBlank(location)) {</span>
+<span class="fc" id="L71">						anchor.attribute(&quot;href&quot;, location);					</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">						if (!Util.isBlank(confirmation)) {</span>
+<span class="fc" id="L73">							anchor.on(Event.click, &quot;return confirm('&quot; + confirmation + &quot;');&quot;);</span>
+						}
+<span class="fc" id="L75">						String target = context.interpolateToString(semanticElement.getTarget());</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">						if (!Util.isBlank(target)) {</span>
+<span class="nc" id="L77">							anchor.attribute(&quot;target&quot;, target);</span>
+						}
+<span class="fc" id="L79">					} else { </span>
+<span class="fc" id="L80">						String script = context.interpolateToString(semanticElement.getScript());</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">						if (!Util.isBlank(script)) {</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">							if (!Util.isBlank(confirmation)) {</span>
+<span class="nc" id="L83">								script = &quot;if (confirm('&quot; + confirmation + &quot;')) { &quot;+ script +&quot; } return false;&quot;;</span>
+							}
+<span class="fc" id="L85">							anchor.on(Event.click, script);</span>
+<span class="fc" id="L86">							anchor.style(&quot;cursor&quot;, &quot;pointer&quot;);</span>
+<span class="fc" id="L87">							anchor.attribute(&quot;href&quot;, &quot;#&quot;);</span>
+						} 
+					}
+				}
+			}
+		}
+		
+<span class="fc" id="L94">		return anchor;</span>
+	}
+
+	@Override
+	protected SupplierFactory&lt;Tag&gt; getModalFactory() {
+<span class="fc" id="L99">		M semanticElement = getTarget();</span>
+<span class="fc" id="L100">		org.nasdanika.html.model.bootstrap.Modal modal = semanticElement.getModal();</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">		SupplierFactory&lt;Tag&gt; modalFactory = modal == null ? SupplierFactory.empty() : EObjectAdaptable.adaptToSupplierFactoryNonNull(modal, Tag.class);</span>
+<span class="fc" id="L102">		return modalFactory;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

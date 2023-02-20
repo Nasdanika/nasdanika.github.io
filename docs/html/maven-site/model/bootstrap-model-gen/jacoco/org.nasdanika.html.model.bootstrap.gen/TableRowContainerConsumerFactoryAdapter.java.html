@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TableRowContainerConsumerFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Bootstrap Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.bootstrap.gen</a> &gt; <span class="el_source">TableRowContainerConsumerFactoryAdapter.java</span></div><h1>TableRowContainerConsumerFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.bootstrap.gen;
+
+import java.util.List;
+
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.util.EList;
+import org.nasdanika.common.CollectionCompoundConsumerFactory;
+import org.nasdanika.common.ConsumerFactory;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.Function;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.model.bootstrap.TableRow;
+
+public class TableRowContainerConsumerFactoryAdapter&lt;M extends org.nasdanika.html.model.bootstrap.TableRowContainer, T extends org.nasdanika.html.bootstrap.RowContainer&lt;?,?&gt;&gt; extends BootstrapElementConsumerFactoryAdapter&lt;M,T&gt; {
+
+	public TableRowContainerConsumerFactoryAdapter(M tableRowContainer, AdapterFactory adapterFactory) {
+<span class="fc" id="L18">		super(tableRowContainer, adapterFactory);</span>
+<span class="fc" id="L19">	}</span>
+	
+	@Override
+	protected Function&lt;HTMLElement&lt;?&gt;, HTMLElement&lt;?&gt;&gt; createConfigureFunction(Context context) {
+<span class="fc" id="L23">		EList&lt;TableRow&gt; rows = getTarget().getRows();</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">		if (rows.isEmpty()) {</span>
+<span class="fc" id="L25">			return super.createConfigureFunction(context);</span>
+		}
+	
+		@SuppressWarnings(&quot;rawtypes&quot;)
+<span class="fc" id="L29">		List&lt;ConsumerFactory&lt;HTMLElement&gt;&gt; rowConsumers = EObjectAdaptable.adaptToConsumerFactoryNonNull(rows, org.nasdanika.html.HTMLElement.class);</span>
+<span class="fc" id="L30">		CollectionCompoundConsumerFactory&lt;HTMLElement&lt;?&gt;&gt; rowsConsumerFactory = new CollectionCompoundConsumerFactory&lt;&gt;(&quot;Creating rows&quot;, rowConsumers);			</span>
+<span class="fc" id="L31">		return super.createConfigureFunction(context).then(rowsConsumerFactory.asFunctionFactory().create(context));</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

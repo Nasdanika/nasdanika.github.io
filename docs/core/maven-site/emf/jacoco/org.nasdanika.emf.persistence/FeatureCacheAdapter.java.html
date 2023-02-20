@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FeatureCacheAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika EMF</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.emf.persistence</a> &gt; <span class="el_source">FeatureCacheAdapter.java</span></div><h1>FeatureCacheAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.emf.persistence;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.BiFunction;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.notify.impl.NotificationImpl;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+
+/**
+ * Caches computed feature values. Clears the cache on notifications.
+ * @author Pavel
+ *
+ */
+<span class="nc" id="L19">public class FeatureCacheAdapter extends AdapterImpl implements FeatureCache {</span>
+	
+<span class="nc" id="L21">	private static AtomicLong calls = new AtomicLong();</span>
+<span class="nc" id="L22">	private static AtomicLong misses = new AtomicLong();</span>
+<span class="nc" id="L23">	private static AtomicLong computeTime = new AtomicLong();</span>
+	
+	public static long getCalls() {
+<span class="nc" id="L26">		return calls.get();</span>
+	}
+
+	public static long getMisses() {
+<span class="nc" id="L30">		return misses.get();</span>
+	}
+
+	public static long getComputeTime() {
+<span class="nc" id="L34">		return computeTime.get();</span>
+	}
+
+	/**
+	 * Identity based notification to clear all caches.
+	 */
+<span class="nc" id="L40">	public static final Notification CLEAR_CACHE = new NotificationImpl(Notification.EVENT_TYPE_COUNT + 1, null, null);</span>
+	
+<span class="nc" id="L42">	private Map&lt;EStructuralFeature, Object&gt; cache = new HashMap&lt;&gt;();</span>
+		
+	@Override
+	public boolean isAdapterForType(Object type) {
+<span class="nc bnc" id="L46" title="All 2 branches missed.">		return FeatureCache.class == type;</span>
+	}
+	
+	// TODO - hit/miss ratio
+
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public &lt;F extends EStructuralFeature, T&gt; T get(F feature, BiFunction&lt;EObject, F, T&gt; computer) {
+<span class="nc" id="L54">		calls.incrementAndGet();</span>
+<span class="nc" id="L55">		return (T) cache.computeIfAbsent(feature, f -&gt; {</span>
+<span class="nc" id="L56">			misses.incrementAndGet();</span>
+<span class="nc" id="L57">			long start = System.nanoTime();</span>
+<span class="nc" id="L58">			T result = computer.apply((EObject) getTarget(), (F) f);</span>
+<span class="nc" id="L59">			computeTime.addAndGet(System.nanoTime() - start);</span>
+<span class="nc" id="L60">			return result;</span>
+		});
+	}
+	
+	@Override
+	public void notifyChanged(Notification msg) {
+<span class="nc" id="L66">		super.notifyChanged(msg);</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">		if (msg == CLEAR_CACHE) {</span>
+<span class="nc" id="L68">			cache.clear();</span>
+		}
+<span class="nc" id="L70">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

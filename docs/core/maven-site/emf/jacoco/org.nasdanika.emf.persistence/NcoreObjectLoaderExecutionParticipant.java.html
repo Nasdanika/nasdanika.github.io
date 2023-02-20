@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NcoreObjectLoaderExecutionParticipant.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika EMF</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.emf.persistence</a> &gt; <span class="el_source">NcoreObjectLoaderExecutionParticipant.java</span></div><h1>NcoreObjectLoaderExecutionParticipant.java</h1><pre class="source lang-java linenums">package org.nasdanika.emf.persistence;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.nasdanika.common.Context;
+import org.nasdanika.ncore.NcorePackage;
+
+/**
+ * Registers {@link NcorePackage} with the {@link ResourceSet}.
+ * @author Pavel
+ *
+ */
+public abstract class NcoreObjectLoaderExecutionParticipant extends ObjectLoaderExecutionParticipant {
+
+	public NcoreObjectLoaderExecutionParticipant(Context context) {
+<span class="nc" id="L19">		super(context);</span>
+<span class="nc" id="L20">	}</span>
+
+	@Override
+	protected Collection&lt;EPackage&gt; getEPackages() {
+<span class="nc" id="L24">		Collection&lt;EPackage&gt; ret = new ArrayList&lt;&gt;(); </span>
+<span class="nc" id="L25">		ret.add(NcorePackage.eINSTANCE);</span>
+<span class="nc" id="L26">		return ret;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

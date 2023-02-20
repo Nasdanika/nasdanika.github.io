@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ContextifiedExecutionParticipant.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">ContextifiedExecutionParticipant.java</span></div><h1>ContextifiedExecutionParticipant.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+public class ContextifiedExecutionParticipant&lt;T extends ExecutionParticipant&gt;  implements ExecutionParticipant {
+	
+	protected Supplier&lt;Context&gt; contextSupplier;
+	private ExecutionParticipantFactory&lt;T&gt; targetFactory;
+	
+	protected T target;
+
+<span class="nc" id="L10">	public ContextifiedExecutionParticipant(Supplier&lt;Context&gt; contextSupplier, ExecutionParticipantFactory&lt;T&gt; targetFactory) {</span>
+<span class="nc" id="L11">		this.contextSupplier = contextSupplier;</span>
+<span class="nc" id="L12">		this.targetFactory = targetFactory;</span>
+<span class="nc" id="L13">	}</span>
+
+	@Override
+	public double size() {
+<span class="nc" id="L17">		return contextSupplier.size() * 2 + 1; // Get target, target op, context op. Scaling target size to 1.</span>
+	}
+
+	@Override
+	public String name() {
+<span class="nc bnc" id="L22" title="All 2 branches missed.">		return target == null ? getClass().getName() : &quot;Contextified &quot;+target.name();</span>
+	}
+	
+	/**
+	 * Create context, create target. Uses context size from the progress monitor. 
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected synchronized T getTarget(ProgressMonitor progressMonitor) {
+<span class="nc bnc" id="L31" title="All 2 branches missed.">		if (target == null) {</span>
+<span class="nc" id="L32">			target = targetFactory.create(contextSupplier.splitAndExecute(progressMonitor));</span>
+		} else {
+<span class="nc" id="L34">			progressMonitor.worked(contextSupplier.size(), &quot;Target was already created&quot;);</span>
+		}
+<span class="nc" id="L36">		return target;</span>
+	}
+	
+	@Override
+	public Diagnostic diagnose(ProgressMonitor progressMonitor) {
+<span class="nc" id="L41">		Diagnostic cd = contextSupplier.splitAndDiagnose(progressMonitor);</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">		if (cd.getStatus() == Status.ERROR) {</span>
+<span class="nc" id="L43">			return cd;</span>
+		}
+		
+		try {
+<span class="nc" id="L47">			return getTarget(progressMonitor).splitAndDiagnose(1, progressMonitor);</span>
+<span class="nc" id="L48">		} catch (Exception e) {</span>
+<span class="nc" id="L49">			return new BasicDiagnostic(Status.ERROR, &quot;Exception creating target: &quot;+e, e);</span>
+		}
+	}
+	
+	@Override
+	public void commit(ProgressMonitor progressMonitor) {
+<span class="nc" id="L55">		getTarget(progressMonitor).splitAndCommit(1, progressMonitor);</span>
+<span class="nc" id="L56">		contextSupplier.splitAndCommit(progressMonitor);</span>
+<span class="nc" id="L57">	}</span>
+	
+	@Override
+	public boolean rollback(ProgressMonitor progressMonitor) {
+<span class="nc" id="L61">		boolean result = getTarget(progressMonitor).splitAndRollback(1, progressMonitor);</span>
+<span class="nc bnc" id="L62" title="All 4 branches missed.">		return contextSupplier.splitAndRollback(progressMonitor) &amp;&amp; result;</span>
+	}
+	
+	@Override
+	public void close() {
+<span class="nc bnc" id="L67" title="All 2 branches missed.">		if (target != null) {</span>
+<span class="nc" id="L68">			target.close();</span>
+		}
+<span class="nc" id="L70">		contextSupplier.close();</span>
+<span class="nc" id="L71">	}</span>
+
+	// ==========================================
+	
+	
+	public static class ContextifiedSupplier&lt;T&gt; extends ContextifiedExecutionParticipant&lt;Supplier&lt;T&gt;&gt; implements Supplier&lt;T&gt; {
+
+		public ContextifiedSupplier(Supplier&lt;Context&gt; contextSupplier, SupplierFactory&lt;T&gt; supplierFactory) {
+<span class="nc" id="L79">			super(contextSupplier, supplierFactory);</span>
+<span class="nc" id="L80">		}</span>
+
+		@Override
+		public T execute(ProgressMonitor progressMonitor) {
+<span class="nc" id="L84">			return getTarget(progressMonitor).execute(progressMonitor.scale(contextSupplier.size() + 1));</span>
+		}
+		
+	}
+	
+	public static class ContextifiedFunction&lt;T,R&gt; extends ContextifiedExecutionParticipant&lt;Function&lt;T,R&gt;&gt; implements Function&lt;T,R&gt; {
+
+		public ContextifiedFunction(Supplier&lt;Context&gt; contextSupplier, FunctionFactory&lt;T,R&gt; functionFactory) {
+<span class="nc" id="L92">			super(contextSupplier, functionFactory);</span>
+<span class="nc" id="L93">		}</span>
+		
+		@Override
+		public R execute(T arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L97">			return getTarget(progressMonitor).execute(arg, progressMonitor.scale(contextSupplier.size() + 1));</span>
+		}
+		
+	}
+	
+	public static class ContextifiedConsumer&lt;T&gt; extends ContextifiedExecutionParticipant&lt;Consumer&lt;T&gt;&gt; implements Consumer&lt;T&gt; {
+
+		public ContextifiedConsumer(Supplier&lt;Context&gt; contextSupplier, ConsumerFactory&lt;T&gt; consumerFactory) {
+<span class="nc" id="L105">			super(contextSupplier, consumerFactory);</span>
+<span class="nc" id="L106">		}</span>
+
+		@Override
+		public void execute(T arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L110">			getTarget(progressMonitor).execute(arg, progressMonitor.scale(contextSupplier.size() + 1));</span>
+<span class="nc" id="L111">		}</span>
+		
+	}
+	
+	public static class ContextifiedCommand extends ContextifiedExecutionParticipant&lt;Command&gt; implements Command {
+
+		public ContextifiedCommand(Supplier&lt;Context&gt; contextSupplier, CommandFactory commandFactory) {
+<span class="nc" id="L118">			super(contextSupplier, commandFactory);</span>
+<span class="nc" id="L119">		}</span>
+
+		@Override
+		public void execute(ProgressMonitor progressMonitor) {
+<span class="nc" id="L123">			getTarget(progressMonitor).execute(progressMonitor.scale(contextSupplier.size() + 1));</span>
+<span class="nc" id="L124">		}</span>
+		
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

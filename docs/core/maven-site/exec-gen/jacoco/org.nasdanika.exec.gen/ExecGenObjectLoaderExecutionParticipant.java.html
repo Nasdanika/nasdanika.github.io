@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExecGenObjectLoaderExecutionParticipant.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Exec Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.gen</a> &gt; <span class="el_source">ExecGenObjectLoaderExecutionParticipant.java</span></div><h1>ExecGenObjectLoaderExecutionParticipant.java</h1><pre class="source lang-java linenums">package org.nasdanika.exec.gen;
+
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.exec.util.ExecObjectLoaderExecutionParticipant;
+import org.nasdanika.persistence.ObjectLoaderResourceFactory;
+
+/**
+ * {@link YamlLoadingSupplier} for Exec {@link EPackage}s.
+ * Registers exec- loader. 
+ * @author Pavel
+ *
+ */
+public abstract class ExecGenObjectLoaderExecutionParticipant extends ExecObjectLoaderExecutionParticipant {
+
+	public ExecGenObjectLoaderExecutionParticipant(Context context) {
+<span class="fc" id="L19">		super(context);</span>
+<span class="fc" id="L20">	}</span>
+	
+	@Override
+	protected ObjectLoaderResourceFactory createObjectLoaderResorceFactory(ResourceSet resourceSet, ProgressMonitor progressMonitor) {
+<span class="fc" id="L24">		resourceSet.getAdapterFactories().add(new ExecutionParticpantAdapterFactory());</span>
+<span class="fc" id="L25">		return super.createObjectLoaderResorceFactory(resourceSet, progressMonitor);</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

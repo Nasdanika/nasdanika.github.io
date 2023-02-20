@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimpleMutableContext.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">SimpleMutableContext.java</span></div><h1>SimpleMutableContext.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+/**
+ * A simple context context implementation.
+ * This implementation composes {@link Composeable} services into a single service.
+ * 
+ * Also it implements sub-context lookup if property key has one or more slashes (/).
+ * For example, for a property key ``my/important/property`` it will work like explained below:
+ * 
+ * * ``my/important`` property will be looked up. If it is found and is of type {@link Context} then ``property`` will be looked up in the property value and returned if it is not null.
+ * * Otherwise ``my`` property will be looked up. If it is found and is of type Context then ``important/property`` will be looked up in the property value and returned if it is not null.
+ * * And finally ``my/important/property`` key will be looked up in this context.
+ * @author Pavel
+ *
+ */
+public class SimpleMutableContext implements MutableContext {
+	
+<span class="fc" id="L27">	private Map&lt;String, Object&gt; properties = new HashMap&lt;&gt;();</span>
+	
+<span class="fc" id="L29">	private Map&lt;Class&lt;Object&gt;, List&lt;Object&gt;&gt; services = new HashMap&lt;&gt;();</span>
+
+	private Context chain;
+	
+	public SimpleMutableContext() {
+<span class="fc" id="L34">		this(Context.EMPTY_CONTEXT);</span>
+<span class="fc" id="L35">	}</span>
+	
+	/**
+	 * Constructs a new mutable context which falls-back to the chain {@link Context}'s.
+	 * @param chain
+	 */
+<span class="fc" id="L41">	public SimpleMutableContext(Context chain) {</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">		this.chain = chain == null ? Context.EMPTY_CONTEXT : chain;</span>
+<span class="fc" id="L43">	}</span>
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	protected &lt;T&gt; List&lt;T&gt; getServices(Class&lt;T&gt; type) {
+<span class="fc" id="L47">		return (List&lt;T&gt;) services.computeIfAbsent((Class&lt;Object&gt;) type, (serviceType) -&gt; new ArrayList&lt;Object&gt;());</span>
+	}
+
+	/**
+	 * Returns property by key. If a property at a given key is not found, the property key is split by the last slash (``/``)
+	 * and the tail is looked up in the property at the head if the property is {@link Context}, {@link Map}, or {@link List} and the tail can be parsed to an integer.
+	 * For example, if ``my/property`` is not present in properties then ``my`` property will be retrieved and if it is of type Context or Map its ``property`` key will be retrieved.
+	 * Similarly, ``my/property/list/0`` will retrieve ``my/property/list`` and if it is a list then it will return its first element. 
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public Object get(String key) {		
+<span class="fc" id="L59">		Object ret = properties.get(key);</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">		if (ret == null) {</span>
+<span class="fc" id="L61">			ret = chain.get(key);</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">			if (ret != null) {</span>
+<span class="nc" id="L63">				return ret;</span>
+			}
+			
+<span class="fc" id="L66">			int lastSlash = key.lastIndexOf('/');</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">			if (lastSlash == -1) {</span>
+<span class="fc" id="L68">				return null;</span>
+			}
+			
+<span class="fc" id="L71">			Object parentProperty = get(key.substring(0, lastSlash));</span>
+<span class="fc" id="L72">			String subKey = key.substring(lastSlash + 1);</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">			if (parentProperty instanceof Context) {</span>
+<span class="nc" id="L74">				return ((Context) parentProperty).get(subKey);	</span>
+			}
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">			if (parentProperty instanceof Map) {</span>
+<span class="nc" id="L77">				return ((Map&lt;?,?&gt;) parentProperty).get(subKey);</span>
+			}
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">			if (parentProperty instanceof List) {</span>
+				try {
+<span class="nc" id="L81">					int idx = Integer.parseInt(subKey);</span>
+<span class="nc bnc" id="L82" title="All 4 branches missed.">					if (idx &gt;= 0 &amp;&amp; idx &lt; ((List&lt;?&gt;) parentProperty).size()) {</span>
+<span class="nc" id="L83">						return ((List&lt;?&gt;) parentProperty).get(idx);</span>
+					}
+<span class="nc" id="L85">				} catch (NumberFormatException e) {</span>
+					// NOP
+<span class="nc" id="L87">				}</span>
+			}
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">			if (parentProperty instanceof Function) {</span>
+<span class="nc" id="L90">				return ((Function&lt;String, Object&gt;) parentProperty).apply(subKey);</span>
+			}
+			
+<span class="fc" id="L93">			return null;</span>
+			
+		}
+		
+<span class="fc" id="L97">		return ret;</span>
+	}
+
+	/**
+	 * Returns registered services of the type's component type if the type is array, or the first registered service.
+	 */
+	@SuppressWarnings({ &quot;unchecked&quot; })
+	@Override
+	public &lt;T&gt; T get(Class&lt;T&gt; type) {
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (type.isArray()) {</span>
+<span class="nc" id="L107">			List&lt;Object&gt; svcs = new ArrayList&lt;&gt;((List&lt;Object&gt;) getServices(type.getComponentType()));</span>
+<span class="nc" id="L108">			Object chained = chain.get(type); </span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">			if (chained!=null) {</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">				for (int i = 0; i &lt; Array.getLength(chained); ++i) {</span>
+<span class="nc" id="L111">					svcs.add(Array.get(chained, i));</span>
+				}
+			}
+<span class="nc" id="L114">			return (T) svcs.toArray((T[]) Array.newInstance(type.getComponentType(), svcs.size()));</span>
+		}
+		
+<span class="fc bfc" id="L117" title="All 2 branches covered.">		if (Composeable.class.isAssignableFrom(type)) {</span>
+<span class="fc" id="L118">			List&lt;T&gt; svcs = new ArrayList&lt;&gt;(getServices(type));</span>
+<span class="fc" id="L119">			T chained = chain.get(type); </span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">			if (chained!=null) {</span>
+<span class="nc" id="L121">				svcs.add(chained);</span>
+			}
+<span class="fc" id="L123">			return svcs.stream().reduce(Composeable::composer).orElse(null);</span>
+		}
+		
+<span class="fc" id="L126">		List&lt;T&gt; svcs = getServices(type);</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (svcs.isEmpty()) {</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">			if (type.isInstance(this)) {</span>
+<span class="nc" id="L129">				return (T) this;</span>
+			}
+<span class="nc" id="L131">			return chain.get(type);</span>
+		}
+		
+<span class="fc" id="L134">		return svcs.get(0);</span>
+	}
+	
+	/**
+	 * Returns registered services of the type's component type matching the predicate if the type is array, or the first registered service matching the predicate otherwise.
+	 */
+	@SuppressWarnings({ &quot;unchecked&quot; })
+	@Override
+	public &lt;T&gt; T get(Class&lt;T&gt; type, Predicate&lt;? super T&gt; predicate) {
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (type.isArray()) {</span>
+<span class="nc" id="L144">			List&lt;Object&gt; svcs = new ArrayList&lt;Object&gt;((List&lt;Object&gt;) getServices(type.getComponentType()).stream().filter((Predicate&lt;Object&gt;) predicate).collect(Collectors.toList()));</span>
+<span class="nc" id="L145">			Object chained = chain.get(type, predicate); </span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">			if (chained!=null) {</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">				for (int i = 0; i &lt; Array.getLength(chained); ++i) {</span>
+<span class="nc" id="L148">					svcs.add(Array.get(chained, i));</span>
+				}
+			}
+<span class="nc" id="L151">			return (T) svcs.toArray((T[]) Array.newInstance(type.getComponentType(), svcs.size()));</span>
+		}
+				
+<span class="nc bnc" id="L154" title="All 2 branches missed.">		if (Composeable.class.isAssignableFrom(type)) {</span>
+<span class="nc" id="L155">			List&lt;T&gt; svcs = new ArrayList&lt;&gt;(getServices(type).stream().filter(predicate).collect(Collectors.toList()));</span>
+<span class="nc" id="L156">			T chained = chain.get(type, predicate); </span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">			if (chained!=null) {</span>
+<span class="nc" id="L158">				svcs.add(chained);</span>
+			}
+<span class="nc" id="L160">			return svcs.stream().reduce(Composeable::composer).orElse(null);</span>
+		}
+		
+<span class="nc" id="L163">		return getServices(type).stream().filter(predicate).findFirst().orElse(chain.get(type, predicate));</span>
+	}
+	
+	/**
+	 * Sets property value. If the value is an instance of {@link Context} then it will be used in hierarchical lookups, i.e. it
+	 * has the semantics of mounting the context at a particular path. 
+	 * It is different from ``mount()`` because mount returns a new context and the original context does not change.
+	 * @param key
+	 * @param value
+	 */
+	public void put(String key, Object value) {
+<span class="fc" id="L174">		properties.put(key, value);</span>
+<span class="fc" id="L175">	}</span>
+	
+	/**
+	 * Registers a service. Multiple registrations are allowed.
+	 * @param &lt;T&gt;
+	 * @param type
+	 * @param service
+	 */
+	public &lt;T&gt; void register(Class&lt;T&gt; type, T service) {
+<span class="fc" id="L184">		getServices(type).add(service);</span>
+<span class="fc" id="L185">	}	</span>
+	
+	/**
+	 * Unregisters a service.
+	 * @param &lt;T&gt;
+	 * @param type
+	 * @param service
+	 */
+	public &lt;T&gt; void unregister(Class&lt;T&gt; type, T service) {
+<span class="nc" id="L194">		getServices(type).remove(service);</span>
+<span class="nc" id="L195">	}</span>
+
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public &lt;T&gt; void register(Class&lt;T&gt; type, ServiceComputer&lt;? super T&gt; serviceComputer) {
+<span class="fc" id="L200">		services.computeIfAbsent((Class&lt;Object&gt;) type, (serviceType) -&gt; new ArrayList&lt;Object&gt;()).add(serviceComputer);</span>
+<span class="fc" id="L201">	}</span>
+
+	@Override
+	public &lt;T&gt; void unregister(Class&lt;T&gt; type, ServiceComputer&lt;? super T&gt; serviceComputer) {
+<span class="nc" id="L205">		getServices(type).remove(serviceComputer);</span>
+<span class="nc" id="L206">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

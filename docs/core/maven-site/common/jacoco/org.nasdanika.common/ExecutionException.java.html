@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExecutionException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">ExecutionException.java</span></div><h1>ExecutionException.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+/**
+ * Wrapper exception for checked exceptions thrown in methods of {@link ExecutionParticipant}s.
+ * @author Pavel
+ *
+ */
+@SuppressWarnings(&quot;serial&quot;)
+public class ExecutionException extends NasdanikaException {
+	
+	private ExecutionParticipant executionParticipant;
+
+	public ExecutionException(String message) {
+<span class="nc" id="L14">		super(message);</span>
+<span class="nc" id="L15">	}</span>
+
+	public ExecutionException(Throwable cause) {
+<span class="nc" id="L18">		super(cause);</span>
+<span class="nc" id="L19">	}</span>
+
+	public ExecutionException(String message, Throwable cause) {
+<span class="nc" id="L22">		super(message, cause);</span>
+<span class="nc" id="L23">	}</span>
+
+	public ExecutionException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+<span class="nc" id="L26">		super(message, cause, enableSuppression, writableStackTrace);</span>
+<span class="nc" id="L27">	}</span>
+
+	public ExecutionException(String message, ProgressRecorder progressRecorder) {
+<span class="nc" id="L30">		super(message, progressRecorder);</span>
+<span class="nc" id="L31">	}</span>
+
+	public ExecutionException(Throwable cause, ProgressRecorder progressRecorder) {
+<span class="nc" id="L34">		super(cause, progressRecorder);</span>
+<span class="nc" id="L35">	}</span>
+
+	public ExecutionException(String message, Throwable cause, ProgressRecorder progressRecorder) {
+<span class="nc" id="L38">		super(message, cause, progressRecorder);</span>
+<span class="nc" id="L39">	}</span>
+
+	public ExecutionException(String message, ExecutionParticipant executionParticipant) {
+<span class="nc" id="L42">		this(message);</span>
+<span class="nc" id="L43">		this.executionParticipant = executionParticipant;</span>
+<span class="nc" id="L44">	}</span>
+
+	public ExecutionException(Throwable cause, ExecutionParticipant executionParticipant) {
+<span class="nc" id="L47">		this(cause);</span>
+<span class="nc" id="L48">		this.executionParticipant = executionParticipant;</span>
+<span class="nc" id="L49">	}</span>
+
+	public ExecutionException(String message, Throwable cause, ExecutionParticipant executionParticipant) {
+<span class="nc" id="L52">		this(message, cause);</span>
+<span class="nc" id="L53">		this.executionParticipant = executionParticipant;</span>
+<span class="nc" id="L54">	}</span>
+
+	public ExecutionException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, ExecutionParticipant executionParticipant) {
+<span class="nc" id="L57">		this(message, cause, enableSuppression, writableStackTrace);</span>
+<span class="nc" id="L58">		this.executionParticipant = executionParticipant;</span>
+<span class="nc" id="L59">	}</span>
+
+	public ExecutionException(String message, ProgressRecorder progressRecorder, ExecutionParticipant executionParticipant) {
+<span class="nc" id="L62">		this(message, progressRecorder);</span>
+<span class="nc" id="L63">		this.executionParticipant = executionParticipant;</span>
+<span class="nc" id="L64">	}</span>
+
+	public ExecutionException(Throwable cause, ProgressRecorder progressRecorder, ExecutionParticipant executionParticipant) {
+<span class="nc" id="L67">		this(cause, progressRecorder);</span>
+<span class="nc" id="L68">		this.executionParticipant = executionParticipant;</span>
+<span class="nc" id="L69">	}</span>
+
+	public ExecutionException(String message, Throwable cause, ProgressRecorder progressRecorder, ExecutionParticipant executionParticipant) {
+<span class="nc" id="L72">		this(message, cause, progressRecorder);</span>
+<span class="nc" id="L73">		this.executionParticipant = executionParticipant;</span>
+<span class="nc" id="L74">	}</span>
+	
+	public ExecutionParticipant getExecutionParticipant() {
+<span class="nc" id="L77">		return executionParticipant;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

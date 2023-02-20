@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ContentPanelConsumerFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Application Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.app.gen</a> &gt; <span class="el_source">ContentPanelConsumerFactoryAdapter.java</span></div><h1>ContentPanelConsumerFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.app.gen;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.Function;
+import org.nasdanika.common.FunctionFactory;
+import org.nasdanika.common.ListCompoundConsumerFactory;
+import org.nasdanika.common.ListCompoundSupplierFactory;
+import org.nasdanika.common.MapCompoundConsumerFactory;
+import org.nasdanika.common.MapCompoundSupplierFactory;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.RowContainer.Row.Cell;
+import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Breadcrumb;
+import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Container;
+import org.nasdanika.html.bootstrap.Container.Row;
+import org.nasdanika.html.bootstrap.Navs;
+import org.nasdanika.html.bootstrap.Size;
+import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.html.bootstrap.Table.TableBody;
+import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.ContentPanel;
+import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.NavigationPanel;
+import org.nasdanika.html.model.app.SectionStyle;
+import org.nasdanika.html.model.bootstrap.Item;
+import org.nasdanika.html.model.html.HtmlPackage;
+
+public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter&lt;ContentPanel&gt; {
+
+	private static final String TITLE_CONSUMER_KEY = &quot;title-consumer&quot;;
+
+	protected ContentPanelConsumerFactoryAdapter(ContentPanel pagePart, AdapterFactory adapterFactory) {
+<span class="fc" id="L51">		super(pagePart, adapterFactory);</span>
+<span class="fc" id="L52">	}</span>
+	
+	/**
+	 * Builds the content panel. Creates elements for navigation panels and sections and returns them for subsequent processing by functions which follow. 
+	 * @param context
+	 * @return
+	 */
+	private Function&lt;BiSupplier&lt;HTMLElement&lt;?&gt;, Map&lt;EStructuralFeature, Object&gt;&gt;, BiSupplier&lt;Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt;, BiSupplier&lt;List&lt;HTMLElement&lt;?&gt;&gt;, HTMLElement&lt;?&gt;&gt;&gt;&gt; createContentPanelFunction(Context context) {
+<span class="fc" id="L60">		return new Function&lt;BiSupplier&lt;HTMLElement&lt;?&gt;,Map&lt;EStructuralFeature, Object&gt;&gt;, BiSupplier&lt;Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt;, BiSupplier&lt;List&lt;HTMLElement&lt;?&gt;&gt;, HTMLElement&lt;?&gt;&gt;&gt;&gt;() {</span>
+			
+			@Override
+			public double size() {
+<span class="fc" id="L64">				return 1;</span>
+			}
+			
+			@Override
+			public String name() {
+<span class="fc" id="L69">				return &quot;Content panel&quot;;</span>
+			}
+			
+			@Override
+			@SuppressWarnings(&quot;unchecked&quot;)
+			public BiSupplier&lt;Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt;, BiSupplier&lt;List&lt;HTMLElement&lt;?&gt;&gt;, HTMLElement&lt;?&gt;&gt;&gt; execute(BiSupplier&lt;HTMLElement&lt;?&gt;, Map&lt;EStructuralFeature, Object&gt;&gt; input, ProgressMonitor progressMonitor) {
+<span class="fc" id="L75">				HTMLElement&lt;?&gt; ret = (HTMLElement&lt;?&gt;) input.getFirst();</span>
+				
+<span class="fc" id="L77">				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);</span>
+<span class="fc" id="L78">				Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt; navigationPanels = new LinkedHashMap&lt;&gt;();</span>
+				
+				// Floating navs - left and right
+<span class="fc" id="L81">				ContentPanel semanticElement = getTarget();</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">				if (semanticElement.getFloatLeftNavigation() != null) {</span>
+<span class="fc" id="L83">					Tag floatLeftNavigation = bootstrapFactory.getHTMLFactory().div();</span>
+<span class="fc" id="L84">					floatLeftNavigation.addClass(&quot;nsd-app-content-panel-float-left-navigation&quot;);</span>
+<span class="fc" id="L85">					((java.util.function.Consumer&lt;Object&gt;) ret).accept(floatLeftNavigation);</span>
+<span class="fc" id="L86">					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__FLOAT_LEFT_NAVIGATION, floatLeftNavigation);</span>
+				}
+<span class="fc bfc" id="L88" title="All 2 branches covered.">				if (semanticElement.getFloatRightNavigation() != null) {</span>
+<span class="fc" id="L89">					Tag floatRightNavigation = bootstrapFactory.getHTMLFactory().div();</span>
+<span class="fc" id="L90">					floatRightNavigation.addClass(&quot;nsd-app-content-panel-float-right-navigation&quot;);</span>
+<span class="fc" id="L91">					((java.util.function.Consumer&lt;Object&gt;) ret).accept(floatRightNavigation);</span>
+<span class="fc" id="L92">					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__FLOAT_RIGHT_NAVIGATION, floatRightNavigation);</span>
+				}
+								
+<span class="fc" id="L95">				Container container = bootstrapFactory.fluidContainer();</span>
+<span class="fc" id="L96">				((java.util.function.Consumer&lt;Object&gt;) ret).accept(container.toHTMLElement());</span>
+				
+<span class="fc" id="L98">				List&lt;Object&gt; breadcrumb = (List&lt;Object&gt;) input.getSecond().get(AppPackage.Literals.CONTENT_PANEL__BREADCRUMB);</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">				if (breadcrumb != null) {</span>
+<span class="fc" id="L100">					Breadcrumb bc = bootstrapFactory.breadcrumb();</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">					for (Object bce: breadcrumb) {</span>
+<span class="fc" id="L102">						boolean active = false;</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">						if (bce instanceof Tag) {</span>
+<span class="fc" id="L104">							Object bcd = ((Tag) bce).getData();</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">							if (bcd instanceof Item) {</span>
+<span class="fc" id="L106">								active = ((Item) bcd).isActive();</span>
+							}
+						}
+<span class="fc" id="L109">						bc.item(active, bce);</span>
+<span class="fc" id="L110">					}</span>
+<span class="fc" id="L111">					bc.toHTMLElement().addClass(&quot;nsd-app-content-panel-breadcrumb&quot;);</span>
+<span class="fc" id="L112">					Row bcRow = container.row();</span>
+<span class="fc" id="L113">					bcRow.toHTMLElement().addClass(&quot;nsd-app-content-panel-breadcrumb-row&quot;);</span>
+<span class="fc" id="L114">					bcRow.col(bc);</span>
+				}		
+				
+<span class="fc" id="L117">				SectionStyle effectiveSemanticContainerSectionStyle = SectionStyle.HEADER;</span>
+<span class="fc" id="L118">				EObject semanticContainer = semanticElement.eContainer();</span>
+<span class="pc bpc" id="L119" title="1 of 4 branches missed.">				if (semanticContainer instanceof ContentPanel &amp;&amp; semanticElement.eContainmentFeature() == AppPackage.Literals.CONTENT_PANEL__SECTIONS) {</span>
+<span class="fc" id="L120">					effectiveSemanticContainerSectionStyle = effectiveSectionStyle((ContentPanel) semanticContainer);</span>
+				}
+				
+<span class="fc" id="L123">				Tag title = (Tag) input.getSecond().get(AppPackage.Literals.CONTENT_PANEL__TITLE);</span>
+<span class="fc" id="L124">				List&lt;Object&gt; items = (List&lt;Object&gt;) input.getSecond().get(AppPackage.Literals.PAGE_PART__ITEMS);</span>
+<span class="pc bpc" id="L125" title="1 of 4 branches missed.">				if (title != null || items != null) {</span>
+<span class="fc" id="L126">					Row titleAndItemsRow = container.row();</span>
+<span class="fc" id="L127">					titleAndItemsRow.toHTMLElement().addClass(&quot;nsd-app-content-panel-title-and-items-row&quot;);</span>
+<span class="pc bpc" id="L128" title="1 of 4 branches missed.">					boolean withTitle = effectiveSemanticContainerSectionStyle == SectionStyle.HEADER &amp;&amp; title != null;</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">					if (withTitle) {</span>
+<span class="fc" id="L130">						title.addClass(&quot;nsd-app-content-panel-title&quot;);</span>
+<span class="fc" id="L131">						Tag titleHeader = bootstrapFactory.getHTMLFactory().tag(&quot;H&quot; + Math.min(headerDepth(semanticElement) + 1, 6), title);</span>
+<span class="fc" id="L132">						titleAndItemsRow.col(titleHeader).width(Breakpoint.DEFAULT, Size.AUTO);</span>
+					}
+	
+<span class="fc bfc" id="L135" title="All 2 branches covered.">					if (items != null) {</span>
+		//				ContentPanel semanticElement = getTarget();
+<span class="fc" id="L137">						Tag navs = Util.navs(items, context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE));</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">						if (withTitle) {</span>
+<span class="fc" id="L139">							navs.addClass(&quot;nsd-app-content-panel-navs&quot;);</span>
+						}
+<span class="fc" id="L141">						titleAndItemsRow.col(navs);</span>
+					}
+				}
+				
+				// Passing the title to title consumer stored in data
+<span class="fc bfc" id="L146" title="All 2 branches covered.">				if (effectiveSemanticContainerSectionStyle != SectionStyle.HEADER) {</span>
+<span class="fc" id="L147">					BiConsumer&lt;ContentPanel, Tag&gt; titleConsumer = (BiConsumer&lt;ContentPanel, Tag&gt;) ret.getData(TITLE_CONSUMER_KEY);</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">					if (titleConsumer != null) {</span>
+<span class="fc" id="L149">						titleConsumer.accept(semanticElement, title);</span>
+					}
+				}
+				
+<span class="fc" id="L153">				Row contentRow = container.row();				</span>
+<span class="fc" id="L154">				contentRow.toHTMLElement().addClass(&quot;nsd-app-content-panel-content-row&quot;);</span>
+				
+				// Content nav left
+<span class="fc bfc" id="L157" title="All 2 branches covered.">				if (semanticElement.getLeftNavigation() != null) {</span>
+<span class="fc" id="L158">					Tag leftNavigationColumn = contentRow.col().toHTMLElement();</span>
+<span class="fc" id="L159">					leftNavigationColumn.addClass(&quot;nsd-app-content-panel-left-navigation&quot;);</span>
+<span class="fc" id="L160">					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__LEFT_NAVIGATION, leftNavigationColumn);</span>
+				}
+				
+<span class="fc" id="L163">				Tag contentCol = contentRow.col().toHTMLElement();</span>
+<span class="fc" id="L164">				Container contentFloatsAndSectionsContainer = bootstrapFactory.fluidContainer();</span>
+<span class="fc" id="L165">				contentCol.accept(contentFloatsAndSectionsContainer);</span>
+<span class="fc" id="L166">				Tag ownContentCol = contentFloatsAndSectionsContainer.row().col().toHTMLElement();				</span>
+				
+<span class="fc" id="L168">				List&lt;Object&gt; content = (List&lt;Object&gt;) input.getSecond().get(HtmlPackage.Literals.HTML_ELEMENT__CONTENT);</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">				if (content != null) {</span>
+<span class="fc" id="L170">					content.forEach(ownContentCol::accept);</span>
+				}
+				
+				
+				List&lt;HTMLElement&lt;?&gt;&gt; sections;				
+<span class="fc bfc" id="L175" title="All 2 branches covered.">				if (semanticElement.getSections().isEmpty()) {</span>
+<span class="fc" id="L176">					sections = Collections.emptyList();</span>
+				} else {
+					// Creating containers for sections
+<span class="fc" id="L179">					SectionStyle effectivSectionStyle = effectiveSectionStyle(semanticElement);</span>
+<span class="pc bpc" id="L180" title="6 of 9 branches missed.">					switch (effectivSectionStyle) {</span>
+					case ACTION_GROUP:
+<span class="fc" id="L182">						sections = actionGroupSections(contentFloatsAndSectionsContainer, bootstrapFactory);				</span>
+<span class="fc" id="L183">						break;</span>
+					case CARD:
+<span class="nc" id="L185">						sections = cardSections(contentFloatsAndSectionsContainer, bootstrapFactory);				</span>
+<span class="nc" id="L186">						break;</span>
+					case CARD_PILL:
+<span class="nc" id="L188">						sections = cardPillSections(contentFloatsAndSectionsContainer, bootstrapFactory);				</span>
+<span class="nc" id="L189">						break;</span>
+					case CARD_TAB:
+<span class="nc" id="L191">						sections = cardTabSections(contentFloatsAndSectionsContainer, bootstrapFactory);				</span>
+<span class="nc" id="L192">						break;</span>
+					case HEADER:
+						// Cols in rows
+<span class="fc" id="L195">						sections = headerSections(contentFloatsAndSectionsContainer);				</span>
+<span class="fc" id="L196">						break;</span>
+					case PILL:
+<span class="nc" id="L198">						sections = tabSections(contentFloatsAndSectionsContainer, true, bootstrapFactory);				</span>
+<span class="nc" id="L199">						break;</span>
+					case TAB:
+<span class="fc" id="L201">						sections = tabSections(contentFloatsAndSectionsContainer, false, bootstrapFactory);				</span>
+<span class="fc" id="L202">						break;</span>
+					case TABLE:
+<span class="nc" id="L204">						sections = tableSections(contentFloatsAndSectionsContainer, bootstrapFactory);				</span>
+<span class="nc" id="L205">						break;</span>
+					default:
+<span class="nc" id="L207">						throw new UnsupportedOperationException(&quot;Unsupported section style: &quot; + effectivSectionStyle);</span>
+					}
+				}
+				
+<span class="fc bfc" id="L211" title="All 2 branches covered.">				if (semanticElement.getRightNavigation() != null) {</span>
+<span class="fc" id="L212">					Tag rightNavigationColumn = contentRow.col().toHTMLElement();</span>
+<span class="fc" id="L213">					rightNavigationColumn.addClass(&quot;nsd-app-content-panel-right-navigation&quot;);</span>
+<span class="fc" id="L214">					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__RIGHT_NAVIGATION, rightNavigationColumn);</span>
+				}
+				
+<span class="fc" id="L217">				return new BiSupplier&lt;Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt;, BiSupplier&lt;List&lt;HTMLElement&lt;?&gt;&gt;, HTMLElement&lt;?&gt;&gt;&gt;() {</span>
+
+					// Navigation panels map
+					@Override
+					public Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt; getFirst() {
+<span class="fc" id="L222">						return navigationPanels;</span>
+					}
+
+					// Sections and content panel
+					@Override
+					public BiSupplier&lt;List&lt;HTMLElement&lt;?&gt;&gt;, HTMLElement&lt;?&gt;&gt; getSecond() {
+<span class="fc" id="L228">						return new BiSupplier&lt;List&lt;HTMLElement&lt;?&gt;&gt;, HTMLElement&lt;?&gt;&gt;() {</span>
+
+							@Override
+							public List&lt;HTMLElement&lt;?&gt;&gt; getFirst() {
+<span class="fc" id="L232">								return sections;</span>
+							}
+
+							@Override
+							public HTMLElement&lt;?&gt; getSecond() {
+<span class="fc" id="L237">								return ret;</span>
+							}
+							
+						};
+					}
+					
+				};
+			}
+		};
+	}
+
+	private List&lt;HTMLElement&lt;?&gt;&gt; tabSections(Container contentFloatsAndSectionsContainer, boolean pills, BootstrapFactory bootstrapFactory) {
+<span class="fc" id="L249">		Row sectionRow = contentFloatsAndSectionsContainer.row();</span>
+<span class="fc" id="L250">		sectionRow.toHTMLElement().addClass(&quot;nsd-app-content-panel-section-row&quot;);</span>
+<span class="fc" id="L251">		Tag tabsCol = sectionRow.col().toHTMLElement();</span>
+<span class="fc" id="L252">		HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">		Tag navList = htmlFactory.tag(TagName.ul).addClass(&quot;nav&quot;).addClass(pills ? &quot;nav-pills&quot; : &quot;nav-tabs&quot;);</span>
+<span class="fc" id="L254">		tabsCol.accept(navList);</span>
+<span class="fc" id="L255">		Tag contentDiv = htmlFactory.div().id(htmlFactory.nextId()).addClass(&quot;tab-content&quot;);</span>
+<span class="fc" id="L256">		tabsCol.accept(contentDiv);</span>
+<span class="fc" id="L257">		List&lt;HTMLElement&lt;?&gt;&gt; sections = new ArrayList&lt;&gt;();</span>
+		
+<span class="fc bfc" id="L259" title="All 2 branches covered.">		for (ContentPanel section: getTarget().getSections()) {</span>
+<span class="fc" id="L260">			Tag sectionContentContainer = htmlFactory.div().addClass(&quot;tab-pane&quot;, &quot;fade&quot;).id(htmlFactory.nextId());</span>
+<span class="fc" id="L261">			Label sTitle = section.getTitle();</span>
+<span class="pc bpc" id="L262" title="1 of 4 branches missed.">			boolean isActive = sTitle != null &amp;&amp; sTitle.isActive();</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">			if (isActive) {</span>
+<span class="fc" id="L264">				sectionContentContainer.addClass(&quot;show&quot;, &quot;active&quot;);</span>
+			}
+<span class="fc" id="L266">			contentDiv.accept(sectionContentContainer);</span>
+<span class="fc" id="L267">			sections.add(sectionContentContainer);</span>
+<span class="fc" id="L268">			BiConsumer&lt;ContentPanel, Tag&gt; titleConsumer = (sectionSemanticElement, title) -&gt; {</span>
+<span class="fc" id="L269">				navList.accept(htmlFactory.tag(TagName.li, title).addClass(&quot;nav-item&quot;));</span>
+<span class="fc" id="L270">				Object sectionContentContainerId = sectionContentContainer.getId();</span>
+<span class="fc" id="L271">				title</span>
+<span class="fc" id="L272">					.addClass(&quot;nav-link&quot;)</span>
+<span class="fc" id="L273">					.addClassConditional(isActive, &quot;active&quot;)</span>
+<span class="fc" id="L274">					.id(sectionContentContainerId + &quot;-tab&quot;)</span>
+<span class="fc" id="L275">					.attribute(&quot;data-toggle&quot;, &quot;tab&quot;)</span>
+<span class="fc" id="L276">					.attribute(&quot;href&quot;, &quot;#&quot; + sectionContentContainerId)</span>
+<span class="fc" id="L277">					.attribute(&quot;role&quot;, &quot;tab&quot;)</span>
+<span class="fc" id="L278">					.attribute(&quot;aria-controls&quot;, sectionContentContainerId)</span>
+<span class="fc" id="L279">					.attribute(&quot;aria-selected&quot;, String.valueOf(isActive));</span>
+<span class="fc" id="L280">			};</span>
+<span class="fc" id="L281">			sectionContentContainer.setData(TITLE_CONSUMER_KEY, titleConsumer);</span>
+<span class="fc" id="L282">		}</span>
+<span class="fc" id="L283">		return sections;</span>
+	}
+	
+	private List&lt;HTMLElement&lt;?&gt;&gt; actionGroupSections(Container contentFloatsAndSectionsContainer, BootstrapFactory bootstrapFactory) {
+<span class="fc" id="L287">		Row sectionRow = contentFloatsAndSectionsContainer.row();</span>
+<span class="fc" id="L288">		sectionRow.toHTMLElement().addClass(&quot;nsd-app-content-panel-section-row&quot;, &quot;nsd-app-content-panel-section-action-group&quot;);</span>
+<span class="fc" id="L289">		HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();</span>
+<span class="fc" id="L290">		Tag actionList = htmlFactory.div().addClass(&quot;list-group&quot;, &quot;list-group-flush&quot;).attribute(&quot;role&quot;,  &quot;tablist&quot;);</span>
+<span class="fc" id="L291">		sectionRow.col().width(Breakpoint.DEFAULT, Size.AUTO).toHTMLElement().accept(actionList);</span>
+<span class="fc" id="L292">		Tag contentDiv = htmlFactory.div().addClass(&quot;tab-content&quot;);</span>
+<span class="fc" id="L293">		sectionRow.col().toHTMLElement().accept(contentDiv);</span>
+<span class="fc" id="L294">		List&lt;HTMLElement&lt;?&gt;&gt; sections = new ArrayList&lt;&gt;();</span>
+		
+<span class="fc" id="L296">		boolean active = true;</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">		for (ContentPanel section: getTarget().getSections()) {</span>
+<span class="fc" id="L298">			Tag sectionContentContainer = htmlFactory.div().addClass(&quot;tab-pane&quot;).id(htmlFactory.nextId());</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">			if (active) {</span>
+<span class="fc" id="L300">				sectionContentContainer.addClass(&quot;active&quot;);</span>
+			}
+<span class="fc" id="L302">			boolean isActive = active;</span>
+<span class="fc" id="L303">			contentDiv.accept(sectionContentContainer);</span>
+<span class="fc" id="L304">			sections.add(sectionContentContainer);</span>
+<span class="fc" id="L305">			BiConsumer&lt;ContentPanel, Tag&gt; titleConsumer = (sectionSemanticElement, title) -&gt; {</span>
+<span class="fc" id="L306">				actionList.accept(title);</span>
+<span class="fc" id="L307">				Object sectionContentContainerId = sectionContentContainer.getId();</span>
+<span class="fc" id="L308">				title</span>
+<span class="fc" id="L309">					.addClass(&quot;list-group-item&quot;, &quot;list-group-item-action&quot;)</span>
+<span class="fc" id="L310">					.addClassConditional(isActive, &quot;active&quot;)</span>
+<span class="fc" id="L311">					.id(sectionContentContainerId + &quot;-tab&quot;)</span>
+<span class="fc" id="L312">					.attribute(&quot;data-toggle&quot;, &quot;list&quot;)</span>
+<span class="fc" id="L313">					.attribute(&quot;href&quot;, &quot;#&quot; + sectionContentContainerId)</span>
+<span class="fc" id="L314">					.attribute(&quot;role&quot;, &quot;tab&quot;);</span>
+<span class="fc" id="L315">			};</span>
+<span class="fc" id="L316">			sectionContentContainer.setData(TITLE_CONSUMER_KEY, titleConsumer);</span>
+<span class="fc" id="L317">			sectionContentContainer.setData(section);</span>
+<span class="fc" id="L318">			active = false;</span>
+<span class="fc" id="L319">		}</span>
+<span class="fc" id="L320">		return sections;</span>
+	}
+	
+	private List&lt;HTMLElement&lt;?&gt;&gt; headerSections(Container contentFloatsAndSectionsContainer) {
+<span class="fc" id="L324">		List&lt;HTMLElement&lt;?&gt;&gt; sections = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">		for (ContentPanel section: getTarget().getSections()) {</span>
+<span class="fc" id="L326">			Tag sectionCol = contentFloatsAndSectionsContainer.row().col().toHTMLElement();</span>
+<span class="fc" id="L327">			sectionCol.setData(section);</span>
+<span class="fc" id="L328">			sections.add(sectionCol);</span>
+<span class="fc" id="L329">		}</span>
+<span class="fc" id="L330">		return sections;</span>
+	}
+	
+	private List&lt;HTMLElement&lt;?&gt;&gt; tableSections(Container contentFloatsAndSectionsContainer, BootstrapFactory bootstrapFactory) {
+<span class="nc" id="L334">		Row sectionRow = contentFloatsAndSectionsContainer.row();</span>
+<span class="nc" id="L335">		sectionRow.toHTMLElement().addClass(&quot;nsd-app-content-panel-section-row&quot;, &quot;nsd-app-content-panel-section-table&quot;);</span>
+<span class="nc" id="L336">		Table table = bootstrapFactory.table().bordered();</span>
+<span class="nc" id="L337">		sectionRow.col(table);</span>
+<span class="nc" id="L338">		List&lt;HTMLElement&lt;?&gt;&gt; sections = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L340">		TableBody body = table.body();</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">		for (ContentPanel section: getTarget().getSections()) {</span>
+<span class="nc" id="L342">			org.nasdanika.html.bootstrap.RowContainer.Row row = body.row();</span>
+<span class="nc" id="L343">			Cell titleCell = row.cell().toHTMLElement();</span>
+<span class="nc" id="L344">			Cell contentCell = row.cell().toHTMLElement();</span>
+<span class="nc" id="L345">			contentCell.setData(section);</span>
+<span class="nc" id="L346">			sections.add(contentCell);</span>
+<span class="nc" id="L347">			BiConsumer&lt;ContentPanel, Tag&gt; titleConsumer = (sectionSemanticElement, title) -&gt; {</span>
+<span class="nc" id="L348">				titleCell.accept(title);</span>
+<span class="nc" id="L349">			};</span>
+<span class="nc" id="L350">			contentCell.setData(TITLE_CONSUMER_KEY, titleConsumer);</span>
+<span class="nc" id="L351">		}</span>
+<span class="nc" id="L352">		return sections;</span>
+	}
+	
+	private List&lt;HTMLElement&lt;?&gt;&gt; cardTabSections(Container contentFloatsAndSectionsContainer, BootstrapFactory bootstrapFactory) {
+<span class="nc" id="L356">		throw new UnsupportedOperationException();</span>
+	}
+
+	private List&lt;HTMLElement&lt;?&gt;&gt; cardPillSections(Container contentFloatsAndSectionsContainer, BootstrapFactory bootstrapFactory) {
+<span class="nc" id="L360">		throw new UnsupportedOperationException();</span>
+	}
+
+	private List&lt;HTMLElement&lt;?&gt;&gt; cardSections(Container contentFloatsAndSectionsContainer, BootstrapFactory bootstrapFactory) {
+<span class="nc" id="L364">		throw new UnsupportedOperationException();</span>
+	}
+
+	private static SectionStyle effectiveSectionStyle(ContentPanel semanticElement) {
+<span class="fc" id="L368">		SectionStyle style = semanticElement.getSectionStyle();</span>
+<span class="pc bpc" id="L369" title="1 of 2 branches missed.">		if (style == null) {</span>
+<span class="nc" id="L370">			style = SectionStyle.AUTO;</span>
+		}
+		
+<span class="fc bfc" id="L373" title="All 2 branches covered.">		if (style == SectionStyle.AUTO) {</span>
+<span class="fc bfc" id="L374" title="All 3 branches covered.">			switch (depth(semanticElement)) {</span>
+			case 0:
+<span class="fc" id="L376">				return SectionStyle.TAB;</span>
+			case 1:
+<span class="fc" id="L378">				return SectionStyle.ACTION_GROUP;</span>
+			default:
+<span class="fc" id="L380">				return SectionStyle.HEADER;</span>
+			}
+		}
+		
+<span class="fc" id="L384">		return style;</span>
+	}
+	
+	private static int depth(ContentPanel semanticElement) {
+<span class="fc" id="L388">		Object semanticContainer = semanticElement.eContainer();</span>
+<span class="pc bpc" id="L389" title="1 of 4 branches missed.">		if (semanticContainer instanceof ContentPanel &amp;&amp; semanticElement.eContainmentFeature() == AppPackage.Literals.CONTENT_PANEL__SECTIONS) {</span>
+<span class="fc" id="L390">			return depth((ContentPanel) semanticContainer) + 1;</span>
+		}
+<span class="fc" id="L392">		return 0;</span>
+	}
+	
+	private static int headerDepth(ContentPanel semanticElement) {
+<span class="fc" id="L396">		Object semanticContainer = semanticElement.eContainer();</span>
+<span class="pc bpc" id="L397" title="1 of 4 branches missed.">		if (semanticContainer instanceof ContentPanel &amp;&amp; semanticElement.eContainmentFeature() == AppPackage.Literals.CONTENT_PANEL__SECTIONS) {</span>
+<span class="fc" id="L398">			ContentPanel containerPanel = (ContentPanel) semanticContainer;</span>
+<span class="fc" id="L399">			int containerHeaderDepth = headerDepth(containerPanel);</span>
+<span class="fc bfc" id="L400" title="All 2 branches covered.">			return effectiveSectionStyle(containerPanel) == SectionStyle.HEADER ? containerHeaderDepth + 1 : containerHeaderDepth;</span>
+		}
+<span class="fc" id="L402">		return 0;</span>
+	}
+	
+	@Override
+	protected List&lt;EObject&gt; getContent() {
+<span class="fc" id="L407">		return Collections.emptyList();</span>
+	}
+	
+	/**
+	 * Adapts items to suppliers, builds {@link Navs} from items and adds them to the header.
+	 */
+	@Override
+	protected Function&lt;HTMLElement&lt;?&gt;, HTMLElement&lt;?&gt;&gt; createConfigureFunction(Context context) {
+<span class="fc" id="L415">		ContentPanel semanticElement = getTarget();</span>
+<span class="fc" id="L416">		MapCompoundSupplierFactory&lt;EStructuralFeature, Object&gt; featuresSupplierFactory = new MapCompoundSupplierFactory&lt;&gt;(&quot;Features&quot;);				</span>
+		
+<span class="fc" id="L418">		EList&lt;EObject&gt; content = semanticElement.getContent();</span>
+<span class="fc bfc" id="L419" title="All 2 branches covered.">		if (!content.isEmpty()) {</span>
+<span class="fc" id="L420">			featuresSupplierFactory.put(HtmlPackage.Literals.HTML_ELEMENT__CONTENT, new ListCompoundSupplierFactory&lt;&gt;(&quot;Content&quot;, EObjectAdaptable.adaptToSupplierFactoryNonNull(content, Object.class)));</span>
+		}
+		
+<span class="fc" id="L423">		EList&lt;EObject&gt; items = semanticElement.getItems();</span>
+<span class="fc bfc" id="L424" title="All 2 branches covered.">		if (!items.isEmpty()) {</span>
+<span class="fc" id="L425">			featuresSupplierFactory.put(AppPackage.Literals.PAGE_PART__ITEMS, new ListCompoundSupplierFactory&lt;&gt;(&quot;Navigation items&quot;, EObjectAdaptable.adaptToSupplierFactoryNonNull(items, Object.class)));</span>
+		}
+		
+<span class="fc" id="L428">		Label title = semanticElement.getTitle();</span>
+<span class="fc bfc" id="L429" title="All 2 branches covered.">		if (title != null) {</span>
+<span class="fc" id="L430">			featuresSupplierFactory.put(AppPackage.Literals.CONTENT_PANEL__TITLE, EObjectAdaptable.adaptToSupplierFactoryNonNull(title, Object.class));</span>
+		}
+		
+<span class="fc" id="L433">		EList&lt;Label&gt; breadcrumb = semanticElement.getBreadcrumb();</span>
+<span class="fc bfc" id="L434" title="All 2 branches covered.">		if (!breadcrumb.isEmpty()) {</span>
+<span class="fc" id="L435">			featuresSupplierFactory.put(AppPackage.Literals.CONTENT_PANEL__BREADCRUMB, new ListCompoundSupplierFactory&lt;&gt;(&quot;Breadcrumb&quot;, EObjectAdaptable.adaptToSupplierFactoryNonNull(breadcrumb, Object.class)));</span>
+		}
+				
+<span class="fc" id="L438">		Function&lt;HTMLElement&lt;?&gt;, BiSupplier&lt;HTMLElement&lt;?&gt;, Map&lt;EStructuralFeature, Object&gt;&gt;&gt; featureSuppliersFunction = featuresSupplierFactory.&lt;HTMLElement&lt;?&gt;&gt;asFunctionFactory().create(context);				</span>
+<span class="fc" id="L439">		Function&lt;HTMLElement&lt;?&gt;, BiSupplier&lt;Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt;, BiSupplier&lt;List&lt;HTMLElement&lt;?&gt;&gt;, HTMLElement&lt;?&gt;&gt;&gt;&gt; contentPanelFunction = super.createConfigureFunction(context).then(featureSuppliersFunction).then(createContentPanelFunction(context));</span>
+		
+		// Navigation panels and sections
+<span class="fc" id="L442">		MapCompoundConsumerFactory&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt; navigationPanelsFactory = new MapCompoundConsumerFactory&lt;&gt;(&quot;Navigation panels&quot;);</span>
+		
+<span class="fc" id="L444">		NavigationPanel floatLeftNavigation = semanticElement.getFloatLeftNavigation();</span>
+<span class="fc bfc" id="L445" title="All 2 branches covered.">		if (floatLeftNavigation != null) {</span>
+<span class="fc" id="L446">			navigationPanelsFactory.put(AppPackage.Literals.CONTENT_PANEL__FLOAT_LEFT_NAVIGATION, EObjectAdaptable.adaptToConsumerFactoryNonNull(floatLeftNavigation, HTMLElement.class));			</span>
+		}
+<span class="fc" id="L448">		NavigationPanel leftNavigation = semanticElement.getLeftNavigation();</span>
+<span class="fc bfc" id="L449" title="All 2 branches covered.">		if (leftNavigation != null) {</span>
+<span class="fc" id="L450">			navigationPanelsFactory.put(AppPackage.Literals.CONTENT_PANEL__LEFT_NAVIGATION, EObjectAdaptable.adaptToConsumerFactoryNonNull(leftNavigation, HTMLElement.class));			</span>
+		}
+<span class="fc" id="L452">		NavigationPanel floatRightNavigation = semanticElement.getFloatRightNavigation();</span>
+<span class="fc bfc" id="L453" title="All 2 branches covered.">		if (floatRightNavigation != null) {</span>
+<span class="fc" id="L454">			navigationPanelsFactory.put(AppPackage.Literals.CONTENT_PANEL__FLOAT_RIGHT_NAVIGATION, EObjectAdaptable.adaptToConsumerFactoryNonNull(floatRightNavigation, HTMLElement.class));			</span>
+		}
+<span class="fc" id="L456">		NavigationPanel rightNavigation = semanticElement.getRightNavigation();</span>
+<span class="fc bfc" id="L457" title="All 2 branches covered.">		if (rightNavigation != null) {</span>
+<span class="fc" id="L458">			navigationPanelsFactory.put(AppPackage.Literals.CONTENT_PANEL__RIGHT_NAVIGATION, EObjectAdaptable.adaptToConsumerFactoryNonNull(rightNavigation, HTMLElement.class));			</span>
+		}
+		
+<span class="fc" id="L461">		FunctionFactory&lt;BiSupplier&lt;Map&lt;EStructuralFeature, HTMLElement&lt;?&gt;&gt;, BiSupplier&lt;List&lt;HTMLElement&lt;?&gt;&gt;, HTMLElement&lt;?&gt;&gt;&gt;, BiSupplier&lt;List&lt;HTMLElement&lt;?&gt;&gt;, HTMLElement&lt;?&gt;&gt;&gt; navigationPanelsFunctionFactory = navigationPanelsFactory.asBiSupplierFunctionFactory();</span>
+<span class="fc" id="L462">		Function&lt;HTMLElement&lt;?&gt;, BiSupplier&lt;List&lt;HTMLElement&lt;?&gt;&gt;, HTMLElement&lt;?&gt;&gt;&gt; contentPanelWithNavigationsFunction = contentPanelFunction.then(navigationPanelsFunctionFactory.create(context));</span>
+
+		// Sections
+<span class="fc" id="L465">		ListCompoundConsumerFactory&lt;HTMLElement&lt;?&gt;&gt; sectionsFactory = new ListCompoundConsumerFactory&lt;&gt;(&quot;Sections&quot;, EObjectAdaptable.adaptToConsumerFactoryNonNull(semanticElement.getSections(), HTMLElement.class));</span>
+<span class="fc" id="L466">		Function&lt;BiSupplier&lt;List&lt;HTMLElement&lt;?&gt;&gt;, HTMLElement&lt;?&gt;&gt;, HTMLElement&lt;?&gt;&gt; sectionsFunction = sectionsFactory.&lt;HTMLElement&lt;?&gt;&gt;asBiSupplierFunctionFactory().create(context);</span>
+<span class="fc" id="L467">		Function&lt;HTMLElement&lt;?&gt;, HTMLElement&lt;?&gt;&gt; ret = contentPanelWithNavigationsFunction.then(sectionsFunction);</span>
+		
+<span class="fc" id="L469">		return ret;</span>
+	}	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

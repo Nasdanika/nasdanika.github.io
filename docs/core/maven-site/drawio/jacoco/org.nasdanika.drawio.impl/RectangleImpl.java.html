@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RectangleImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Java API for working with Drawio diagrams</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.drawio.impl</a> &gt; <span class="el_source">RectangleImpl.java</span></div><h1>RectangleImpl.java</h1><pre class="source lang-java linenums">package org.nasdanika.drawio.impl;
+
+import java.util.function.Function;
+
+import org.nasdanika.drawio.Rectangle;
+import org.w3c.dom.Element;
+
+public class RectangleImpl extends PointImpl implements Rectangle {
+	
+	public RectangleImpl(Function&lt;Boolean, Element&gt; elementProvider) {
+<span class="fc" id="L11">		super(elementProvider);</span>
+<span class="fc" id="L12">	}</span>
+
+	static final String ATTRIBUTE_WIDTH = &quot;width&quot;; 
+	static final String ATTRIBUTE_HEIGHT = &quot;height&quot;;
+	
+	
+	protected boolean isEmpty(Element element) {
+<span class="pc bpc" id="L19" title="7 of 8 branches missed.">		return !element.hasAttribute(ATTRIBUTE_HEIGHT) &amp;&amp; !element.hasAttribute(ATTRIBUTE_WIDTH) &amp;&amp; !element.hasAttribute(ATTRIBUTE_X) &amp;&amp; !element.hasAttribute(ATTRIBUTE_Y); </span>
+	}
+			
+	@Override
+	public double getWidth() {
+<span class="fc" id="L24">		Element element = getElement();</span>
+<span class="pc bpc" id="L25" title="2 of 4 branches missed.">		return element != null &amp;&amp; element.hasAttribute(ATTRIBUTE_WIDTH) ? Double.parseDouble(element.getAttribute(ATTRIBUTE_WIDTH)) : 0;</span>
+	}
+
+	@Override
+	public double getHeight() {
+<span class="fc" id="L30">		Element element = getElement();</span>
+<span class="pc bpc" id="L31" title="2 of 4 branches missed.">		return element != null &amp;&amp; element.hasAttribute(ATTRIBUTE_HEIGHT) ? Double.parseDouble(element.getAttribute(ATTRIBUTE_HEIGHT)) : 0;</span>
+	}
+
+	@Override
+	public void setWidth(double width) {
+<span class="fc" id="L36">		Element element = elementProvider.apply(true);</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">		if (width == 0) {</span>
+<span class="nc" id="L38">			element.removeAttribute(ATTRIBUTE_WIDTH);</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">			if (isEmpty(element)) {</span>
+<span class="nc" id="L40">				element.getParentNode().removeChild(element);</span>
+			}
+		} else {
+<span class="fc" id="L43">			element.setAttribute(ATTRIBUTE_WIDTH, String.valueOf(width));</span>
+		}
+<span class="fc" id="L45">	}</span>
+
+	@Override
+	public void setHeight(double height) {
+<span class="fc" id="L49">		Element element = elementProvider.apply(true);</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">		if (height == 0) {</span>
+<span class="nc" id="L51">			element.removeAttribute(ATTRIBUTE_HEIGHT);</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">			if (isEmpty(element)) {</span>
+<span class="nc" id="L53">				element.getParentNode().removeChild(element);</span>
+			}
+		} else {
+<span class="fc" id="L56">			element.setAttribute(ATTRIBUTE_HEIGHT, String.valueOf(height));</span>
+		}
+<span class="fc" id="L58">	}</span>
+
+	@Override
+	public void setBounds(double x, double y, double width, double height) {
+<span class="fc" id="L62">		Element element = elementProvider.apply(true);</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">		if (x == 0) {</span>
+<span class="fc" id="L64">			element.removeAttribute(ATTRIBUTE_X);</span>
+		} else {
+<span class="fc" id="L66">			element.setAttribute(ATTRIBUTE_X, String.valueOf(x));</span>
+		}
+<span class="fc bfc" id="L68" title="All 2 branches covered.">		if (y == 0) {</span>
+<span class="fc" id="L69">			element.removeAttribute(ATTRIBUTE_Y);</span>
+		} else {
+<span class="fc" id="L71">			element.setAttribute(ATTRIBUTE_Y, String.valueOf(y));</span>
+		}
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">		if (width == 0) {</span>
+<span class="nc" id="L74">			element.removeAttribute(ATTRIBUTE_WIDTH);</span>
+		} else {
+<span class="fc" id="L76">			element.setAttribute(ATTRIBUTE_WIDTH, String.valueOf(width));</span>
+		}
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">		if (height == 0) {</span>
+<span class="nc" id="L79">			element.removeAttribute(ATTRIBUTE_HEIGHT);</span>
+		} else {
+<span class="fc" id="L81">			element.setAttribute(ATTRIBUTE_HEIGHT, String.valueOf(height));</span>
+		}
+		
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">		if (isEmpty(element)) {</span>
+<span class="nc" id="L85">			element.getParentNode().removeChild(element);</span>
+		}		
+<span class="fc" id="L87">	}</span>
+	
+	@Override
+	public String toString() {
+<span class="nc" id="L91">		return super.toString() + &quot;[&quot; + getWidth() + &quot;, &quot; + getHeight() + &quot;]&quot;;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

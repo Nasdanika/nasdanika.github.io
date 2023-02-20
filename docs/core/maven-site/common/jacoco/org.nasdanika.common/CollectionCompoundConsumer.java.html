@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CollectionCompoundConsumer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">CollectionCompoundConsumer.java</span></div><h1>CollectionCompoundConsumer.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+import java.util.Arrays;
+import java.util.Collection;
+
+/**
+ * This consumer invokes element consumers passing them the argument.
+ * @author Pavel
+ *
+ * @param &lt;E&gt;
+ */
+public class CollectionCompoundConsumer&lt;E&gt; extends ListCompoundExecutionParticipant&lt;Consumer&lt;? super E&gt;&gt; implements Consumer&lt;E&gt;  {
+
+	public CollectionCompoundConsumer(String name, Collection&lt;Consumer&lt;? super E&gt;&gt; consumers) {
+<span class="nc" id="L15">		super(name);</span>
+<span class="nc bnc" id="L16" title="All 2 branches missed.">		for (Consumer&lt;? super E&gt; consumer: consumers) {</span>
+<span class="nc" id="L17">			add(consumer);</span>
+<span class="nc" id="L18">		}</span>
+<span class="nc" id="L19">	}</span>
+	
+	@SafeVarargs
+	public CollectionCompoundConsumer(String name, Consumer&lt;? super E&gt;... suppliers) {
+<span class="nc" id="L23">		this(name, Arrays.asList(suppliers));</span>
+<span class="nc" id="L24">	}</span>
+
+	@Override
+	public void execute(E arg, ProgressMonitor progressMonitor) {
+<span class="nc" id="L28">		progressMonitor.setWorkRemaining(size());</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">		for (Consumer&lt;? super E&gt; e: getElements()) {</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">			if (e != null) {</span>
+<span class="nc" id="L31">				e.splitAndExecute(arg, progressMonitor);			</span>
+			}
+<span class="nc" id="L33">		}</span>
+<span class="nc" id="L34">	}	</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

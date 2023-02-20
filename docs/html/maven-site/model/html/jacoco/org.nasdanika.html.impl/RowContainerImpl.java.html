@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RowContainerImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika HTML</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.impl</a> &gt; <span class="el_source">RowContainerImpl.java</span></div><h1>RowContainerImpl.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.RowContainer;
+
+class RowContainerImpl&lt;T extends RowContainer&lt;T&gt;&gt; extends HTMLElementImpl&lt;T&gt; implements RowContainer&lt;T&gt; {
+
+	RowContainerImpl(HTMLFactory factory, String tagName) {
+<span class="nc" id="L12">		super(factory, tagName, false);</span>
+<span class="nc" id="L13">	}</span>
+
+	class RowImpl extends HTMLElementImpl&lt;Row&gt; implements Row {
+		
+<span class="nc" id="L17">		RowImpl() {</span>
+<span class="nc" id="L18">			super(RowContainerImpl.this.factory, &quot;tr&quot;, false);</span>
+<span class="nc" id="L19">		}</span>
+		
+		class CellImpl extends HTMLElementImpl&lt;Cell&gt; implements Cell {
+			
+<span class="nc" id="L23">			CellImpl(boolean isHeader, Object... content) {</span>
+<span class="nc bnc" id="L24" title="All 2 branches missed.">				super(RowContainerImpl.this.factory, isHeader ? &quot;th&quot; : &quot;td&quot;, false);</span>
+<span class="nc" id="L25">				content(content);</span>
+<span class="nc" id="L26">			}</span>
+
+			@Override
+			public Cell colspan(int colspan) {
+<span class="nc" id="L30">				return attribute(&quot;colspan&quot;, String.valueOf(colspan));</span>
+			}
+
+			@Override
+			public Cell rowspan(int rowspan) {
+<span class="nc" id="L35">				return attribute(&quot;rowspan&quot;, String.valueOf(rowspan));</span>
+			}
+
+			@Override
+			public Cell content(Object... content) {
+<span class="nc bnc" id="L40" title="All 2 branches missed.">				for (Object c: content) {</span>
+<span class="nc" id="L41">					this.content.add(c);</span>
+				}
+<span class="nc" id="L43">				return this;</span>
+			}
+			
+		}
+
+		@Override
+		public Cell cell(Object... content) {
+<span class="nc" id="L50">			CellImpl cell = new CellImpl(false, content);</span>
+<span class="nc" id="L51">			this.content.add(cell);</span>
+<span class="nc" id="L52">			return cell;</span>
+		}
+
+		@Override
+		public Cell header(Object... content) {
+<span class="nc" id="L57">			CellImpl cell = new CellImpl(true, content);</span>
+<span class="nc" id="L58">			this.content.add(cell);</span>
+<span class="nc" id="L59">			return cell;</span>
+		}
+
+		@Override
+		public List&lt;Cell&gt; cells() {
+<span class="nc" id="L64">			List&lt;Cell&gt; cells = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">			for (Object c: content) {</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">				if (c instanceof Cell) {</span>
+<span class="nc" id="L67">					cells.add((Cell) c);</span>
+				}
+<span class="nc" id="L69">			}</span>
+<span class="nc" id="L70">			return cells;</span>
+		}
+
+		@Override
+		public Row content(Object... content) {
+<span class="nc bnc" id="L75" title="All 2 branches missed.">			for (Object c: content) {</span>
+<span class="nc" id="L76">				this.content.add(c);</span>
+			}
+<span class="nc" id="L78">			return this;</span>
+		}
+		
+	}
+
+	@Override
+	public Row row(Object... cells) {
+<span class="nc" id="L85">		Row row = new RowImpl();</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">		for (Object cell: cells) {</span>
+<span class="nc" id="L87">			row.cell(cell);</span>
+		}
+<span class="nc" id="L89">		content.add(row);</span>
+<span class="nc" id="L90">		return row;</span>
+	}
+	
+	@Override
+	public Row headerRow(Object... headers) {
+<span class="nc" id="L95">		Row row = new RowImpl();</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">		for (Object header: headers) {</span>
+<span class="nc" id="L97">			row.header(header);</span>
+		}
+<span class="nc" id="L99">		content.add(row);</span>
+<span class="nc" id="L100">		return row;</span>
+	}
+
+	@Override
+	public List&lt;Row&gt; rows() {
+<span class="nc" id="L105">		List&lt;Row&gt; rows = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">		for (Object c: content) {</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">			if (c instanceof Row) {</span>
+<span class="nc" id="L108">				rows.add((Row) c);</span>
+			}
+<span class="nc" id="L110">		}</span>
+<span class="nc" id="L111">		return rows;</span>
+	}
+
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public T content(Object... content) {
+<span class="nc bnc" id="L117" title="All 2 branches missed.">		for (Object c: content) {</span>
+<span class="nc" id="L118">			this.content.add(c);</span>
+		}
+<span class="nc" id="L120">		return (T) this;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

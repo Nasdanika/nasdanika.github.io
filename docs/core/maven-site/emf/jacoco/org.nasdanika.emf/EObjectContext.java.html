@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EObjectContext.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika EMF</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.emf</a> &gt; <span class="el_source">EObjectContext.java</span></div><h1>EObjectContext.java</h1><pre class="source lang-java linenums">package org.nasdanika.emf;
+
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.nasdanika.common.Context;
+
+/**
+ * Wraps {@link EObject} into a context.
+ * @author Pavel
+ *
+ */
+public class EObjectContext implements Context {
+
+	private EObject target;
+
+<span class="nc" id="L17">	public EObjectContext(EObject target) {</span>
+<span class="nc" id="L18">		this.target = target;</span>
+<span class="nc" id="L19">	}</span>
+
+	@Override
+	public Object get(String key) {
+<span class="nc" id="L23">		int sIdx = key.indexOf('/');</span>
+<span class="nc bnc" id="L24" title="All 2 branches missed.">		String featureName = sIdx == -1 ? key : key.substring(0, sIdx);</span>
+<span class="nc" id="L25">		EStructuralFeature feature = target.eClass().getEStructuralFeature(featureName);</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">		if (feature == null) {</span>
+<span class="nc" id="L27">			return null;</span>
+		}
+<span class="nc" id="L29">		Object val = target.eGet(feature);</span>
+<span class="nc bnc" id="L30" title="All 4 branches missed.">		if (val == null || sIdx == -1) {</span>
+<span class="nc" id="L31">			return val;</span>
+		}
+<span class="nc bnc" id="L33" title="All 2 branches missed.">		if (val instanceof EObject) {</span>
+<span class="nc" id="L34">			return new EObjectContext((EObject) val).get(key.substring(sIdx + 1));</span>
+		}
+<span class="nc" id="L36">		return null;</span>
+	}
+
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public &lt;T&gt; T get(Class&lt;T&gt; type) {
+<span class="nc bnc" id="L42" title="All 2 branches missed.">		if (target == null) {</span>
+<span class="nc" id="L43">			return null;</span>
+		}
+<span class="nc bnc" id="L45" title="All 2 branches missed.">		if (type.isInstance(target)) {</span>
+<span class="nc" id="L46">			return (T) target;</span>
+		}
+<span class="nc" id="L48">		return (T) EcoreUtil.getRegisteredAdapter(target, type);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

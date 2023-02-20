@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProcessorFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Graph</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.graph.processor</a> &gt; <span class="el_source">ProcessorFactory.java</span></div><h1>ProcessorFactory.java</h1><pre class="source lang-java linenums">package org.nasdanika.graph.processor;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.nasdanika.common.Composeable;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.graph.Connection;
+import org.nasdanika.graph.Element;
+
+/**
+ * Processor factory creates and &quot;wires&quot; processors.
+ * @author Pavel
+ *
+ * @param &lt;P&gt; Processor type - what is passed to parent/child processors and also returned to the client code to interact with the processor network. For model elements which are not interacted with by other processors or the client code the result may be null.
+ * @param &lt;H&gt; Handler type. Handlers are invoked by endpoints. 
+ * @param &lt;E&gt; Endpoint type. Endpoints pass invocations to handlers.
+ */
+public interface ProcessorFactory&lt;P,H,E&gt; extends Composeable&lt;ProcessorFactory&lt;P,H,E&gt;&gt; {
+	
+	/**
+	 * If a connection is pass-through its source endpoint is connected directly to the target node handler and vice versa.
+	 * @param connection
+	 * @return
+	 */
+	default boolean isPassThrough(Connection connection) {
+<span class="nc" id="L34">		return true;</span>
+	};
+	
+	/**
+	 * Creates an endpoint to invoke the argument handler of specified type.
+	 * @param connection
+	 * @param handler
+	 * @param type
+	 * @return
+	 */
+	E createEndpoint(Connection connection, H handler, HandlerType type);
+	
+	/**
+	 * Creates a processor and returns processor info. This implementation returns info with &lt;code&gt;null&lt;/code&gt; processor.
+	 * @param config
+	 * @param parentProcessorInfoCallbackConsumer
+	 * @param registryCallbackConsumer
+	 * @return
+	 */
+	default ProcessorInfo&lt;P&gt; createProcessor(ProcessorConfig&lt;P&gt; config, ProgressMonitor progressMonitor) {
+<span class="nc" id="L54">		return ProcessorInfo.of(config, null, null);</span>
+	}
+	
+	default Map&lt;Element,ProcessorInfo&lt;P&gt;&gt; createProcessors(ProgressMonitor progressMonitor, Element... elements) {
+<span class="nc" id="L58">		return createProcessors(Arrays.stream(elements), progressMonitor);</span>
+	}
+	
+	default Map&lt;Element,ProcessorInfo&lt;P&gt;&gt; createProcessors(Collection&lt;Element&gt; elements, ProgressMonitor progressMonitor) {
+<span class="nc" id="L62">		return createProcessors(elements.stream(), progressMonitor);</span>
+	}
+	
+	default Map&lt;Element,ProcessorInfo&lt;P&gt;&gt; createProcessors(Stream&lt;? extends Element&gt; elements, ProgressMonitor progressMonitor) {
+<span class="nc" id="L66">		ProcessorFactoryVisitor&lt;P, H, E&gt; visitor = new ProcessorFactoryVisitor&lt;&gt;(this);				</span>
+<span class="nc" id="L67">		BiFunction&lt;Element, Map&lt;? extends Element, Helper&lt;P&gt;&gt;, Helper&lt;P&gt;&gt; createElementProcessor = (element, childProcessors) -&gt; visitor.createElementProcessor(element, childProcessors, progressMonitor);</span>
+<span class="nc" id="L68">		List&lt;Helper&lt;P&gt;&gt; helpers = elements.map(element -&gt; element.accept(createElementProcessor)).collect(Collectors.toList());</span>
+<span class="nc" id="L69">		Map&lt;Element, ProcessorInfo&lt;P&gt;&gt; registry = visitor.getRegistry();</span>
+<span class="nc" id="L70">		Map&lt;Element, ProcessorInfo&lt;P&gt;&gt; unmodifiableRegistry = Collections.unmodifiableMap(registry);</span>
+<span class="nc" id="L71">		helpers.forEach(helper -&gt; helper.setRegistry(unmodifiableRegistry));</span>
+<span class="nc" id="L72">		return unmodifiableRegistry;		</span>
+	}
+	
+	/**
+	 * Composes this and the other factory
+	 */
+	@Override
+	default ProcessorFactory&lt;P, H, E&gt; compose(ProcessorFactory&lt;P, H, E&gt; other) {
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		if (other == null) {</span>
+<span class="nc" id="L81">			return this;</span>
+		}
+		
+<span class="nc" id="L84">		return new ProcessorFactory&lt;P, H, E&gt;() {</span>
+
+			@Override
+			public E createEndpoint(Connection connection, H handler, HandlerType type) {
+<span class="nc" id="L88">				E endpoint = ProcessorFactory.this.createEndpoint(connection, handler, type);</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">				if (endpoint != null) {</span>
+<span class="nc" id="L90">					return endpoint;</span>
+				}
+<span class="nc" id="L92">				return other.createEndpoint(connection, handler, type);</span>
+			}
+			
+			@Override
+			public ProcessorInfo&lt;P&gt; createProcessor(ProcessorConfig&lt;P&gt; config, ProgressMonitor progressMonitor) {				
+				// TODO - split monitor?
+<span class="nc" id="L98">				ProcessorInfo&lt;P&gt; info = ProcessorFactory.this.createProcessor(config, progressMonitor);</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">				return info.getProcessor() == null ? other.createProcessor(config, progressMonitor) : info;</span>
+			}
+		};
+		
+	}
+	
+	/**
+	 * Composes a stream of factories into a single factory.
+	 * @param &lt;P&gt;
+	 * @param &lt;H&gt;
+	 * @param &lt;E&gt;
+	 * @param factories
+	 * @return
+	 */
+	static &lt;P, H, E&gt; Optional&lt;ProcessorFactory&lt;P, H, E&gt;&gt; compose(Stream&lt;ProcessorFactory&lt;P, H, E&gt;&gt; factories) {
+<span class="nc" id="L114">		return factories.reduce(Composeable::composer);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

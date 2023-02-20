@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SemanticSiteGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Application Model Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.model.app.gen</a> &gt; <span class="el_source">SemanticSiteGenerator.java</span></div><h1>SemanticSiteGenerator.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.model.app.gen;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.Map.Entry;
+import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
+
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.MutableContext;
+import org.nasdanika.common.PrintStreamProgressMonitor;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.emf.EmfUtil;
+import org.nasdanika.emf.persistence.NcoreObjectLoaderSupplier;
+import org.nasdanika.html.emf.ActionProviderAdapterFactory;
+import org.nasdanika.html.emf.EObjectActionResolver;
+import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.util.ActionProvider;
+
+/**
+ * Generates site content from a semantic model.
+ * @author Pavel
+ *
+ */
+<span class="nc" id="L45">public class SemanticSiteGenerator extends SiteGenerator {</span>
+	
+	/**
+	 * Creates a resource set for loading the semantic model. 
+	 * Override to customize, e.g. add a resource factory specific for the semantic model.
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected ResourceSet createSemanticModelResourceSet(Context context, ProgressMonitor progressMonitor) {
+<span class="nc" id="L54">		return createResourceSet(context, progressMonitor);</span>
+	}
+		
+	/**
+	 * Loads a model using {@link NcoreObjectLoaderSupplier} which supports YAML, JSON, and. Optionally creates a copy and stores to XMI.
+	 * @param uri Model URI
+	 * @param copyURI Copy URI. If not null, the loaded model is copied and saved to this URI.
+	 * @param context
+	 * @param progressMonitor
+	 * @return Loaded model
+	 * @throws Exception
+	 */
+	protected Resource loadSemanticModel(
+			URI uri,
+			URI copyURI,
+			Context context, 
+			ProgressMonitor progressMonitor) throws IOException {		
+<span class="nc" id="L71">		ResourceSet resourceSet = Util.createResourceSet(context, progressMonitor);		</span>
+<span class="nc" id="L72">		Resource resource = resourceSet.getResource(uri, true);</span>
+
+<span class="nc bnc" id="L74" title="All 2 branches missed.">		if (copyURI == null) {</span>
+<span class="nc" id="L75">			return resource;</span>
+		}
+		
+<span class="nc" id="L78">		Resource copyResource = resourceSet.createResource(copyURI);</span>
+<span class="nc" id="L79">		copyResource.getContents().addAll(EcoreUtil.copyAll(resource.getContents()));</span>
+<span class="nc" id="L80">		copyResource.save(null);</span>
+<span class="nc" id="L81">		return copyResource;</span>
+	}
+		
+	/**
+	 * Adapts the semantic model to an action model.
+	 * @throws org.eclipse.emf.common.util.DiagnosticException 
+	 * @throws IOException 
+	 * @throws Exception
+	 */
+	
+	protected BiSupplier&lt;Resource, Map&lt;EObject,Label&gt;&gt;  generateActionModel(
+			Resource semanticModelResource,
+			URI actionModelURI,
+			Context context, 
+			ProgressMonitor progressMonitor) throws org.eclipse.emf.common.util.DiagnosticException, IOException {
+<span class="nc" id="L96">		ResourceSet semanticModelResourceSet = semanticModelResource.getResourceSet();</span>
+<span class="nc" id="L97">		org.eclipse.emf.common.util.Diagnostic instanceDiagnostic = org.nasdanika.emf.EmfUtil.resolveClearCacheAndDiagnose(semanticModelResourceSet, context);</span>
+<span class="nc" id="L98">		int severity = instanceDiagnostic.getSeverity();</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (severity != org.eclipse.emf.common.util.Diagnostic.OK) {</span>
+<span class="nc" id="L100">			EmfUtil.dumpDiagnostic(instanceDiagnostic, 2, System.err);</span>
+<span class="nc" id="L101">			throw new org.eclipse.emf.common.util.DiagnosticException(instanceDiagnostic);</span>
+		}
+		
+<span class="nc" id="L104">		semanticModelResourceSet.getAdapterFactories().add(new ActionProviderAdapterFactory(context) {</span>
+			
+			private void collect(Notifier target, org.eclipse.emf.common.util.Diagnostic source, Collection&lt;org.eclipse.emf.common.util.Diagnostic&gt; accumulator) {
+<span class="nc" id="L107">				List&lt;?&gt; data = source.getData();</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">				if (source.getChildren().isEmpty()</span>
+<span class="nc bnc" id="L109" title="All 4 branches missed.">						&amp;&amp; source.getSeverity() &gt; org.eclipse.emf.common.util.Diagnostic.OK </span>
+						&amp;&amp; data != null 
+<span class="nc bnc" id="L111" title="All 2 branches missed.">						&amp;&amp; data.size() == 1 </span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">						&amp;&amp; data.get(0) == target) {</span>
+<span class="nc" id="L113">					accumulator.add(source);</span>
+				}
+<span class="nc bnc" id="L115" title="All 2 branches missed.">				for (org.eclipse.emf.common.util.Diagnostic child: source.getChildren()) {</span>
+<span class="nc" id="L116">					collect(target, child, accumulator);</span>
+<span class="nc" id="L117">				}</span>
+<span class="nc" id="L118">			}</span>
+			
+			protected Collection&lt;org.eclipse.emf.common.util.Diagnostic&gt; getDiagnostic(Notifier target) {
+<span class="nc" id="L121">				Collection&lt;org.eclipse.emf.common.util.Diagnostic&gt; ret = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L122">				collect(target, instanceDiagnostic, ret);</span>
+<span class="nc" id="L123">				return ret;</span>
+			}
+			
+			private void collect(Notifier target, EStructuralFeature feature, org.eclipse.emf.common.util.Diagnostic source, Collection&lt;org.eclipse.emf.common.util.Diagnostic&gt; accumulator) {
+<span class="nc" id="L127">				List&lt;?&gt; data = source.getData();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">				if (source.getChildren().isEmpty() </span>
+<span class="nc bnc" id="L129" title="All 4 branches missed.">						&amp;&amp; source.getSeverity() &gt; org.eclipse.emf.common.util.Diagnostic.OK </span>
+						&amp;&amp; data != null 
+<span class="nc bnc" id="L131" title="All 2 branches missed.">						&amp;&amp; data.size() &gt; 1 </span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">						&amp;&amp; data.get(0) == target </span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">						&amp;&amp; data.get(1) == feature) {</span>
+<span class="nc" id="L134">					accumulator.add(source);</span>
+				}
+<span class="nc bnc" id="L136" title="All 2 branches missed.">				for (org.eclipse.emf.common.util.Diagnostic child: source.getChildren()) {</span>
+<span class="nc" id="L137">					collect(target, feature, child, accumulator);</span>
+<span class="nc" id="L138">				}</span>
+<span class="nc" id="L139">			}</span>
+
+			protected Collection&lt;org.eclipse.emf.common.util.Diagnostic&gt; getFeatureDiagnostic(Notifier target, EStructuralFeature feature) {
+<span class="nc" id="L142">				Collection&lt;org.eclipse.emf.common.util.Diagnostic&gt; ret = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L143">				collect(target, feature, instanceDiagnostic, ret);</span>
+<span class="nc" id="L144">				return ret;</span>
+			}
+			
+		});
+		
+<span class="nc" id="L149">		ResourceSet actionModelsResourceSet = createResourceSet(context, progressMonitor);</span>
+		
+<span class="nc" id="L151">		org.eclipse.emf.ecore.resource.Resource actionModelResource = actionModelsResourceSet.createResource(actionModelURI);</span>
+		
+<span class="nc" id="L153">		Map&lt;EObject,Label&gt; registry = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">		for (EObject semanticElement: semanticModelResource.getContents()) {</span>
+<span class="nc" id="L155">			Action action = EObjectAdaptable.adaptTo(semanticElement, ActionProvider.class).execute(registry::put, progressMonitor);</span>
+<span class="nc" id="L156">			Context uriResolverContext = Context.singleton(Context.BASE_URI_PROPERTY, URI.createURI(&quot;temp://&quot; + UUID.randomUUID() + &quot;/&quot; + UUID.randomUUID() + &quot;/&quot;));</span>
+<span class="nc" id="L157">			BiFunction&lt;Label, URI, URI&gt; uriResolver = org.nasdanika.html.model.app.util.Util.uriResolver(action, uriResolverContext);</span>
+<span class="nc" id="L158">			Adapter resolver = EcoreUtil.getExistingAdapter(action, EObjectActionResolver.class);</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">			if (resolver instanceof EObjectActionResolver) {														</span>
+<span class="nc" id="L160">				org.nasdanika.html.emf.EObjectActionResolver.Context resolverContext = new org.nasdanika.html.emf.EObjectActionResolver.Context() {</span>
+		
+					@Override
+					public URI resolve(Action action, URI base) {
+<span class="nc" id="L164">						return uriResolver.apply(action, base);</span>
+					}
+
+					@Override
+					public Action getAction(Predicate&lt;EObject&gt; semanticElementPredicate) {
+<span class="nc bnc" id="L169" title="All 2 branches missed.">						for (Entry&lt;EObject, Label&gt; re: registry.entrySet()) {</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">							if (semanticElementPredicate.test(re.getKey())) {</span>
+<span class="nc" id="L171">								Label label = re.getValue();</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">								return label instanceof Action ? (Action) label : null;</span>
+							}						
+<span class="nc" id="L174">						}</span>
+<span class="nc" id="L175">						return null;</span>
+					}
+					
+				};
+<span class="nc" id="L179">				((EObjectActionResolver) resolver).execute(resolverContext, progressMonitor);</span>
+			}
+<span class="nc" id="L181">			actionModelResource.getContents().add(action);</span>
+<span class="nc" id="L182">		}</span>
+<span class="nc" id="L183">		actionModelResource.save(null);</span>
+		
+<span class="nc" id="L185">		return BiSupplier.of(actionModelResource, registry);</span>
+	}	
+		
+	/**
+	 * Generates a resource model from an action model.
+	 * @throws IOException 
+	 * @throws Exception
+	 */
+	protected Resource generateResourceModel(
+			Resource actionResource, 
+			Map&lt;EObject, Label&gt; registry,
+			URI rootActionURI,
+			URI pageTemplateURI,
+			URI resourceURI, 
+			String containerName,
+			File resourceWorkDir,
+			BiConsumer&lt;String, String&gt; representationLinkResolutionErrorConsumer,						
+			Context context, 
+			ProgressMonitor progressMonitor) throws IOException {
+		
+		Action root;
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		if (rootActionURI == null) {</span>
+<span class="nc" id="L207">			root = (Action) actionResource.getContents().get(0);</span>
+		} else {
+<span class="nc" id="L209">			Context rootActionContext = context.compose(Context.singleton(&quot;action-resource&quot;, actionResource.getURI().toString()));</span>
+<span class="nc" id="L210">			ResourceSet rootActionResourceSet = createResourceSet(rootActionContext, progressMonitor);</span>
+<span class="nc" id="L211">			root = (Action) rootActionResourceSet.getEObject(rootActionURI, true);</span>
+		}
+		
+<span class="nc" id="L214">		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) actionResource.getResourceSet().getEObject(pageTemplateURI, true);</span>
+		
+<span class="nc" id="L216">		return generateResourceModel(root, registry, pageTemplate, resourceURI, containerName, resourceWorkDir, representationLinkResolutionErrorConsumer, context, progressMonitor);</span>
+	}		
+	
+	protected MutableContext createContext(ProgressMonitor progressMonitor) {
+<span class="nc" id="L220">		return Context.EMPTY_CONTEXT.fork();</span>
+	}
+
+	protected PrintStreamProgressMonitor createProgressMonitor() {
+<span class="nc" id="L224">		return new PrintStreamProgressMonitor();</span>
+	}
+		
+	public Map&lt;String, Collection&lt;String&gt;&gt; generate(
+		URI semanticModelURI,
+		URI rootActionURI,
+		URI pageTemplateURI,
+		String siteMapDomain,
+		File outputDir,
+		File workDir,
+		boolean cleanWorkDir) throws IOException, org.eclipse.emf.common.util.DiagnosticException  {
+		
+<span class="nc" id="L236">		String modelName = semanticModelURI.lastSegment();</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">		if (org.nasdanika.common.Util.isBlank(modelName)) {</span>
+<span class="nc" id="L238">			modelName = &quot;semantic-model&quot;;</span>
+		}
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		if (workDir == null) {</span>
+<span class="nc" id="L241">			workDir = Files.createTempDirectory(modelName).toFile();</span>
+<span class="nc" id="L242">			cleanWorkDir = true;</span>
+		}
+		
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		if (!workDir.isDirectory()) {</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">			if (!workDir.mkdirs()) {</span>
+<span class="nc" id="L247">				throw new IOException(&quot;Cannot create a working directory: &quot; + workDir.getAbsolutePath());</span>
+			}
+		}
+		
+		try {
+<span class="nc" id="L252">			File modelsDir = new File(workDir, &quot;models&quot;);</span>
+<span class="nc" id="L253">			File actionModelsDir = new File(workDir, &quot;actions&quot;);</span>
+<span class="nc" id="L254">			File resourceModelsDir = new File(workDir, &quot;resources&quot;);</span>
+<span class="nc" id="L255">			File siteWorkDir = new File(workDir, &quot;site&quot;);			</span>
+			
+<span class="nc" id="L257">			org.nasdanika.common.Util.delete(modelsDir);</span>
+<span class="nc" id="L258">			org.nasdanika.common.Util.delete(actionModelsDir);</span>
+<span class="nc" id="L259">			org.nasdanika.common.Util.delete(resourceModelsDir);</span>
+<span class="nc" id="L260">			org.nasdanika.common.Util.delete(siteWorkDir);</span>
+			
+<span class="nc" id="L262">			modelsDir.mkdirs();</span>
+<span class="nc" id="L263">			actionModelsDir.mkdirs();</span>
+<span class="nc" id="L264">			resourceModelsDir.mkdirs();</span>
+	
+<span class="nc" id="L266">			try (ProgressMonitor progressMonitor = createProgressMonitor()) {				</span>
+<span class="nc" id="L267">				MutableContext context = createContext(progressMonitor);		</span>
+<span class="nc" id="L268">				context.put(&quot;model-name&quot;, modelName);</span>
+				
+<span class="nc" id="L270">				URI modelsURI = URI.createFileURI(modelsDir.getAbsolutePath() + &quot;/&quot;);							</span>
+<span class="nc" id="L271">				URI copyURI = URI.createURI(modelName + &quot;.xml&quot;).resolve(modelsURI);		</span>
+<span class="nc" id="L272">				Resource semanticModelResource = loadSemanticModel(semanticModelURI, copyURI, context, progressMonitor.split(&quot;Loading semantic model&quot;, 1));</span>
+				
+<span class="nc" id="L274">				URI actionModelsURI = URI.createFileURI(actionModelsDir.getAbsolutePath() + &quot;/&quot;);	</span>
+<span class="nc" id="L275">				URI actionModelURI = URI.createURI(modelName + &quot;.xml&quot;).resolve(actionModelsURI);</span>
+<span class="nc" id="L276">				BiSupplier&lt;Resource, Map&lt;EObject, Label&gt;&gt; rootActionAndRegistry = generateActionModel(semanticModelResource, actionModelURI, context, progressMonitor.split(&quot;Generating action model&quot;, 1));</span>
+				
+<span class="nc" id="L278">				URI resourceModelsURI = URI.createFileURI(resourceModelsDir.getAbsolutePath() + &quot;/&quot;);	</span>
+<span class="nc" id="L279">				URI resourceURI = URI.createURI(modelName + &quot;.xml&quot;).resolve(resourceModelsURI);</span>
+				
+<span class="nc" id="L281">				Map&lt;String, Collection&lt;String&gt;&gt; errors = new TreeMap&lt;&gt;();</span>
+
+<span class="nc" id="L283">				Resource resourceModel = generateResourceModel(</span>
+<span class="nc" id="L284">						rootActionAndRegistry.getFirst(), </span>
+<span class="nc" id="L285">						rootActionAndRegistry.getSecond(), </span>
+						rootActionURI,
+						pageTemplateURI,
+						resourceURI, 
+						modelName, 
+						resourceModelsDir,
+						(location, error) -&gt;  {
+<span class="nc" id="L292">							errors.computeIfAbsent(location, p -&gt; new ArrayList&lt;&gt;()).add(error);</span>
+<span class="nc" id="L293">						},</span>
+						context, 
+<span class="nc" id="L295">						progressMonitor.split(&quot;Generating resource model&quot;, 1));</span>
+				
+<span class="nc" id="L297">				Map&lt;String, Collection&lt;String&gt;&gt; containerErrors = generateContainer(</span>
+						resourceModel,
+						siteWorkDir,
+						outputDir,
+						this::isDeleteOutputPath,
+						siteMapDomain,
+						modelName, 
+						context, 
+<span class="nc" id="L305">						progressMonitor.split(&quot;Generating container&quot;, 1));</span>
+
+<span class="nc" id="L307">				containerErrors.forEach((path, pathErrors) -&gt; errors.computeIfAbsent(path, p -&gt; new ArrayList&lt;&gt;()).addAll(pathErrors));</span>
+<span class="nc" id="L308">				return errors;</span>
+			}
+		} finally {
+<span class="nc bnc" id="L311" title="All 2 branches missed.">			if (cleanWorkDir) {</span>
+<span class="nc" id="L312">				org.nasdanika.common.Util.delete(workDir);</span>
+			}
+		}
+	}
+	
+	/**
+	 * Clean predicate for the output directory. This implementation returns true. 
+	 * Override to return false for paths which shall not be cleaned (deleted).
+	 * @param path File/directory path in the output directory.
+	 * @return
+	 */
+	protected boolean isDeleteOutputPath(String path) {
+<span class="nc" id="L324">		return true;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

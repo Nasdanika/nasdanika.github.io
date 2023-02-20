@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Document.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Java API for working with Drawio diagrams</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.drawio</a> &gt; <span class="el_source">Document.java</span></div><h1>Document.java</h1><pre class="source lang-java linenums">package org.nasdanika.drawio;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.metadata.IIOMetadata;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.apache.commons.codec.binary.Base64;
+import org.eclipse.emf.common.util.URI;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+import org.nasdanika.drawio.impl.DocumentImpl;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+/**
+ * Represents the root mxfile element.
+ * 
+ * @author Pavel
+ *
+ */
+public interface Document extends Element {
+	
+	/**
+	 * @return a list of pages. This list supports add() method to insert pages from other documents. The add() method creates a clone of the page passed as a parameter. 
+	 */
+	List&lt;Page&gt; getPages();
+	
+	/**
+	 * @return Creates a new page and adds it to the list of pages.
+	 */
+	Page createPage();
+	
+	/**
+	 * Loads document from an XML string.
+	 * @param docStr
+	 * @param uri Optional document URI for resolution of relative URI's.
+	 * @return
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
+	 */
+	static Document load(String docStr, URI uri) throws ParserConfigurationException, SAXException, IOException {
+<span class="fc" id="L55">		return new DocumentImpl(docStr, uri);</span>
+	}
+
+	/**
+	 * 
+	 * @param reader
+	 * @param uri Optional document URI for resolution of relative URI's.
+	 * @return
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 */
+	static Document load(Reader reader, URI uri) throws IOException, ParserConfigurationException, SAXException {
+<span class="nc" id="L68">		return new DocumentImpl(reader, uri);</span>
+	}
+	
+	/**
+	 * 
+	 * @param compressed
+	 * @param uri Optional document URI for resolution of relative URI's.
+	 * @return
+	 * @throws ParserConfigurationException
+	 */
+	static Document create(boolean compressed, URI uri) throws ParserConfigurationException {
+<span class="fc" id="L79">		return new DocumentImpl(compressed, uri);</span>
+	}
+
+	/**
+	 * Loads document using UTF-8 encoding.
+	 * @param in
+	 * @param uri Optional document URI for resolution of relative URI's.
+	 * @return
+	 * @throws IOException
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
+	 */
+	static Document load(InputStream in, URI uri) throws IOException, ParserConfigurationException, SAXException {
+<span class="fc" id="L92">		return new DocumentImpl(in, uri);</span>
+	}
+	
+	/**
+	 * @param uri
+	 * @return true if the argument URI is drawio data URI, i.e. is starts with data:drawio[;base64],
+	 */
+	static boolean isDataURI(URI uri) {
+<span class="pc bpc" id="L100" title="2 of 4 branches missed.">		if (uri != null &amp;&amp; &quot;data&quot;.equals(uri.scheme())) {</span>
+<span class="nc" id="L101">			String uriStr = uri.toString();</span>
+<span class="nc" id="L102">			String DRAWIO = &quot;data:drawio&quot;;</span>
+<span class="nc bnc" id="L103" title="All 4 branches missed.">			return uriStr.startsWith(DRAWIO +&quot;;base64,&quot;) || uriStr.startsWith(DRAWIO +&quot;,&quot;);</span>
+		}
+<span class="fc" id="L105">		return false;</span>
+	}
+
+	/**
+	 * Loads document from an URI - supports data: schema.
+	 * @param source
+	 * @return
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 */
+	static Document load(URI source) throws IOException, ParserConfigurationException, SAXException {
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		if (isDataURI(source)) {</span>
+<span class="nc" id="L118">			String uriStr = source.toString();</span>
+<span class="nc" id="L119">			uriStr = uriStr.substring(&quot;data:drawio&quot;.length());				</span>
+<span class="nc" id="L120">			String BASE64 = &quot;;base64,&quot;;</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">			if (uriStr.startsWith(BASE64)) {</span>
+<span class="nc" id="L122">				uriStr = new String(Base64.decodeBase64(URLDecoder.decode(uriStr.substring(BASE64.length()), StandardCharsets.UTF_8)), StandardCharsets.UTF_8);</span>
+			} else {
+<span class="nc" id="L124">				uriStr = URLDecoder.decode(uriStr.substring(1), StandardCharsets.UTF_8);</span>
+			}
+<span class="nc" id="L126">			JSONObject payload = new JSONObject(new JSONTokener(uriStr));</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">			return load(payload.getString(&quot;document&quot;), payload.has(&quot;uri&quot;) ? URI.createURI(payload.getString(&quot;uri&quot;)) : null);</span>
+		}
+			
+<span class="fc" id="L130">		return load(new URL(source.toString()));</span>
+	}
+	
+	/**
+	 * Loads document from URL by opening a stream.
+	 * @param source
+	 * @return
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 */
+	static Document load(URL source) throws IOException, ParserConfigurationException, SAXException {
+<span class="fc" id="L142">		try (InputStream in = source.openStream()) {</span>
+<span class="fc" id="L143">			return load(in, URI.createURI(source.toString()));</span>
+		}
+	}
+	
+	/**
+	 * Loads documents stored in PNG metadata using UTF-8 encoding.
+	 * @param in
+	 * @return
+	 * @throws IOException
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
+	 */
+	static List&lt;Document&gt; loadFromPngMetadata(InputStream in, URI uri) throws IOException, ParserConfigurationException, SAXException {
+<span class="fc" id="L156">		ImageReader imageReader = ImageIO.getImageReadersByFormatName(&quot;png&quot;).next();</span>
+<span class="fc" id="L157">		imageReader.setInput(ImageIO.createImageInputStream(in));</span>
+<span class="fc" id="L158">		IIOMetadata metadata = imageReader.getImageMetadata(0);</span>
+<span class="fc" id="L159">		List&lt;Document&gt; ret = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">		for (int imageCount = imageReader.getNumImages(true), minIndex = imageReader.getMinIndex(), idx = 0; idx &lt; imageCount; ++idx) {</span>
+<span class="fc" id="L161">			IIOMetadata imageMetadata = imageReader.getImageMetadata(minIndex + idx);</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">			if (imageMetadata != null) {</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">				for (String formatName: imageMetadata.getMetadataFormatNames()) {</span>
+<span class="fc" id="L164">					Node tree = metadata.getAsTree(formatName);</span>
+<span class="fc" id="L165">					NodeList childNodes = tree.getChildNodes();</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">					for (int i = 0; i &lt; childNodes.getLength(); ++i) {</span>
+<span class="fc" id="L167">						Node child = childNodes.item(i);</span>
+<span class="pc bpc" id="L168" title="1 of 4 branches missed.">						if (child instanceof org.w3c.dom.Element &amp;&amp; &quot;Text&quot;.equals(((org.w3c.dom.Element) child).getTagName())) {</span>
+<span class="fc" id="L169">							NodeList grandChildNodes = child.getChildNodes();</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">							for (int j = 0; j &lt; grandChildNodes.getLength(); ++j) {</span>
+<span class="fc" id="L171">								Node grandChild = grandChildNodes.item(j);</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">								if (grandChild instanceof org.w3c.dom.Element </span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">										&amp;&amp; &quot;TextEntry&quot;.equals(((org.w3c.dom.Element) grandChild).getTagName())</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">										&amp;&amp; ((org.w3c.dom.Element) grandChild).hasAttribute(&quot;keyword&quot;)</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">										&amp;&amp; &quot;mxfile&quot;.equals(((org.w3c.dom.Element) grandChild).getAttribute(&quot;keyword&quot;))) {</span>
+<span class="fc" id="L176">									String value = ((org.w3c.dom.Element) grandChild).getAttribute(&quot;value&quot;);</span>
+<span class="fc" id="L177">									ret.add(load((URLDecoder.decode(value, StandardCharsets.UTF_8)), uri));									</span>
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+<span class="fc" id="L185">		return ret;</span>
+	}
+	
+	/**
+	 * Loads documents stored in PNG metadata using UTF-8 encoding.
+	 * @param source
+	 * @return
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 */
+	static List&lt;Document&gt; loadFromPngMetadata(URL source) throws IOException, ParserConfigurationException, SAXException {
+<span class="fc" id="L197">		try (InputStream in = source.openStream()) {</span>
+<span class="fc" id="L198">			return loadFromPngMetadata(in, URI.createURI(source.toString()));</span>
+		}
+	}
+	
+	/**
+	 * @param compress If null keeps the original compression setting. If not null forces either compressed (TRUE) or uncompressed (FALSE).
+	 * This can be used to generate HTML tags with compressed document while keeping the source document uncompressed so it can be manually inspected, edited, diffed, and merged.
+	 * @param viewer URL of the viewer script. Default value is used if null.  
+	 * @return div tag with the embedded document which can be inserted into HTML pages.
+	 */
+	String toHtml(Boolean compress, String viewer) throws TransformerException, IOException;
+
+	/**
+	 * Encodes document as data: URI.
+	 * @return
+	 */
+	URI toDataURI(Boolean compress) throws TransformerException, IOException;
+
+	/**
+	 * Saves the document to String.
+	 * @param compress If null keeps the original compression setting. If not null forces either compressed (TRUE) or uncompressed (FALSE).
+	 * This can be used to generate HTML tags with compressed document while keeping the source document uncompressed so it can be manually inspected, edited, diffed, and merged.  
+	 * @return Document string.
+	 */
+	String save(Boolean compress) throws TransformerException, IOException;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

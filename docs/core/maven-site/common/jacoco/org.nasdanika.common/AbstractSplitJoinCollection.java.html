@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractSplitJoinCollection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">AbstractSplitJoinCollection.java</span></div><h1>AbstractSplitJoinCollection.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+import java.util.AbstractCollection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * Collection which splits the underlying state S into a sequence of chunks C which then get converted to element type E.
+ * The class itself has no state - it always retrieves state, splits, performs an operation and then joins and sets state in case of mutations.
+ * For this reason there is no way to update an element. For sets you may add it again, for lists set at index. 
+ * @author Pavel
+ *
+ * @param &lt;S&gt; State type
+ * @param &lt;C&gt; Chunk type
+ * @param &lt;E&gt; Element type
+ */
+<span class="fc" id="L19">public abstract class AbstractSplitJoinCollection&lt;S,C,E&gt; extends AbstractCollection&lt;E&gt; {</span>
+	
+	/**
+	 * @return State to be split into chunks.
+	 */
+	protected abstract S getState();
+	
+	/**
+	 * Sets state composed from chunks created from elements.
+	 * @param state
+	 */
+	protected abstract void setState(S state);
+	
+	/**
+	 * Splits state into an array of chunks
+	 * @param state
+	 * @return
+	 */
+	protected abstract List&lt;C&gt; split(S state);
+	
+	/**
+	 * Joins an array of chunks into a state.
+	 * @param chunks
+	 * @return
+	 */
+	protected abstract S join(List&lt;C&gt; chunks);
+	
+	/**
+	 * Loads a chunk - converts it to element.
+	 * @param chunk
+	 * @return
+	 */
+	protected abstract E load(C chunk);
+	
+	/**
+	 * Stores an element - converts it into a chunk  
+	 * @param element
+	 * @return
+	 */
+	protected abstract C store(E element);
+
+	/**
+	 * The iterator maintains array index - this is the only state it maintains. 
+	 * For each operation state is retrieved, split, chunks loaded, ... 
+	 */
+	@Override
+	public Iterator&lt;E&gt; iterator() {
+<span class="fc" id="L66">		return new Iterator&lt;E&gt;() {</span>
+			
+			// Points to the position of the current elements.
+			// Initial value is before the first element.
+<span class="fc" id="L70">			private int idx = -1;</span>
+
+			@Override
+			public boolean hasNext() {
+<span class="fc" id="L74">				S state = getState();</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">				return split(state).size() &gt; idx + 1;</span>
+			}
+
+			@Override
+			public E next() {
+<span class="fc" id="L80">				return load(split(getState()).get(++idx));</span>
+			}
+			
+			@Override
+			public void remove() {
+<span class="fc" id="L85">				List&lt;C&gt; chunks = new ArrayList&lt;&gt;(split(getState())); // In case split returns unmodifiable list.</span>
+<span class="fc" id="L86">				chunks.remove(idx--);</span>
+<span class="fc" id="L87">				setState(join(chunks));</span>
+<span class="fc" id="L88">			}</span>
+		};
+	}
+
+	@Override
+	public int size() {
+<span class="fc" id="L94">		return split(getState()).size();</span>
+	}
+	
+	@Override
+	public void clear() {
+<span class="fc" id="L99">		setState(join(Collections.emptyList()));</span>
+<span class="fc" id="L100">	}</span>
+	
+	@Override
+	public boolean add(E e) {
+<span class="fc" id="L104">		ArrayList&lt;C&gt; chunks = new ArrayList&lt;&gt;(split(getState()));</span>
+<span class="fc" id="L105">		chunks.add(store(e));</span>
+<span class="fc" id="L106">		setState(join(chunks));</span>
+<span class="fc" id="L107">		return true;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResourcesAdapterFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Execution Model</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.resources.util</a> &gt; <span class="el_source">ResourcesAdapterFactory.java</span></div><h1>ResourcesAdapterFactory.java</h1><pre class="source lang-java linenums">/**
+ */
+package org.nasdanika.exec.resources.util;
+
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
+import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.common.Adaptable;
+import org.nasdanika.exec.resources.*;
+import org.nasdanika.exec.resources.Container;
+import org.nasdanika.exec.resources.File;
+import org.nasdanika.exec.resources.Resource;
+import org.nasdanika.exec.resources.ResourcesPackage;
+import org.nasdanika.ncore.Marked;
+import org.nasdanika.ncore.ModelElement;
+
+/**
+ * &lt;!-- begin-user-doc --&gt;
+ * The &lt;b&gt;Adapter Factory&lt;/b&gt; for the model.
+ * It provides an adapter &lt;code&gt;createXXX&lt;/code&gt; method for each class of the model.
+ * &lt;!-- end-user-doc --&gt;
+ * @see org.nasdanika.exec.resources.ResourcesPackage
+ * @generated
+ */
+public class ResourcesAdapterFactory extends AdapterFactoryImpl {
+	/**
+	 * The cached model package.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+	protected static ResourcesPackage modelPackage;
+
+	/**
+	 * Creates an instance of the adapter factory.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="nc" id="L41">	public ResourcesAdapterFactory() {</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">		if (modelPackage == null) {</span>
+<span class="nc" id="L43">			modelPackage = ResourcesPackage.eINSTANCE;</span>
+		}
+<span class="nc" id="L45">	}</span>
+
+	/**
+	 * Returns whether this factory is applicable for the type of the object.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * This implementation returns &lt;code&gt;true&lt;/code&gt; if the object is either the model's package or is an instance object of the model.
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return whether this factory is applicable for the type of the object.
+	 * @generated
+	 */
+	@Override
+	public boolean isFactoryForType(Object object) {
+<span class="nc bnc" id="L57" title="All 2 branches missed.">		if (object == modelPackage) {</span>
+<span class="nc" id="L58">			return true;</span>
+		}
+<span class="nc bnc" id="L60" title="All 2 branches missed.">		if (object instanceof EObject) {</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">			return ((EObject)object).eClass().getEPackage() == modelPackage;</span>
+		}
+<span class="nc" id="L63">		return false;</span>
+	}
+
+	/**
+	 * The switch that delegates to the &lt;code&gt;createXXX&lt;/code&gt; methods.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 */
+<span class="nc" id="L72">	protected ResourcesSwitch&lt;Adapter&gt; modelSwitch =</span>
+<span class="nc" id="L73">		new ResourcesSwitch&lt;Adapter&gt;() {</span>
+			@Override
+			public Adapter caseResource(Resource object) {
+<span class="nc" id="L76">				return createResourceAdapter();</span>
+			}
+			@Override
+			public Adapter caseContainer(Container object) {
+<span class="nc" id="L80">				return createContainerAdapter();</span>
+			}
+			@Override
+			public Adapter caseFile(File object) {
+<span class="nc" id="L84">				return createFileAdapter();</span>
+			}
+			@Override
+			public Adapter caseIMarked(org.nasdanika.persistence.Marked object) {
+<span class="nc" id="L88">				return createIMarkedAdapter();</span>
+			}
+			@Override
+			public Adapter caseMarked(Marked object) {
+<span class="nc" id="L92">				return createMarkedAdapter();</span>
+			}
+			@Override
+			public Adapter caseAdaptable(Adaptable object) {
+<span class="nc" id="L96">				return createAdaptableAdapter();</span>
+			}
+			@Override
+			public Adapter caseModelElement(ModelElement object) {
+<span class="nc" id="L100">				return createModelElementAdapter();</span>
+			}
+			@Override
+			public Adapter defaultCase(EObject object) {
+<span class="nc" id="L104">				return createEObjectAdapter();</span>
+			}
+		};
+
+	/**
+	 * Creates an adapter for the &lt;code&gt;target&lt;/code&gt;.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @param target the object to adapt.
+	 * @return the adapter for the &lt;code&gt;target&lt;/code&gt;.
+	 * @generated
+	 */
+	@Override
+	public Adapter createAdapter(Notifier target) {
+<span class="nc" id="L118">		return modelSwitch.doSwitch((EObject)target);</span>
+	}
+
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.exec.resources.Resource &lt;em&gt;Resource&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the new adapter.
+	 * @see org.nasdanika.exec.resources.Resource
+	 * @generated
+	 */
+	public Adapter createResourceAdapter() {
+<span class="nc" id="L133">		return null;</span>
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.exec.resources.Container &lt;em&gt;Container&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the new adapter.
+	 * @see org.nasdanika.exec.resources.Container
+	 * @generated
+	 */
+	public Adapter createContainerAdapter() {
+<span class="nc" id="L147">		return null;</span>
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.exec.resources.File &lt;em&gt;File&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the new adapter.
+	 * @see org.nasdanika.exec.resources.File
+	 * @generated
+	 */
+	public Adapter createFileAdapter() {
+<span class="nc" id="L161">		return null;</span>
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.persistence.Marked &lt;em&gt;IMarked&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the new adapter.
+	 * @see org.nasdanika.persistence.Marked
+	 * @generated
+	 */
+	public Adapter createIMarkedAdapter() {
+<span class="nc" id="L175">		return null;</span>
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.ncore.Marked &lt;em&gt;Marked&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the new adapter.
+	 * @see org.nasdanika.ncore.Marked
+	 * @generated
+	 */
+	public Adapter createMarkedAdapter() {
+<span class="nc" id="L189">		return null;</span>
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.common.Adaptable &lt;em&gt;Adaptable&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the new adapter.
+	 * @see org.nasdanika.common.Adaptable
+	 * @generated
+	 */
+	public Adapter createAdaptableAdapter() {
+<span class="nc" id="L203">		return null;</span>
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.ncore.ModelElement &lt;em&gt;Model Element&lt;/em&gt;}'.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the new adapter.
+	 * @see org.nasdanika.ncore.ModelElement
+	 * @generated
+	 */
+	public Adapter createModelElementAdapter() {
+<span class="nc" id="L217">		return null;</span>
+	}
+
+	/**
+	 * Creates a new adapter for the default case.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * This default implementation returns null.
+	 * &lt;!-- end-user-doc --&gt;
+	 * @return the new adapter.
+	 * @generated
+	 */
+	public Adapter createEObjectAdapter() {
+<span class="nc" id="L229">		return null;</span>
+	}
+
+} //ResourcesAdapterFactory
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

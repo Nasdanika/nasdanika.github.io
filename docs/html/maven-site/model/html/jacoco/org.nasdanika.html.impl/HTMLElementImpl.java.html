@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika HTML</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html.impl</a> &gt; <span class="el_source">HTMLElementImpl.java</span></div><h1>HTMLElementImpl.java</h1><pre class="source lang-java linenums">package org.nasdanika.html.impl;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.lang.reflect.Array;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.commons.text.StringEscapeUtils;
+import org.nasdanika.common.Adaptable;
+import org.nasdanika.html.Event;
+import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Markup;
+import org.nasdanika.html.Producer;
+import org.nasdanika.html.ProducerException;
+import org.nasdanika.html.Style;
+import org.nasdanika.html.TagName;
+
+/**
+ * Base class for UI elements
+ * @author Pavel
+ *
+ * @param &lt;T&gt;
+ */
+public abstract class HTMLElementImpl&lt;T extends HTMLElement&lt;T&gt;&gt; implements HTMLElement&lt;T&gt;, Adaptable {
+
+
+	private static final String STYLE = &quot;style&quot;;
+	
+	private static final String CLASS = &quot;class&quot;;
+	
+	private static final String ID = &quot;id&quot;;
+	
+	public Object getId() {
+<span class="nc" id="L47">		return attributes.get(ID);</span>
+	}
+	
+<span class="fc" id="L50">	protected Map&lt;String, Object&gt; attributes = new LinkedHashMap&lt;&gt;();</span>
+	
+<span class="fc" id="L52">	private Map&lt;String, Object&gt; styles = new LinkedHashMap&lt;&gt;();</span>
+
+	protected HTMLFactory factory;
+
+	private boolean nonEmpty;
+	
+	public HTMLFactory getFactory() {
+<span class="nc" id="L59">		return factory;</span>
+	}
+	
+	public HTMLElementImpl(HTMLFactory factory, TagName tagName, boolean nonEmpty) {
+<span class="nc" id="L63">		this(factory, tagName.name(), nonEmpty);</span>
+<span class="nc" id="L64">	}</span>
+	
+	/**
+	 * 
+	 * @param factory
+	 * @param tagName
+	 * @param nonEmpty If true then the element is rendered only if it has content, i.e. there is no point to 
+	 * render an empty element.
+	 */
+<span class="fc" id="L73">	public HTMLElementImpl(HTMLFactory factory, String tagName, boolean nonEmpty) {</span>
+<span class="fc" id="L74">		this.factory = factory;</span>
+<span class="fc" id="L75">		this.tagName = tagName;</span>
+<span class="fc" id="L76">		this.nonEmpty = nonEmpty;</span>
+<span class="fc" id="L77">	}</span>
+	
+	@Override
+	public String getAttribute(String name) {
+<span class="nc" id="L81">		Object av = attributes.get(name);</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">		return av==null ? null : av.toString();</span>
+	}
+	
+	/**
+	 * Renders attributes
+	 * @param excluded Attributes to exclude (already rendered by subclass).
+	 */
+	protected String attributes(String... excluded) {
+<span class="fc" id="L90">		StringBuilder attributeBuilder = new StringBuilder();</span>
+		
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">		for (Entry&lt;String, Object&gt; a: attributes.entrySet()) {</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">			if (!STYLE.equals(a.getKey())</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">					&amp;&amp; !CLASS.equals(a.getKey()) </span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">					&amp;&amp; !Arrays.asList(excluded).contains(a.getKey())) {</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">				if (attributeBuilder.length() &gt; 0) {</span>
+<span class="nc" id="L97">					attributeBuilder.append(&quot; &quot;);</span>
+				}				
+<span class="nc" id="L99">				Object value = a.getValue();</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">				if (Boolean.TRUE.equals(value)) {</span>
+					// boolean attributes
+<span class="nc" id="L102">					attributeBuilder.append(a.getKey());					</span>
+				} else {
+<span class="nc" id="L104">					attributeBuilder.append(a.getKey()+&quot;=\&quot;&quot;+StringEscapeUtils.escapeHtml4(stringify(value, 0))+&quot;\&quot;&quot;);</span>
+				}
+			}
+<span class="nc" id="L107">		}</span>
+		
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (!Arrays.asList(excluded).contains(STYLE)) {</span>
+<span class="fc" id="L110">			StringBuilder styleBuilder = styles();</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			if (styleBuilder.length() &gt; 0) {</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">				if (attributeBuilder.length() &gt; 0) {</span>
+<span class="nc" id="L113">					attributeBuilder.append(&quot; &quot;);</span>
+				}
+<span class="nc" id="L115">				attributeBuilder.append(STYLE+&quot;=\&quot;&quot;+styleBuilder+&quot;\&quot;&quot;);				</span>
+			}
+		}
+		
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (!Arrays.asList(excluded).contains(CLASS)) {</span>
+<span class="fc" id="L120">			StringBuilder classBuilder = classes();</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">			if (classBuilder.length()&gt;0) {</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">				if (attributeBuilder.length()&gt;0) {</span>
+<span class="nc" id="L123">					attributeBuilder.append(&quot; &quot;);</span>
+				}
+<span class="nc" id="L125">				attributeBuilder.append(CLASS+&quot;=\&quot;&quot;+classBuilder+&quot;\&quot;&quot;);				</span>
+			}
+		}
+		
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		return attributeBuilder.length()==0 ? &quot;&quot; : &quot; &quot;+attributeBuilder.toString();</span>
+	}
+
+	protected StringBuilder classes() {
+<span class="fc" id="L133">		StringBuilder classBuilder = new StringBuilder();</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		for (Object cls: classes) {</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">			if (classBuilder.length()&gt;0) {</span>
+<span class="nc" id="L136">				classBuilder.append(&quot; &quot;);</span>
+			}
+<span class="nc" id="L138">			classBuilder.append(stringify(cls, 0));</span>
+<span class="nc" id="L139">		}</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		if (attributes.containsKey(CLASS)) {</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			if (classBuilder.length()&gt;0) {</span>
+<span class="nc" id="L142">				classBuilder.append(&quot; &quot;);</span>
+			}
+<span class="nc" id="L144">			classBuilder.append(stringify(attributes.get(CLASS), 0));</span>
+		}
+<span class="fc" id="L146">		return classBuilder;</span>
+	}
+
+	protected StringBuilder styles() {
+<span class="fc" id="L150">		StringBuilder styleBuilder = new StringBuilder();</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (attributes.containsKey(STYLE)) {</span>
+<span class="nc" id="L152">			styleBuilder.append(stringify(attributes.get(STYLE), 0));</span>
+		}
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		for (Entry&lt;String, Object&gt; se: styles.entrySet()) {</span>
+<span class="nc bnc" id="L155" title="All 4 branches missed.">			if (styleBuilder.length()&gt;0 &amp;&amp; !styleBuilder.toString().trim().endsWith(&quot;;&quot;)) {</span>
+<span class="nc" id="L156">				styleBuilder.append(&quot;;&quot;);</span>
+			}
+<span class="nc" id="L158">			styleBuilder.append(se.getKey()+&quot;:&quot;+stringify(se.getValue(), 0));</span>
+<span class="nc" id="L159">		}</span>
+<span class="fc" id="L160">		return styleBuilder;</span>
+	}
+	
+	/**
+	 * Merges value of given attribute, prepended by space, to the attribute definition being
+	 * rendered by a subclass
+	 * @param attribute
+	 */
+	protected String merge(String attribute) {
+<span class="nc bnc" id="L169" title="All 2 branches missed.">		if (STYLE.equals(attribute)) {</span>
+<span class="nc" id="L170">			StringBuilder styleBuilder = new StringBuilder();</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">			if (attributes.containsKey(STYLE)) {</span>
+<span class="nc" id="L172">				styleBuilder.append(stringify(attributes.get(STYLE), 0));</span>
+			}
+<span class="nc bnc" id="L174" title="All 2 branches missed.">			for (Entry&lt;String, Object&gt; se: styles.entrySet()) {</span>
+<span class="nc bnc" id="L175" title="All 4 branches missed.">				if (styleBuilder.length() &gt; 0 &amp;&amp; !styleBuilder.toString().endsWith(&quot;;&quot;)) {</span>
+<span class="nc" id="L176">					styleBuilder.append(&quot;;&quot;);</span>
+				}
+<span class="nc" id="L178">				styleBuilder.append(se.getKey()+&quot;:&quot;+stringify(se.getValue(), 0));</span>
+<span class="nc" id="L179">			}</span>
+<span class="nc" id="L180">			return styleBuilder.toString();</span>
+		}
+		
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (attributes.containsKey(attribute)) {</span>
+<span class="nc" id="L184">			return StringEscapeUtils.escapeHtml4(String.valueOf(attributes.get(attribute)));</span>
+		}
+		
+<span class="nc" id="L187">		return &quot;&quot;;</span>
+	}
+	
+	/**
+	 * Merges attributes from the source element into this element.
+	 * @param source
+	 */
+	protected void merge(HTMLElementImpl&lt;?&gt; source) {
+<span class="nc" id="L195">		this.attributes.putAll(source.attributes);</span>
+<span class="nc" id="L196">		this.classes.addAll(source.classes);</span>
+<span class="nc" id="L197">		this.styles.putAll(source.styles);</span>
+<span class="nc" id="L198">	}</span>
+	
+	@Override
+	public T id(Object id) {
+<span class="nc" id="L202">		return attribute(ID, id);</span>
+	}
+
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public T attribute(String name, Object value) {
+<span class="nc bnc" id="L208" title="All 2 branches missed.">		if (value==null) {</span>
+<span class="nc" id="L209">			attributes.remove(name);</span>
+<span class="nc bnc" id="L210" title="All 4 branches missed.">		} else if (value instanceof InputStream || value instanceof Reader) {</span>
+<span class="nc" id="L211">			attributes.put(name, stringify(value));			</span>
+		} else {
+<span class="nc" id="L213">			attributes.put(name, value);</span>
+		}
+<span class="nc" id="L215">		return (T) this;</span>
+	}
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public T attribute(String name, Object value, boolean condition) {
+<span class="nc bnc" id="L221" title="All 2 branches missed.">		return condition ? attribute(name, value) : (T) this;</span>
+	}
+
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public T style(String name, Object value) {
+<span class="nc bnc" id="L227" title="All 2 branches missed.">		if (value==null) {</span>
+<span class="nc" id="L228">			styles.remove(name);</span>
+		} else {
+<span class="nc" id="L230">			styles.put(name, value);</span>
+		}
+<span class="nc" id="L232">		return (T) this;</span>
+	}
+	
+<span class="fc" id="L235">	private List&lt;Object&gt; classes = new ArrayList&lt;&gt;();</span>
+
+	private String comment;
+	
+	protected StringBuilder renderComment(int indent) {
+<span class="pc bpc" id="L240" title="3 of 4 branches missed.">		if (comment==null || comment.trim().length()==0) {</span>
+<span class="fc" id="L241">			return new StringBuilder();</span>
+		}
+<span class="nc" id="L243">		return indent(indent).append(&quot;&lt;!-- &quot;+comment+&quot; --&gt;&quot;);</span>
+	}
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public T addClass(Object... clazz) {
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		for (Object clz: clazz) {</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">			if (!classes.contains(clz)) {</span>
+<span class="nc" id="L251">				classes.add(clz);</span>
+			}
+		}
+<span class="nc" id="L254">		return (T) this;</span>
+	}
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public T addClassConditional(boolean condition, Object... clazz) {
+<span class="nc bnc" id="L260" title="All 2 branches missed.">		return condition ? addClass(clazz) : (T) this;</span>
+	}
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public T removeClass(Object... clazz) {
+<span class="nc bnc" id="L266" title="All 2 branches missed.">		for (Object clz: clazz) {</span>
+<span class="nc" id="L267">			classes.remove(clz);</span>
+		}
+<span class="nc" id="L269">		return (T) this;</span>
+	}
+
+	@Override
+	public T on(Event event, Object handler) {		
+<span class="nc" id="L274">		return on(event.name(), handler);</span>
+	}
+
+	@Override
+	public T on(String event, Object handler) {		
+<span class="nc" id="L279">		return attribute(&quot;on&quot;+event, handler);</span>
+	}
+
+	@Override
+	public T on(Event event, Reader handler) throws IOException {
+<span class="nc" id="L284">		return on(event.name(), handler);</span>
+	}
+
+	@Override
+	public T on(String event, Reader handler) throws IOException {
+<span class="nc" id="L289">		StringWriter sw = new StringWriter();</span>
+<span class="nc" id="L290">		char[] cbuf = new char[1024];</span>
+		int l;
+<span class="nc bnc" id="L292" title="All 2 branches missed.">		while ((l=handler.read(cbuf))!=-1) {</span>
+<span class="nc" id="L293">			sw.write(cbuf, 0, l);</span>
+		}
+<span class="nc" id="L295">		sw.close();</span>
+<span class="nc" id="L296">		handler.close();</span>
+<span class="nc" id="L297">		return on(event, sw.toString());</span>
+	}
+
+	@Override
+	public T on(Event event, InputStream handler) throws IOException {
+<span class="nc" id="L302">		return on(event.name(), handler);</span>
+	}
+
+	@Override
+	public T on(String event, InputStream handler) throws IOException {
+<span class="nc" id="L307">		return on(event, new InputStreamReader(handler));</span>
+	}		
+			
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public T comment(String comment) {
+<span class="nc" id="L313">		this.comment = comment;</span>
+<span class="nc" id="L314">		return (T) this;</span>
+	}
+	
+	/**
+	 * Special handling for input streams, readers, producers and URL's.
+	 * @param content
+	 * @return
+	 */
+	public static String stringify(Object content) {
+<span class="nc" id="L323">		return stringify(content, 0);</span>
+	}
+	
+		
+	/**
+	 * Special handling for input streams, readers, producers and URL's.
+	 * @param content
+	 * @return
+	 */
+	public static String stringify(Object content, int indent) {
+		try {
+<span class="pc bpc" id="L334" title="1 of 2 branches missed.">			if (content == null) {</span>
+<span class="nc" id="L335">				return &quot;&quot;;</span>
+			}
+			
+<span class="pc bpc" id="L338" title="1 of 2 branches missed.">			if (content instanceof String) {</span>
+<span class="fc" id="L339">				return (String) content;</span>
+			}
+			
+<span class="nc bnc" id="L342" title="All 2 branches missed.">			if (content instanceof Producer) {</span>
+<span class="nc" id="L343">				return stringify(((Producer) content).produce(indent), indent);</span>
+			}
+			
+<span class="nc bnc" id="L346" title="All 2 branches missed.">			if (content instanceof InputStream) {</span>
+<span class="nc" id="L347">				return stringify(new InputStreamReader((InputStream) content, StandardCharsets.UTF_8), indent);</span>
+			}
+<span class="nc bnc" id="L349" title="All 2 branches missed.">			if (content instanceof Reader) {</span>
+<span class="nc" id="L350">				StringWriter sw = new StringWriter();</span>
+<span class="nc bnc" id="L351" title="All 2 branches missed.">				for (int ch = ((Reader) content).read(); ch!=-1; ch = ((Reader) content).read()) {</span>
+<span class="nc" id="L352">					sw.write(ch);</span>
+				}
+<span class="nc" id="L354">				((Reader) content).close();</span>
+<span class="nc" id="L355">				sw.close();</span>
+<span class="nc" id="L356">				return sw.toString();</span>
+			}
+			
+<span class="nc bnc" id="L359" title="All 2 branches missed.">			if (content instanceof URL) {</span>
+<span class="nc" id="L360">				return stringify(((URL) content).openStream(), indent);</span>
+			}
+	
+<span class="nc" id="L363">			return content.toString();</span>
+<span class="nc" id="L364">		} catch (RuntimeException e) {</span>
+<span class="nc" id="L365">			throw e;</span>
+<span class="nc" id="L366">		} catch (Exception e) {</span>
+<span class="nc" id="L367">			throw new ProducerException(e);</span>
+		}
+	}
+	
+	/**
+	 * Fallback for situations with missed refactorings of append().
+	 */
+	@Override
+	public String toString() {
+<span class="fc" id="L376">		return stringify(produce(0), 0);</span>
+	}
+	
+	public static StringBuilder indent(StringBuilder stringBuilder, int indent) {
+<span class="pc bpc" id="L380" title="1 of 2 branches missed.">		if (indent != -1) {</span>
+<span class="fc" id="L381">			stringBuilder.append(System.lineSeparator());</span>
+<span class="pc bpc" id="L382" title="1 of 2 branches missed.">			for (int i=0; i&lt;indent; ++i) {</span>
+<span class="nc" id="L383">				stringBuilder.append(&quot;  &quot;);</span>
+			}
+		}
+<span class="fc" id="L386">		return stringBuilder;</span>
+	}
+	
+	public static StringBuilder indent(int indent) {
+<span class="nc" id="L390">		return indent(new StringBuilder(), indent);</span>
+	}
+	
+<span class="fc" id="L393">	protected List&lt;Object&gt; content = new ArrayList&lt;&gt;();	</span>
+	
+	public List&lt;Object&gt; getContent() {
+<span class="nc" id="L396">		return content;</span>
+	}
+	
+	protected String tagName;
+	
+	protected String getTagName() {
+<span class="fc" id="L402">		return tagName;</span>
+	}
+	
+	@Override
+	public String produce(int indent) {		
+<span class="fc" id="L407">		List&lt;Object&gt; theContent = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L408" title="All 2 branches covered.">		for (Object c: getContent()) {</span>
+<span class="pc bpc" id="L409" title="1 of 2 branches missed.">			if (c instanceof FragmentImpl) {</span>
+<span class="nc" id="L410">				theContent.addAll(((FragmentImpl) c).getAllContent());</span>
+<span class="pc bpc" id="L411" title="1 of 2 branches missed.">			} else if (c!=null) {</span>
+<span class="fc" id="L412">				theContent.add(c);</span>
+			}			
+<span class="fc" id="L414">		}</span>
+<span class="pc bpc" id="L415" title="1 of 2 branches missed.">		if (theContent.isEmpty()) {</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">			if (nonEmpty) {</span>
+<span class="nc" id="L417">				return &quot;&quot;;</span>
+			}
+			
+<span class="nc bnc" id="L420" title="All 2 branches missed.">			if (!forceEndTag()) {</span>
+<span class="nc" id="L421">				return indent(renderComment(indent), indent).append(&quot;&lt;&quot;+getTagName()+attributes()+&quot;/&gt;&quot;).toString();</span>
+			}
+		}
+<span class="fc" id="L424">		boolean hasNonUIElementContent = false;</span>
+		
+<span class="fc" id="L426">		StringBuilder contentBuilder = new StringBuilder(); </span>
+<span class="fc bfc" id="L427" title="All 2 branches covered.">		for (Object c: theContent) {</span>
+<span class="pc bpc" id="L428" title="1 of 2 branches missed.">			contentBuilder.append(stringify(c, indent == -1 ? indent : indent+1));</span>
+<span class="pc bpc" id="L429" title="1 of 2 branches missed.">			if (!(c instanceof Markup)) {</span>
+<span class="fc" id="L430">				hasNonUIElementContent = true;</span>
+			}
+<span class="fc" id="L432">		}		</span>
+<span class="fc" id="L433">		String strContent = contentBuilder.toString();</span>
+<span class="pc bpc" id="L434" title="3 of 4 branches missed.">		if (nonEmpty &amp;&amp; strContent.trim().length() == 0) {</span>
+<span class="nc" id="L435">			return &quot;&quot;;</span>
+		}
+<span class="fc" id="L437">		StringBuilder sb = indent(renderComment(indent), indent).append(&quot;&lt;&quot;).append(getTagName()).append(attributes()).append(&quot;&gt;&quot;).append(strContent);		</span>
+<span class="pc bpc" id="L438" title="2 of 4 branches missed.">		if (strContent.length() &gt; 0 &amp;&amp; !hasNonUIElementContent) {</span>
+<span class="nc" id="L439">			indent(sb, indent);</span>
+		}
+<span class="fc" id="L441">		return sb.append(&quot;&lt;/&quot;).append(getTagName()).append(&quot;&gt;&quot;).toString();</span>
+	}
+
+	private boolean forceEndTag() {
+<span class="nc bnc" id="L445" title="All 2 branches missed.">		for (TagName tagName: TagName.values()) {</span>
+<span class="nc bnc" id="L446" title="All 2 branches missed.">			if (tagName.name().equalsIgnoreCase(this.tagName)) {</span>
+<span class="nc" id="L447">				return tagName.paired;</span>
+			}
+		}
+<span class="nc" id="L450">		return false;</span>
+	}
+
+	/**
+	 * Method to add content, make public in container elements.
+	 * @param content
+	 * @return
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	protected T content(Object... content) {
+<span class="nc bnc" id="L460" title="All 2 branches missed.">		for (Object c: content) {</span>
+<span class="nc bnc" id="L461" title="All 2 branches missed.">			if (c instanceof Iterable) {</span>
+<span class="nc bnc" id="L462" title="All 2 branches missed.">				for (Object cc: (Iterable&lt;?&gt;) c) {</span>
+<span class="nc" id="L463">					content(cc);</span>
+<span class="nc" id="L464">				}</span>
+<span class="nc bnc" id="L465" title="All 2 branches missed.">			} else if (c != null) {</span>
+<span class="nc bnc" id="L466" title="All 2 branches missed.">				if (c.getClass().isArray()) {</span>
+<span class="nc bnc" id="L467" title="All 2 branches missed.">					for (int i = 0; i &lt; Array.getLength(c); ++i) {</span>
+<span class="nc" id="L468">						content(Array.get(c, i));</span>
+					}
+<span class="nc bnc" id="L470" title="All 4 branches missed.">				} else if (c instanceof InputStream || c instanceof Reader) {</span>
+<span class="nc" id="L471">					this.content.add(stringify(c));</span>
+				} else {
+<span class="nc" id="L473">					this.content.add(c);</span>
+				}
+			}
+		}
+<span class="nc" id="L477">		return (T) this;</span>
+	}
+	
+<span class="fc" id="L480">	@SuppressWarnings(&quot;unchecked&quot;)</span>
+	private Style&lt;T&gt; style = new StyleImpl&lt;T&gt;((T) this);
+
+	@Override
+	public org.nasdanika.html.Style&lt;T&gt; style() {
+<span class="nc" id="L485">		return style;</span>
+	}
+	
+	public boolean isEmpty() {
+<span class="nc" id="L489">		return getContent().isEmpty();</span>
+	}
+	
+	@Override
+	public String jQuery(String expr) {
+<span class="nc bnc" id="L494" title="All 2 branches missed.">		if (getId() == null) {</span>
+<span class="nc" id="L495">			id(factory.nextId());</span>
+		}
+<span class="nc" id="L497">		return &quot;jQuery('#&quot;+getId()+&quot;').&quot;+expr;</span>
+	}
+	
+	private Object data;
+<span class="fc" id="L501">	private Map&lt;Object, Object&gt; properties = new HashMap&lt;&gt;();</span>
+	
+	@Override
+	public Object getData() {
+<span class="nc" id="L505">		return data;</span>
+	}
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public T setData(Object data) {
+<span class="nc" id="L511">		this.data = data;</span>
+<span class="nc" id="L512">		return (T) this;</span>
+	}
+	
+	@Override
+	public Object getData(Object key) {
+<span class="nc" id="L517">		return properties.get(key);</span>
+	}
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public T setData(Object key, Object data) {
+<span class="nc" id="L523">		properties.put(key, data);</span>
+<span class="nc" id="L524">		return (T) this;</span>
+	}
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	public &lt;TT&gt; TT adaptTo(Class&lt;TT&gt; type) {
+<span class="nc bnc" id="L530" title="All 2 branches missed.">		if (type == InputStream.class) {</span>
+<span class="nc" id="L531">			String str = toString();</span>
+<span class="nc" id="L532">			return (TT) new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8));</span>
+		}
+<span class="nc" id="L534">		return Adaptable.super.adaptTo(type);</span>
+	}
+		
+}
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

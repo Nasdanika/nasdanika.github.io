@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NcoreDrawioResourceFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika EMF</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.emf.persistence</a> &gt; <span class="el_source">NcoreDrawioResourceFactory.java</span></div><h1>NcoreDrawioResourceFactory.java</h1><pre class="source lang-java linenums">package org.nasdanika.emf.persistence;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.xml.transform.TransformerException;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
+import org.jsoup.Jsoup;
+import org.nasdanika.common.NasdanikaException;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Util;
+import org.nasdanika.drawio.Document;
+import org.nasdanika.drawio.ModelElement;
+import org.nasdanika.drawio.emf.DrawioEObjectFactory;
+import org.nasdanika.drawio.emf.DrawioResource;
+import org.nasdanika.graph.Element;
+import org.nasdanika.graph.processor.ProcessorConfig;
+import org.nasdanika.graph.processor.ProcessorInfo;
+import org.nasdanika.graph.processor.emf.AbstractEObjectFactoryProcessorResource;
+import org.nasdanika.graph.processor.emf.SemanticProcessor;
+import org.nasdanika.ncore.Documented;
+import org.nasdanika.ncore.Marked;
+import org.nasdanika.ncore.NamedElement;
+import org.nasdanika.ncore.NcorePackage;
+import org.nasdanika.ncore.util.NcoreUtil;
+
+/**
+ * This factory uses {@link DrawioResource} with {@link DrawioEObjectFactory}. 
+ * It injects name, description, and markers in configureSemanticElement(). 
+ * @author Pavel
+ *
+ * @param &lt;T&gt;
+ */
+<span class="nc" id="L46">public abstract class NcoreDrawioResourceFactory&lt;T extends EObject&gt; extends ResourceFactoryImpl {</span>
+	
+	public static final String SEMANTIC_UUID_KEY = &quot;semantic-uuid&quot;;	
+	
+	private class NcoreDrawioResource extends DrawioResource&lt;SemanticProcessor&lt;T&gt;, T&gt; implements AbstractEObjectFactoryProcessorResource&lt;T&gt; {
+
+		private DrawioEObjectFactory&lt;T, SemanticProcessor&lt;T&gt;&gt; processorFactory;
+		private ProgressMonitor progressMonitor;
+
+<span class="nc" id="L55">		protected NcoreDrawioResource(URI uri, DrawioEObjectFactory&lt;T, SemanticProcessor&lt;T&gt;&gt; processorFactory, ProgressMonitor progressMonitor) {</span>
+<span class="nc" id="L56">			super(uri);</span>
+<span class="nc" id="L57">			this.processorFactory = processorFactory;</span>
+<span class="nc" id="L58">			this.progressMonitor = progressMonitor;</span>
+<span class="nc" id="L59">		}</span>
+
+		@SuppressWarnings(&quot;unchecked&quot;)
+		@Override
+		public void setParent(T parent) {
+<span class="nc bnc" id="L64" title="All 2 branches missed.">			for (EObject root: new ArrayList&lt;&gt;(getContents())) {</span>
+<span class="nc" id="L65">				processorFactory.setParent((T) root, parent, getProgressMonitor());</span>
+<span class="nc" id="L66">			}</span>
+<span class="nc" id="L67">		}</span>
+
+		@Override
+		protected DrawioEObjectFactory&lt;T, SemanticProcessor&lt;T&gt;&gt; getProcessorFactory() {
+<span class="nc" id="L71">			return processorFactory;</span>
+		}
+		
+		@Override
+		protected ProgressMonitor getProgressMonitor() {
+<span class="nc" id="L76">			return progressMonitor;</span>
+		};
+		
+	}
+	
+	@Override
+	public Resource createResource(URI uri) {
+<span class="nc" id="L83">		return new NcoreDrawioResource(uri, createProcessorFactory(uri), getProgressMonitor(uri));</span>
+	}
+	
+	/**
+	 * Allows to override the default behavior of using spec, spec-uri, and semantic-uri properties for creation of semantic elements.
+	 * @param config
+	 * @param progressMonitor
+	 * @param fallback
+	 * @return
+	 */
+	protected Collection&lt;T&gt; createSemanticElements(
+			ProcessorConfig&lt;SemanticProcessor&lt;T&gt;&gt; config, 
+			ProgressMonitor progressMonitor, 
+			BiFunction&lt;ProcessorConfig&lt;SemanticProcessor&lt;T&gt;&gt;, ProgressMonitor, Collection&lt;T&gt;&gt; defaultFactory) {
+<span class="nc" id="L97">		return defaultFactory.apply(config, progressMonitor);</span>
+	}
+		
+	protected DrawioEObjectFactory&lt;T, SemanticProcessor&lt;T&gt;&gt; createProcessorFactory(URI uri) {
+<span class="nc" id="L101">		return new DrawioEObjectFactory&lt;T, SemanticProcessor&lt;T&gt;&gt;() {</span>
+
+			@Override
+			protected ResourceSet getResourceSet() {
+<span class="nc" id="L105">				return NcoreDrawioResourceFactory.this.getResourceSet();</span>
+			}
+
+			@Override
+			protected SemanticProcessor&lt;T&gt; createProcessor(ProcessorConfig&lt;SemanticProcessor&lt;T&gt;&gt; config, Collection&lt;T&gt; semanticElements, ProgressMonitor progressMonitor) {
+<span class="nc" id="L110">				return NcoreDrawioResourceFactory.this.createProcessor(uri, config, semanticElements, progressMonitor);</span>
+			}
+
+			@Override
+			protected URI getBaseURI() {
+<span class="nc" id="L115">				return uri;</span>
+			}
+			
+			@Override
+			protected Collection&lt;T&gt; createSemanticElements(ProcessorConfig&lt;SemanticProcessor&lt;T&gt;&gt; config, ProgressMonitor progressMonitor) {
+<span class="nc" id="L120">				Collection&lt;T&gt; semanticElements = NcoreDrawioResourceFactory.this.createSemanticElements(config, progressMonitor, super::createSemanticElements);</span>
+<span class="nc" id="L121">				Collection&lt;T&gt; configuredSemanticElements = NcoreDrawioResourceFactory.this.configureSemanticElements(uri, config, semanticElements, progressMonitor);</span>
+<span class="nc" id="L122">				return configuredSemanticElements;</span>
+			}
+			
+			/**
+			 * Checking for failures, injecting representations after all processors have been created. 
+			 */
+			@Override
+			public Map&lt;Element, ProcessorInfo&lt;SemanticProcessor&lt;T&gt;&gt;&gt; createProcessors(Stream&lt;? extends Element&gt; elements, ProgressMonitor progressMonitor) {
+<span class="nc" id="L130">				Map&lt;Element, ProcessorInfo&lt;SemanticProcessor&lt;T&gt;&gt;&gt; registry = super.createProcessors(elements, progressMonitor);</span>
+				
+<span class="nc" id="L132">				List&lt;Throwable&gt; failures = registry.values().stream().flatMap(pi -&gt; pi.getFailures().stream()).collect(Collectors.toList());</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">				if (!failures.isEmpty()) {</span>
+<span class="nc" id="L134">					NasdanikaException ne = new NasdanikaException(&quot;Theres's been &quot; + failures.size() +  &quot; failures during processor creation: &quot; + failures);</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">					for (Throwable failure: failures) {</span>
+<span class="nc" id="L136">						ne.addSuppressed(failure);</span>
+<span class="nc" id="L137">					}</span>
+<span class="nc" id="L138">					throw ne;</span>
+				}				
+				
+<span class="nc" id="L141">				String representationPropertyName = getRepresentationPropertyName(uri);</span>
+								
+<span class="nc" id="L143">				registry.entrySet().forEach(re -&gt; configureRegistryEntry(re.getKey(), re.getValue(), getPropertyValue(re.getKey(), representationPropertyName)));</span>
+<span class="nc" id="L144">				return registry;</span>
+			}
+			
+		};
+	}
+
+	/**
+	 * Injects encoded document into semantic elements of model elements with representation property.
+	 * Sorts references.
+	 * @param element
+	 * @param info
+	 */
+	protected void configureRegistryEntry(Element element, ProcessorInfo&lt;SemanticProcessor&lt;T&gt;&gt; info, String representationKey) {
+<span class="nc bnc" id="L157" title="All 4 branches missed.">		if (info != null &amp;&amp; !Util.isBlank(representationKey)) {</span>
+<span class="nc" id="L158">			SemanticProcessor&lt;T&gt; processor = info.getProcessor();</span>
+<span class="nc bnc" id="L159" title="All 4 branches missed.">			if (processor != null &amp;&amp; element instanceof ModelElement) {</span>
+<span class="nc" id="L160">				Collection&lt;T&gt; semanticElements = processor.getSemanticElements();</span>
+<span class="nc bnc" id="L161" title="All 4 branches missed.">				if (semanticElements != null &amp;&amp; !semanticElements.isEmpty()) {</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">					for (T semanticElement: semanticElements) {</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">						if (semanticElement instanceof org.nasdanika.ncore.ModelElement) {</span>
+<span class="nc" id="L164">							Document document = ((ModelElement) element).getModel().getPage().getDocument();</span>
+							try {
+<span class="nc" id="L166">								((org.nasdanika.ncore.ModelElement) semanticElement).getRepresentations().put(representationKey, document.toDataURI(true).toString());</span>
+<span class="nc" id="L167">							} catch (TransformerException | IOException e) {</span>
+<span class="nc" id="L168">								throw new NasdanikaException(&quot;Error encoding document: &quot; + e, e);</span>
+<span class="nc" id="L169">							}</span>
+						}
+<span class="nc" id="L171">					}</span>
+				}
+			}
+		}
+		
+		// TODO - sort - YAML map of references to comparators. Comparator either String - comparator name or a map - name to configuration. 
+		// Use ECollections to sort. Expression (SPEL) comparator.
+
+<span class="nc" id="L179">	}</span>
+	
+	protected abstract ResourceSet getResourceSet();
+	
+	protected abstract ProgressMonitor getProgressMonitor(URI uri);
+	
+	protected SemanticProcessor&lt;T&gt; createProcessor(URI uri, ProcessorConfig&lt;SemanticProcessor&lt;T&gt;&gt; config, Collection&lt;T&gt; semanticElements, ProgressMonitor progressMonitor) {		
+<span class="nc bnc" id="L186" title="All 4 branches missed.">		if (semanticElements == null || semanticElements.isEmpty()) {</span>
+<span class="nc" id="L187">			return null; // For pass-through to parent.</span>
+		}
+		
+		// To avoid concurrent modification exception for situations when processor is backed by a resource and semantic elements get reparented and move out of the resource. 
+<span class="nc" id="L191">		Collection&lt;T&gt; semanticElementsSnapshot = Collections.unmodifiableCollection(new ArrayList&lt;&gt;(semanticElements));</span>
+		
+<span class="nc" id="L193">		return new SemanticProcessor&lt;T&gt;() {</span>
+
+			@Override
+			public Collection&lt;T&gt; getSemanticElements() {
+<span class="nc" id="L197">				return semanticElementsSnapshot;</span>
+			}
+			
+		};
+	}	
+
+	protected MarkerFactory getMarkerFactory() {
+<span class="nc" id="L204">		return MarkerFactory.INSTANCE;</span>
+	}
+		
+	protected Collection&lt;T&gt; configureSemanticElements(
+			URI uri,
+			ProcessorConfig&lt;SemanticProcessor&lt;T&gt;&gt; config, 
+			Collection&lt;T&gt; semanticElements, 
+			ProgressMonitor progressMonitor) {
+
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (config == null) {</span>
+<span class="nc" id="L214">			return semanticElements;</span>
+		}
+<span class="nc" id="L216">		Element element = config.getElement();</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		if (semanticElements == null) {</span>
+<span class="nc" id="L218">			return semanticElements;</span>
+		}
+<span class="nc bnc" id="L220" title="All 2 branches missed.">		for (T semanticElement: semanticElements) {</span>
+<span class="nc bnc" id="L221" title="All 6 branches missed.">			if (uri != null &amp;&amp; semanticElement instanceof Marked &amp;&amp; element instanceof Marked) {</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">				for (org.nasdanika.persistence.Marker elementMarker: ((Marked) element).getMarkers()) {</span>
+<span class="nc" id="L223">					org.nasdanika.ncore.Marker marker = getMarkerFactory().createMarker(elementMarker.getLocation(), progressMonitor);</span>
+<span class="nc" id="L224">					marker.setPosition(elementMarker.getPosition());</span>
+<span class="nc" id="L225">					((Marked) semanticElement).getMarkers().add(marker);</span>
+<span class="nc" id="L226">				}</span>
+			}
+			
+<span class="nc bnc" id="L229" title="All 2 branches missed.">			if (element instanceof ModelElement) {</span>
+<span class="nc" id="L230">				ModelElement modelElement = (ModelElement) element;</span>
+<span class="nc" id="L231">				String tooltip = modelElement.getTooltip();</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">				if (!Util.isBlank(tooltip)) {</span>
+<span class="nc bnc" id="L233" title="All 4 branches missed.">					if (semanticElement instanceof org.nasdanika.ncore.ModelElement &amp;&amp; !semanticElement.eIsSet(NcorePackage.Literals.MODEL_ELEMENT__DESCRIPTION)) {</span>
+<span class="nc" id="L234">						String firstTooltipSentence = org.nasdanika.common.Util.firstPlainTextSentence(tooltip, 50, 250);</span>
+<span class="nc" id="L235">						((org.nasdanika.ncore.ModelElement) semanticElement).setDescription(firstTooltipSentence);						</span>
+					}
+<span class="nc bnc" id="L237" title="All 4 branches missed.">					if (semanticElement instanceof Documented &amp;&amp; ((Documented) semanticElement).getDocumentation().isEmpty()) {</span>
+<span class="nc" id="L238">						((Documented) semanticElement).getDocumentation().add(NcoreUtil.wrapString(&quot;&lt;pre style='white-space:pre-wrap'&gt;&quot; + System.lineSeparator() + tooltip + System.lineSeparator() + &quot;&lt;/pre&gt;&quot;));</span>
+					}
+				}
+				
+<span class="nc" id="L242">				String label = modelElement.getLabel();</span>
+<span class="nc bnc" id="L243" title="All 6 branches missed.">				if (!Util.isBlank(label) &amp;&amp; semanticElement instanceof NamedElement &amp;&amp; !semanticElement.eIsSet(NcorePackage.Literals.NAMED_ELEMENT__NAME)) {</span>
+<span class="nc" id="L244">					((NamedElement) semanticElement).setName(Jsoup.parse(label).text());				</span>
+				}
+				
+<span class="nc" id="L247">				String id = modelElement.getId();</span>
+<span class="nc bnc" id="L248" title="All 6 branches missed.">				if (!Util.isBlank(id) &amp;&amp; semanticElement instanceof org.nasdanika.ncore.Composite &amp;&amp; !semanticElement.eIsSet(NcorePackage.Literals.COMPOSITE__ID)) {</span>
+<span class="nc" id="L249">					((org.nasdanika.ncore.Composite) semanticElement).setId(id);				</span>
+				}
+				
+<span class="nc bnc" id="L252" title="All 2 branches missed.">				if (semanticElement instanceof org.nasdanika.ncore.ModelElement) {</span>
+<span class="nc" id="L253">					String semanticUuid = ((org.nasdanika.ncore.ModelElement) semanticElement).getUuid();</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">					if (!Util.isBlank(semanticUuid)) {</span>
+<span class="nc" id="L255">						modelElement.setProperty(SEMANTIC_UUID_KEY, semanticUuid);</span>
+					}
+				}
+			}
+			
+<span class="nc" id="L260">		}</span>
+		
+<span class="nc" id="L262">		return semanticElements;		</span>
+	}
+	
+	/**
+	 * If this property is set and the semantic element is {@link org.nasdanika.ncore.ModelElement} then {@link Document} is encoded and stored into the representation with the specified name.
+	 * @param uri Resource {@link URI}
+	 * @return
+	 */
+	protected String getRepresentationPropertyName(URI uri) {
+<span class="nc" id="L271">		return &quot;representation&quot;;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.nasdanika.common;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.lang.reflect.Constructor;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.lang.reflect.InvocationTargetException;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.lang.reflect.Method;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.util.Arrays;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.util.Optional;</a>
+<span class="sourceLineNo">008</span><a id="line.8"></a>
+<span class="sourceLineNo">009</span><a id="line.9">import org.json.JSONArray;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import org.json.JSONObject;</a>
+<span class="sourceLineNo">011</span><a id="line.11"></a>
+<span class="sourceLineNo">012</span><a id="line.12">public class ReflectiveConverter implements Converter {</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">        @ConverterMethod</a>
+<span class="sourceLineNo">015</span><a id="line.15">        public String toString(Object value) {</a>
+<span class="sourceLineNo">016</span><a id="line.16">                return String.valueOf(value);</a>
+<span class="sourceLineNo">017</span><a id="line.17">        }</a>
+<span class="sourceLineNo">018</span><a id="line.18">        </a>
+<span class="sourceLineNo">019</span><a id="line.19">        public static Class&lt;?&gt; box(Class&lt;?&gt; primitive) {</a>
+<span class="sourceLineNo">020</span><a id="line.20">                if (primitive == boolean.class) {</a>
+<span class="sourceLineNo">021</span><a id="line.21">                        return Boolean.class;</a>
+<span class="sourceLineNo">022</span><a id="line.22">                }</a>
+<span class="sourceLineNo">023</span><a id="line.23">                if (primitive == byte.class) {</a>
+<span class="sourceLineNo">024</span><a id="line.24">                        return Byte.class;</a>
+<span class="sourceLineNo">025</span><a id="line.25">                }</a>
+<span class="sourceLineNo">026</span><a id="line.26">                if (primitive == char.class) {</a>
+<span class="sourceLineNo">027</span><a id="line.27">                        return Character.class;</a>
+<span class="sourceLineNo">028</span><a id="line.28">                }</a>
+<span class="sourceLineNo">029</span><a id="line.29">                if (primitive == double.class) {</a>
+<span class="sourceLineNo">030</span><a id="line.30">                        return Double.class;</a>
+<span class="sourceLineNo">031</span><a id="line.31">                }</a>
+<span class="sourceLineNo">032</span><a id="line.32">                if (primitive == float.class) {</a>
+<span class="sourceLineNo">033</span><a id="line.33">                        return Float.class;</a>
+<span class="sourceLineNo">034</span><a id="line.34">                }</a>
+<span class="sourceLineNo">035</span><a id="line.35">                if (primitive == int.class) {</a>
+<span class="sourceLineNo">036</span><a id="line.36">                        return Integer.class;</a>
+<span class="sourceLineNo">037</span><a id="line.37">                }</a>
+<span class="sourceLineNo">038</span><a id="line.38">                if (primitive == long.class) {</a>
+<span class="sourceLineNo">039</span><a id="line.39">                        return Long.class;</a>
+<span class="sourceLineNo">040</span><a id="line.40">                }</a>
+<span class="sourceLineNo">041</span><a id="line.41">                if (primitive == short.class) {</a>
+<span class="sourceLineNo">042</span><a id="line.42">                        return Short.class;</a>
+<span class="sourceLineNo">043</span><a id="line.43">                }</a>
+<span class="sourceLineNo">044</span><a id="line.44">                if (primitive == void.class) {</a>
+<span class="sourceLineNo">045</span><a id="line.45">                        return Void.class;</a>
+<span class="sourceLineNo">046</span><a id="line.46">                }</a>
+<span class="sourceLineNo">047</span><a id="line.47">                return primitive;</a>
+<span class="sourceLineNo">048</span><a id="line.48">        }</a>
+<span class="sourceLineNo">049</span><a id="line.49"></a>
+<span class="sourceLineNo">050</span><a id="line.50">        /**</a>
+<span class="sourceLineNo">051</span><a id="line.51">         * Performs conversion using methods annotated with {@link ConverterMethod} first. A method with a more specific compatible parameter type take precedence over a method with more general type.</a>
+<span class="sourceLineNo">052</span><a id="line.52">         * If conversion cannot be done with converter methods then constructor conversion is attempted in a similar way - a constructor with a more specific compatible parameter types takes precedence over a less specific.</a>
+<span class="sourceLineNo">053</span><a id="line.53">         */</a>
+<span class="sourceLineNo">054</span><a id="line.54">        @SuppressWarnings("unchecked")</a>
+<span class="sourceLineNo">055</span><a id="line.55">        @Override</a>
+<span class="sourceLineNo">056</span><a id="line.56">        public &lt;T&gt; T convert(Object source, Class&lt;T&gt; type) {</a>
+<span class="sourceLineNo">057</span><a id="line.57">                // Adaptable conversion</a>
+<span class="sourceLineNo">058</span><a id="line.58">                if (source instanceof Adaptable) {</a>
+<span class="sourceLineNo">059</span><a id="line.59">                        T ret = ((Adaptable) source).adaptTo(type);</a>
+<span class="sourceLineNo">060</span><a id="line.60">                        if (ret != null) {</a>
+<span class="sourceLineNo">061</span><a id="line.61">                                return ret;</a>
+<span class="sourceLineNo">062</span><a id="line.62">                        }</a>
+<span class="sourceLineNo">063</span><a id="line.63">                }</a>
+<span class="sourceLineNo">064</span><a id="line.64">                </a>
+<span class="sourceLineNo">065</span><a id="line.65">                // Converter methods conversion</a>
+<span class="sourceLineNo">066</span><a id="line.66">                Optional&lt;Method&gt; cm = Arrays.stream(getClass().getMethods())</a>
+<span class="sourceLineNo">067</span><a id="line.67">                                .filter(m -&gt; m.getAnnotation(ConverterMethod.class) != null </a>
+<span class="sourceLineNo">068</span><a id="line.68">                                        &amp;&amp; m.getParameterCount() == 1 </a>
+<span class="sourceLineNo">069</span><a id="line.69">                                        &amp;&amp; m.getParameterTypes()[0].isInstance(source)</a>
+<span class="sourceLineNo">070</span><a id="line.70">                                        &amp;&amp; type.isAssignableFrom(m.getReturnType()))</a>
+<span class="sourceLineNo">071</span><a id="line.71">                                .sorted((m1, m2) -&gt; compare(m1.getParameterTypes()[0], m2.getParameterTypes()[0]))</a>
+<span class="sourceLineNo">072</span><a id="line.72">                                .findFirst();</a>
+<span class="sourceLineNo">073</span><a id="line.73">                </a>
+<span class="sourceLineNo">074</span><a id="line.74">                if (cm.isPresent()) {</a>
+<span class="sourceLineNo">075</span><a id="line.75">                        try {</a>
+<span class="sourceLineNo">076</span><a id="line.76">                                return (T) cm.get().invoke(this,source);</a>
+<span class="sourceLineNo">077</span><a id="line.77">                        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {</a>
+<span class="sourceLineNo">078</span><a id="line.78">                                throw new NasdanikaException("Error converting "+source+" to "+type+" using converter method "+cm.get()+": "+e, e);</a>
+<span class="sourceLineNo">079</span><a id="line.79">                        }</a>
+<span class="sourceLineNo">080</span><a id="line.80">                }                       </a>
+<span class="sourceLineNo">081</span><a id="line.81">                </a>
+<span class="sourceLineNo">082</span><a id="line.82">                if (acceptConstructorConversionTargetType(type)) {</a>
+<span class="sourceLineNo">083</span><a id="line.83">                        // Constructor conversion</a>
+<span class="sourceLineNo">084</span><a id="line.84">                        Optional&lt;Constructor&lt;?&gt;&gt; co = Arrays.stream(box(type).getConstructors())</a>
+<span class="sourceLineNo">085</span><a id="line.85">                                .filter(c -&gt; c.getParameterCount() == 1 &amp;&amp; c.getParameterTypes()[0].isInstance(source))</a>
+<span class="sourceLineNo">086</span><a id="line.86">                                .sorted((c1, c2) -&gt; compare(c1.getParameterTypes()[0], c2.getParameterTypes()[0]))</a>
+<span class="sourceLineNo">087</span><a id="line.87">                                .findFirst();</a>
+<span class="sourceLineNo">088</span><a id="line.88">                        </a>
+<span class="sourceLineNo">089</span><a id="line.89">                        if (co.isPresent()) {</a>
+<span class="sourceLineNo">090</span><a id="line.90">                                try {</a>
+<span class="sourceLineNo">091</span><a id="line.91">                                        return (T) co.get().newInstance(source);</a>
+<span class="sourceLineNo">092</span><a id="line.92">                                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException     | InvocationTargetException e) {</a>
+<span class="sourceLineNo">093</span><a id="line.93">                                        throw new NasdanikaException("Error converting "+source+" to "+type+" using constructor "+co.get()+": "+e, e);</a>
+<span class="sourceLineNo">094</span><a id="line.94">                                }</a>
+<span class="sourceLineNo">095</span><a id="line.95">                        }</a>
+<span class="sourceLineNo">096</span><a id="line.96">                }                                               </a>
+<span class="sourceLineNo">097</span><a id="line.97">                return null;</a>
+<span class="sourceLineNo">098</span><a id="line.98">        }       </a>
+<span class="sourceLineNo">099</span><a id="line.99">        </a>
+<span class="sourceLineNo">100</span><a id="line.100">        /**</a>
+<span class="sourceLineNo">101</span><a id="line.101">         * Allows to filter out constructor conversions. This implementation filters out {@link JSONObject} and {@link JSONArray}.</a>
+<span class="sourceLineNo">102</span><a id="line.102">         * @param type</a>
+<span class="sourceLineNo">103</span><a id="line.103">         * @return</a>
+<span class="sourceLineNo">104</span><a id="line.104">         */</a>
+<span class="sourceLineNo">105</span><a id="line.105">        protected boolean acceptConstructorConversionTargetType(Class&lt;?&gt; type) {</a>
+<span class="sourceLineNo">106</span><a id="line.106">                if (JSONObject.class.equals(type) || JSONArray.class.equals(type)) {</a>
+<span class="sourceLineNo">107</span><a id="line.107">                        return false;</a>
+<span class="sourceLineNo">108</span><a id="line.108">                }</a>
+<span class="sourceLineNo">109</span><a id="line.109">                return true;</a>
+<span class="sourceLineNo">110</span><a id="line.110">        }</a>
+<span class="sourceLineNo">111</span><a id="line.111">        </a>
+<span class="sourceLineNo">112</span><a id="line.112">        // Compares two classes for specificity, more specific (subclass) is "less", e.g. if t1 is a superclass of t2 this method returns 1.</a>
+<span class="sourceLineNo">113</span><a id="line.113">        protected int compare(Class&lt;?&gt; t1, Class&lt;?&gt; t2) {</a>
+<span class="sourceLineNo">114</span><a id="line.114">                if (t1 == t2) {</a>
+<span class="sourceLineNo">115</span><a id="line.115">                        return 0;</a>
+<span class="sourceLineNo">116</span><a id="line.116">                }</a>
+<span class="sourceLineNo">117</span><a id="line.117">                if (t1.isAssignableFrom(t2)) {</a>
+<span class="sourceLineNo">118</span><a id="line.118">                        return 1;</a>
+<span class="sourceLineNo">119</span><a id="line.119">                }</a>
+<span class="sourceLineNo">120</span><a id="line.120">                if (t2.isAssignableFrom(t1)) {</a>
+<span class="sourceLineNo">121</span><a id="line.121">                        return -1;</a>
+<span class="sourceLineNo">122</span><a id="line.122">                }</a>
+<span class="sourceLineNo">123</span><a id="line.123">                return 0; // Not comparable</a>
+<span class="sourceLineNo">124</span><a id="line.124">        }</a>
+<span class="sourceLineNo">125</span><a id="line.125"></a>
+<span class="sourceLineNo">126</span><a id="line.126">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

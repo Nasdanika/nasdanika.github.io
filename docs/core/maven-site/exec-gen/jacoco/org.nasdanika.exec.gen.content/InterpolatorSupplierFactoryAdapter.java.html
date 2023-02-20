@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InterpolatorSupplierFactoryAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Exec Generation Adapters</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.exec.gen.content</a> &gt; <span class="el_source">InterpolatorSupplierFactoryAdapter.java</span></div><h1>InterpolatorSupplierFactoryAdapter.java</h1><pre class="source lang-java linenums">package org.nasdanika.exec.gen.content;
+
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.Base64;
+import java.util.List;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.Converter;
+import org.nasdanika.common.DefaultConverter;
+import org.nasdanika.common.MarkdownHelper;
+import org.nasdanika.common.MutableContext;
+import org.nasdanika.common.PropertyComputer;
+import org.nasdanika.common.Util;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.exec.content.Interpolator;
+import org.nasdanika.ncore.Marker;
+import org.nasdanika.persistence.ConfigurationException;
+import org.nasdanika.persistence.Marked;
+
+public class InterpolatorSupplierFactoryAdapter extends FilterSupplierFactoryAdapter&lt;Interpolator&gt; {
+
+	protected InterpolatorSupplierFactoryAdapter(Interpolator interpolator) {
+<span class="fc" id="L26">		super(interpolator);</span>
+<span class="fc" id="L27">	}</span>
+
+	@SuppressWarnings(&quot;unchecked&quot;)
+	private &lt;T&gt; T computeEmbeddedImage(Context context, String key, String path, Class&lt;T&gt; type) {
+<span class="nc bnc" id="L31" title="All 4 branches missed.">		if (type == null || type.isAssignableFrom(String.class)) {</span>
+<span class="nc" id="L32">			int idx = path.indexOf(&quot;/&quot;);</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">			if (idx == -1) {</span>
+<span class="nc" id="L34">				return null;</span>
+			}
+
+			try {
+<span class="nc" id="L38">				StringBuilder ret = new StringBuilder(&quot;&lt;img src=\&quot;data:image/&quot; + path.substring(0, idx) + &quot;;base64, &quot;);</span>
+<span class="nc" id="L39">				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE);</span>
+<span class="nc" id="L40">				byte[] imageBytes = converter.convert(converter.convert(resolve(path.substring(idx + 1)), InputStream.class), byte[].class);</span>
+<span class="nc" id="L41">				ret</span>
+<span class="nc" id="L42">					.append(Base64.getEncoder().encodeToString(imageBytes))</span>
+<span class="nc" id="L43">					.append(&quot;\&quot;/&gt;&quot;);</span>
+				
+<span class="nc" id="L45">				return (T) ret.toString();</span>
+<span class="nc" id="L46">			} catch (Exception e) {</span>
+<span class="nc" id="L47">				throw new ConfigurationException(&quot;Error encoding image '&quot; + path + &quot;' : &quot; + e, e, EObjectAdaptable.adaptTo(getTarget(), Marked.class));</span>
+			}
+		}
+<span class="nc" id="L50">		return null;</span>
+	}
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	private &lt;T&gt; T computeInclude(Context context, String key, String path, Class&lt;T&gt; type) {
+<span class="nc bnc" id="L55" title="All 4 branches missed.">		if (type == null || type.isAssignableFrom(String.class)) {</span>
+			try {
+<span class="nc" id="L57">				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE);</span>
+<span class="nc" id="L58">				String includeContent = converter.convert(converter.convert(resolve(path), InputStream.class), String.class);</span>
+<span class="nc" id="L59">				return (T) context.interpolateToString(includeContent);</span>
+<span class="nc" id="L60">			} catch (Exception e) {</span>
+<span class="nc" id="L61">				throw new ConfigurationException(&quot;Error including '&quot; + path + &quot;': &quot; + e, e, EObjectAdaptable.adaptTo(getTarget(), Marked.class));</span>
+			}
+		}
+<span class="nc" id="L64">		return null;</span>
+	}
+	
+	protected URI resolve(String path) throws MalformedURLException {
+<span class="nc" id="L68">		URI uri = URI.createURI(path);</span>
+		
+<span class="nc" id="L70">		URI markerBase = null;</span>
+<span class="nc" id="L71">		List&lt;? extends Marker&gt; markers = getTarget().getMarkers();</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">		if (markers != null) {</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">			for (Marker marker: markers) {</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">				if (!Util.isBlank(marker.getLocation())) {</span>
+<span class="nc" id="L75">					markerBase = URI.createURI(marker.getLocation());</span>
+<span class="nc" id="L76">					break;</span>
+				}
+<span class="nc" id="L78">			}</span>
+		}
+
+<span class="nc" id="L81">		URI resourceBase = null;</span>
+<span class="nc" id="L82">		Resource resource = getTarget().eResource();</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">		if (resource != null) {</span>
+<span class="nc" id="L84">			resourceBase = resource.getURI();</span>
+		}
+		
+<span class="nc bnc" id="L87" title="All 8 branches missed.">		if (markerBase != null &amp;&amp; !markerBase.isRelative() &amp;&amp; markerBase.isHierarchical() &amp;&amp; path.startsWith(&quot;./&quot;)) {</span>
+<span class="nc" id="L88">			uri = uri.resolve(markerBase);</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">		} else if (resourceBase != null) {</span>
+<span class="nc" id="L90">			uri = uri.resolve(resourceBase);</span>
+		}
+		
+<span class="nc" id="L93">		return uri;					</span>
+	}
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	private &lt;T&gt; T computeIncludeMarkdown(Context context, String key, String path, Class&lt;T&gt; type) {
+<span class="nc bnc" id="L98" title="All 4 branches missed.">		if (type == null || type.isAssignableFrom(String.class)) {</span>
+			try {
+<span class="nc" id="L100">				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE);</span>
+<span class="nc" id="L101">				String markdown = converter.convert(converter.convert(resolve(path), InputStream.class), String.class);</span>
+<span class="nc" id="L102">				String html = context.computingContext().get(MarkdownHelper.class, MarkdownHelper.INSTANCE).markdownToHtml(markdown);</span>
+<span class="nc" id="L103">				return (T) context.interpolateToString(html);</span>
+<span class="nc" id="L104">			} catch (Exception e) {</span>
+<span class="nc" id="L105">				throw new ConfigurationException(&quot;Error including markdown '&quot; + path + &quot;': &quot; + e, e, EObjectAdaptable.adaptTo(getTarget(), Marked.class));</span>
+			}
+		}
+<span class="nc" id="L108">		return null;</span>
+	}	
+	
+	@SuppressWarnings(&quot;unchecked&quot;)
+	private &lt;T&gt; T computeIncludeStyledMarkdown(Context context, String key, String path, Class&lt;T&gt; type) {
+<span class="nc" id="L113">		Object html = computeIncludeMarkdown(context, key, path, type);</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		return (T) (html == null ? null : &quot;&lt;div class=\&quot;markdown-body\&quot;&gt;&quot; + html + &quot;&lt;/div&gt;&quot;);</span>
+	}	
+
+	@Override
+	protected String filter(Context context, String input) {
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (getTarget().isProcessIncludes()) {</span>
+<span class="fc" id="L120">			MutableContext mc = context.fork();</span>
+<span class="fc" id="L121">			mc.put(&quot;embedded-image&quot;, (PropertyComputer) this::computeEmbeddedImage);</span>
+<span class="fc" id="L122">			mc.put(&quot;include&quot;, (PropertyComputer) this::computeInclude);</span>
+<span class="fc" id="L123">			mc.put(&quot;include-markdown&quot;, (PropertyComputer) this::computeIncludeMarkdown);</span>
+<span class="fc" id="L124">			mc.put(&quot;include-styled-markdown&quot;, (PropertyComputer) this::computeIncludeStyledMarkdown);</span>
+			
+<span class="fc" id="L126">			return mc.interpolateToString(input);</span>
+		}
+<span class="nc" id="L128">		return context.interpolateToString(input);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

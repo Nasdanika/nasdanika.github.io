@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EntityContainer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Resources</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.resources</a> &gt; <span class="el_source">EntityContainer.java</span></div><h1>EntityContainer.java</h1><pre class="source lang-java linenums">package org.nasdanika.resources;
+
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
+
+import org.nasdanika.common.ProgressMonitor;
+
+/**
+ * Container of {@link Entity}ies.
+ * @author Pavel
+ *
+ */
+public interface EntityContainer&lt;C,E extends Entity&lt;C,E&gt;&gt; extends Container&lt;E&gt; {
+	
+	
+	/**
+	 * Loads entities from {@link ZipInputStream}
+	 * @param zipInputStream
+	 * @param filter
+	 * @param decoder Decodes input stream to entity state.
+	 * @param progressMonitor
+	 * @throws IOException
+	 */
+	default void load(
+			ZipInputStream zipInputStream, 
+			Predicate&lt;String&gt; filter,
+			BiFunction&lt;String,InputStream,C&gt; decoder,
+			ProgressMonitor progressMonitor) throws IOException {
+
+		try {
+			ZipEntry zipEntry;
+<span class="fc bfc" id="L41" title="All 2 branches covered.">			while ((zipEntry = zipInputStream.getNextEntry()) != null) {</span>
+<span class="fc" id="L42">				try (ProgressMonitor entryMonitor = progressMonitor.split(&quot;Entry &quot;+zipEntry.getName(), 1, zipEntry)) {</span>
+<span class="fc" id="L43">					String entryName = zipEntry.getName();</span>
+<span class="pc bpc" id="L44" title="3 of 4 branches missed.">					if (filter == null || filter.test(entryName)) {</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">						if (entryName.endsWith(&quot;/&quot;)) {</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">							if (getContainer(entryName.substring(0, entryName.length() - 1), entryMonitor.split(&quot;Getting container &quot;+entryName, 1)) == null) {</span>
+<span class="nc" id="L47">								throw new IOException(&quot;Container with path &quot;+entryName+&quot; cannot be created&quot;);</span>
+							}
+						} else {
+<span class="fc" id="L50">							E entity = get(entryName, entryMonitor.split(&quot;Getting entity &quot;+entryName, 1, this));</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">							if (entity == null) {</span>
+<span class="nc" id="L52">								throw new IllegalArgumentException(&quot;Cannot get entity &quot;+entryName+&quot; (&quot;+this+&quot;)&quot;);</span>
+							}
+							// Overriding close because set state closes the source stream when it is drained.
+<span class="fc" id="L55">							InputStream entryStream = new FilterInputStream(zipInputStream) { </span>
+
+								public void close() {
+									
+<span class="fc" id="L59">								}</span>
+								
+							};
+							
+<span class="fc" id="L63">							C state = decoder.apply(entryName, entryStream);</span>
+<span class="fc" id="L64">							entity.setState(state, entryMonitor.split(&quot;Setting state for &quot;+entryName, 1, entity, state));</span>
+						}
+					}
+<span class="fc" id="L67">					zipInputStream.closeEntry();</span>
+				}
+			}
+		} finally {
+<span class="fc" id="L71">			progressMonitor.close();</span>
+<span class="fc" id="L72">			zipInputStream.close();</span>
+		}
+		
+<span class="fc" id="L75">	}</span>
+	
+	/**
+	 * Stores entities to {@link ZipOutputStream}
+	 * @param zipOutputStream
+	 * @param prefix
+	 * @param encoder Encodes entity state to {@link InputStream}
+	 * @param progressMonitor
+	 * @throws IOException
+	 */
+	default void store(
+			ZipOutputStream zipOutputStream, 
+			String prefix, 
+			BiFunction&lt;String,C,InputStream&gt; encoder,
+			ProgressMonitor progressMonitor) throws IOException {
+		
+<span class="fc" id="L91">		Copier&lt;E, InputStream&gt; contentSerializer = (path, source, existingElement, monitor) -&gt; encoder.apply(path, source.getState(monitor));</span>
+<span class="fc" id="L92">		store(zipOutputStream, prefix, contentSerializer, progressMonitor);</span>
+<span class="fc" id="L93">	}</span>
+	
+	/**
+	 * Adapts to container of entity state.
+	 * @return
+	 */
+	default Container&lt;C&gt; stateAdapter() {
+<span class="fc" id="L100">		return new Container&lt;C&gt;() {</span>
+
+			@SuppressWarnings(&quot;unchecked&quot;)
+			@Override
+			public Object find(String path, ProgressMonitor monitor) {
+<span class="nc" id="L105">				Object ret = EntityContainer.this.find(path, monitor.split(&quot;Finiding&quot;, 1, this));</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">				if (ret instanceof EntityContainer) {</span>
+<span class="nc" id="L107">					return ((EntityContainer&lt;C,E&gt;) ret).stateAdapter();</span>
+				}
+<span class="nc bnc" id="L109" title="All 2 branches missed.">				return ret == null ? null : ((E) ret).getState(monitor.split(&quot;Getting state&quot;, 1, this));</span>
+			}
+
+			@Override
+			public C get(String path, ProgressMonitor monitor) {
+<span class="fc" id="L114">				E entity = EntityContainer.this.get(path, monitor.split(&quot;Getting enitity &quot;+path, 1, this));</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">				return entity == null ? null : entity.getState(monitor.split(&quot;Getting state of &quot;+path, 1, this));</span>
+			}
+
+			@Override
+			public void put(String path, C element, ProgressMonitor monitor) throws IllegalArgumentException {
+<span class="nc" id="L120">				E entity = EntityContainer.this.get(path, monitor.split(&quot;Getting enitity &quot;+path, 1, this));</span>
+<span class="nc" id="L121">				entity.setState(element, monitor.split(&quot;Setting state of &quot;+path, 1, this));</span>
+<span class="nc" id="L122">			}</span>
+
+			@SuppressWarnings(&quot;unchecked&quot;)
+			@Override
+			public Object delete(String path, ProgressMonitor monitor) {
+<span class="nc" id="L127">				Object deleted = EntityContainer.this.delete(path, monitor.split(&quot;Deleting &quot;+path, 1, this));</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">				if (deleted instanceof Container) {</span>
+<span class="nc" id="L129">					return ((EntityContainer&lt;C,E&gt;) deleted).stateAdapter();</span>
+				}
+<span class="nc bnc" id="L131" title="All 2 branches missed.">				return deleted == null ? null : ((E) deleted).getState(monitor.split(&quot;Getting state of &quot;+path, 1, this));</span>
+			}
+
+			@SuppressWarnings(&quot;unchecked&quot;)
+			@Override
+			public Container&lt;C&gt; getContainer(String path, ProgressMonitor monitor) {
+<span class="nc" id="L137">				Container&lt;E&gt; ret = EntityContainer.this.getContainer(path, monitor);</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">				return ret instanceof EntityContainer ? ((EntityContainer&lt;C,E&gt;) ret).stateAdapter() : null;</span>
+			}
+
+			@SuppressWarnings(&quot;unchecked&quot;)
+			@Override
+			public Map&lt;String, Object&gt; getChildren(ProgressMonitor monitor) {
+<span class="nc" id="L144">				Map&lt;String, Object&gt; ret = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L145">				EntityContainer.this.getChildren(monitor.split(&quot;Getting children&quot;, 1, this)).forEach((path, child) -&gt; {</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">					if (child instanceof EntityContainer) {</span>
+<span class="nc" id="L147">						ret.put(path, ((EntityContainer&lt;C,E&gt;) ret).stateAdapter());</span>
+					} else {
+<span class="nc" id="L149">						ret.put(path, ((E) child).getState(monitor.split(&quot;Getting state&quot;, 1, child)));</span>
+					}					
+<span class="nc" id="L151">				}); </span>
+<span class="nc" id="L152">				return Collections.unmodifiableMap(ret);</span>
+			}
+
+			@SuppressWarnings(&quot;unchecked&quot;)
+			@Override
+			public Container&lt;C&gt; getParent() {
+<span class="fc" id="L158">				Container&lt;E&gt; parent = EntityContainer.this.getParent();</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">				return parent instanceof EntityContainer ? ((EntityContainer&lt;C,E&gt;) parent).stateAdapter() : null;</span>
+			}
+
+			@Override
+			public String getName() {
+<span class="fc" id="L164">				return EntityContainer.this.getName();</span>
+			}
+
+			@Override
+			public void copy(Container&lt;? super C&gt; container, String path, ProgressMonitor monitor) {
+<span class="nc" id="L169">				throw new UnsupportedOperationException(&quot;Implement when this one is thrown&quot;);</span>
+			}
+
+			@Override
+			public void move(Container&lt;? super C&gt; container, String path, ProgressMonitor monitor) {
+<span class="nc" id="L174">				throw new UnsupportedOperationException(&quot;Implement when this one is thrown&quot;);</span>
+			}
+			
+			@Override
+			public String toString() {
+<span class="fc" id="L179">				return getClass().getName()+&quot;(&quot;+getPath()+&quot;)&quot;;</span>
+			}
+			
+		};
+	}	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

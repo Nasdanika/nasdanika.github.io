@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika HTML</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.html</a> &gt; <span class="el_source">HTMLFactory.java</span></div><h1>HTMLFactory.java</h1><pre class="source lang-java linenums">package org.nasdanika.html;
+
+import java.util.Map;
+
+import org.nasdanika.html.impl.DefaultHTMLFactory;
+
+
+/**
+ * Implementations of this class abstract HTML rendering code from rendering of low-level HTML primitives. 
+ * @author Pavel
+ *
+ */
+public interface HTMLFactory {
+	
+<span class="fc" id="L15">	HTMLFactory INSTANCE = new DefaultHTMLFactory();</span>
+	
+	/**
+	 * Generates element ID.
+	 * @return
+	 */
+	String nextId();
+	
+	/*******************
+	 *  Simple API's   *
+	 *******************/
+	
+	/**
+	 * Creates a tag with a given name which attributes and styles can be manipulated
+	 * with UIElement methods.
+	 * @param tagName
+	 * @param content
+	 * @return
+	 */
+	Tag tag(String tagName, Object... content);
+	
+	Tag tag(TagName tagName, Object... content);
+	
+	/**
+	 * Creates a tag which is rendered only if it has content.
+	 * @param tagName
+	 * @param content
+	 * @return
+	 */
+	Tag nonEmptyTag(String tagName, Object... content);
+
+	/**
+	 * Creates a tag which is rendered only if it has content.
+	 * @param tagName
+	 * @param content
+	 * @return
+	 */
+	Tag nonEmptyTag(TagName tagName, Object... content);
+	
+	
+	Tag div(Object... content);
+	
+	/**
+	 * Creates a div which is rendered only if it has content.
+	 * @param content
+	 * @return
+	 */
+	Tag nonEmptyDiv(Object... content);
+	
+	
+	Tag span(Object... content);
+	
+	Fragment fragment(Object... content);
+	
+	/**
+	 * A convenience method for creating form inputs
+	 * @param type Input type
+	 * @param name Input name - optional
+	 * @param value Input value - optional
+	 * @param id Control id - optional
+	 * @param placeholder Placeholder - optional
+	 * @return
+	 */
+	Input input(InputType type);
+	
+	Select select();
+
+	TextArea textArea();
+
+	Tag link(Object href, Object... content);
+	
+	Tag ul(Iterable&lt;?&gt; items);
+	
+	Tag ol(Iterable&lt;?&gt; items);
+	
+	Table table();
+			
+	Button button(Object... content);
+	
+	Form form();
+	
+	/**
+	 * Generates document.title = title script.
+	 * @param title
+	 * @return
+	 */
+	Tag title(Object title);
+	
+	// --- JavaScript ---
+	
+	Function function(Object... param);
+	
+	/**
+	 * Creates an overlay div with vertically and horizontally centered content.
+	 * @param content
+	 * @return
+	 */
+	Tag overlay(Object... content);
+	
+	/**
+	 * Generates JavaScript code (without script tag) to size the overlay and then display it.
+	 * @param overlaySelector
+	 * @param overlayedSelector
+	 */
+	String showOverlay(String overlaySelector, String overlayedSelector, int widthAdjustment, int heightAdjustment);
+	
+	/**
+	 * Expands tokens in the form of &lt;code&gt;{{token name}}&lt;/code&gt; to their values.
+	 * If a token is not found expansion is not processed.
+	 * @param input String, Reader, InputStream or URL.
+	 * @param tokenSource Source of tokens.
+	 * @return
+	 */
+	String interpolate(Object input, java.util.function.Function&lt;String, Object&gt; tokenSource);
+	
+	/**
+	 * Expands tokens in the form of &lt;code&gt;{{token name}}&lt;/code&gt; to their values.
+	 * If a token is not found expansion is not processed.
+	 * @param input String, Reader, InputStream or URL.
+	 * @param env
+	 * @return
+	 */
+	String interpolate(Object input, final Map&lt;String, Object&gt; env);	
+	
+	/**
+	 * Expands a single token in the form of &lt;code&gt;{{token name}}&lt;/code&gt; to its value.
+	 * If a token is not found expansion is not processed.
+	 * @param input String, Reader, InputStream or URL.
+	 * @param token
+	 * @param value
+	 * @return
+	 */
+	String interpolate(Object input, String token, Object value);
+	
+	/**
+	 * Creates a named items container which wraps name in the specified tag, e.g. H2.
+	 * @param tagName
+	 * @return
+	 */
+	NamedItemsContainer tagNamedItemsContainer(TagName tagName);
+	
+	/**
+	 * Creates HTML page.
+	 * @return
+	 */
+	HTMLPage page();
+	
+	/**
+	 * Creates a mutable token source with initial token.
+	 * @param token
+	 * @param value
+	 * @return
+	 */
+	TokenSource tokenSource(String token, Object value);
+	
+	/**
+	 * Creates a new mutable token source.
+	 * @return
+	 */
+	TokenSource tokenSource();	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

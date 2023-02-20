@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FunctionAdapterFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika EMF</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.emf</a> &gt; <span class="el_source">FunctionAdapterFactory.java</span></div><h1>FunctionAdapterFactory.java</h1><pre class="source lang-java linenums">package org.nasdanika.emf;
+
+import java.util.function.Function;
+
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcorePackage;
+
+/**
+ * Creates an adapter using a {@link Function} passing the notifier (target) as an argument.
+ * @param &lt;T&gt; Adapter type.
+ * @param &lt;N&gt; Notifier type.
+ */
+public class FunctionAdapterFactory&lt;T, N&gt; extends DelegatingAdapterFactory&lt;T&gt; {
+	
+	private Function&lt;N, T&gt; function;
+	
+	/**
+	 * Uses {@link EObject}'s {@link EClass} as eClass argument
+	 * @param type
+	 * @param proxyClassLoader
+	 * @param function
+	 */
+	public FunctionAdapterFactory(Class&lt;T&gt; type, ClassLoader proxyClassLoader, Function&lt;N, T&gt; function) {
+<span class="nc" id="L26">		this(EcorePackage.Literals.EOBJECT, type, proxyClassLoader, function);</span>
+<span class="nc" id="L27">	} </span>
+	
+	public FunctionAdapterFactory(EClass eClass, Class&lt;T&gt; type, ClassLoader proxyClassLoader, Function&lt;N, T&gt; function) {
+<span class="nc" id="L30">		super(eClass, type, proxyClassLoader);</span>
+<span class="nc" id="L31">		this.function = function;</span>
+<span class="nc" id="L32">	}</span>
+
+	@SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+	protected T doCreateAdapter(Notifier target) {
+<span class="nc" id="L37">		return function.apply((N) target);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

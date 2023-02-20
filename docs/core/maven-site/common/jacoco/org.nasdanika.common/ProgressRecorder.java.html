@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProgressRecorder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Nasdanika Common</a> &gt; <a href="index.source.html" class="el_package">org.nasdanika.common</a> &gt; <span class="el_source">ProgressRecorder.java</span></div><h1>ProgressRecorder.java</h1><pre class="source lang-java linenums">package org.nasdanika.common;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CancellationException;
+import java.util.stream.Collectors;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+/**
+ * Progress recorder storing progress information for subsequent processing or replaying.
+ * @author Pavel
+ *
+ */
+public class ProgressRecorder implements ProgressMonitor {
+	
+	private ProgressRecorder parent;
+
+	/**
+	 * 
+	 * @param totalWork
+	 */
+<span class="fc" id="L27">	protected ProgressRecorder(ProgressRecorder parent) {</span>
+<span class="fc" id="L28">		this.parent = parent;</span>
+<span class="fc" id="L29">	}</span>
+	/**
+	 * 
+	 * @param totalWork
+	 */
+	public ProgressRecorder() {
+<span class="nc" id="L35">		this(null);</span>
+<span class="nc" id="L36">	}</span>
+
+	/**
+	 * Supplier step reported by worked() methods.
+	 * @author Pavel
+	 *
+	 */
+	public interface Step extends Diagnostic {
+		
+		long getTime();
+		
+		double getWorked();
+		
+	}
+	
+	private boolean closed;
+	
+<span class="fc" id="L53">	private List&lt;Object&gt; entries = new ArrayList&lt;&gt;();</span>
+
+	private boolean cancelled;
+	
+	protected void cancel() {
+<span class="nc" id="L58">		cancelled = true;</span>
+<span class="nc" id="L59">	}</span>
+	
+	/**
+	 * @return Steps and child entries created by split().
+	 */
+	public List&lt;Object&gt; getEntries() {
+<span class="nc" id="L65">		return entries;</span>
+	}
+	
+	/**
+	 * @return Child entries created by split().
+	 */
+	public List&lt;ProgressEntry&gt; getChildren() {
+<span class="fc" id="L72">		return entries.stream().filter(e -&gt; e instanceof ProgressEntry).map(e -&gt; (ProgressEntry) e).collect(Collectors.toList());</span>
+	}	
+	
+	public List&lt;Step&gt; getSteps() {
+<span class="fc" id="L76">		return entries.stream().filter(e -&gt; e instanceof Step).map(e -&gt; (Step) e).collect(Collectors.toList());</span>
+	}
+	
+	@Override
+	public void close() {
+<span class="fc" id="L81">		closed = true;</span>
+<span class="fc" id="L82">	}</span>
+
+	@Override
+	public boolean isCancelled() {
+<span class="fc bfc" id="L86" title="All 2 branches covered.">		return parent == null ? cancelled : parent.isCancelled();</span>
+	}
+
+	@Override
+	public ProgressMonitor split(String taskName, double size, Object... data) {
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (isCancelled()) {</span>
+<span class="nc" id="L92">			throw new CancellationException();</span>
+		}
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">		if (closed) {</span>
+<span class="nc" id="L95">			throw new IllegalStateException(&quot;Monitor is closed: &quot;+hashCode());</span>
+		}
+<span class="fc" id="L97">		ProgressRecorder child = new ProgressEntry(this, taskName, size, Arrays.asList(data));</span>
+<span class="fc" id="L98">		entries.add(child);</span>
+<span class="fc" id="L99">		return child;</span>
+	}
+
+	@Override
+	public void worked(Status status, double work, String progressMessage, Object... data) {
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (closed) {</span>
+//			throw new IllegalStateException(&quot;Monitor is closed&quot;);
+<span class="nc" id="L106">			progressMessage += &quot; (Warning - Reporting progress to a closed monitor)&quot;;</span>
+		}
+<span class="fc" id="L108">		String theProgressMessage = progressMessage;</span>
+		
+		class BasicStep extends BasicDiagnostic implements Step {
+
+<span class="fc" id="L112">			public BasicStep() {</span>
+<span class="fc" id="L113">				super(status, theProgressMessage, data);</span>
+<span class="fc" id="L114">			}</span>
+
+<span class="fc" id="L116">			long now = System.currentTimeMillis();			</span>
+
+			@Override
+			public long getTime() {
+<span class="fc" id="L120">				return now;</span>
+			}
+
+			@Override
+			public double getWorked() {
+<span class="fc" id="L125">				return work;</span>
+			}
+			
+		}
+		
+<span class="fc" id="L130">		entries.add(new BasicStep());</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (status == Status.CANCEL) {</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">			if (parent == null) {</span>
+<span class="nc" id="L133">				cancelled = true;</span>
+			} else {
+<span class="nc" id="L135">				parent.cancel();</span>
+			}
+		}
+<span class="fc" id="L138">	}</span>
+	
+	/**
+	 * Outputs to JSON.
+	 * @return
+	 */
+	public JSONObject toJSON(int depth, boolean withData) {
+<span class="fc" id="L145">		JSONObject ret = new JSONObject();</span>
+
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (depth != 1) {</span>
+<span class="fc" id="L148">			List&lt;ProgressEntry&gt; children = getChildren();</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">			if (!children.isEmpty()) {</span>
+<span class="fc" id="L150">				JSONArray jChildren = new JSONArray();</span>
+<span class="fc" id="L151">				int cDepth = depth - 1;</span>
+<span class="fc" id="L152">				children.forEach(child -&gt; jChildren.put(child.toJSON(cDepth, withData)));</span>
+<span class="fc" id="L153">				ret.put(&quot;children&quot;, jChildren);</span>
+			}
+		}
+		
+<span class="fc" id="L157">		List&lt;Step&gt; steps = getSteps();</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">		if (!steps.isEmpty()) {</span>
+<span class="fc" id="L159">			JSONArray jSteps = new JSONArray();</span>
+<span class="fc" id="L160">			steps.forEach(we -&gt; {</span>
+<span class="fc" id="L161">				JSONObject jwe = new JSONObject();</span>
+<span class="fc" id="L162">				jwe.put(&quot;status&quot;, we.getStatus().name());</span>
+<span class="fc" id="L163">				jwe.put(&quot;worked&quot;, we.getWorked());</span>
+<span class="fc" id="L164">				jwe.put(&quot;time&quot;, we.getTime());</span>
+<span class="fc" id="L165">				jwe.put(&quot;message&quot;, we.getMessage());</span>
+<span class="pc bpc" id="L166" title="2 of 4 branches missed.">				if (withData &amp;&amp; we.getData().size() &gt; 0) {</span>
+<span class="nc" id="L167">					JSONArray jd = new JSONArray();</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">					for (Object d: we.getData()) {</span>
+<span class="nc" id="L169">						jd.put(detailToJSON(d));</span>
+<span class="nc" id="L170">					}</span>
+<span class="nc" id="L171">					jwe.put(&quot;data&quot;, jd); 					</span>
+				}
+<span class="fc" id="L173">				jSteps.put(jwe);</span>
+<span class="fc" id="L174">			});</span>
+<span class="fc" id="L175">			ret.put(&quot;steps&quot;, jSteps);		</span>
+		}
+		
+<span class="fc" id="L178">		return ret;</span>
+	}
+	
+	/**
+	 * Converts detail to JSON. This implementation delegates to the parent or calls {@link DefaultConverter#}.INSTANCE.convert
+	 * if parent is null.
+	 * @param detail
+	 * @return
+	 */
+	protected Object detailToJSON(Object detail) {
+<span class="fc bfc" id="L188" title="All 2 branches covered.">		return parent == null ? String.valueOf(detail) /* DefaultConverter.INSTANCE.convert(detail, JSONObject.class) */ : parent.detailToJSON(detail);</span>
+	}
+
+	@Override
+	public String toString() {
+<span class="fc" id="L193">		return toJSON(0, true).toString(4);</span>
+	}
+	
+	/**
+	 * Outputs to Map, which can be then used to output to YAML.
+	 * @param depth output depth. 0 means infinite.
+	 * @return 
+	 */
+	public Map&lt;String, Object&gt; toMap(int depth, boolean withData) {
+<span class="nc" id="L202">		Map&lt;String,Object&gt; ret = new LinkedHashMap&lt;&gt;();</span>
+
+<span class="nc bnc" id="L204" title="All 2 branches missed.">		if (depth != 1) {</span>
+<span class="nc" id="L205">			List&lt;ProgressEntry&gt; children = getChildren();</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">			if (!children.isEmpty()) {</span>
+<span class="nc" id="L207">				List&lt;Map&lt;String, Object&gt;&gt; mChildren = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L208">				int cDepth = depth - 1;</span>
+<span class="nc" id="L209">				children.forEach(child -&gt; mChildren.add(child.toMap(cDepth, withData)));</span>
+<span class="nc" id="L210">				ret.put(&quot;children&quot;, mChildren);</span>
+			}
+		}
+		
+<span class="nc" id="L214">		List&lt;Step&gt; steps = getSteps();</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">		if (!steps.isEmpty()) {</span>
+<span class="nc" id="L216">			List&lt;Map&lt;String, Object&gt;&gt; mSteps = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L217">			steps.forEach(we -&gt; {</span>
+<span class="nc" id="L218">				Map&lt;String, Object&gt; mwe = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L219">				mwe.put(&quot;status&quot;, we.getStatus().name());</span>
+<span class="nc" id="L220">				mwe.put(&quot;worked&quot;, we.getWorked());</span>
+<span class="nc" id="L221">				mwe.put(&quot;time&quot;, we.getTime());</span>
+<span class="nc" id="L222">				mwe.put(&quot;message&quot;, we.getMessage());</span>
+<span class="nc bnc" id="L223" title="All 4 branches missed.">				if (withData &amp;&amp; we.getData().size() &gt; 0) {</span>
+<span class="nc" id="L224">					mwe.put(&quot;data&quot;, we.getData());					</span>
+				}
+<span class="nc" id="L226">			});</span>
+<span class="nc" id="L227">			ret.put(&quot;steps&quot;, mSteps);		</span>
+		}			
+		
+<span class="nc" id="L230">		return ret;</span>
+	}
+	
+	/**
+	 * Replays recorded progress to the target monitor.  
+	 * @param target
+	 */
+	public void replay(ProgressMonitor monitor) {
+<span class="nc bnc" id="L238" title="All 2 branches missed.">		for (Object entry: entries) {</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">			if (entry instanceof Step) {</span>
+<span class="nc" id="L240">				Step step = (Step) entry;</span>
+<span class="nc" id="L241">				monitor.worked(step.getStatus(),  step.getWorked(),  step.getMessage(), step.getData());</span>
+<span class="nc" id="L242">			} else {</span>
+				@SuppressWarnings(&quot;resource&quot;)
+<span class="nc" id="L244">				ProgressEntry child = (ProgressEntry) entry;</span>
+<span class="nc" id="L245">				try (ProgressMonitor subMonitor = monitor.split(child.getName(), child.getTotalWork(), child.getData())) {</span>
+<span class="nc" id="L246">					child.replay(subMonitor);</span>
+				}
+			}
+<span class="nc" id="L249">		}</span>
+<span class="nc" id="L250">	}</span>
+	@Override
+	public ProgressRecorder setWorkRemaining(double size) {
+		// TODO - record too?
+<span class="fc" id="L254">		return this;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
