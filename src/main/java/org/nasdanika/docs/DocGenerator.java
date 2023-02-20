@@ -283,10 +283,10 @@ public class DocGenerator {
 		}		
 	}
 	
-	private void copyJavaDoc() throws Exception {
-		org.nasdanika.common.Util.copy(new File("../core/target/site/apidocs"), new File("docs/core/apidocs"), false, null, null);		
-		org.nasdanika.common.Util.copy(new File("../html/target/site/apidocs"), new File("docs/html/apidocs"), false, null, null);	
-		org.nasdanika.common.Util.copy(new File("../architecture/target/site/apidocs"), new File("docs/architecture/apidocs"), false, null, null);	
+	private void copyMavenSite() throws Exception {
+		org.nasdanika.common.Util.copy(new File("../core/target/staging"), new File("docs/core/maven-site"), false, null, null);		
+		org.nasdanika.common.Util.copy(new File("../html/target/staging"), new File("docs/html/maven-site"), false, null, null);	
+		org.nasdanika.common.Util.copy(new File("../architecture/target/staging"), new File("docs/architecture/maven-site"), false, null, null);	
 	}
 	
 	public void generate() throws Exception {
@@ -369,7 +369,7 @@ public class DocGenerator {
 		
 		System.out.println("There are " + errorCount + " site errors");
 		
-		copyJavaDoc();		
+		copyMavenSite();		
 	}
 
 }
