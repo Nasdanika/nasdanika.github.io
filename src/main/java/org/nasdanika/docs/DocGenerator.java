@@ -140,21 +140,29 @@ public class DocGenerator {
 		
 		Function<EPackage,String> getEPackagePath = ePackage -> {
 			if (isSameURI(ePackage, NcorePackage.eINSTANCE)) {
-				return "core/modules/ncore";
+				return "core/ncore";
 			}
 			if (isSameURI(ePackage, ExecPackage.eINSTANCE)) {
-				return "core/modules/exec/modules/model";
+				return "core/exec/model";
 			}
 
 			if (isSameURI(ePackage, AppPackage.eINSTANCE)) {
-				return "html/modules/models/modules/app/modules/model";
+				return "html/models/app/model";
 			}
 			if (isSameURI(ePackage, BootstrapPackage.eINSTANCE)) {
-				return "html/modules/models/modules/bootstrap/modules/model";
+				return "html/models/bootstrap/model";
 			}
 			if (isSameURI(ePackage, HtmlPackage.eINSTANCE)) {
-				return "html/modules/models/modules/html/modules/model";
+				return "html/models/html/model";
 			}
+			
+			if (isSameURI(ePackage, org.nasdanika.architecture.core.CorePackage.eINSTANCE)) {
+				return "architecture/core";
+			}
+			if (isSameURI(ePackage, org.nasdanika.architecture.c4.C4Package.eINSTANCE)) {
+				return "architecture/c4";
+			}
+			
 			
 			// TODO - NASDAF
 
