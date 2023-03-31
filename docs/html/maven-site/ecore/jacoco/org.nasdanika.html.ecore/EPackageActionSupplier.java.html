@@ -38,151 +38,160 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier&lt;EPack
 
 	private Supplier&lt;String&gt; diagramDialectSupplier;
 	private Function&lt;EClassifier, EReference&gt; eClassifierRoleProvider;
+	private Function&lt;String, Object&gt; ePackageResolver;
 
 	public EPackageActionSupplier(
 			EPackage value, 
 			Context context, 
 			java.util.function.Function&lt;EPackage,String&gt; ePackagePathComputer, 
+			java.util.function.Function&lt;String, Object&gt; ePackageResolver,
 			Predicate&lt;EModelElement&gt; elementPredicate,
 			BiFunction&lt;ENamedElement, String, String&gt; labelProvider,
 			Supplier&lt;String&gt; diagramDialectSupplier,
 			Function&lt;EClassifier, EReference&gt; eClassifierRoleProvider) {		
-<span class="fc" id="L50">		super(value, context, ePackagePathComputer, elementPredicate, labelProvider);</span>
-<span class="fc" id="L51">		this.diagramDialectSupplier = diagramDialectSupplier;</span>
-<span class="fc" id="L52">		this.eClassifierRoleProvider = eClassifierRoleProvider;</span>
-<span class="fc" id="L53">	}</span>
+<span class="fc" id="L52">		super(value, context, ePackagePathComputer, elementPredicate, labelProvider);</span>
+<span class="fc" id="L53">		this.diagramDialectSupplier = diagramDialectSupplier;</span>
+<span class="fc" id="L54">		this.eClassifierRoleProvider = eClassifierRoleProvider;</span>
+<span class="fc" id="L55">		this.ePackageResolver = ePackageResolver;</span>
+<span class="fc" id="L56">	}</span>
 	
 	@Override
 	protected void header(Action action, ProgressMonitor progressMonitor) {
-<span class="fc" id="L57">		Text text = ContentFactory.eINSTANCE.createText();</span>
-<span class="fc" id="L58">		text.setContent(&quot;&lt;div class='text-monospace'&gt;&quot; + eObject.getNsURI() + &quot;&lt;/div&gt;&quot;);</span>
-<span class="fc" id="L59">		action.getContent().add(text);</span>
-<span class="fc" id="L60">	}</span>
+<span class="fc" id="L60">		Text text = ContentFactory.eINSTANCE.createText();</span>
+<span class="fc" id="L61">		text.setContent(&quot;&lt;div class='text-monospace'&gt;&quot; + eObject.getNsURI() + &quot;&lt;/div&gt;&quot;);</span>
+<span class="fc" id="L62">		action.getContent().add(text);</span>
+<span class="fc" id="L63">	}</span>
 		
 	@SuppressWarnings(&quot;unchecked&quot;)
 	@Override
 	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) {
-<span class="fc" id="L65">		Action action = super.execute(contextEClass, progressMonitor);</span>
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">		String ePackageFolder = ePackagePathComputer == null ? Hex.encodeHexString(eObject.getNsURI().getBytes(StandardCharsets.UTF_8)) : ePackagePathComputer.apply(eObject);</span>
-<span class="fc" id="L67">		action.setLocation(ePackageFolder + &quot;/package-summary.html&quot;);</span>
-<span class="fc" id="L68">		action.setId(eObject.eClass().getName() + &quot;-&quot; + encodeEPackage(eObject));</span>
-<span class="fc" id="L69">		action.getUris().add(eObject.getNsURI());</span>
+<span class="fc" id="L68">		Action action = super.execute(contextEClass, progressMonitor);</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">		String ePackageFolder = ePackagePathComputer == null ? Hex.encodeHexString(eObject.getNsURI().getBytes(StandardCharsets.UTF_8)) : &quot;${base-uri}&quot; + ePackagePathComputer.apply(eObject);</span>
+<span class="fc" id="L70">		action.setLocation(ePackageFolder + &quot;/package-summary.html&quot;);</span>
+<span class="fc" id="L71">		action.setId(eObject.eClass().getName() + &quot;-&quot; + encodeEPackage(eObject));</span>
+<span class="fc" id="L72">		action.getUris().add(eObject.getNsURI());</span>
 		
-<span class="fc" id="L71">		String diagramMode = NcoreUtil.getNasdanikaAnnotationDetail(eObject, &quot;diagram&quot;, &quot;navigation&quot;);</span>
-<span class="fc" id="L72">		String diagram = generateDiagram(0, RelationshipDirection.both, true, true);</span>
-<span class="pc bpc" id="L73" title="1 of 2 branches missed.">		if (!Util.isBlank(diagram)) {</span>
-<span class="nc bnc" id="L74" title="All 5 branches missed.">			switch (diagramMode) {</span>
+<span class="fc" id="L74">		String diagramMode = NcoreUtil.getNasdanikaAnnotationDetail(eObject, &quot;diagram&quot;, &quot;navigation&quot;);</span>
+<span class="fc" id="L75">		String diagram = generateDiagram(0, RelationshipDirection.both, true, true);</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">		if (!Util.isBlank(diagram)) {</span>
+<span class="nc bnc" id="L77" title="All 5 branches missed.">			switch (diagramMode) {</span>
 			case &quot;content&quot;:
-<span class="nc" id="L76">				addContent(action, diagram);</span>
-<span class="nc" id="L77">				break;</span>
+<span class="nc" id="L79">				addContent(action, diagram);</span>
+<span class="nc" id="L80">				break;</span>
 			case &quot;none&quot;:
-<span class="nc" id="L79">				break;</span>
+<span class="nc" id="L82">				break;</span>
 			case &quot;navigation&quot;: {
-<span class="nc" id="L81">				Action diagramAction = AppFactory.eINSTANCE.createAction();</span>
-<span class="nc" id="L82">				action.getNavigation().add(diagramAction);</span>
-<span class="nc" id="L83">				diagramAction.setText(&quot;Diagram&quot;);</span>
-<span class="nc" id="L84">				diagramAction.setIcon(&quot;fas fa-project-diagram&quot;);</span>
-<span class="nc" id="L85">				diagramAction.setLocation(&quot;package-summary-diagram.html&quot;);</span>
-<span class="nc" id="L86">				addContent(diagramAction, diagram);</span>
-<span class="nc" id="L87">				break;</span>
+<span class="nc" id="L84">				Action diagramAction = AppFactory.eINSTANCE.createAction();</span>
+<span class="nc" id="L85">				action.getNavigation().add(diagramAction);</span>
+<span class="nc" id="L86">				diagramAction.setText(&quot;Diagram&quot;);</span>
+<span class="nc" id="L87">				diagramAction.setIcon(&quot;fas fa-project-diagram&quot;);</span>
+<span class="nc" id="L88">				diagramAction.setLocation(&quot;package-summary-diagram.html&quot;);</span>
+<span class="nc" id="L89">				addContent(diagramAction, diagram);</span>
+<span class="nc" id="L90">				break;</span>
 			}
 			case &quot;anonymous&quot;: {
-<span class="nc" id="L90">				Action diagramAction = AppFactory.eINSTANCE.createAction();</span>
-<span class="nc" id="L91">				action.getAnonymous().add(diagramAction);</span>
-<span class="nc" id="L92">				diagramAction.setText(&quot;Diagram&quot;);</span>
-<span class="nc" id="L93">				diagramAction.setIcon(&quot;fas fa-project-diagram&quot;);</span>
-<span class="nc" id="L94">				diagramAction.setLocation(ePackageFolder + &quot;/package-summary-diagram.html&quot;);</span>
-<span class="nc" id="L95">				addContent(diagramAction, diagram);</span>
-<span class="nc" id="L96">				break;			</span>
+<span class="nc" id="L93">				Action diagramAction = AppFactory.eINSTANCE.createAction();</span>
+<span class="nc" id="L94">				action.getAnonymous().add(diagramAction);</span>
+<span class="nc" id="L95">				diagramAction.setText(&quot;Diagram&quot;);</span>
+<span class="nc" id="L96">				diagramAction.setIcon(&quot;fas fa-project-diagram&quot;);</span>
+<span class="nc" id="L97">				diagramAction.setLocation(ePackageFolder + &quot;/package-summary-diagram.html&quot;);</span>
+<span class="nc" id="L98">				addContent(diagramAction, diagram);</span>
+<span class="nc" id="L99">				break;			</span>
 			}
 			default:
-<span class="nc" id="L99">				throw new IllegalArgumentException(&quot;Unsupported diagram annotation value '&quot; + diagramMode +&quot;' on EPackage &quot; + eObject); 			</span>
+<span class="nc" id="L102">				throw new IllegalArgumentException(&quot;Unsupported diagram annotation value '&quot; + diagramMode +&quot;' on EPackage &quot; + eObject); 			</span>
 			}
 		}
 		
 		// TODO - Table (list) of contents
 //		addContent(data, Collections.singletonMap(&quot;component-list-of-contents&quot;, Collections.singletonMap(&quot;tooltip&quot;, true))); 
 		
-<span class="fc" id="L106">		EList&lt;EObject&gt; children = action.getChildren();</span>
-<span class="fc bfc" id="L107" title="All 2 branches covered.">		for (EPackage subPackage: eObject.getESubpackages().stream().filter(elementPredicate).sorted((a,b) -&gt;  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {</span>
-<span class="fc" id="L108">			children.add(adaptChild(subPackage).execute(contextEClass, progressMonitor));</span>
-<span class="fc" id="L109">		}</span>
+<span class="fc" id="L109">		EList&lt;EObject&gt; children = action.getChildren();</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">		for (EPackage subPackage: eObject.getESubpackages().stream().filter(elementPredicate).sorted((a,b) -&gt;  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {</span>
+<span class="fc" id="L111">			children.add(adaptChild(subPackage).execute(contextEClass, progressMonitor));</span>
+<span class="fc" id="L112">		}</span>
 	
-<span class="fc bfc" id="L111" title="All 2 branches covered.">		for (EClassifier eClassifier: eObject.getEClassifiers().stream().filter(elementPredicate).sorted((a,b) -&gt;  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {</span>
-<span class="fc" id="L112">			Action eClassifierAction = adaptChild(eClassifier).execute(contextEClass, progressMonitor);</span>
-<span class="fc" id="L113">			EReference eClassifierRole = eClassifierRoleProvider.apply(eClassifier);</span>
-<span class="fc" id="L114">			((Collection&lt;Object&gt;) action.eGet(eClassifierRole)).add(eClassifierAction);</span>
-<span class="fc" id="L115">		}</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">		for (EClassifier eClassifier: eObject.getEClassifiers().stream().filter(elementPredicate).sorted((a,b) -&gt;  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {</span>
+<span class="fc" id="L115">			Action eClassifierAction = adaptChild(eClassifier).execute(contextEClass, progressMonitor);</span>
+<span class="fc" id="L116">			EReference eClassifierRole = eClassifierRoleProvider.apply(eClassifier);</span>
+<span class="fc" id="L117">			((Collection&lt;Object&gt;) action.eGet(eClassifierRole)).add(eClassifierAction);</span>
+<span class="fc" id="L118">		}</span>
 		
-<span class="fc" id="L117">		return action;</span>
+<span class="fc" id="L120">		return action;</span>
 	}
 	
 	protected DiagramTextGenerator getDiagramTextGenerator(StringBuilder sb, boolean appendAttributes, boolean appendOperations) {
-<span class="fc" id="L121">		String dialect = diagramDialectSupplier.get();</span>
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (Util.isBlank(dialect)) {</span>
-<span class="fc" id="L123">			return null;</span>
+<span class="fc" id="L124">		String dialect = diagramDialectSupplier.get();</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (Util.isBlank(dialect)) {</span>
+<span class="fc" id="L126">			return null;</span>
 		}
-<span class="nc bnc" id="L125" title="All 3 branches missed.">		switch (dialect) {</span>
+<span class="nc bnc" id="L128" title="All 3 branches missed.">		switch (dialect) {</span>
 		case DiagramGenerator.UML_DIALECT:
-<span class="nc" id="L127">			return new PlantUmlTextGenerator(sb, elementPredicate, eClassifierLinkResolver, this::getEModelElementFirstDocSentence, labelProvider) {</span>
+<span class="nc" id="L130">			return new PlantUmlTextGenerator(sb, elementPredicate, eClassifierLinkResolver, this::getEModelElementFirstDocSentence, labelProvider) {</span>
 				
 				@Override
 				protected Collection&lt;EClass&gt; getSubTypes(EClass eClass) {
-<span class="nc" id="L131">					return EPackageActionSupplier.this.getSubTypes(eClass);</span>
+<span class="nc" id="L134">					return EPackageActionSupplier.this.getSubTypes(eClass);</span>
 				}
 				
 				@Override
 				protected Collection&lt;EClass&gt; getReferrers(EClass eClass) {
-<span class="nc" id="L136">					return EPackageActionSupplier.this.getReferrers(eClass);</span>
+<span class="nc" id="L139">					return EPackageActionSupplier.this.getReferrers(eClass);</span>
 				}
 				
 				@Override
 				protected boolean isAppendAttributes(EClass eClass) {
-<span class="nc" id="L141">					return appendAttributes;</span>
+<span class="nc" id="L144">					return appendAttributes;</span>
 				}
 				
 				@Override
 				protected boolean isAppendOperations(EClass eClass) {
-<span class="nc" id="L146">					return appendOperations;				</span>
+<span class="nc" id="L149">					return appendOperations;				</span>
 				}
 				
 				@Override
 				protected Collection&lt;EClass&gt; getUses(EClassifier eClassifier) {
-<span class="nc" id="L151">					return Collections.emptySet(); // No usage information on package diagrams - too much.</span>
+<span class="nc" id="L154">					return Collections.emptySet(); // No usage information on package diagrams - too much.</span>
 				}
-									
+								
+				@Override
+				protected String qualifiedName(EClassifier eClassifier) {
+<span class="nc" id="L159">					Class&lt;?&gt; ic = getInstanceClass(eClassifier, ePackageResolver);</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">					return ic == null ? super.qualifiedName(eClassifier) : ic.getName();</span>
+				}
+													
 			};
 		case DiagramGenerator.MERMAID_DIALECT:
-<span class="nc" id="L156">			return new MermaidTextGenerator(sb, elementPredicate, eClassifierLinkResolver, this::getEModelElementFirstDocSentence) {</span>
+<span class="nc" id="L165">			return new MermaidTextGenerator(sb, elementPredicate, eClassifierLinkResolver, this::getEModelElementFirstDocSentence) {</span>
 				
 				@Override
 				protected Collection&lt;EClass&gt; getSubTypes(EClass eClass) {
-<span class="nc" id="L160">					return EPackageActionSupplier.this.getSubTypes(eClass);</span>
+<span class="nc" id="L169">					return EPackageActionSupplier.this.getSubTypes(eClass);</span>
 				}
 				
 				@Override
 				protected Collection&lt;EClass&gt; getReferrers(EClass eClass) {
-<span class="nc" id="L165">					return EPackageActionSupplier.this.getReferrers(eClass);</span>
+<span class="nc" id="L174">					return EPackageActionSupplier.this.getReferrers(eClass);</span>
 				}
 				
 				@Override
 				protected boolean isAppendAttributes(EClass eClass) {
-<span class="nc" id="L170">					return appendAttributes;</span>
+<span class="nc" id="L179">					return appendAttributes;</span>
 				}
 				
 				@Override
 				protected boolean isAppendOperations(EClass eClass) {
-<span class="nc" id="L175">					return appendOperations;				</span>
+<span class="nc" id="L184">					return appendOperations;				</span>
 				}
 				
 				@Override
 				protected Collection&lt;EClass&gt; getUses(EClassifier eClassifier) {
-<span class="nc" id="L180">					return Collections.emptySet(); // No usage information on package diagrams - too much.</span>
+<span class="nc" id="L189">					return Collections.emptySet(); // No usage information on package diagrams - too much.</span>
 				}
 									
 			};
 		default:
-<span class="nc" id="L185">			throw new UnsupportedOperationException(&quot;Unsupported dialect: &quot; + dialect);</span>
+<span class="nc" id="L194">			throw new UnsupportedOperationException(&quot;Unsupported dialect: &quot; + dialect);</span>
 		}					
 	}
 	
@@ -197,14 +206,14 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier&lt;EPack
 			boolean appendAttributes,
 			boolean appendOperations) {
 		
-<span class="fc" id="L200">		StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L209">		StringBuilder sb = new StringBuilder();</span>
 		
-<span class="fc" id="L202">		DiagramTextGenerator gen = getDiagramTextGenerator(sb, appendAttributes, appendOperations); </span>
-<span class="pc bpc" id="L203" title="1 of 2 branches missed.">		if (gen == null) {</span>
-<span class="fc" id="L204">			return null;</span>
+<span class="fc" id="L211">		DiagramTextGenerator gen = getDiagramTextGenerator(sb, appendAttributes, appendOperations); </span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">		if (gen == null) {</span>
+<span class="fc" id="L213">			return null;</span>
 		}
-<span class="nc" id="L206">		gen.appendWithRelationships(eObject.getEClassifiers(), relationshipDirection, depth);		</span>
-<span class="nc" id="L207">		return context.get(DiagramGenerator.class).generateUmlDiagram(sb.toString());</span>
+<span class="nc" id="L215">		gen.appendWithRelationships(eObject.getEClassifiers(), relationshipDirection, depth);		</span>
+<span class="nc" id="L216">		return context.get(DiagramGenerator.class).generateUmlDiagram(sb.toString());</span>
 	}
 
 	/**
@@ -214,27 +223,27 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier&lt;EPack
 	 * @return
 	 */
 	protected Collection&lt;EClass&gt; getSubTypes(EClass eClass) {
-<span class="nc" id="L217">		Collection&lt;EClass&gt; ret = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L218" title="All 2 branches missed.">		for (EClassifier ec: eObject.getEClassifiers()) {</span>
-<span class="nc bnc" id="L219" title="All 6 branches missed.">			if (eClass != ec &amp;&amp; ec instanceof EClass &amp;&amp; eClass.isSuperTypeOf((EClass) ec)) {</span>
-<span class="nc" id="L220">				ret.add((EClass) ec);</span>
+<span class="nc" id="L226">		Collection&lt;EClass&gt; ret = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">		for (EClassifier ec: eObject.getEClassifiers()) {</span>
+<span class="nc bnc" id="L228" title="All 6 branches missed.">			if (eClass != ec &amp;&amp; ec instanceof EClass &amp;&amp; eClass.isSuperTypeOf((EClass) ec)) {</span>
+<span class="nc" id="L229">				ret.add((EClass) ec);</span>
 			}
-<span class="nc" id="L222">		}</span>
-<span class="nc" id="L223">		return ret;		</span>
+<span class="nc" id="L231">		}</span>
+<span class="nc" id="L232">		return ret;		</span>
 	}	
 		
-<span class="fc" id="L226">	protected Function&lt;EClassifier, String&gt; eClassifierLinkResolver = target -&gt; {</span>
-<span class="nc" id="L227">		String localName = target.getName() + &quot;.html&quot;;</span>
-<span class="nc bnc" id="L228" title="All 2 branches missed.">		if (target.getEPackage().getNsURI().equals(eObject.getNsURI())) {</span>
-<span class="nc" id="L229">			return localName;</span>
+<span class="fc" id="L235">	protected Function&lt;EClassifier, String&gt; eClassifierLinkResolver = target -&gt; {</span>
+<span class="nc" id="L236">		String localName = target.getName() + &quot;.html&quot;;</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">		if (target.getEPackage().getNsURI().equals(eObject.getNsURI())) {</span>
+<span class="nc" id="L238">			return localName;</span>
 		}
 		
-<span class="nc" id="L232">		StringBuilder pathUp = new StringBuilder();</span>
-<span class="nc bnc" id="L233" title="All 2 branches missed.">		for (EPackage p = eObject; p != null; p = p.getESuperPackage()) {</span>
-<span class="nc" id="L234">			pathUp.append(&quot;../&quot;);</span>
+<span class="nc" id="L241">		StringBuilder pathUp = new StringBuilder();</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">		for (EPackage p = eObject; p != null; p = p.getESuperPackage()) {</span>
+<span class="nc" id="L243">			pathUp.append(&quot;../&quot;);</span>
 		}
 		
-<span class="nc" id="L237">		return pathUp + encodeEPackage(target.getEPackage()) + &quot;/&quot; + localName;</span>
+<span class="nc" id="L246">		return pathUp + encodeEPackage(target.getEPackage()) + &quot;/&quot; + localName;</span>
 	};
 	
 }

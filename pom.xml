@@ -3,22 +3,66 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nasdanika</groupId>
-	<version>2023.2.0</version>
+	<version>2023.4.0</version>
 	<artifactId>docs</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika Documentation Site</name>
+	
+	<properties>
+		<architecture.version>2023.4.0</architecture.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
 			<artifactId>ecore</artifactId>
-			<version>2023.2.2</version>
+			<version>2023.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.nasdanika.architecture</groupId>
 			<artifactId>c4</artifactId>
-			<version>2023.2.0</version>
+			<version>${architecture.version}</version>
 		</dependency>
+
+		<!-- Azure --> 
+		<dependency>
+			<groupId>org.nasdanika.architecture.cloud.azure</groupId>
+			<artifactId>core</artifactId>
+			<version>${architecture.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.architecture.cloud.azure</groupId>
+			<artifactId>compute</artifactId>
+			<version>${architecture.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.architecture.cloud.azure</groupId>
+			<artifactId>networking</artifactId>
+			<version>${architecture.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.architecture.cloud.azure</groupId>
+			<artifactId>storage</artifactId>
+			<version>${architecture.version}</version>
+		</dependency>
+		
+		<!-- Containers --> 
+		<dependency>
+			<groupId>org.nasdanika.architecture.containers</groupId>
+			<artifactId>docker</artifactId>
+			<version>${architecture.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.architecture.containers</groupId>
+			<artifactId>kubernetes</artifactId>
+			<version>${architecture.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.architecture.containers</groupId>
+			<artifactId>helm</artifactId>
+			<version>${architecture.version}</version>
+		</dependency>
+		
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
 		    <artifactId>junit-jupiter-api</artifactId>
@@ -35,7 +79,7 @@
 		<dependency>
 		    <groupId>net.sourceforge.plantuml</groupId>
 		    <artifactId>plantuml</artifactId>
-		    <version>1.2023.0</version>
+		    <version>1.2023.5</version>
 		</dependency>				
 					
 	</dependencies>

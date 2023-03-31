@@ -336,30 +336,56 @@ public class EObjectLoader extends DispatchingLoader {
 	 */
 	public BiSupplier&lt;EClass,BiFunction&lt;EClass,ENamedElement,String&gt;&gt; resolveEClass(String type) {		
 <span class="nc bnc" id="L338" title="All 2 branches missed.">		for (Entry&lt;String, EPackageEntry&gt; re: getRegistry()) {</span>
-<span class="nc bnc" id="L339" title="All 2 branches missed.">			if (type.startsWith(re.getKey())) {</span>
-<span class="nc" id="L340">				EPackageEntry ePackageEntry = re.getValue();</span>
+<span class="nc" id="L339">			EPackageEntry ePackageEntry = re.getValue();</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">			if (type.startsWith(re.getKey())) {</span>
 <span class="nc bnc" id="L341" title="All 2 branches missed.">				for (EClassifier eClassifier: ePackageEntry.ePackage.getEClassifiers()) {</span>
 <span class="nc bnc" id="L342" title="All 4 branches missed.">					if (eClassifier instanceof EClass &amp;&amp; &quot;true&quot;.equals(NcoreUtil.getNasdanikaAnnotationDetail(eClassifier, IS_LOADABLE, &quot;true&quot;))) {</span>
 <span class="nc" id="L343">						String eClassifierKey = ePackageEntry.keyProvider.apply(null, eClassifier);</span>
 <span class="nc bnc" id="L344" title="All 4 branches missed.">						if (eClassifierKey != null &amp;&amp; type.equals(re.getKey() + eClassifierKey)) {</span>
-<span class="nc" id="L345">							return new BiSupplier&lt;EClass, BiFunction&lt;EClass,ENamedElement,String&gt;&gt;() {</span>
-
-								@Override
-								public EClass getFirst() {
-<span class="nc" id="L349">									return (EClass) eClassifier;</span>
-								}
-
-								@Override
-								public BiFunction&lt;EClass,ENamedElement, String&gt; getSecond() {
-<span class="nc" id="L354">									return ePackageEntry.keyProvider;</span>
-								}
-							}; 
+<span class="nc" id="L345">							return resolveResult(ePackageEntry, eClassifier); </span>
 						}
 					}
-<span class="nc" id="L359">				}</span>
+<span class="nc" id="L348">				}</span>
+			} else {
+<span class="nc" id="L350">				String exportsAnnotation = NcoreUtil.getNasdanikaAnnotationDetail(ePackageEntry.ePackage, &quot;exports&quot;);</span>
+<span class="nc bnc" id="L351" title="All 2 branches missed.">				if (!Util.isBlank(exportsAnnotation)) {</span>
+<span class="nc" id="L352">					Yaml yaml = new Yaml();</span>
+<span class="nc" id="L353">					Map&lt;String,Object&gt; exportsMap = yaml.load(exportsAnnotation);</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">					for (Entry&lt;String, Object&gt; eme: exportsMap.entrySet()) {</span>
+<span class="nc" id="L355">						EClassifier eClassifier = ePackageEntry.ePackage.getEClassifier(eme.getKey());</span>
+<span class="nc bnc" id="L356" title="All 4 branches missed.">						if (eClassifier instanceof EClass &amp;&amp; &quot;true&quot;.equals(NcoreUtil.getNasdanikaAnnotationDetail(eClassifier, IS_LOADABLE, &quot;true&quot;))) {</span>
+<span class="nc" id="L357">							Object val = eme.getValue();</span>
+<span class="nc bnc" id="L358" title="All 2 branches missed.">							if (val instanceof Collection) {</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">								for (Object vale: (Collection&lt;?&gt;) val) {</span>
+<span class="nc bnc" id="L360" title="All 2 branches missed.">									if (type.equals(vale)) {</span>
+<span class="nc" id="L361">										return resolveResult(ePackageEntry, eClassifier);</span>
+									}
+<span class="nc" id="L363">								}</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">							} else if (type.equals(val)) {</span>
+<span class="nc" id="L365">								return resolveResult(ePackageEntry, eClassifier);								</span>
+							}
+						}
+<span class="nc" id="L368">					}</span>
+				}
 			}
-<span class="nc" id="L361">		}</span>
-<span class="nc" id="L362">		return null;		</span>
+<span class="nc" id="L371">		}</span>
+<span class="nc" id="L372">		return null;		</span>
+	}
+
+	private BiSupplier&lt;EClass, BiFunction&lt;EClass, ENamedElement, String&gt;&gt; resolveResult(EPackageEntry ePackageEntry,
+			EClassifier eClassifier) {
+<span class="nc" id="L377">		return new BiSupplier&lt;EClass, BiFunction&lt;EClass,ENamedElement,String&gt;&gt;() {</span>
+
+			@Override
+			public EClass getFirst() {
+<span class="nc" id="L381">				return (EClass) eClassifier;</span>
+			}
+
+			@Override
+			public BiFunction&lt;EClass,ENamedElement, String&gt; getSecond() {
+<span class="nc" id="L386">				return ePackageEntry.keyProvider;</span>
+			}
+		};
 	}
 	
 	/**
@@ -385,73 +411,73 @@ public class EObjectLoader extends DispatchingLoader {
 			java.util.function.Function&lt;EClass, EObject&gt; constructor) {
 		
 		// Nulls are nulls
-<span class="nc bnc" id="L388" title="All 2 branches missed.">		if (config == null) {</span>
-<span class="nc" id="L389">			return null;</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">		if (config == null) {</span>
+<span class="nc" id="L415">			return null;</span>
 		}
 		
 		// Proxy
-<span class="nc" id="L393">		Object proxy = createProxy(eClass, config, base, markers, progressMonitor);</span>
-<span class="nc bnc" id="L394" title="All 2 branches missed.">		if (proxy != null) {</span>
-<span class="nc" id="L395">			return configure(proxy, loader, config, base, null, progressMonitor);</span>
+<span class="nc" id="L419">		Object proxy = createProxy(eClass, config, base, markers, progressMonitor);</span>
+<span class="nc bnc" id="L420" title="All 2 branches missed.">		if (proxy != null) {</span>
+<span class="nc" id="L421">			return configure(proxy, loader, config, base, null, progressMonitor);</span>
 		}
 		
-<span class="nc" id="L398">		Class&lt;?&gt; instanceClass = eClass.getInstanceClass();</span>
-<span class="nc" id="L399">		EFactory factory = eClass.getEPackage().getEFactoryInstance();</span>
+<span class="nc" id="L424">		Class&lt;?&gt; instanceClass = eClass.getInstanceClass();</span>
+<span class="nc" id="L425">		EFactory factory = eClass.getEPackage().getEFactoryInstance();</span>
 		
-<span class="nc bnc" id="L401" title="All 2 branches missed.">		if (Loadable.class.isAssignableFrom(instanceClass)) {</span>
-<span class="nc" id="L402">			EObject eObject = factory.create(eClass);</span>
-<span class="nc" id="L403">			((Loadable) eObject).load(loader, config, base, progressMonitor, markers);</span>
-<span class="nc" id="L404">			return configure(eObject, loader, config, base, null, progressMonitor);</span>
+<span class="nc bnc" id="L427" title="All 2 branches missed.">		if (Loadable.class.isAssignableFrom(instanceClass)) {</span>
+<span class="nc" id="L428">			EObject eObject = factory.create(eClass);</span>
+<span class="nc" id="L429">			((Loadable) eObject).load(loader, config, base, progressMonitor, markers);</span>
+<span class="nc" id="L430">			return configure(eObject, loader, config, base, null, progressMonitor);</span>
 		}
-<span class="nc bnc" id="L406" title="All 2 branches missed.">		if (ContextLoadable.class.isAssignableFrom(instanceClass)) {</span>
-<span class="nc" id="L407">			return new SupplierFactory&lt;EObject&gt;() {</span>
+<span class="nc bnc" id="L432" title="All 2 branches missed.">		if (ContextLoadable.class.isAssignableFrom(instanceClass)) {</span>
+<span class="nc" id="L433">			return new SupplierFactory&lt;EObject&gt;() {</span>
 
 				@Override
 				public Supplier&lt;EObject&gt; create(Context context) {
-<span class="nc" id="L411">					return new Supplier&lt;EObject&gt;() {</span>
+<span class="nc" id="L437">					return new Supplier&lt;EObject&gt;() {</span>
 
 						@Override
 						public double size() {
-<span class="nc" id="L415">							return 1;</span>
+<span class="nc" id="L441">							return 1;</span>
 						}
 
 						@Override
 						public String name() {
-<span class="nc" id="L420">							return &quot;Creating &quot; + eClass.getName();</span>
+<span class="nc" id="L446">							return &quot;Creating &quot; + eClass.getName();</span>
 						}
 
 						@Override
 						public EObject execute(ProgressMonitor pm) {
-<span class="nc" id="L425">							EObject eObject = factory.create(eClass);</span>
-<span class="nc" id="L426">							((ContextLoadable) eObject).load(context, loader, config, base, pm, markers);</span>
-<span class="nc" id="L427">							return configure(eObject, loader, config, base, context, pm);</span>
+<span class="nc" id="L451">							EObject eObject = factory.create(eClass);</span>
+<span class="nc" id="L452">							((ContextLoadable) eObject).load(context, loader, config, base, pm, markers);</span>
+<span class="nc" id="L453">							return configure(eObject, loader, config, base, context, pm);</span>
 						}
 						
 					};
 				}									
 			};
 		}							
-<span class="nc" id="L434">		EObjectSupplierFactory eObjectSupplierFactory = createEObjectSupplierFactory(eClass, keyProvider, constructor);</span>
-<span class="nc" id="L435">		eObjectSupplierFactory.load(loader, config, base, progressMonitor, markers);</span>
-<span class="nc" id="L436">		FunctionFactory&lt;EObject, EObject&gt; configureFactory = ctx -&gt; new org.nasdanika.common.Function&lt;EObject, EObject&gt;() {</span>
+<span class="nc" id="L460">		EObjectSupplierFactory eObjectSupplierFactory = createEObjectSupplierFactory(eClass, keyProvider, constructor);</span>
+<span class="nc" id="L461">		eObjectSupplierFactory.load(loader, config, base, progressMonitor, markers);</span>
+<span class="nc" id="L462">		FunctionFactory&lt;EObject, EObject&gt; configureFactory = ctx -&gt; new org.nasdanika.common.Function&lt;EObject, EObject&gt;() {</span>
 
 			@Override
 			public double size() {
-<span class="nc" id="L440">				return 1;</span>
+<span class="nc" id="L466">				return 1;</span>
 			}
 
 			@Override
 			public String name() {
-<span class="nc" id="L445">				return &quot;Configure&quot;;</span>
+<span class="nc" id="L471">				return &quot;Configure&quot;;</span>
 			}
 
 			@Override
 			public EObject execute(EObject eObject, ProgressMonitor pm) {
-<span class="nc" id="L450">				return configure(eObject, loader, config, base, ctx, pm);</span>
+<span class="nc" id="L476">				return configure(eObject, loader, config, base, ctx, pm);</span>
 			}
 			
 		};
-<span class="nc" id="L454">		return eObjectSupplierFactory.then(configureFactory);</span>
+<span class="nc" id="L480">		return eObjectSupplierFactory.then(configureFactory);</span>
 	}
 	
 	/**
@@ -474,37 +500,37 @@ public class EObjectLoader extends DispatchingLoader {
 			ProgressMonitor progressMonitor) {
 		
 		// Loading linked resources if resourceSet is not null.
-<span class="nc bnc" id="L477" title="All 2 branches missed.">		if (resourceSet != null) {</span>
-<span class="nc bnc" id="L478" title="All 2 branches missed.">			if (obj instanceof EObject) {</span>
-<span class="nc" id="L479">				EObject eObj = (EObject) obj;</span>
-<span class="nc" id="L480">				EClass eClass = eObj.eClass();</span>
-<span class="nc bnc" id="L481" title="All 2 branches missed.">				for (EAttribute eAttr: eClass.getEAllAttributes()) {</span>
-<span class="nc bnc" id="L482" title="All 2 branches missed.">					if (isLinkedResourceAttribute(eAttr)) {</span>
-<span class="nc" id="L483">						linkResources(eObj, eObj, eAttr, loader, config, base, context, progressMonitor);</span>
+<span class="nc bnc" id="L503" title="All 2 branches missed.">		if (resourceSet != null) {</span>
+<span class="nc bnc" id="L504" title="All 2 branches missed.">			if (obj instanceof EObject) {</span>
+<span class="nc" id="L505">				EObject eObj = (EObject) obj;</span>
+<span class="nc" id="L506">				EClass eClass = eObj.eClass();</span>
+<span class="nc bnc" id="L507" title="All 2 branches missed.">				for (EAttribute eAttr: eClass.getEAllAttributes()) {</span>
+<span class="nc bnc" id="L508" title="All 2 branches missed.">					if (isLinkedResourceAttribute(eAttr)) {</span>
+<span class="nc" id="L509">						linkResources(eObj, eObj, eAttr, loader, config, base, context, progressMonitor);</span>
 					}
-<span class="nc" id="L485">				}</span>
+<span class="nc" id="L511">				}</span>
 				
 				// EMaps with EString value attributes annotated with content-type = resource-uri.
-<span class="nc bnc" id="L488" title="All 2 branches missed.">				for (EReference eRef: eClass.getEAllReferences()) {</span>
-<span class="nc" id="L489">					EClassifier refType = eRef.getEType();</span>
-<span class="nc" id="L490">					Class&lt;?&gt; refClass = refType.getInstanceClass();</span>
-<span class="nc bnc" id="L491" title="All 8 branches missed.">					if (eRef.isMany() &amp;&amp; refType instanceof EClass &amp;&amp; refClass != null &amp;&amp; Map.Entry.class.isAssignableFrom(refClass)) {</span>
-<span class="nc" id="L492">						EStructuralFeature valueFeature = ((EClass) refType).getEStructuralFeature(&quot;value&quot;);</span>
-<span class="nc bnc" id="L493" title="All 4 branches missed.">						if (valueFeature instanceof EAttribute &amp;&amp; isLinkedResourceAttribute((EAttribute) valueFeature)) {</span>
-<span class="nc bnc" id="L494" title="All 2 branches missed.">							for (EObject entry: (Collection&lt;EObject&gt;) eObj.eGet(eRef)) {</span>
-<span class="nc" id="L495">								linkResources(eObj, entry, (EAttribute) valueFeature, loader, config, base, context, progressMonitor);							</span>
-<span class="nc" id="L496">							}</span>
+<span class="nc bnc" id="L514" title="All 2 branches missed.">				for (EReference eRef: eClass.getEAllReferences()) {</span>
+<span class="nc" id="L515">					EClassifier refType = eRef.getEType();</span>
+<span class="nc" id="L516">					Class&lt;?&gt; refClass = refType.getInstanceClass();</span>
+<span class="nc bnc" id="L517" title="All 8 branches missed.">					if (eRef.isMany() &amp;&amp; refType instanceof EClass &amp;&amp; refClass != null &amp;&amp; Map.Entry.class.isAssignableFrom(refClass)) {</span>
+<span class="nc" id="L518">						EStructuralFeature valueFeature = ((EClass) refType).getEStructuralFeature(&quot;value&quot;);</span>
+<span class="nc bnc" id="L519" title="All 4 branches missed.">						if (valueFeature instanceof EAttribute &amp;&amp; isLinkedResourceAttribute((EAttribute) valueFeature)) {</span>
+<span class="nc bnc" id="L520" title="All 2 branches missed.">							for (EObject entry: (Collection&lt;EObject&gt;) eObj.eGet(eRef)) {</span>
+<span class="nc" id="L521">								linkResources(eObj, entry, (EAttribute) valueFeature, loader, config, base, context, progressMonitor);							</span>
+<span class="nc" id="L522">							}</span>
 						}
 					}
-<span class="nc" id="L499">				}</span>
+<span class="nc" id="L525">				}</span>
 			}
 		}
 		
-<span class="nc" id="L503">		return obj;</span>
+<span class="nc" id="L529">		return obj;</span>
 	}
 	
 	protected boolean isLinkedResourceAttribute(EAttribute eAttribute) {
-<span class="nc bnc" id="L507" title="All 6 branches missed.">		return eAttribute != null &amp;&amp; eAttribute.getEType() == EcorePackage.Literals.ESTRING &amp;&amp; &quot;resource-uri&quot;.equals(NcoreUtil.getNasdanikaAnnotationDetail(eAttribute, &quot;content-type&quot;)); </span>
+<span class="nc bnc" id="L533" title="All 6 branches missed.">		return eAttribute != null &amp;&amp; eAttribute.getEType() == EcorePackage.Literals.ESTRING &amp;&amp; &quot;resource-uri&quot;.equals(NcoreUtil.getNasdanikaAnnotationDetail(eAttribute, &quot;content-type&quot;)); </span>
 	}
 	
 	/**
@@ -529,15 +555,15 @@ public class EObjectLoader extends DispatchingLoader {
 			Context context,
 			ProgressMonitor progressMonitor) {
 		
-<span class="nc bnc" id="L532" title="All 2 branches missed.">		if (linkedResourceAttribute.isMany()) {</span>
-<span class="nc" id="L533">			ListIterator&lt;String&gt; it = ((List&lt;String&gt;) valueObject.eGet(linkedResourceAttribute)).listIterator();</span>
-<span class="nc bnc" id="L534" title="All 2 branches missed.">			while (it.hasNext()) {</span>
-<span class="nc" id="L535">				it.set(linkResource(semanticElement, it.next(), loader, config, base, context, progressMonitor));</span>
+<span class="nc bnc" id="L558" title="All 2 branches missed.">		if (linkedResourceAttribute.isMany()) {</span>
+<span class="nc" id="L559">			ListIterator&lt;String&gt; it = ((List&lt;String&gt;) valueObject.eGet(linkedResourceAttribute)).listIterator();</span>
+<span class="nc bnc" id="L560" title="All 2 branches missed.">			while (it.hasNext()) {</span>
+<span class="nc" id="L561">				it.set(linkResource(semanticElement, it.next(), loader, config, base, context, progressMonitor));</span>
 			}
-<span class="nc" id="L537">		} else {</span>
-<span class="nc" id="L538">			valueObject.eSet(linkedResourceAttribute, linkResource(semanticElement, (String) valueObject.eGet(linkedResourceAttribute), loader, config, base, context, progressMonitor));</span>
+<span class="nc" id="L563">		} else {</span>
+<span class="nc" id="L564">			valueObject.eSet(linkedResourceAttribute, linkResource(semanticElement, (String) valueObject.eGet(linkedResourceAttribute), loader, config, base, context, progressMonitor));</span>
 		}		
-<span class="nc" id="L540">	}</span>
+<span class="nc" id="L566">	}</span>
 	
 	/**
 	 * Loads and links resources specified in the valueObject's linkedResourceAttribute to the semanticElement.
@@ -560,25 +586,25 @@ public class EObjectLoader extends DispatchingLoader {
 			Context context,
 			ProgressMonitor progressMonitor) {
 		
-<span class="nc" id="L563">		URI resourceURI = URI.createURI(resourceUriStr);</span>
-<span class="nc bnc" id="L564" title="All 8 branches missed.">		if (resourceURI.isRelative() &amp;&amp; base != null &amp;&amp; !base.isRelative() &amp;&amp; base.isHierarchical()) {</span>
-<span class="nc" id="L565">			resourceURI = resourceURI.resolve(base);</span>
+<span class="nc" id="L589">		URI resourceURI = URI.createURI(resourceUriStr);</span>
+<span class="nc bnc" id="L590" title="All 8 branches missed.">		if (resourceURI.isRelative() &amp;&amp; base != null &amp;&amp; !base.isRelative() &amp;&amp; base.isHierarchical()) {</span>
+<span class="nc" id="L591">			resourceURI = resourceURI.resolve(base);</span>
 		}
-<span class="nc" id="L567">		Resource linkedResource = resourceSet.getResource(resourceURI, true);</span>
+<span class="nc" id="L593">		Resource linkedResource = resourceSet.getResource(resourceURI, true);</span>
 		
 		// Adding to linked resources adapter for setting children in createSemanticElement				
-<span class="nc" id="L570">		LinkedResourcesAdapter linkedResourcesAdapter = (LinkedResourcesAdapter) EcoreUtil.getRegisteredAdapter(semanticElement, LinkedResourcesAdapter.class);</span>
-<span class="nc bnc" id="L571" title="All 2 branches missed.">		if (linkedResourcesAdapter == null) {</span>
-<span class="nc" id="L572">			linkedResourcesAdapter = new LinkedResourcesAdapter();</span>
-<span class="nc" id="L573">			semanticElement.eAdapters().add(linkedResourcesAdapter);</span>
+<span class="nc" id="L596">		LinkedResourcesAdapter linkedResourcesAdapter = (LinkedResourcesAdapter) EcoreUtil.getRegisteredAdapter(semanticElement, LinkedResourcesAdapter.class);</span>
+<span class="nc bnc" id="L597" title="All 2 branches missed.">		if (linkedResourcesAdapter == null) {</span>
+<span class="nc" id="L598">			linkedResourcesAdapter = new LinkedResourcesAdapter();</span>
+<span class="nc" id="L599">			semanticElement.eAdapters().add(linkedResourcesAdapter);</span>
 		}
-<span class="nc" id="L575">		linkedResourcesAdapter.getLinkedResources().add(linkedResource);</span>
+<span class="nc" id="L601">		linkedResourcesAdapter.getLinkedResources().add(linkedResource);</span>
 		
-<span class="nc bnc" id="L577" title="All 2 branches missed.">		if (linkedResource instanceof AbstractEObjectFactoryProcessorResource) {</span>
-<span class="nc" id="L578">			((AbstractEObjectFactoryProcessorResource&lt;EObject&gt;) linkedResource).setParent(semanticElement);</span>
+<span class="nc bnc" id="L603" title="All 2 branches missed.">		if (linkedResource instanceof AbstractEObjectFactoryProcessorResource) {</span>
+<span class="nc" id="L604">			((AbstractEObjectFactoryProcessorResource&lt;EObject&gt;) linkedResource).setParent(semanticElement);</span>
 		}
 		
-<span class="nc" id="L581">		return encodeLinkedResource(semanticElement, resourceUriStr, linkedResource, loader, config, base, context, progressMonitor);</span>
+<span class="nc" id="L607">		return encodeLinkedResource(semanticElement, resourceUriStr, linkedResource, loader, config, base, context, progressMonitor);</span>
 	}
 	
 	/**
@@ -604,11 +630,11 @@ public class EObjectLoader extends DispatchingLoader {
 			Context context,
 			ProgressMonitor progressMonitor) {
 		
-<span class="nc bnc" id="L607" title="All 2 branches missed.">		if (linkedResource instanceof URIEncodable) {</span>
-<span class="nc" id="L608">			return ((URIEncodable) linkedResource).encode().toString();</span>
+<span class="nc bnc" id="L633" title="All 2 branches missed.">		if (linkedResource instanceof URIEncodable) {</span>
+<span class="nc" id="L634">			return ((URIEncodable) linkedResource).encode().toString();</span>
 		}
 		
-<span class="nc" id="L611">		return resourceUriStr;	</span>
+<span class="nc" id="L637">		return resourceUriStr;	</span>
 	}
 		
 	/**
@@ -621,7 +647,7 @@ public class EObjectLoader extends DispatchingLoader {
 			EClass eClass,
 			BiFunction&lt;EClass, ENamedElement, String&gt; keyProvider,
 			java.util.function.Function&lt;EClass, EObject&gt; constructor) {		
-<span class="nc" id="L624">		return new EObjectSupplierFactory(this, eClass, keyProvider, constructor);</span>
+<span class="nc" id="L650">		return new EObjectSupplierFactory(this, eClass, keyProvider, constructor);</span>
 	}
 
 	/**
@@ -632,37 +658,37 @@ public class EObjectLoader extends DispatchingLoader {
 	 * @return Proxy object or null if config is not a proxy config.
 	 */
 	public EObject createProxy(EClass eClass, Object config, URI base, List&lt;? extends Marker&gt; markers, ProgressMonitor progressMonitor) {
-<span class="nc bnc" id="L635" title="All 2 branches missed.">		if (config instanceof Map) {</span>
+<span class="nc bnc" id="L661" title="All 2 branches missed.">		if (config instanceof Map) {</span>
 			@SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc" id="L637">			Map&lt;Object,Object&gt; configMap = (Map&lt;Object,Object&gt;) config;</span>
-<span class="nc bnc" id="L638" title="All 2 branches missed.">			if (configMap.size() == 1 </span>
-<span class="nc bnc" id="L639" title="All 2 branches missed.">					&amp;&amp; configMap.containsKey(HREF_KEY)) {</span>
-<span class="nc" id="L640">				EObject eObject = eClass.getEPackage().getEFactoryInstance().create(eClass);</span>
-<span class="nc bnc" id="L641" title="All 2 branches missed.">				if (eObject instanceof MinimalEObjectImpl) {</span>
-<span class="nc" id="L642">					Object href = configMap.get(HREF_KEY);					</span>
+<span class="nc" id="L663">			Map&lt;Object,Object&gt; configMap = (Map&lt;Object,Object&gt;) config;</span>
+<span class="nc bnc" id="L664" title="All 2 branches missed.">			if (configMap.size() == 1 </span>
+<span class="nc bnc" id="L665" title="All 2 branches missed.">					&amp;&amp; configMap.containsKey(HREF_KEY)) {</span>
+<span class="nc" id="L666">				EObject eObject = eClass.getEPackage().getEFactoryInstance().create(eClass);</span>
+<span class="nc bnc" id="L667" title="All 2 branches missed.">				if (eObject instanceof MinimalEObjectImpl) {</span>
+<span class="nc" id="L668">					Object href = configMap.get(HREF_KEY);					</span>
 					URI proxyURI;
-<span class="nc bnc" id="L644" title="All 2 branches missed.">					if (href instanceof URI) {</span>
-<span class="nc" id="L645">						proxyURI = (URI) href;</span>
-<span class="nc bnc" id="L646" title="All 2 branches missed.">					} else if (href instanceof String) {</span>
-<span class="nc" id="L647">						proxyURI = URI.createURI((String) configMap.get(HREF_KEY));</span>
+<span class="nc bnc" id="L670" title="All 2 branches missed.">					if (href instanceof URI) {</span>
+<span class="nc" id="L671">						proxyURI = (URI) href;</span>
+<span class="nc bnc" id="L672" title="All 2 branches missed.">					} else if (href instanceof String) {</span>
+<span class="nc" id="L673">						proxyURI = URI.createURI((String) configMap.get(HREF_KEY));</span>
 					} else {
-<span class="nc" id="L649">						return null;</span>
+<span class="nc" id="L675">						return null;</span>
 					}
 					
-<span class="nc" id="L652">					String proxyURIStr = proxyURI.toString();</span>
-<span class="nc bnc" id="L653" title="All 2 branches missed.">					if (proxyURIStr.startsWith(LATE_PROXY_RESOLUTION_URI_PREFIX)) {</span>
-<span class="nc" id="L654">						proxyURI = URI.createURI(proxyURIStr.substring(LATE_PROXY_RESOLUTION_URI_PREFIX.length()));</span>
-<span class="nc bnc" id="L655" title="All 2 branches missed.">					} else if (base != null) {</span>
-<span class="nc" id="L656">						proxyURI = proxyURI.resolve(base);</span>
+<span class="nc" id="L678">					String proxyURIStr = proxyURI.toString();</span>
+<span class="nc bnc" id="L679" title="All 2 branches missed.">					if (proxyURIStr.startsWith(LATE_PROXY_RESOLUTION_URI_PREFIX)) {</span>
+<span class="nc" id="L680">						proxyURI = URI.createURI(proxyURIStr.substring(LATE_PROXY_RESOLUTION_URI_PREFIX.length()));</span>
+<span class="nc bnc" id="L681" title="All 2 branches missed.">					} else if (base != null) {</span>
+<span class="nc" id="L682">						proxyURI = proxyURI.resolve(base);</span>
 					}
-<span class="nc" id="L658">					((MinimalEObjectImpl) eObject).eSetProxyURI(proxyURI);</span>
-<span class="nc" id="L659">					mark(eObject, markers, progressMonitor);</span>
+<span class="nc" id="L684">					((MinimalEObjectImpl) eObject).eSetProxyURI(proxyURI);</span>
+<span class="nc" id="L685">					mark(eObject, markers, progressMonitor);</span>
 					
-<span class="nc" id="L661">					return eObject;</span>
+<span class="nc" id="L687">					return eObject;</span>
 				}
 			}
 		}
-<span class="nc" id="L665">		return null;</span>
+<span class="nc" id="L691">		return null;</span>
 	}
 
 	/**
@@ -671,52 +697,52 @@ public class EObjectLoader extends DispatchingLoader {
 	 * @param marker
 	 */
 	public void mark(EObject eObject, List&lt;? extends Marker&gt; markers, ProgressMonitor progressMonitor) {
-<span class="nc bnc" id="L674" title="All 2 branches missed.">		if (markers != null) {</span>
-<span class="nc" id="L675">			eObject.eAdapters().add(new MarkedAdapter(markers));</span>
-<span class="nc bnc" id="L676" title="All 2 branches missed.">			if (eObject instanceof Marked) {		</span>
-<span class="nc bnc" id="L677" title="All 2 branches missed.">				for (Marker marker: markers) {</span>
-<span class="nc" id="L678">					org.nasdanika.ncore.Marker mMarker = markerFactory.createMarker(marker.getLocation(), progressMonitor);</span>
-<span class="nc" id="L679">					mMarker.setPosition(marker.getPosition());</span>
-<span class="nc" id="L680">					((Marked) eObject).getMarkers().add(0, mMarker);</span>
-<span class="nc" id="L681">				}</span>
+<span class="nc bnc" id="L700" title="All 2 branches missed.">		if (markers != null) {</span>
+<span class="nc" id="L701">			eObject.eAdapters().add(new MarkedAdapter(markers));</span>
+<span class="nc bnc" id="L702" title="All 2 branches missed.">			if (eObject instanceof Marked) {		</span>
+<span class="nc bnc" id="L703" title="All 2 branches missed.">				for (Marker marker: markers) {</span>
+<span class="nc" id="L704">					org.nasdanika.ncore.Marker mMarker = markerFactory.createMarker(marker.getLocation(), progressMonitor);</span>
+<span class="nc" id="L705">					mMarker.setPosition(marker.getPosition());</span>
+<span class="nc" id="L706">					((Marked) eObject).getMarkers().add(0, mMarker);</span>
+<span class="nc" id="L707">				}</span>
 			}
 		}
-<span class="nc" id="L684">	}</span>
+<span class="nc" id="L710">	}</span>
 	
 	/**
 	 * Resolves proxy using the loader's resource set.
 	 * Does not suppress exceptions. 
 	 */
 	public EObject resolve(EObject proxy) {
-<span class="nc bnc" id="L691" title="All 2 branches missed.">		if (!proxy.eIsProxy()) {</span>
-<span class="nc" id="L692">			return proxy;</span>
+<span class="nc bnc" id="L717" title="All 2 branches missed.">		if (!proxy.eIsProxy()) {</span>
+<span class="nc" id="L718">			return proxy;</span>
 		}
 
-<span class="nc" id="L695">		URI proxyURI = ((InternalEObject) proxy).eProxyURI();</span>
-<span class="nc" id="L696">		EObject ret = resourceSet.getEObject(proxyURI, true);</span>
-<span class="nc bnc" id="L697" title="All 4 branches missed.">		return ret == null || ret == proxy ? ret : resolve(ret);</span>
+<span class="nc" id="L721">		URI proxyURI = ((InternalEObject) proxy).eProxyURI();</span>
+<span class="nc" id="L722">		EObject ret = resourceSet.getEObject(proxyURI, true);</span>
+<span class="nc bnc" id="L723" title="All 4 branches missed.">		return ret == null || ret == proxy ? ret : resolve(ret);</span>
 	}	
 
 	public ResourceSet getResourceSet() {
-<span class="nc" id="L701">		return resourceSet;</span>
+<span class="nc" id="L727">		return resourceSet;</span>
 	}
 	
 	/**
 	 * @return Load key from &lt;code&gt;load-keys&lt;/code&gt; annotation. 
 	 */
 	public static String getLoadKey(EClass eClass, EStructuralFeature feature) {
-<span class="nc bnc" id="L708" title="All 2 branches missed.">		for (EClass ec: NcoreUtil.lineage(eClass)) {</span>
-<span class="nc" id="L709">			String loadKeys = NcoreUtil.getNasdanikaAnnotationDetail(ec, LOAD_KEYS);</span>
-<span class="nc bnc" id="L710" title="All 2 branches missed.">			if (!Util.isBlank(loadKeys)) {</span>
-<span class="nc" id="L711">				Yaml yaml = new Yaml();</span>
-<span class="nc" id="L712">				Map&lt;String,Object&gt; loadKeyMap = yaml.load(loadKeys);</span>
-<span class="nc" id="L713">				Object loadKey = loadKeyMap.get(feature.getName());</span>
-<span class="nc bnc" id="L714" title="All 2 branches missed.">				if (loadKey instanceof String) {</span>
-<span class="nc" id="L715">					return (String) loadKey;</span>
+<span class="nc bnc" id="L734" title="All 2 branches missed.">		for (EClass ec: NcoreUtil.lineage(eClass)) {</span>
+<span class="nc" id="L735">			String loadKeys = NcoreUtil.getNasdanikaAnnotationDetail(ec, LOAD_KEYS);</span>
+<span class="nc bnc" id="L736" title="All 2 branches missed.">			if (!Util.isBlank(loadKeys)) {</span>
+<span class="nc" id="L737">				Yaml yaml = new Yaml();</span>
+<span class="nc" id="L738">				Map&lt;String,Object&gt; loadKeyMap = yaml.load(loadKeys);</span>
+<span class="nc" id="L739">				Object loadKey = loadKeyMap.get(feature.getName());</span>
+<span class="nc bnc" id="L740" title="All 2 branches missed.">				if (loadKey instanceof String) {</span>
+<span class="nc" id="L741">					return (String) loadKey;</span>
 				}
 			}
-<span class="nc" id="L718">		}</span>
-<span class="nc" id="L719">		return null;</span>
+<span class="nc" id="L744">		}</span>
+<span class="nc" id="L745">		return null;</span>
 	}
 	
 }

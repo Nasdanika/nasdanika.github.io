@@ -21,7 +21,7 @@ public class EClassifierActionSupplier&lt;T extends EClassifier&gt; extends ENam
 
 	private Function&lt;String, String&gt; javadocResolver;
 	protected Class&lt;?&gt; instanceClass;
-	private Function&lt;String, Object&gt; ePackageResolver;
+	protected Function&lt;String, Object&gt; ePackageResolver;
 
 	public EClassifierActionSupplier(
 			T value, 
@@ -34,44 +34,35 @@ public class EClassifierActionSupplier&lt;T extends EClassifier&gt; extends ENam
 <span class="fc" id="L34">		super(value, context, ePackagePathComputer, elementPredicate, labelProvider);</span>
 <span class="fc" id="L35">		this.javadocResolver = javadocResolver;</span>
 <span class="fc" id="L36">		this.ePackageResolver = ePackageResolver;</span>
-<span class="fc" id="L37">		instanceClass = value.getInstanceClass();</span>
-<span class="fc bfc" id="L38" title="All 2 branches covered.">		if (instanceClass == null) {</span>
-<span class="fc" id="L39">			EPackage registeredPackage = getRegisteredPackage(value);</span>
-<span class="pc bpc" id="L40" title="1 of 2 branches missed.">			if (registeredPackage != null) {</span>
-<span class="nc" id="L41">				EClassifier registeredClassifier = registeredPackage.getEClassifier(value.getName());</span>
-<span class="nc bnc" id="L42" title="All 2 branches missed.">				if (registeredClassifier != null) {</span>
-<span class="nc" id="L43">					instanceClass = registeredClassifier.getInstanceClass();</span>
-				}
-			}
-		}
-<span class="fc" id="L47">	}</span>
+<span class="fc" id="L37">		instanceClass = getInstanceClass(value, ePackageResolver);</span>
+<span class="fc" id="L38">	}</span>
 	
 	@Override
 	protected void header(Action action, ProgressMonitor progressMonitor) {
-<span class="fc bfc" id="L51" title="All 2 branches covered.">		if (instanceClass != null) {</span>
-<span class="fc" id="L52">			String instanceClassName = instanceClass.getName();</span>
-<span class="pc bpc" id="L53" title="1 of 2 branches missed.">			if (javadocResolver != null) {</span>
-<span class="fc" id="L54">				instanceClassName = javadocResolver.apply(instanceClassName);</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">		if (instanceClass != null) {</span>
+<span class="fc" id="L43">			String instanceClassName = instanceClass.getName();</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">			if (javadocResolver != null) {</span>
+<span class="fc" id="L45">				instanceClassName = javadocResolver.apply(instanceClassName);</span>
 			}
 			
-<span class="fc" id="L57">			Text text = ContentFactory.eINSTANCE.createText();</span>
-<span class="fc" id="L58">			text.setContent(&quot;&lt;div class='text-monospace'&gt;&quot; + instanceClassName + &quot;&lt;/div&gt;&quot;);</span>
-<span class="fc" id="L59">			action.getContent().add(text);</span>
+<span class="fc" id="L48">			Text text = ContentFactory.eINSTANCE.createText();</span>
+<span class="fc" id="L49">			text.setContent(&quot;&lt;div class='text-monospace'&gt;&quot; + instanceClassName + &quot;&lt;/div&gt;&quot;);</span>
+<span class="fc" id="L50">			action.getContent().add(text);</span>
 		}		
-<span class="fc" id="L61">	}</span>
+<span class="fc" id="L52">	}</span>
 	
 	@Override
 	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) {
-<span class="fc" id="L65">		Action action = super.execute(contextEClass, progressMonitor);</span>
-<span class="fc" id="L66">		action.setLocation(eObject.getName() + &quot;.html&quot;);</span>
-<span class="fc" id="L67">		action.setId(eObject.eClass().getName() + &quot;-&quot; + encodeEPackage(eObject.getEPackage()) + &quot;-&quot; + eObject.getName());</span>
-<span class="fc" id="L68">		action.getUris().add(eObject.getEPackage().getNsURI() + &quot;#&quot; + eObject.getName());</span>
-<span class="fc" id="L69">		return action;</span>
+<span class="fc" id="L56">		Action action = super.execute(contextEClass, progressMonitor);</span>
+<span class="fc" id="L57">		action.setLocation(eObject.getName() + &quot;.html&quot;);</span>
+<span class="fc" id="L58">		action.setId(eObject.eClass().getName() + &quot;-&quot; + encodeEPackage(eObject.getEPackage()) + &quot;-&quot; + eObject.getName());</span>
+<span class="fc" id="L59">		action.getUris().add(eObject.getEPackage().getNsURI() + &quot;#&quot; + eObject.getName());</span>
+<span class="fc" id="L60">		return action;</span>
 	}
 	
 	@Override
 	protected String getDefaultLabel(ProgressMonitor progressMonitor) {
-<span class="fc" id="L74">		return eObject.getName() + typeParameters(eObject);</span>
+<span class="fc" id="L65">		return eObject.getName() + typeParameters(eObject);</span>
 	}
 	
 	/**
@@ -79,24 +70,8 @@ public class EClassifierActionSupplier&lt;T extends EClassifier&gt; extends ENam
 	 * @return
 	 */
 	protected Collection&lt;EClass&gt; getUses() {
-<span class="fc" id="L82">		return getUses(eObject);</span>
+<span class="fc" id="L73">		return getUses(eObject);</span>
 	}
-
-	private EPackage getRegisteredPackage(EClassifier eObject) {
-<span class="fc" id="L86">		String nsURI = eObject.getEPackage().getNsURI();</span>
-<span class="fc" id="L87">		Object value = ePackageResolver.apply(nsURI);</span>
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (value instanceof EPackage) {</span>
-<span class="nc" id="L89">			return (EPackage) value;</span>
-		}
-<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (value instanceof EPackage.Descriptor) {</span>
-<span class="nc" id="L92">			return Objects.requireNonNull(((EPackage.Descriptor) value).getEPackage(), &quot;EPackage is null for &quot; + nsURI);  </span>
-		}
-		
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		if (value instanceof EPackage) {</span>
-<span class="nc" id="L96">			return (EPackage) value;</span>
-		}
-<span class="fc" id="L98">		return null;</span>
-	}	
 	
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

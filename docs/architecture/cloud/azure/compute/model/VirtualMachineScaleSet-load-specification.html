@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="EN">
+  <head>
+    <title>Load specification</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cerulean/bootstrap.min.css" id="nsd-bootstrap-theme-stylesheet"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/css/app.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jstree@3.3.11/dist/themes/default/style.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.1.0/github-markdown.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/styles/default.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.21.2/dist/bootstrap-vue.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/js/common.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/js/dark-head.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jstree@3.3.11/dist/jstree.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.21.2/dist/bootstrap-vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/js/components/table.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9BRJVLK8CC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9BRJVLK8CC');
+</script>    
+</head>
+  <body>
+    <div class="container-fluid nsd-app-container">
+      <div class="row">
+        <div class="col nsd-app-header">
+          <a href="https://www.nasdanika.org" title="Root action" data-nsd-label-uuid="49b096b1-a08a-4d1c-85ce-0dbec504b452" class="nsd-app-header-title">
+            <img src="https://docs.nasdanika.org/images/nasdanika-logo.png" class="nsd-app-label-icon"/>Nasdanika</a>
+          <ul class="nav nsd-app-header-navs">
+            <li class="nav-item">
+              <a href="../../../../../search.html" data-nsd-label-uuid="43684cd2-7983-4b3a-b8ca-7c00e62f88f3" class="nav-link"><span class="fas fa-search nsd-app-label-icon"></span>Search</a>
+            </li>
+            <li class="nav-item">
+              <a href="../../../../../glossary.html" data-nsd-label-uuid="44f38090-7341-4ef9-a1fc-7e875dd4d78f" class="nav-link">Glossary</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col nsd-app-navbar">
+          <ul class="navbar navbar-light navbar-expand-lg">
+            <a href="../../../../../index.html" data-nsd-label-uuid="3f2c8cbc-2312-43af-b110-fec3f0639c0d" class="navbar-brand">Nasdanika</a>
+            <button type="button" data-toggle="collapse" data-target="#nsd_41nu" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="nsd_41nu" class="collapse navbar-collapse"></div>
+          </ul>
+        </div>
+      </div>
+      <div class="row nsd-app-content-row">
+        <div class="col nsd-app-navigation-panel">
+          <div class="nsd-collapse-panel bg-light text-center"><span data-toggle="collapse" data-target="#nsd-nav-panel-0ed4e895-d22e-4d48-9ed9-913fa9ae9d22-collapsible" aria-expanded="true" aria-controls="nsd-nav-panel-0ed4e895-d22e-4d48-9ed9-913fa9ae9d22-collapsible" title="Toggle panel" id="nsd-nav-panel-0ed4e895-d22e-4d48-9ed9-913fa9ae9d22-collapsible-trigger" class="nsd-collapsible-trigger"><i aria-hidden="true" class="fa"></i></span>
+          </div>
+          <div id="nsd-nav-panel-0ed4e895-d22e-4d48-9ed9-913fa9ae9d22-collapsible" style="clear:right" class="nsd-collapsible collapse show">
+            <div class="card">
+              <div class="card-header"><span data-toggle="collapse" data-target="#nsd-app-nav-item-6763ad70-2703-4d5a-9ec4-5596945b901e-collapsible" aria-expanded="true" aria-controls="nsd-app-nav-item-6763ad70-2703-4d5a-9ec4-5596945b901e-collapsible" title="Toggle card" id="nsd-app-nav-item-6763ad70-2703-4d5a-9ec4-5596945b901e-collapsible-trigger" class="nsd-collapsible-trigger"><i aria-hidden="true" class="fa"></i></span>
+                <a href="../../../../../core/index.html">Core</a>
+              </div>
+              <div id="nsd-app-nav-item-6763ad70-2703-4d5a-9ec4-5596945b901e-collapsible" class="card-body p-1 nsd-collapsible collapse show">
+                <input type="text" id="nsd_41v6_searchInput" title="Full-text search. You can use wildcards, e.g. 'foo*' or 'f*o'; title or content fields, e.g. 'title:foo* bar'; boosts, e.g. 'foo^10 bar'; fuzzy matches, e.g. 'foo~1'; and term presence, e.g. '+foo bar -baz'" class="form-control"/>
+                <div id="4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel-nsd-app-nav-item-6763ad70-2703-4d5a-9ec4-5596945b901e"></div>
+              </div>
+            </div>
+            <script>$(document).ready( function() {
+$('#4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel-nsd-app-nav-item-6763ad70-2703-4d5a-9ec4-5596945b901e').jstree(function(tree) { tree.state.filter = function(state) { delete state.core.selected; return state; };  tree.search.search_callback = function(searchStr, node) { if (typeof window.nsdJsTreeSearchCallback === 'function') return window.nsdJsTreeSearchCallback(searchStr, node); var sf = new $.vakata.search(searchStr, true, { caseSensitive : false, fuzzy : false }); return sf.search(node.text).isMatch; }; return tree; }({"core":{"data":[{"a_attr":{"onclick":"window.location='../../../../../core/common/index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../core/common/features/execution-model/index.html';"},"data-nsd-label-uuid":"e1e1891d-5ef0-482a-824e-437efaa391e8","id":"nsd-app-nav-item-6c1aa9fb-1e80-4935-8cdb-7023f7cce384","text":"Execution Model","type":"leaf"}],"data-nsd-label-uuid":"cfd53270-dd56-44fe-8006-b0a65127d416","id":"nsd-app-nav-item-5d5fdb64-0e0c-4cd9-9a87-da833a461819","text":"Common"},{"a_attr":{"onclick":"window.location='../../../../../core/drawio/index.html';"},"data-nsd-label-uuid":"e389f800-ea89-4503-b3b5-58dd5f026bc6","id":"nsd-app-nav-item-e03f5bfb-8819-4f73-9a11-8cce13056985","text":"Drawio","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../core/emf/index.html';"},"data-nsd-label-uuid":"8de5fd81-0d56-4c5f-9e4d-0b5fabed2dbf","id":"nsd-app-nav-item-a06a2483-1806-446d-86df-111c5405a980","text":"EMF","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../core/exec/index.html';"},"children":[{"a_attr":{"title":"Nasdanika Core Exec model classes can be used to create models for generation of resources such as files and their content. ","onclick":"window.location='../../../../../core/exec/model/package-summary.html';"},"children":[{"a_attr":{"title":"Content classes are adapted to <a href='https://docs.nasdanika.org/core/apidocs/org.nasdanika.common/org/nasdanika/common/SupplierFactory.html'>org.nasdanika.common.SupplierFactory<\/a><java.io.InputStream> to supply content for files, HTTP Call bodies etc. in a form of input streams.","onclick":"window.location='../../../../../core/exec/model/content/package-summary.html';"},"children":[{"a_attr":{"title":"Encodes source using Base64 encoding. ","onclick":"window.location='../../../../../core/exec/model/content/Base64.html';"},"data-nsd-label-uuid":"ca1c036a-eb4c-4c53-a13b-430a3524a109","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model/content-Base64","text":"Base64","type":"leaf"},{"a_attr":{"title":"Base class for filters which take an object, adapt to <a href='https://docs.nasdanika.org/core/apidocs/org.nasdanika.common/org/nasdanika/common/SupplierFactory.html'>org.nasdanika.common.SupplierFactory<\/a>, obtain a stream and produce another stream from it.","onclick":"window.location='../../../../../core/exec/model/content/Filter.html';"},"data-nsd-label-uuid":"6b2b8bfd-fabf-4102-ab89-9e12cfc42025","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model/content-Filter","text":"Filter","type":"leaf"},{"a_attr":{"title":"Converts input stream to String using the context charset, which defaults to UTF-8, interpolates, and converts back to input stream using the context charset.","onclick":"window.location='../../../../../core/exec/model/content/Interpolator.html';"},"data-nsd-label-uuid":"0b08fcc9-ad38-4ed4-b01d-7c9b9e5192a8","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model/content-Interpolator","text":"Interpolator","type":"leaf"},{"a_attr":{"title":"Markdown is a filter which renders Markdown to HTML. ","onclick":"window.location='../../../../../core/exec/model/content/Markdown.html';"},"data-nsd-label-uuid":"797ea4d1-9607-4bb9-8a81-b0dd3b1e53df","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model/content-Markdown","text":"Markdown","type":"leaf"},{"a_attr":{"title":"Loads resource from a URL specified as resource value. ","onclick":"window.location='../../../../../core/exec/model/content/Resource.html';"},"data-nsd-label-uuid":"4d1403a1-d056-44a5-add3-2fc1ffff8780","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model/content-Resource","text":"Resource","type":"leaf"},{"a_attr":{"title":"Text content defined in YAML. ","onclick":"window.location='../../../../../core/exec/model/content/Text.html';"},"data-nsd-label-uuid":"13633cc4-9cc1-4528-a514-788e434bf9d3","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model/content-Text","text":"Text","type":"leaf"}],"data-nsd-label-uuid":"e85c7077-9150-4b58-9d1d-16a4ef076012","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-core/exec/model/content","text":"content"},{"a_attr":{"title":"Resource classes are adapted to <a href='https://docs.nasdanika.org/core/apidocs/org.nasdanika.common/org/nasdanika/common/ConsumerFactory.html'>org.nasdanika.common.ConsumerFactory<\/a><org.nasdanika.common.resources.BinaryEntityContainer> to create binary entities (org.nasdanika.common.resources.BinaryEntity) such as files, directories, or zi...","onclick":"window.location='../../../../../core/exec/model/resources/package-summary.html';"},"children":[{"a_attr":{"title":"A named collection of other resources, a folder/directory. ","onclick":"window.location='../../../../../core/exec/model/resources/Container.html';"},"data-nsd-label-uuid":"3feda40a-2be8-4ee6-b0fe-47d4f1643031","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model/resources-Container","text":"Container","type":"leaf"},{"a_attr":{"title":"File is a named container of binary contents (bytes) which can be set and retrieved as an input stream. ","onclick":"window.location='../../../../../core/exec/model/resources/File.html';"},"data-nsd-label-uuid":"ad9d1539-c818-40f7-9c8e-d9b2a400526b","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model/resources-File","text":"File","type":"leaf"},{"a_attr":{"title":"Defines an action to take when a resource with the same name already exists.","onclick":"window.location='../../../../../core/exec/model/resources/ReconcileAction.html';"},"data-nsd-label-uuid":"4d10db50-bf32-4ee8-9da4-3535da50bf91","icon":"https://www.nasdanika.org/resources/images/ecore/EEnum.gif","id":"nsd-app-nav-item-EEnum-core/exec/model/resources-ReconcileAction","text":"ReconcileAction","type":"leaf"},{"a_attr":{"title":"A base class of File and Container.","onclick":"window.location='../../../../../core/exec/model/resources/Resource.html';"},"data-nsd-label-uuid":"fa011eb5-d639-4793-bf49-ed57837f5732","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model/resources-Resource","text":"Resource","type":"leaf"}],"data-nsd-label-uuid":"047193f5-92bc-4d8e-b334-f0bbdbee0c08","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-core/exec/model/resources","text":"resources"},{"a_attr":{"title":"Try-catch-finally block. ","onclick":"window.location='../../../../../core/exec/model/Block.html';"},"data-nsd-label-uuid":"91653e3f-3433-486c-9d6a-1c8e13f3586f","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model-Block","text":"Block","type":"leaf"},{"a_attr":{"title":"Calls a Java method and returns the result. ","onclick":"window.location='../../../../../core/exec/model/Call.html';"},"data-nsd-label-uuid":"58a15561-4d4c-4945-aab0-d5beba7645dd","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model-Call","text":"Call","type":"leaf"},{"a_attr":{"title":"Configurator allows to inject additional properties to the context. ","onclick":"window.location='../../../../../core/exec/model/Configurator.html';"},"data-nsd-label-uuid":"18b4ff43-95a7-4220-9773-9c311ad74bae","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model-Configurator","text":"Configurator","type":"leaf"},{"a_attr":{"title":"Evaluates JavaScript script. ","onclick":"window.location='../../../../../core/exec/model/Eval.html';"},"data-nsd-label-uuid":"d98a9619-97e5-4a69-9282-6e453e91878a","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model-Eval","text":"Eval","type":"leaf"},{"a_attr":{"title":"Fails execution with a supplied message. ","onclick":"window.location='../../../../../core/exec/model/Fail.html';"},"data-nsd-label-uuid":"cc2467d1-fd33-4c5b-85a2-575a50887a06","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model-Fail","text":"Fail","type":"leaf"},{"a_attr":{"title":"A list of objects. Examples Flat exec-list:\n  elements:\n    - content-text: Hello\n    - content-text: World    \n Nested exec-list:\n  elements:\n    - content-text: Hello\n    - exec-list: \n        elements:\n          content-text: World","onclick":"window.location='../../../../../core/exec/model/List.html';"},"data-nsd-label-uuid":"5f304b56-05b2-4bab-bb6d-38d823951fe7","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model-List","text":"List","type":"leaf"},{"a_attr":{"title":"A collection of properties with keys and values. ","onclick":"window.location='../../../../../core/exec/model/Map.html';"},"data-nsd-label-uuid":"85b5b196-2abd-4cc5-bda2-ccff33c07a81","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model-Map","text":"Map","type":"leaf"},{"a_attr":{"title":"Property is a map entry.","onclick":"window.location='../../../../../core/exec/model/Property.html';"},"data-nsd-label-uuid":"b69015c2-6c47-42a4-9713-1588f4961e58","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/exec/model-Property","text":"Property","type":"leaf"}],"data-nsd-label-uuid":"83971cad-10ce-490c-8f21-f93553314297","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-core/exec/model","text":"exec"},{"a_attr":{"onclick":"window.location='../../../../../core/exec/gen/index.html';"},"data-nsd-label-uuid":"43341ba0-498c-46d8-9d11-07cd46e3f387","id":"nsd-app-nav-item-c809ba57-de66-481c-8c22-4cf2ee27c96a","text":"Gen","type":"leaf"}],"data-nsd-label-uuid":"02ba4109-c405-470f-a608-b4a7373abaee","id":"nsd-app-nav-item-1602d448-7b20-4f0e-a654-8e3c4a05255e","text":"Exec"},{"a_attr":{"onclick":"window.location='../../../../../core/graph/index.html';"},"data-nsd-label-uuid":"b813bec9-d564-43a0-8692-cb84d64b56c4","id":"nsd-app-nav-item-4729888a-79d0-490e-8b6b-d5dba5c16d3a","text":"Graph","type":"leaf"},{"a_attr":{"title":"Base classes for building Maven plug-ins","onclick":"window.location='../../../../../core/maven/index.html';"},"data-nsd-label-uuid":"90809479-1b08-4c33-a74f-c76418ea1534","id":"nsd-app-nav-item-f74829c0-81ff-41f6-bf35-39d31fd017ff","text":"Maven","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../core/ncore/index.html';"},"children":[{"a_attr":{"title":"Nasdanika Ncore model contains foundational model elements used in other models.","onclick":"window.location='../../../../../core/ncore/model/package-summary.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../core/ncore/model/Adaptable.html';"},"data-nsd-label-uuid":"a32283cf-c3e9-44c6-8920-22d41ea90d36","icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-Adaptable","text":"Adaptable","type":"leaf"},{"a_attr":{"title":"Represents boolean.","onclick":"window.location='../../../../../core/ncore/model/Boolean.html';"},"data-nsd-label-uuid":"893c0cd6-67fa-4e11-ad46-793843901ccf","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-Boolean","text":"Boolean","type":"leaf"},{"a_attr":{"title":"EMap entry with boolean value","onclick":"window.location='../../../../../core/ncore/model/BooleanEntry.html';"},"data-nsd-label-uuid":"d7f55a9a-59ef-4e5a-8496-19787dd97e08","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-BooleanEntry","text":"BooleanEntry","type":"leaf"},{"a_attr":{"title":"A named/keyed boolean.","onclick":"window.location='../../../../../core/ncore/model/BooleanProperty.html';"},"data-nsd-label-uuid":"0c802289-e453-4ea5-97a2-4d500928f29f","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-BooleanProperty","text":"BooleanProperty","type":"leaf"},{"a_attr":{"title":"A simple class for building hierarchies of documented entities.","onclick":"window.location='../../../../../core/ncore/model/Composite.html';"},"data-nsd-label-uuid":"58dc4370-2061-42ba-ba9d-d93d992710d5","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-Composite","text":"Composite","type":"leaf"},{"a_attr":{"title":"Mix-in interface for classess with documentation.","onclick":"window.location='../../../../../core/ncore/model/Documented.html';"},"data-nsd-label-uuid":"a6ab324c-e087-4a27-84d0-86ca082f4c2a","icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-Documented","text":"Documented","type":"leaf"},{"a_attr":{"title":"Duration is an amount of time in the ISO-8601 Duration format. ","onclick":"window.location='../../../../../core/ncore/model/Duration.html';"},"data-nsd-label-uuid":"e9837db6-7e8d-4b8a-ba86-764c56b0c1aa","icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-core/ncore/model-Duration","text":"Duration","type":"leaf"},{"a_attr":{"title":"A named/keyed object.","onclick":"window.location='../../../../../core/ncore/model/EObjectProperty.html';"},"data-nsd-label-uuid":"aae7f296-371a-45cd-ae52-57068d3cbb1c","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-EObjectProperty","text":"EObjectProperty","type":"leaf"},{"a_attr":{"title":"Marker with Git information such as a map of remotes.","onclick":"window.location='../../../../../core/ncore/model/GitMarker.html';"},"data-nsd-label-uuid":"b2896468-ad43-4c22-bbb9-e8c9c9adb424","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-GitMarker","text":"GitMarker","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../core/ncore/model/IMarked.html';"},"data-nsd-label-uuid":"2d34181d-7aea-433d-adaf-60f1a564d1f3","icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-IMarked","text":"IMarked","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../core/ncore/model/IMarker.html';"},"data-nsd-label-uuid":"82af4334-4374-4035-82b5-fd0942bfd0d2","icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-IMarker","text":"IMarker","type":"leaf"},{"a_attr":{"title":"Instant is a single instantaneous point on the time-line. ","onclick":"window.location='../../../../../core/ncore/model/Instant.html';"},"data-nsd-label-uuid":"3623e70c-e198-4204-afc7-2ef11ef094d4","icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-core/ncore/model-Instant","text":"Instant","type":"leaf"},{"a_attr":{"title":"Represents integer number.","onclick":"window.location='../../../../../core/ncore/model/Integer.html';"},"data-nsd-label-uuid":"58a358bc-2fb4-4a22-94ea-0abfeff3044f","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-Integer","text":"Integer","type":"leaf"},{"a_attr":{"title":"EMap entry with int value","onclick":"window.location='../../../../../core/ncore/model/IntegerEntry.html';"},"data-nsd-label-uuid":"95213047-f27b-4cea-980c-46dc2ab06efe","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-IntegerEntry","text":"IntegerEntry","type":"leaf"},{"a_attr":{"title":"A named/keyed integer.","onclick":"window.location='../../../../../core/ncore/model/IntegerProperty.html';"},"data-nsd-label-uuid":"be0d963a-2c29-44ed-a2c1-7166417134fa","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-IntegerProperty","text":"IntegerProperty","type":"leaf"},{"a_attr":{"title":"A list of objects.","onclick":"window.location='../../../../../core/ncore/model/List.html';"},"data-nsd-label-uuid":"622518b1-f4b5-4761-b9f8-accb19efeb76","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-List","text":"List","type":"leaf"},{"a_attr":{"title":"A named/keyed list.","onclick":"window.location='../../../../../core/ncore/model/ListProperty.html';"},"data-nsd-label-uuid":"8e3aa55f-5ee1-4fec-b418-994ffbd5e3b2","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-ListProperty","text":"ListProperty","type":"leaf"},{"a_attr":{"title":"A set of key-value pairs.","onclick":"window.location='../../../../../core/ncore/model/Map.html';"},"data-nsd-label-uuid":"5f95a7fb-a41c-4008-b422-68e7d4f5b113","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-Map","text":"Map","type":"leaf"},{"a_attr":{"title":"A named/keyed map.","onclick":"window.location='../../../../../core/ncore/model/MapProperty.html';"},"data-nsd-label-uuid":"f9d7290a-64b3-4d44-a1d0-690b2b2c2a3d","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-MapProperty","text":"MapProperty","type":"leaf"},{"a_attr":{"title":"A model element which can contain a Marker pointing to the source from which the element was loaded. ","onclick":"window.location='../../../../../core/ncore/model/Marked.html';"},"data-nsd-label-uuid":"b6d402c8-5f30-451a-b1a1-41e361625ee0","icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-Marked","text":"Marked","type":"leaf"},{"a_attr":{"title":"Provides information about location for a model element definition - URI, line and column numbers.","onclick":"window.location='../../../../../core/ncore/model/Marker.html';"},"data-nsd-label-uuid":"8568df1b-dbbb-4603-af1d-cf84670472f2","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-Marker","text":"Marker","type":"leaf"},{"a_attr":{"title":"Base class for many Nasdanika model classes.","onclick":"window.location='../../../../../core/ncore/model/ModelElement.html';"},"data-nsd-label-uuid":"c0969248-4aab-42be-a237-02261439af4c","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-ModelElement","text":"ModelElement","type":"leaf"},{"a_attr":{"title":"A model element with name.","onclick":"window.location='../../../../../core/ncore/model/NamedElement.html';"},"data-nsd-label-uuid":"dda688ab-bf99-4df7-aec0-42fe9af1fedb","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-NamedElement","text":"NamedElement","type":"leaf"},{"a_attr":{"title":"Amount of time between two time points. ","onclick":"window.location='../../../../../core/ncore/model/Period.html';"},"data-nsd-label-uuid":"e50d174f-a7b5-4fa9-b6d5-b7bb5c863007","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-Period","text":"Period","type":"leaf"},{"a_attr":{"title":"Base class for keyed values.","onclick":"window.location='../../../../../core/ncore/model/Property.html';"},"data-nsd-label-uuid":"2f321144-7afe-49c2-bfe0-ac7b887f2818","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-Property","text":"Property","type":"leaf"},{"a_attr":{"title":"Object reference. May be used in containment collections to point to an object contained elsewhere.","onclick":"window.location='../../../../../core/ncore/model/Reference.html';"},"data-nsd-label-uuid":"2d5f9331-d144-4037-8c3d-f054d851f6e0","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-Reference","text":"Reference&lt;T&gt;","type":"leaf"},{"a_attr":{"title":"Mapping of representation key to a representation resource uri. ","onclick":"window.location='../../../../../core/ncore/model/RepresentationEntry.html';"},"data-nsd-label-uuid":"1208012e-8f59-4af1-9f8a-79b67e536bfa","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-RepresentationEntry","text":"RepresentationEntry","type":"leaf"},{"a_attr":{"title":"Text/string.","onclick":"window.location='../../../../../core/ncore/model/String.html';"},"data-nsd-label-uuid":"e9918d62-10aa-4550-b5dc-7a0b89544373","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-String","text":"String","type":"leaf"},{"a_attr":{"title":"EMap entry with String value","onclick":"window.location='../../../../../core/ncore/model/StringEntry.html';"},"data-nsd-label-uuid":"be2b3f7c-942a-43be-a071-d8958a9818c6","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-StringEntry","text":"StringEntry","type":"leaf"},{"a_attr":{"title":"A named/keyed string.","onclick":"window.location='../../../../../core/ncore/model/StringProperty.html';"},"data-nsd-label-uuid":"2d6d2e6a-b211-4363-838a-9e632db037a2","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-StringProperty","text":"StringProperty","type":"leaf"},{"a_attr":{"title":"Temporal represents a point on the time-line - absolute (instant) or relative to another temporal (base and offset).","onclick":"window.location='../../../../../core/ncore/model/Temporal.html';"},"data-nsd-label-uuid":"f48d0187-b358-410e-b9c8-8c0fff2dacdb","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-core/ncore/model-Temporal","text":"Temporal","type":"leaf"}],"data-nsd-label-uuid":"7defeaa7-b55d-4f68-88c5-b2e7df937dd7","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-core/ncore/model","text":"ncore"},{"a_attr":{"onclick":"window.location='../../../../../core/ncore/gen/index.html';"},"data-nsd-label-uuid":"0e8e4552-8a9e-4a34-93d2-a6d499474559","id":"nsd-app-nav-item-aa9d6848-c2aa-4a04-aa97-9a675a01600f","text":"Gen","type":"leaf"}],"data-nsd-label-uuid":"4fb51874-5460-434e-806a-b9d35c9083c8","id":"nsd-app-nav-item-4b25207a-9116-4340-9ed9-bb2912567ba3","text":"Ncore"},{"a_attr":{"onclick":"window.location='../../../../../core/persistence/index.html';"},"data-nsd-label-uuid":"f857771b-e782-41d6-a98c-83bcc43b2925","id":"nsd-app-nav-item-16d7aaf7-9f5d-485e-b326-a653827c61fa","text":"Persistence","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../core/resources/index.html';"},"data-nsd-label-uuid":"cdd1081c-408c-4098-950c-d35280087627","id":"nsd-app-nav-item-a2fa5457-9f3f-4f22-9f11-faa8aeb2ea65","text":"Resources","type":"leaf"}]},"search":{"show_only_matches":true,"show_only_matches_children":true},"types":{"leaf":{"icon":"jstree-file"}},"plugins":["state","type","search"],"state":{"key":"4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel"}}));
+// Tokens: searchInputSelector, timer, treeSelector
+$('#nsd_41v6_searchInput').keyup(function () {
+    if (window['nsd_jstTreeSearchTimer_nsd_41v7']) { 
+		clearTimeout(window['nsd_jstTreeSearchTimer_nsd_41v7']); 
+	}
+    window['nsd_jstTreeSearchTimer_nsd_41v7'] = setTimeout(function () {
+      var v = $('#nsd_41v6_searchInput').val();
+      $('#4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel-nsd-app-nav-item-6763ad70-2703-4d5a-9ec4-5596945b901e').jstree(true).search(v);
+    }, 250);
+  });
+
+});</script>
+            <div class="card">
+              <div class="card-header"><span data-toggle="collapse" data-target="#nsd-app-nav-item-71053845-59dc-4cb4-b97e-8e4a35ceb674-collapsible" aria-expanded="true" aria-controls="nsd-app-nav-item-71053845-59dc-4cb4-b97e-8e4a35ceb674-collapsible" title="Toggle card" id="nsd-app-nav-item-71053845-59dc-4cb4-b97e-8e4a35ceb674-collapsible-trigger" class="nsd-collapsible-trigger"><i aria-hidden="true" class="fa"></i></span>
+                <a href="../../../../../html/index.html">HTML</a>
+              </div>
+              <div id="nsd-app-nav-item-71053845-59dc-4cb4-b97e-8e4a35ceb674-collapsible" class="card-body p-1 nsd-collapsible collapse show">
+                <input type="text" id="nsd_41v8_searchInput" title="Full-text search. You can use wildcards, e.g. 'foo*' or 'f*o'; title or content fields, e.g. 'title:foo* bar'; boosts, e.g. 'foo^10 bar'; fuzzy matches, e.g. 'foo~1'; and term presence, e.g. '+foo bar -baz'" class="form-control"/>
+                <div id="4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel-nsd-app-nav-item-71053845-59dc-4cb4-b97e-8e4a35ceb674"></div>
+              </div>
+            </div>
+            <script>$(document).ready( function() {
+$('#4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel-nsd-app-nav-item-71053845-59dc-4cb4-b97e-8e4a35ceb674').jstree(function(tree) { tree.state.filter = function(state) { delete state.core.selected; return state; };  tree.search.search_callback = function(searchStr, node) { if (typeof window.nsdJsTreeSearchCallback === 'function') return window.nsdJsTreeSearchCallback(searchStr, node); var sf = new $.vakata.search(searchStr, true, { caseSensitive : false, fuzzy : false }); return sf.search(node.text).isMatch; }; return tree; }({"core":{"data":[{"a_attr":{"onclick":"window.location='../../../../../html/bootstrap/index.html';"},"data-nsd-label-uuid":"862ae670-452d-4c93-b80f-3bb4ef18f58e","id":"nsd-app-nav-item-3ccbeebb-b13d-4264-a401-3b48954f7556","text":"Bootstrap","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/ecore/index.html';"},"data-nsd-label-uuid":"1e7a950f-5665-47ac-96e8-2092f75823da","id":"nsd-app-nav-item-2ddff8f1-b097-4495-bc9e-34f3c25ce3d3","text":"Ecore","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/emf/index.html';"},"data-nsd-label-uuid":"961c29a1-1c61-4523-b4f2-90207762f0b6","id":"nsd-app-nav-item-8d474117-9cf7-4f91-b7a9-64d1743a55ed","text":"EMF","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/html/index.html';"},"data-nsd-label-uuid":"a91ce580-2e8b-4777-93c1-8312d8c88873","id":"nsd-app-nav-item-96cb7502-b8b3-4985-8860-6a0498157d3b","text":"HTML","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/jstree/index.html';"},"data-nsd-label-uuid":"09ac0b4d-f2b1-479d-a53c-94856d2e9ff3","id":"nsd-app-nav-item-7375ccc5-26f1-4578-a231-b4b4080dc0df","text":"jsTree","type":"leaf"},{"children":[{"children":[{"a_attr":{"title":"Nasdanika application model provides model elements for building HTML applications such as static web sites, dynamic applications, and combinations of thereof. ","onclick":"window.location='../../../../../html/models/app/model/package-summary.html';"},"children":[{"a_attr":{"title":"Actions form a hierarchy. ","onclick":"window.location='../../../../../html/models/app/model/Action.html';"},"data-nsd-label-uuid":"e9f1130a-42c9-46bc-b6cd-da3be1a1e99f","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/app/model-Action","text":"Action","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/app/model/ActionReference.html';"},"data-nsd-label-uuid":"f1bfe93d-4bf2-4433-86b0-c8ac7f44bc27","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/app/model-ActionReference","text":"ActionReference","type":"leaf"},{"a_attr":{"title":"Content panel displays the primary page conent and can have a navigation bar and several navigation panels.","onclick":"window.location='../../../../../html/models/app/model/ContentPanel.html';"},"data-nsd-label-uuid":"9313f3e5-6dcd-4774-ae03-9e9a73428c9d","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/app/model-ContentPanel","text":"ContentPanel","type":"leaf"},{"a_attr":{"title":"Footer is displayed below the navigation and content panels.","onclick":"window.location='../../../../../html/models/app/model/Footer.html';"},"data-nsd-label-uuid":"6920c9b5-f85f-4cba-9fa2-9e5b7bfb351d","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/app/model-Footer","text":"Footer","type":"leaf"},{"a_attr":{"title":"Page header has a title on the left and a navigation bar on the right.","onclick":"window.location='../../../../../html/models/app/model/Header.html';"},"data-nsd-label-uuid":"02922437-390a-4220-94f7-5fae6b3d0a41","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/app/model-Header","text":"Header","type":"leaf"},{"a_attr":{"title":"Label is a text and an icon with a tooltip, notification badge, and help dialog. ","onclick":"window.location='../../../../../html/models/app/model/Label.html';"},"data-nsd-label-uuid":"bbf9109e-61bd-4233-a24e-21962facbba4","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/app/model-Label","text":"Label","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/app/model/Link.html';"},"data-nsd-label-uuid":"fa7ac50d-025e-47b5-83aa-993a298056e6","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/app/model-Link","text":"Link","type":"leaf"},{"a_attr":{"title":"Navigation bar has a brand and navigation items.","onclick":"window.location='../../../../../html/models/app/model/NavigationBar.html';"},"data-nsd-label-uuid":"7584744c-4404-4fc7-b66d-f7af7bc77dfa","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/app/model-NavigationBar","text":"NavigationBar","type":"leaf"},{"a_attr":{"title":"Navigation panel contains navigation items. ","onclick":"window.location='../../../../../html/models/app/model/NavigationPanel.html';"},"data-nsd-label-uuid":"fb855d94-ff33-465a-93f5-0a8d78143c5c","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/app/model-NavigationPanel","text":"NavigationPanel","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/app/model/NavigationPanelStyle.html';"},"data-nsd-label-uuid":"50e10f87-3151-46e2-b136-3b9984511b9b","icon":"https://www.nasdanika.org/resources/images/ecore/EEnum.gif","id":"nsd-app-nav-item-EEnum-html/models/app/model-NavigationPanelStyle","text":"NavigationPanelStyle","type":"leaf"},{"a_attr":{"title":"Application page consisting of several parts - header, navigation bar, navigation panel, content panel, and footer. ","onclick":"window.location='../../../../../html/models/app/model/Page.html';"},"data-nsd-label-uuid":"33eddeda-ba5d-46d7-9655-a820e1db073a","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/app/model-Page","text":"Page","type":"leaf"},{"a_attr":{"title":"Base class for page parts.","onclick":"window.location='../../../../../html/models/app/model/PagePart.html';"},"data-nsd-label-uuid":"758d30ab-fb65-4548-8550-8ae884aaaf60","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/app/model-PagePart","text":"PagePart","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/app/model/SectionStyle.html';"},"data-nsd-label-uuid":"a9377a34-b968-4bb4-850d-99ebfa3274f8","icon":"https://www.nasdanika.org/resources/images/ecore/EEnum.gif","id":"nsd-app-nav-item-EEnum-html/models/app/model-SectionStyle","text":"SectionStyle","type":"leaf"}],"data-nsd-label-uuid":"9b635973-e57f-4b00-80ea-0dcb27cf6dcb","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-html/models/app/model","text":"app"},{"a_attr":{"onclick":"window.location='../../../../../html/app/drawio/index.html';"},"data-nsd-label-uuid":"05239bb7-7d73-4b94-b8b9-6d8d2fdc2b7a","id":"nsd-app-nav-item-ec4fe87d-dc3b-43e3-b3dd-1b3c5a0f5915","text":"Drawio","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/app/gen/index.html';"},"data-nsd-label-uuid":"0177b527-ad1b-4748-b6ed-91d2b849d6c0","id":"nsd-app-nav-item-aff1b9c1-9322-41bb-a9e0-aaa21f8c79db","text":"Gen","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../../maven-site/model/site-generator-maven-plugin/plugin-info.html';"},"id":"nsd-app-nav-item-f266f042-c2fa-475e-98f9-b56918bc385f","text":"Action Site Generator Maven Plugin","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/app/gen.maven.archetype/index.html';"},"data-nsd-label-uuid":"75b103f6-2ac6-4b23-9b99-97035a007d37","id":"nsd-app-nav-item-766a8741-2549-456f-b52e-3ecb36620363","text":"Action Site Generator Maven Plugin Archetype","type":"leaf"}],"id":"nsd_41qc","text":"App"},{"children":[{"a_attr":{"title":"Model of Bootstrap elements.","onclick":"window.location='../../../../../html/models/bootstrap/model/package-summary.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Accordion.html';"},"data-nsd-label-uuid":"965710b7-e918-42e2-9059-cba0e5b3b170","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Accordion","text":"Accordion","type":"leaf"},{"a_attr":{"title":"List group with actions (links).","onclick":"window.location='../../../../../html/models/bootstrap/model/ActionGroup.html';"},"data-nsd-label-uuid":"4ebc2984-2216-49a4-ada6-b1e853c010d6","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-ActionGroup","text":"ActionGroup","type":"leaf"},{"a_attr":{"title":"Base class for action group items","onclick":"window.location='../../../../../html/models/bootstrap/model/ActionGroupItem.html';"},"data-nsd-label-uuid":"77f7278b-3ecd-44ea-ab43-ee1bd1a212ba","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-ActionGroupItem","text":"ActionGroupItem","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Alert.html';"},"data-nsd-label-uuid":"e12a15a6-be7e-459f-aeb3-33d2d03dd397","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Alert","text":"Alert","type":"leaf"},{"a_attr":{"title":"This class is used for configuring common aspects of HTML and Bootstrap elements such as background, spacing, text, etc.","onclick":"window.location='../../../../../html/models/bootstrap/model/Appearance.html';"},"data-nsd-label-uuid":"d855825f-5e2c-4dd8-a2b5-4a962fd5a145","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Appearance","text":"Appearance","type":"leaf"},{"a_attr":{"title":"Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.html.model.bootstrap\\model\\doc\\appearance-entry.md (The system cannot find the path specified)","onclick":"window.location='../../../../../html/models/bootstrap/model/AppearanceEntry.html';"},"data-nsd-label-uuid":"4b91dc44-93bc-40fe-8e1f-5cb28e81a9dd","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-AppearanceEntry","text":"AppearanceEntry","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Badge.html';"},"data-nsd-label-uuid":"f33bb0d2-926f-4e5c-bfbd-ab41bbe8c3d5","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Badge","text":"Badge","type":"leaf"},{"a_attr":{"title":"An HTML element with Bootstrap appearance.","onclick":"window.location='../../../../../html/models/bootstrap/model/BootstrapElement.html';"},"data-nsd-label-uuid":"65d7ac56-d26e-4681-a752-3de380e5ca06","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-BootstrapElement","text":"BootstrapElement","type":"leaf"},{"a_attr":{"title":"Border configuration specifies border location and color.","onclick":"window.location='../../../../../html/models/bootstrap/model/Border.html';"},"data-nsd-label-uuid":"c9ca6839-ca66-4509-b61f-a67e7642a19e","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Border","text":"Border","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Breadcrumb.html';"},"data-nsd-label-uuid":"aa28d65c-8be1-4070-a44c-6881142cbe01","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Breadcrumb","text":"Breadcrumb","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Breakpoint.html';"},"data-nsd-label-uuid":"d8045e1e-e28c-4133-9514-b3f660cfb392","icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-html/models/bootstrap/model-Breakpoint","text":"Breakpoint","type":"leaf"},{"a_attr":{"title":"TODO - size - enum? Block, active, disabled.","onclick":"window.location='../../../../../html/models/bootstrap/model/Button.html';"},"data-nsd-label-uuid":"ec437a90-3695-4711-9958-f1e2b1c6d3d1","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Button","text":"Button","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/ButtonGroup.html';"},"data-nsd-label-uuid":"33bdb0fd-61ab-4e44-838d-65082c5e169a","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-ButtonGroup","text":"ButtonGroup","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/ButtonToolbar.html';"},"data-nsd-label-uuid":"846b6406-ccb9-45f8-9559-917c3fc5dde4","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-ButtonToolbar","text":"ButtonToolbar","type":"leaf"},{"a_attr":{"title":"Bootstrap card.","onclick":"window.location='../../../../../html/models/bootstrap/model/Card.html';"},"data-nsd-label-uuid":"d2922a83-bab2-44c4-b1af-995f9de0ce7a","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Card","text":"Card","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Carousel.html';"},"data-nsd-label-uuid":"19d4c752-35d3-4c74-ad40-2652de3723af","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Carousel","text":"Carousel","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Collapse.html';"},"data-nsd-label-uuid":"7247fefd-4f98-45d1-ad34-8ccff80702a5","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Collapse","text":"Collapse","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Color.html';"},"data-nsd-label-uuid":"a0e421ac-9201-43cd-93b7-5953a4e34c49","icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-html/models/bootstrap/model-Color","text":"Color","type":"leaf"},{"a_attr":{"title":"Container row column.","onclick":"window.location='../../../../../html/models/bootstrap/model/Column.html';"},"data-nsd-label-uuid":"a9d38068-8675-4e69-bc46-58009583f204","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Column","text":"Column","type":"leaf"},{"a_attr":{"title":"Column width for a given breakpoint.","onclick":"window.location='../../../../../html/models/bootstrap/model/ColumnWidth.html';"},"data-nsd-label-uuid":"1faed0eb-253b-4332-9b1a-1bd04d0cf051","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-ColumnWidth","text":"ColumnWidth","type":"leaf"},{"a_attr":{"title":"Bootstrap layout container contains rows which in turn contain columns.","onclick":"window.location='../../../../../html/models/bootstrap/model/Container.html';"},"data-nsd-label-uuid":"94e2096d-32c2-4edf-ae42-b7da6fe516ce","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Container","text":"Container","type":"leaf"},{"a_attr":{"title":"Action Group Item with content. ","onclick":"window.location='../../../../../html/models/bootstrap/model/ContentActionGroupItem.html';"},"data-nsd-label-uuid":"584902ed-564a-4f76-921b-74945a17760e","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-ContentActionGroupItem","text":"ContentActionGroupItem","type":"leaf"},{"a_attr":{"title":"HTML DIV with bootstrap styling","onclick":"window.location='../../../../../html/models/bootstrap/model/Div.html';"},"data-nsd-label-uuid":"cf9cc1a8-6b66-468c-8605-d29aa708696c","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Div","text":"Div","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Dropdown.html';"},"data-nsd-label-uuid":"c5c313b4-4ae0-4b7a-b5f8-b889bf0abb7a","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Dropdown","text":"Dropdown","type":"leaf"},{"a_attr":{"title":"Defines element floating - left or right - for a given breakpoint.","onclick":"window.location='../../../../../html/models/bootstrap/model/Float.html';"},"data-nsd-label-uuid":"8cf7cb68-d3b1-47e0-8157-f51223a366ff","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Float","text":"Float","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Form.html';"},"data-nsd-label-uuid":"ed58d9c7-6aa2-4c2e-87ae-8cde2548a94e","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Form","text":"Form","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/FormGroup.html';"},"data-nsd-label-uuid":"49714b06-5c40-40a3-b2a9-050696fde6f6","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-FormGroup","text":"FormGroup","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/InputGroup.html';"},"data-nsd-label-uuid":"3438dc6b-eb56-4cd5-ae35-a1dfe3a6b657","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-InputGroup","text":"InputGroup","type":"leaf"},{"a_attr":{"title":"Base class for model elements which can be active, disabled, and have color.","onclick":"window.location='../../../../../html/models/bootstrap/model/Item.html';"},"data-nsd-label-uuid":"49776878-1172-4b2a-afc5-34575dde41d9","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Item","text":"Item","type":"leaf"},{"a_attr":{"title":"Click on the item navigates to the link URL.","onclick":"window.location='../../../../../html/models/bootstrap/model/LinkActionGroupItem.html';"},"data-nsd-label-uuid":"73e8a4ab-7eb5-4e5c-8097-5f74c0a2b470","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-LinkActionGroupItem","text":"LinkActionGroupItem","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/ListGroup.html';"},"data-nsd-label-uuid":"fe61be47-7b13-4b20-bb74-6a9927d69440","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-ListGroup","text":"ListGroup","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Modal.html';"},"data-nsd-label-uuid":"c3cbe41c-04a1-4561-8444-c8832fcfd9b9","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Modal","text":"Modal","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Navbar.html';"},"data-nsd-label-uuid":"f28ea022-4b85-4075-b067-e05f2ff74187","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Navbar","text":"Navbar","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Navs.html';"},"data-nsd-label-uuid":"b1e8b6b3-7ad2-4a8a-80e0-2b900cf3e9c0","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Navs","text":"Navs","type":"leaf"},{"a_attr":{"title":"HTML page with bootstrap elements in the head - meta, stylesheets, and scripts. ","onclick":"window.location='../../../../../html/models/bootstrap/model/Page.html';"},"data-nsd-label-uuid":"98607980-4f5f-4ad9-b311-1ba8e707a8c1","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Page","text":"Page","type":"leaf"},{"a_attr":{"title":"Container rows","onclick":"window.location='../../../../../html/models/bootstrap/model/Row.html';"},"data-nsd-label-uuid":"2a850b30-307b-482d-b1cf-3a5dc42f96f5","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Row","text":"Row","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Size.html';"},"data-nsd-label-uuid":"45d52b32-53a8-4001-88de-70b93fc8b4ba","icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-html/models/bootstrap/model-Size","text":"Size","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Slide.html';"},"data-nsd-label-uuid":"982de0c7-0979-4f2b-a349-300964a804fb","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Slide","text":"Slide","type":"leaf"},{"a_attr":{"title":"Spacing - padding or margin. ","onclick":"window.location='../../../../../html/models/bootstrap/model/Spacing.html';"},"data-nsd-label-uuid":"8cbeca7c-cfd3-45ee-a55d-33fb0ab21acc","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Spacing","text":"Spacing","type":"leaf"},{"a_attr":{"title":"Bootstrap table","onclick":"window.location='../../../../../html/models/bootstrap/model/Table.html';"},"data-nsd-label-uuid":"c0c15380-118e-4fe5-a3a4-8a64df51d912","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Table","text":"Table","type":"leaf"},{"a_attr":{"title":"Table cell - regular or header.","onclick":"window.location='../../../../../html/models/bootstrap/model/TableCell.html';"},"data-nsd-label-uuid":"eb9b21e7-e07f-4d25-9775-d8d51c4d59fc","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-TableCell","text":"TableCell","type":"leaf"},{"a_attr":{"title":"Configuration of bootstrap table","onclick":"window.location='../../../../../html/models/bootstrap/model/TableConfiguration.html';"},"data-nsd-label-uuid":"087bc342-09bf-456d-a261-e2bf14b1c036","icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-TableConfiguration","text":"TableConfiguration","type":"leaf"},{"a_attr":{"title":"Table header.","onclick":"window.location='../../../../../html/models/bootstrap/model/TableHeader.html';"},"data-nsd-label-uuid":"aeae4e4a-3df9-4dd3-a85f-73c49c58fb7b","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-TableHeader","text":"TableHeader","type":"leaf"},{"a_attr":{"title":"Table row.","onclick":"window.location='../../../../../html/models/bootstrap/model/TableRow.html';"},"data-nsd-label-uuid":"4deecff0-0357-4a65-aa95-413d9dcd1fcc","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-TableRow","text":"TableRow","type":"leaf"},{"a_attr":{"title":"Base class for containers of rows - table, header, body, footer.","onclick":"window.location='../../../../../html/models/bootstrap/model/TableRowContainer.html';"},"data-nsd-label-uuid":"0de3654f-5bf4-4513-81ca-bb84653ca8cd","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-TableRowContainer","text":"TableRowContainer","type":"leaf"},{"a_attr":{"title":"Table section - body or footer, header has its own class.","onclick":"window.location='../../../../../html/models/bootstrap/model/TableSection.html';"},"data-nsd-label-uuid":"f5937d8f-2f71-4ff6-a1e7-5eeffdb426e6","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-TableSection","text":"TableSection","type":"leaf"},{"a_attr":{"title":"HTML tag with Bootstrap appearance","onclick":"window.location='../../../../../html/models/bootstrap/model/Tag.html';"},"data-nsd-label-uuid":"e719f2cd-f216-4962-bce0-911b179128f8","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Tag","text":"Tag","type":"leaf"},{"a_attr":{"title":"Text styling.","onclick":"window.location='../../../../../html/models/bootstrap/model/Text.html';"},"data-nsd-label-uuid":"a9395aec-b04e-42ea-9aac-7b46e17b574f","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Text","text":"Text","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/TextAlignment.html';"},"data-nsd-label-uuid":"3e3c12cb-871f-4f1d-8c81-6353f2de6cdc","icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-html/models/bootstrap/model-TextAlignment","text":"TextAlignment","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/TextTransform.html';"},"data-nsd-label-uuid":"37af9e60-86df-477e-99c6-1572c27235fa","icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-html/models/bootstrap/model-TextTransform","text":"TextTransform","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/TextWeight.html';"},"data-nsd-label-uuid":"fa60ae2f-a02b-43c5-956a-ed8e7c75eb49","icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-html/models/bootstrap/model-TextWeight","text":"TextWeight","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Theme.html';"},"data-nsd-label-uuid":"f38a5ceb-3e86-4895-9def-41eea775de65","icon":"https://www.nasdanika.org/resources/images/ecore/EDataType.gif","id":"nsd-app-nav-item-EDataType-html/models/bootstrap/model-Theme","text":"Theme","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../../html/models/bootstrap/model/Tooltip.html';"},"data-nsd-label-uuid":"3b2a8470-cf2d-4182-a1bb-3c1665c5e3a2","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/bootstrap/model-Tooltip","text":"Tooltip","type":"leaf"}],"data-nsd-label-uuid":"48fad810-5e69-40de-a31a-0b6a2946476e","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-html/models/bootstrap/model","text":"bootstrap"},{"a_attr":{"onclick":"window.location='../../../../../html/bootstrap/gen/index.html';"},"data-nsd-label-uuid":"26d22e81-b2c5-4d7e-a11a-8a2c413e24aa","id":"nsd-app-nav-item-dd5b5992-77d0-4ac6-8fdc-7bf3574bb4ec","text":"Gen","type":"leaf"}],"id":"nsd_41rw","text":"Bootstrap"},{"children":[{"a_attr":{"title":"HTML model","onclick":"window.location='../../../../../html/models/html/model/package-summary.html';"},"children":[{"a_attr":{"title":"Base class for other HTML and bootstrap elements.","onclick":"window.location='../../../../../html/models/html/model/HtmlElement.html';"},"data-nsd-label-uuid":"1c7e797d-7006-44f0-bc4c-8f00e2fd8e98","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/html/model-HtmlElement","text":"HtmlElement","type":"leaf"},{"a_attr":{"title":"HTML page. The name attribute is output as title tag in the head. ","onclick":"window.location='../../../../../html/models/html/model/Page.html';"},"data-nsd-label-uuid":"0c95fa5a-9437-41b7-90d5-fed3d6e81f39","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/html/model-Page","text":"Page","type":"leaf"},{"a_attr":{"title":"Script with code stored in the model element source reference.","onclick":"window.location='../../../../../html/models/html/model/Script.html';"},"data-nsd-label-uuid":"830e95a9-c982-4da7-8d48-7fcbfc44dd23","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/html/model-Script","text":"Script","type":"leaf"},{"a_attr":{"title":"References external script.","onclick":"window.location='../../../../../html/models/html/model/ScriptReference.html';"},"data-nsd-label-uuid":"fec1bb56-fd26-4787-9925-2c4dc20c60bd","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/html/model-ScriptReference","text":"ScriptReference","type":"leaf"},{"a_attr":{"title":"CSS stylesheet with code stored in the model element code attribute.","onclick":"window.location='../../../../../html/models/html/model/Stylesheet.html';"},"data-nsd-label-uuid":"97ce77d9-5698-4f82-8dd2-15fa10003635","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/html/model-Stylesheet","text":"Stylesheet","type":"leaf"},{"a_attr":{"title":"Reference to an external stylesheet.","onclick":"window.location='../../../../../html/models/html/model/StylesheetReference.html';"},"data-nsd-label-uuid":"3bc4aaa0-57c2-412f-9e1b-5fe5ebec393d","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/html/model-StylesheetReference","text":"StylesheetReference","type":"leaf"},{"a_attr":{"title":"HTML Tag","onclick":"window.location='../../../../../html/models/html/model/Tag.html';"},"data-nsd-label-uuid":"bce0ac85-4962-4e6d-9957-bd5945cc6230","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-html/models/html/model-Tag","text":"Tag","type":"leaf"}],"data-nsd-label-uuid":"14ca1725-c55a-4353-81e5-90e2e96c2055","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-html/models/html/model","text":"html"},{"a_attr":{"onclick":"window.location='../../../../../html/html/gen/index.html';"},"data-nsd-label-uuid":"05238c1d-ad5e-43a6-bdf7-d5f4a00c7f6c","id":"nsd-app-nav-item-5fbbf529-7472-4da0-99c4-ab9fcbdcc665","text":"Gen","type":"leaf"}],"id":"nsd_41s6","text":"HTML"}],"id":"nsd_41s7","text":"Models"}]},"search":{"show_only_matches":true,"show_only_matches_children":true},"types":{"leaf":{"icon":"jstree-file"}},"plugins":["state","type","search"],"state":{"key":"4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel"}}));
+// Tokens: searchInputSelector, timer, treeSelector
+$('#nsd_41v8_searchInput').keyup(function () {
+    if (window['nsd_jstTreeSearchTimer_nsd_41v9']) { 
+		clearTimeout(window['nsd_jstTreeSearchTimer_nsd_41v9']); 
+	}
+    window['nsd_jstTreeSearchTimer_nsd_41v9'] = setTimeout(function () {
+      var v = $('#nsd_41v8_searchInput').val();
+      $('#4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel-nsd-app-nav-item-71053845-59dc-4cb4-b97e-8e4a35ceb674').jstree(true).search(v);
+    }, 250);
+  });
+
+});</script>
+            <div class="card">
+              <div class="card-header"><span data-toggle="collapse" data-target="#nsd-app-nav-item-1ff8450b-b908-49f6-8146-45abce654091-collapsible" aria-expanded="true" aria-controls="nsd-app-nav-item-1ff8450b-b908-49f6-8146-45abce654091-collapsible" title="Toggle card" id="nsd-app-nav-item-1ff8450b-b908-49f6-8146-45abce654091-collapsible-trigger" class="nsd-collapsible-trigger"><i aria-hidden="true" class="fa"></i></span>
+                <a href="../../../../index.html">Architecture</a>
+              </div>
+              <div id="nsd-app-nav-item-1ff8450b-b908-49f6-8146-45abce654091-collapsible" class="card-body p-1 nsd-collapsible collapse show">
+                <input type="text" id="nsd_41va_searchInput" title="Full-text search. You can use wildcards, e.g. 'foo*' or 'f*o'; title or content fields, e.g. 'title:foo* bar'; boosts, e.g. 'foo^10 bar'; fuzzy matches, e.g. 'foo~1'; and term presence, e.g. '+foo bar -baz'" class="form-control"/>
+                <div id="4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel-nsd-app-nav-item-1ff8450b-b908-49f6-8146-45abce654091"></div>
+              </div>
+            </div>
+            <script>$(document).ready( function() {
+$('#4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel-nsd-app-nav-item-1ff8450b-b908-49f6-8146-45abce654091').jstree(function(tree) { tree.state.filter = function(state) { delete state.core.selected; return state; };  tree.search.search_callback = function(searchStr, node) { if (typeof window.nsdJsTreeSearchCallback === 'function') return window.nsdJsTreeSearchCallback(searchStr, node); var sf = new $.vakata.search(searchStr, true, { caseSensitive : false, fuzzy : false }); return sf.search(node.text).isMatch; }; return tree; }({"core":{"data":[{"children":[{"a_attr":{"title":"Nasdanika Architecture core model contains definitions of the following concepts: Architecture Element - base class for elements of architecture. ","onclick":"window.location='../../../../core/model/package-summary.html';"},"children":[{"a_attr":{"title":"Action role defines parent\u2019s action reference to which to put element\u2019s action. ","onclick":"window.location='../../../../core/model/ActionRole.html';"},"data-nsd-label-uuid":"e205a4ad-dbe2-4031-b056-661087362040","icon":"https://www.nasdanika.org/resources/images/ecore/EEnum.gif","id":"nsd-app-nav-item-EEnum-architecture/core/model-ActionRole","text":"ActionRole","type":"leaf"},{"a_attr":{"title":"An element of an architecture model.","onclick":"window.location='../../../../core/model/ArchitectureElement.html';"},"data-nsd-label-uuid":"8a074341-d627-4740-97a3-805cda192c3b","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-ArchitectureElement","text":"ArchitectureElement","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../core/model/CompositeNode.html';"},"data-nsd-label-uuid":"85951225-70a3-4819-a252-098e08c4a2a0","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-CompositeNode","text":"CompositeNode","type":"leaf"},{"a_attr":{"title":"An interest in a system relevant to one or more of its stakeholders.","onclick":"window.location='../../../../core/model/Concern.html';"},"data-nsd-label-uuid":"5665ed20-7380-4d7c-8a49-23495ee304de","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-Concern","text":"Concern","type":"leaf"},{"a_attr":{"title":"Domain is a grouping construct for architecture elements.","onclick":"window.location='../../../../core/model/Domain.html';"},"data-nsd-label-uuid":"7eb0c453-4848-4540-b02a-e3888e1a3ece","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-Domain","text":"Domain","type":"leaf"},{"a_attr":{"title":"A named document temporal with ID.","onclick":"window.location='../../../../core/model/Event.html';"},"data-nsd-label-uuid":"694ec91b-9ae4-4ddb-a915-4b689cd40dcf","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-Event","text":"Event","type":"leaf"},{"a_attr":{"title":"A marker interface for classes which can be used as architecture element facets","onclick":"window.location='../../../../core/model/Facet.html';"},"data-nsd-label-uuid":"db5b0b51-0c52-490c-80bc-02262cc4519a","icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-Facet","text":"Facet","type":"leaf"},{"a_attr":{"title":"Impacts of the containing increment on architecture elements. ","onclick":"window.location='../../../../core/model/Impact.html';"},"data-nsd-label-uuid":"a96816d8-1eaa-4af8-ac0c-7c8570984d47","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-Impact","text":"Impact","type":"leaf"},{"a_attr":{"title":"Impact type. E.g. add, modify, delete. ","onclick":"window.location='../../../../core/model/ImpactType.html';"},"data-nsd-label-uuid":"3ef724cc-4937-4d13-8c80-6ec0eed231b1","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-ImpactType","text":"ImpactType","type":"leaf"},{"a_attr":{"title":"Named and documented element with an ID.","onclick":"window.location='../../../../core/model/ModelElement.html';"},"data-nsd-label-uuid":"b4e0f523-a219-4f47-b330-a3dc442a993d","icon":"https://www.nasdanika.org/resources/images/ecore/EInterface.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-ModelElement","text":"ModelElement","type":"leaf"},{"a_attr":{"title":"Source and target of relationships","onclick":"window.location='../../../../core/model/Node.html';"},"data-nsd-label-uuid":"d699ede7-33f5-4c07-92b4-6387b5897644","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-Node","text":"Node","type":"leaf"},{"a_attr":{"title":"A relationship between two nodes. ","onclick":"window.location='../../../../core/model/Relationship.html';"},"data-nsd-label-uuid":"f084f065-30b9-4855-8fd3-559f04de4833","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-Relationship","text":"Relationship","type":"leaf"},{"a_attr":{"title":"A transition of the containing architecture element from the baseline state identified by the stage start to the target state identified by the stage end. ","onclick":"window.location='../../../../core/model/Stage.html';"},"data-nsd-label-uuid":"d3b1c7d6-da93-4147-8f9b-f7d43d27d4be","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-Stage","text":"Stage","type":"leaf"},{"a_attr":{"title":"A party (individual, team, organization, or class thereof) having an interest in a system","onclick":"window.location='../../../../core/model/Stakeholder.html';"},"data-nsd-label-uuid":"fe6bbaa7-3a7a-457e-b110-63a6307e34c5","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-Stakeholder","text":"Stakeholder","type":"leaf"},{"a_attr":{"title":"Tags allow to categorize architecture elements.","onclick":"window.location='../../../../core/model/Tag.html';"},"data-nsd-label-uuid":"b2bff0eb-18a0-4b88-ac5d-b0ef23b71d7e","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-Tag","text":"Tag","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../core/model/View.html';"},"data-nsd-label-uuid":"19e87617-23e1-40bc-bccc-32ea0d8b8c8a","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-View","text":"View","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../core/model/ViewElement.html';"},"data-nsd-label-uuid":"ff048729-5dec-4ef9-80e5-b72fa5ecbedb","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-ViewElement","text":"ViewElement","type":"leaf"},{"a_attr":{"title":"A type of view - a specification of the conventions for a particular kind of view, a meta-view.","onclick":"window.location='../../../../core/model/Viewpoint.html';"},"data-nsd-label-uuid":"10192a23-fc04-4cfd-81b3-bc91c503bf0f","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/core/model-Viewpoint","text":"Viewpoint","type":"leaf"}],"data-nsd-label-uuid":"5604ca1b-1095-4904-b1c3-0c879261e302","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-architecture/core/model","text":"core"},{"a_attr":{"onclick":"window.location='../../../../core/gen/index.html';"},"data-nsd-label-uuid":"463c3e51-ec60-4593-b7b2-1458b3a005b2","id":"nsd-app-nav-item-00a983ad-1d84-4e34-96f0-1826f3753702","text":"Gen","type":"leaf"}],"id":"nsd_41st","text":"Core"},{"children":[{"a_attr":{"title":"Nasdanika Architecture C4 Model contains classes as explained in the metamodel section of the C4 Model home page. ","onclick":"window.location='../../../../c4/model/package-summary.html';"},"children":[{"a_attr":{"title":"Classes, interfaces, objects, functions, database tables, etc","onclick":"window.location='../../../../c4/model/CodeElement.html';"},"data-nsd-label-uuid":"a4c87593-a7fd-4e09-abdc-e0709c230f92","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/c4/model-CodeElement","text":"CodeElement","type":"leaf"},{"a_attr":{"title":"The word \u201ccomponent\u201d is a hugely overloaded term in the software development industry, but in this context a component is a grouping of related functionality encapsulated behind a well-defined interface. ","onclick":"window.location='../../../../c4/model/Component.html';"},"data-nsd-label-uuid":"786b29b7-a600-4ad2-bf29-07f35ecc4563","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/c4/model-Component","text":"Component","type":"leaf"},{"a_attr":{"title":"A container represents an application or a data store. ","onclick":"window.location='../../../../c4/model/Container.html';"},"data-nsd-label-uuid":"ff89e785-baff-49a7-bc26-3ba0aac054e3","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/c4/model-Container","text":"Container","type":"leaf"},{"a_attr":{"title":"Module is an implementation unit. ","onclick":"window.location='../../../../c4/model/Module.html';"},"data-nsd-label-uuid":"ad735aa3-f65c-4c20-bff2-aef648b43ae6","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/c4/model-Module","text":"Module","type":"leaf"},{"a_attr":{"title":"A person represents one of the human users of your software system (e.g. actors, roles, personas, etc).","onclick":"window.location='../../../../c4/model/Person.html';"},"data-nsd-label-uuid":"a9bab240-098c-4169-acf2-1f7a85b7547d","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/c4/model-Person","text":"Person","type":"leaf"},{"a_attr":{"title":"A relationship between two nodes. ","onclick":"window.location='../../../../c4/model/Relationship.html';"},"data-nsd-label-uuid":"2aca2397-d9ca-4b02-8d19-22595d0b037b","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/c4/model-Relationship","text":"Relationship","type":"leaf"},{"a_attr":{"title":"A software system is the highest level of abstraction and describes something that delivers value to its users, whether they are human or not. ","onclick":"window.location='../../../../c4/model/System.html';"},"data-nsd-label-uuid":"4497a78d-d1bc-4fe6-8c89-e10002ebe1a9","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/c4/model-System","text":"System","type":"leaf"},{"a_attr":{"title":"A class representing some technology. ","onclick":"window.location='../../../../c4/model/Technology.html';"},"data-nsd-label-uuid":"5f24a737-3ab1-4a67-9cf4-35f78f97b83f","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/c4/model-Technology","text":"Technology","type":"leaf"},{"a_attr":{"title":"Base class for classes which leverage technologies, e.g. a container or a component.","onclick":"window.location='../../../../c4/model/TechnologyConsumer.html';"},"data-nsd-label-uuid":"033302a5-daf7-40da-969a-a22ab2f61c02","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/c4/model-TechnologyConsumer","text":"TechnologyConsumer","type":"leaf"},{"a_attr":{"title":"Technology product. For example, a software product like Java, or a standard like TOGAF or HTML.","onclick":"window.location='../../../../c4/model/TechnologyProduct.html';"},"data-nsd-label-uuid":"b139380c-323f-47bd-afd7-83942c6d33fa","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/c4/model-TechnologyProduct","text":"TechnologyProduct","type":"leaf"},{"a_attr":{"title":"Version of a technology product. ","onclick":"window.location='../../../../c4/model/TechnologyVersion.html';"},"data-nsd-label-uuid":"3e5afebf-d31e-4681-8a01-567090a5f7b9","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/c4/model-TechnologyVersion","text":"TechnologyVersion","type":"leaf"}],"data-nsd-label-uuid":"7ff2597b-7720-4e99-a849-381ee8e437d4","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-architecture/c4/model","text":"c4"},{"a_attr":{"onclick":"window.location='../../../../c4/gen/index.html';"},"data-nsd-label-uuid":"7849db5e-d2b9-466a-9def-99338800dcf2","id":"nsd-app-nav-item-5ba6342b-1e3f-47ef-ad8a-d2b8290b30f6","text":"Gen","type":"leaf"}],"id":"nsd_41t7","text":"C4 Model"},{"a_attr":{"onclick":"window.location='../../../index.html';"},"children":[{"a_attr":{"onclick":"window.location='../../index.html';"},"children":[{"children":[{"a_attr":{"onclick":"window.location='../../core/model/package-summary.html';"},"children":[{"a_attr":{"title":"One or more physically and logically separated datacenters with their own independent power source, network, and cooling.","onclick":"window.location='../../core/model/AvailabilityZone.html';"},"data-nsd-label-uuid":"91ee17d0-1391-4c61-a96f-946b54ceb566","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/core/model-AvailabilityZone","text":"Availability Zone","type":"leaf"},{"a_attr":{"title":"Base class for Azure architecture elements","onclick":"window.location='../../core/model/AzureElement.html';"},"data-nsd-label-uuid":"ea059673-9c6d-4456-93fc-681b750197d5","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/core/model-AzureElement","text":"AzureElement","type":"leaf"},{"a_attr":{"title":"A resource which does not have a model class. Generic resources have \"kind\" (type).","onclick":"window.location='../../core/model/GenericResource.html';"},"data-nsd-label-uuid":"0c0be36d-5f63-484d-9ae9-cbde033cd0b8","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/core/model-GenericResource","text":"Generic Resource","type":"leaf"},{"a_attr":{"title":"A base class for Region and Availability Zone to associate with resource. ","onclick":"window.location='../../core/model/Location.html';"},"data-nsd-label-uuid":"2225035a-5d74-45a1-a84a-37cd6daf88f7","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/core/model-Location","text":"Location","type":"leaf"},{"a_attr":{"title":"Management groups are containers that help manage access, policy, and compliance across multiple subscriptions","onclick":"window.location='../../core/model/ManagementGroup.html';"},"data-nsd-label-uuid":"c211c030-c907-4aab-b5ca-784288863d2a","icon":"https://cdn.jsdelivr.net/gh/Nasdanika/architecture@main/cloud/azure/icons/svg/Icons/general/10011-icon-service-Management-Groups.svg","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/core/model-ManagementGroup","text":"Management Group","type":"leaf"},{"a_attr":{"onclick":"window.location='../../core/model/ManagementGroupElement.html';"},"data-nsd-label-uuid":"03953c27-490b-4aa8-8fc7-8faeadb003a0","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/core/model-ManagementGroupElement","text":"ManagementGroupElement","type":"leaf"},{"a_attr":{"title":"A set of datacenters, deployed within a latency-defined perimeter and connected through a dedicated regional low-latency network","onclick":"window.location='../../core/model/Region.html';"},"data-nsd-label-uuid":"ab1d88d1-0240-4b24-a03f-7fa25fd32d85","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/core/model-Region","text":"Region","type":"leaf"},{"a_attr":{"onclick":"window.location='../../core/model/RegionPair.html';"},"data-nsd-label-uuid":"cc6affee-c012-4fba-81c1-217c9987523b","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/core/model-RegionPair","text":"RegionPair","type":"leaf"},{"a_attr":{"title":"An entity managed by Azure","onclick":"window.location='../../core/model/Resource.html';"},"data-nsd-label-uuid":"c3f840dc-b11e-44bb-8d3d-f2f95952ad0c","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/core/model-Resource","text":"Resource","type":"leaf"},{"a_attr":{"title":"A container that holds related resources for an Azure solution","onclick":"window.location='../../core/model/ResourceGroup.html';"},"data-nsd-label-uuid":"4718e125-b843-46c4-bedb-307aae9176f7","icon":"https://cdn.jsdelivr.net/gh/Nasdanika/architecture@main/cloud/azure/icons/svg/Icons/general/10007-icon-service-Resource-Groups.svg","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/core/model-ResourceGroup","text":"Resource Group","type":"leaf"},{"a_attr":{"title":"A logical container used to provision related resources","onclick":"window.location='../../core/model/Subscription.html';"},"data-nsd-label-uuid":"b20172ff-19ba-4ebd-bd16-10bac531463c","icon":"https://cdn.jsdelivr.net/gh/Nasdanika/architecture@main/cloud/azure/icons/svg/Icons/general/10002-icon-service-Subscriptions.svg","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/core/model-Subscription","text":"Subscription","type":"leaf"}],"data-nsd-label-uuid":"df784277-42dc-4674-9515-742b32a7cb38","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-architecture/cloud/azure/core/model","text":"core"},{"a_attr":{"onclick":"window.location='../../c4/gen/index.html';"},"data-nsd-label-uuid":"b11850ac-11ba-4b8f-94cc-c6410e9c5073","id":"nsd-app-nav-item-6a784664-f008-4a13-af2e-844d1df39fe1","text":"Gen","type":"leaf"}],"id":"nsd_41tl","text":"Core"},{"children":[{"a_attr":{"onclick":"window.location='package-summary.html';"},"children":[{"a_attr":{"title":"An HTTP-based service for hosting web applications, REST APIs, and mobile back ends.","onclick":"window.location='AppService.html';"},"data-nsd-label-uuid":"f5e8340b-e50c-49ee-88d4-43c52f65d1ad","icon":"https://cdn.jsdelivr.net/gh/Nasdanika/architecture@main/cloud/azure/icons/svg/Icons/compute/10035-icon-service-App-Services.svg","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/compute/model-AppService","text":"App Service","type":"leaf"},{"a_attr":{"title":"Azure Container Instances (ACI) allows you to quickly and easily run containers on Azure without managing servers or having to learn new tools","onclick":"window.location='ContainerInstance.html';"},"data-nsd-label-uuid":"77d0a068-9df0-462e-b5b2-f3aa02852485","icon":"https://cdn.jsdelivr.net/gh/Nasdanika/architecture@main/cloud/azure/icons/svg/Icons/compute/10104-icon-service-Container-Instances.svg","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/compute/model-ContainerInstance","text":"Container Instance","type":"leaf"},{"a_attr":{"title":"A block-level storage volume managed by Azure and used with Azure Virtual Machines","onclick":"window.location='Disk.html';"},"data-nsd-label-uuid":"18f05a8e-3518-495f-a6ab-760866c6095d","icon":"https://cdn.jsdelivr.net/gh/Nasdanika/architecture@main/cloud/azure/icons/svg/Icons/compute/10032-icon-service-Disks.svg","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/compute/model-Disk","text":"Disk","type":"leaf"},{"a_attr":{"title":"Azure managed disks currently offers five disk types, each intended to address a specific customer scenario","onclick":"window.location='DiskType.html';"},"data-nsd-label-uuid":"79371596-da6b-4745-9930-722de85d948a","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/compute/model-DiskType","text":"Disk Type","type":"leaf"},{"a_attr":{"title":"Azure Kubernetes Service (AKS) offers the quickest way to start developing and deploying cloud-native apps in Azure, datacenters, or at the edge with built-in code-to-cloud pipelines and guardrails","onclick":"window.location='KubernetesService.html';"},"data-nsd-label-uuid":"66bb389b-4a03-4f18-a5be-cb3d6b5c5d4b","icon":"https://cdn.jsdelivr.net/gh/Nasdanika/architecture@main/cloud/azure/icons/svg/Icons/compute/10023-icon-service-Kubernetes-Services.svg","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/compute/model-KubernetesService","text":"Kubernetes Service","type":"leaf"},{"a_attr":{"title":"An image service instance that provides on-demand and scalable computing resources with usage-based pricing","onclick":"window.location='VirtualMachine.html';"},"data-nsd-label-uuid":"b7da1f84-51d5-4533-824f-ffe06fa09a57","icon":"https://cdn.jsdelivr.net/gh/Nasdanika/architecture@main/cloud/azure/icons/svg/Icons/compute/10021-icon-service-Virtual-Machine.svg","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/compute/model-VirtualMachine","text":"Virtual Machine","type":"leaf"},{"a_attr":{"title":"Initial contents of a VM disk used to initialize a VM","onclick":"window.location='VirtualMachineImage.html';"},"data-nsd-label-uuid":"82969644-cdfb-4842-9dfe-5ed172e3d6c0","icon":"https://cdn.jsdelivr.net/gh/Nasdanika/architecture@main/cloud/azure/icons/svg/Icons/compute/10040-icon-service-VM-Images-(Classic).svg","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/compute/model-VirtualMachineImage","text":"Virtual Machine Image","type":"leaf"},{"a_attr":{"title":"Azure virtual machine scale sets let you create and manage a group of identical, load balanced VMs.","onclick":"window.location='VirtualMachineScaleSet.html';"},"data-nsd-label-uuid":"c0c5791b-5ffc-45e6-b1ec-943dbd453aab","icon":"https://cdn.jsdelivr.net/gh/Nasdanika/architecture@main/cloud/azure/icons/svg/Icons/compute/10034-icon-service-VM-Scale-Sets.svg","state":{"selected":true},"id":"nsd-app-nav-item-EClass-architecture/cloud/azure/compute/model-VirtualMachineScaleSet","text":"Virtual Machine Scale Set","type":"leaf"},{"a_attr":{"title":"Size of a virtual machine in terms of CPU and RAM","onclick":"window.location='VirtualMachineSize.html';"},"data-nsd-label-uuid":"48e9df0a-1114-4d5e-8627-ec3faec40e02","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/compute/model-VirtualMachineSize","text":"Virtual Machine Size","type":"leaf"}],"data-nsd-label-uuid":"e982a235-e071-45e2-b3c8-f61718fbb543","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-architecture/cloud/azure/compute/model","text":"compute"},{"a_attr":{"onclick":"window.location='../gen/index.html';"},"data-nsd-label-uuid":"2d16c7bd-54fd-4c2a-825b-8ba772a2dacc","id":"nsd-app-nav-item-451cb9e2-463b-4a13-a9d5-90eecd6efd25","text":"Gen","type":"leaf"}],"id":"nsd_41tx","text":"Compute"},{"children":[{"a_attr":{"title":"Nasdanika Architecture C4 Model contains classes as explained in the metamodel section of the C4 Model home page. ","onclick":"window.location='../../networking/model/package-summary.html';"},"children":[{"a_attr":{"onclick":"window.location='../../networking/model/NetworkInterface.html';"},"data-nsd-label-uuid":"5df2ebf3-50f3-4df7-abd8-da52165e0681","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/networking/model-NetworkInterface","text":"NetworkInterface","type":"leaf"},{"a_attr":{"onclick":"window.location='../../networking/model/Subnet.html';"},"data-nsd-label-uuid":"fe2ff7f7-129d-4d96-9c65-e48951dd75b2","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/networking/model-Subnet","text":"Subnet","type":"leaf"},{"a_attr":{"title":"Base class for resources connected to a Subnet","onclick":"window.location='../../networking/model/SubnetResource.html';"},"data-nsd-label-uuid":"4c9027e3-c19e-460d-93ef-2ef437d2aca3","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/networking/model-SubnetResource","text":"SubnetResource","type":"leaf"},{"a_attr":{"onclick":"window.location='../../networking/model/VirtualNetwork.html';"},"data-nsd-label-uuid":"071d0950-70a9-499f-985e-0f685257b044","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/networking/model-VirtualNetwork","text":"VirtualNetwork","type":"leaf"},{"a_attr":{"title":"Base class for resources connected to a Virtual Network","onclick":"window.location='../../networking/model/VirtualNetworkResource.html';"},"data-nsd-label-uuid":"21116a12-b119-40bc-962f-d88e20d01a53","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/networking/model-VirtualNetworkResource","text":"VirtualNetworkResource","type":"leaf"}],"data-nsd-label-uuid":"57a0d4d3-cb2b-4d92-9712-0c647c180bab","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-architecture/cloud/azure/networking/model","text":"networking"},{"a_attr":{"onclick":"window.location='../../c4/gen/index.html';"},"data-nsd-label-uuid":"58b307a7-1e59-4235-a5d2-b5be15dc5390","id":"nsd-app-nav-item-b1d3b3b7-0ba9-4d36-8315-896704ec89a2","text":"Gen","type":"leaf"}],"id":"nsd_41u5","text":"Networking"},{"children":[{"a_attr":{"title":"Nasdanika Architecture C4 Model contains classes as explained in the metamodel section of the C4 Model home page. ","onclick":"window.location='../../storage/model/package-summary.html';"},"children":[{"a_attr":{"onclick":"window.location='../../storage/model/StorageAccount.html';"},"data-nsd-label-uuid":"a2f6ca92-60b4-4783-9194-72e2d86cdc1d","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/cloud/azure/storage/model-StorageAccount","text":"StorageAccount","type":"leaf"}],"data-nsd-label-uuid":"e8d336bb-86c8-4793-a30e-464c15ea31d2","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-architecture/cloud/azure/storage/model","text":"storage"},{"a_attr":{"onclick":"window.location='../../c4/gen/index.html';"},"data-nsd-label-uuid":"0b0e0ec4-703b-44bd-887f-e9c32cf0e6d5","id":"nsd-app-nav-item-8c6ce8e5-2562-4858-ac78-75955d23f639","text":"Gen","type":"leaf"}],"id":"nsd_41u9","text":"Storage"}],"data-nsd-label-uuid":"e96a5c42-73e3-477c-8510-0c8f473b8914","id":"nsd-app-nav-item-248d1f24-367e-4c00-9489-cbf653730faa","text":"Azure"}],"data-nsd-label-uuid":"041a55a3-d9a2-4ef0-8266-66aad276732a","icon":"fas fa-cloud","id":"nsd-app-nav-item-151f1a17-ffa4-4efe-ba1a-50723f1ef1c4","text":"Cloud"},{"a_attr":{"onclick":"window.location='../../../../continers/index.html';"},"children":[{"children":[{"a_attr":{"title":"Nasdanika Architecture C4 Model contains classes as explained in the metamodel section of the C4 Model home page. ","onclick":"window.location='../../../../containers/docker/model/package-summary.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../containers/docker/model/Container.html';"},"data-nsd-label-uuid":"4f161702-c406-47cc-a5c8-1a34147aa4e5","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/containers/docker/model-Container","text":"Container","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../containers/docker/model/Image.html';"},"data-nsd-label-uuid":"febe560a-c4ea-4188-8bc4-51a9f638d05e","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/containers/docker/model-Image","text":"Image","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../containers/docker/model/Registry.html';"},"data-nsd-label-uuid":"d6b9ee2d-d2bf-4ce0-bef6-372cd540c97a","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/containers/docker/model-Registry","text":"Registry","type":"leaf"}],"data-nsd-label-uuid":"4977895d-8e78-4ae4-8d8c-ecc7c01e42e4","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-architecture/containers/docker/model","text":"docker"},{"a_attr":{"onclick":"window.location='../../../../continers/c4/gen/index.html';"},"data-nsd-label-uuid":"8a592ff1-e18b-4ca2-92d9-b1ad33ee6de2","id":"nsd-app-nav-item-77f9bf60-7671-4ab8-a5bf-a0b2a926b727","text":"Gen","type":"leaf"}],"id":"nsd_41uh","text":"Docker"},{"children":[{"a_attr":{"title":"Nasdanika Architecture C4 Model contains classes as explained in the metamodel section of the C4 Model home page. ","onclick":"window.location='../../../../containers/kubernetes/model/package-summary.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../containers/kubernetes/model/Cluster.html';"},"data-nsd-label-uuid":"95abfd3f-6694-4504-a98e-49a2d845424a","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/containers/kubernetes/model-Cluster","text":"Cluster","type":"leaf"},{"a_attr":{"onclick":"window.location='../../../../containers/kubernetes/model/Workload.html';"},"data-nsd-label-uuid":"71ddaf12-250c-4d47-8fb5-b335dd3661ee","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/containers/kubernetes/model-Workload","text":"Workload","type":"leaf"}],"data-nsd-label-uuid":"faade579-9cd6-4557-96b8-8bd73ad177fd","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-architecture/containers/kubernetes/model","text":"kubernetes"},{"a_attr":{"onclick":"window.location='../../../../continers/c4/gen/index.html';"},"data-nsd-label-uuid":"6a7abd23-985f-4c82-a070-d5d4d6400c51","id":"nsd-app-nav-item-3d6766f1-c409-4f4b-ad91-ded5ca564ffc","text":"Gen","type":"leaf"}],"id":"nsd_41um","text":"Kubernetes"},{"children":[{"a_attr":{"title":"Nasdanika Architecture C4 Model contains classes as explained in the metamodel section of the C4 Model home page. ","onclick":"window.location='../../../../containers/helm/model/package-summary.html';"},"children":[{"a_attr":{"onclick":"window.location='../../../../containers/helm/model/Chart.html';"},"data-nsd-label-uuid":"a4165e3d-0eb6-4602-a075-8ae5af876820","icon":"https://www.nasdanika.org/resources/images/ecore/EClass.gif","id":"nsd-app-nav-item-EClass-architecture/containers/helm/model-Chart","text":"Chart","type":"leaf"}],"data-nsd-label-uuid":"b05f49c5-58f2-477b-818e-ee83509ce9c3","icon":"https://www.nasdanika.org/resources/images/ecore/EPackage.gif","id":"nsd-app-nav-item-EPackage-architecture/containers/helm/model","text":"helm"},{"a_attr":{"onclick":"window.location='../../../../continers/c4/gen/index.html';"},"data-nsd-label-uuid":"cf9bf77e-fceb-47f6-8832-5f17e059ba04","id":"nsd-app-nav-item-5b5b0b0a-3db8-4ef6-a73e-df7566564c18","text":"Gen","type":"leaf"}],"id":"nsd_41uq","text":"Helm"}],"data-nsd-label-uuid":"bb972924-d2ff-40de-bc63-7384e28f7d3f","id":"nsd-app-nav-item-78735eb3-1ea1-428e-9fbe-d9a8c7c1427d","text":"Containers"},{"a_attr":{"onclick":"window.location='../../../../maven/index.html';"},"data-nsd-label-uuid":"d422875a-98f1-424a-8eb0-f6382f84603b","id":"nsd-app-nav-item-27021a0b-6b2f-4b1a-9f2f-800fd264b885","text":"Architecture Site Generator Maven Plugin","type":"leaf"}]},"search":{"show_only_matches":true,"show_only_matches_children":true},"types":{"leaf":{"icon":"jstree-file"}},"plugins":["state","type","search"],"state":{"key":"4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel"}}));
+// Tokens: searchInputSelector, timer, treeSelector
+$('#nsd_41va_searchInput').keyup(function () {
+    if (window['nsd_jstTreeSearchTimer_nsd_41vb']) { 
+		clearTimeout(window['nsd_jstTreeSearchTimer_nsd_41vb']); 
+	}
+    window['nsd_jstTreeSearchTimer_nsd_41vb'] = setTimeout(function () {
+      var v = $('#nsd_41va_searchInput').val();
+      $('#4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel-nsd-app-nav-item-1ff8450b-b908-49f6-8146-45abce654091').jstree(true).search(v);
+    }, 250);
+  });
+
+});</script>
+            <div class="list-group list-group-flush">
+              <a href="../../../../../plantuml-diagram-generator/index.html" data-nsd-label-uuid="4e04c224-7c68-4167-a761-8b9e15eedefd" class="list-group-item list-group-action">PlantUML Diagram Generator</a>
+            </div>
+            <div class="card">
+              <div class="card-header"><span data-toggle="collapse" data-target="#nsd-app-nav-item-bf94f608-dafc-47ac-b0a7-7d91e753e8ef-collapsible" aria-expanded="true" aria-controls="nsd-app-nav-item-bf94f608-dafc-47ac-b0a7-7d91e753e8ef-collapsible" title="Toggle card" id="nsd-app-nav-item-bf94f608-dafc-47ac-b0a7-7d91e753e8ef-collapsible-trigger" class="nsd-collapsible-trigger"><i aria-hidden="true" class="fa"></i></span>
+                <a>Demos</a>
+              </div>
+              <div id="nsd-app-nav-item-bf94f608-dafc-47ac-b0a7-7d91e753e8ef-collapsible" class="card-body p-1 nsd-collapsible collapse show">
+                <input type="text" id="nsd_41vc_searchInput" title="Full-text search. You can use wildcards, e.g. 'foo*' or 'f*o'; title or content fields, e.g. 'title:foo* bar'; boosts, e.g. 'foo^10 bar'; fuzzy matches, e.g. 'foo~1'; and term presence, e.g. '+foo bar -baz'" class="form-control"/>
+                <div id="4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel-nsd-app-nav-item-bf94f608-dafc-47ac-b0a7-7d91e753e8ef"></div>
+              </div>
+            </div>
+            <script>$(document).ready( function() {
+$('#4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel-nsd-app-nav-item-bf94f608-dafc-47ac-b0a7-7d91e753e8ef').jstree(function(tree) { tree.state.filter = function(state) { delete state.core.selected; return state; };  tree.search.search_callback = function(searchStr, node) { if (typeof window.nsdJsTreeSearchCallback === 'function') return window.nsdJsTreeSearchCallback(searchStr, node); var sf = new $.vakata.search(searchStr, true, { caseSensitive : false, fuzzy : false }); return sf.search(node.text).isMatch; }; return tree; }({"core":{"data":[{"a_attr":{"onclick":"window.location='https://docs.nasdanika.org/demo-action-site/';"},"id":"nsd-app-nav-item-2141ffd6-cd25-42cf-9a5c-043e95d5ed0b","text":"Action Site","type":"leaf"},{"children":[{"children":[{"a_attr":{"onclick":"window.location='https://docs.nasdanika.org/demo-drawio-actions/';"},"id":"nsd-app-nav-item-2655a572-a6a6-4542-af5f-6af69cbfffaf","text":"Actions","type":"leaf"},{"a_attr":{"onclick":"window.location='https://docs.nasdanika.org/demo-drawio-flow-actions/';"},"id":"nsd-app-nav-item-4db1cb06-1ddf-4e55-84e0-e67991eac57c","text":"Flow","type":"leaf"},{"a_attr":{"onclick":"window.location='https://docs.nasdanika.org/demo-drawio-map/';"},"id":"nsd-app-nav-item-b8bc9611-105a-4e01-ade6-f1fff01df301","text":"Map","type":"leaf"}],"id":"nsd_41uz","text":"App"},{"a_attr":{"onclick":"window.location='https://docs.nasdanika.org/demo-drawio-semantic-mapping/';"},"id":"nsd-app-nav-item-06427263-5ec6-4ce5-9dba-b1fdd8555982","text":"Semantic Mapping","type":"leaf"}],"id":"nsd_41v1","text":"Drawio"},{"children":[{"a_attr":{"onclick":"window.location='https://docs.nasdanika.org/demo-c4-plantuml/';"},"id":"nsd-app-nav-item-d90d5727-28aa-443d-8539-aa8a1981b620","text":"PlantUML","type":"leaf"},{"a_attr":{"onclick":"window.location='https://docs.nasdanika.org/demo-c4-drawio-actions/';"},"id":"nsd-app-nav-item-fd92bd85-800b-4686-98dd-675cfa305cf2","text":"Drawio actions","type":"leaf"}],"id":"nsd_41v4","text":"C4 Model"}]},"search":{"show_only_matches":true,"show_only_matches_children":true},"types":{"leaf":{"icon":"jstree-file"}},"plugins":["state","type","search"],"state":{"key":"4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel"}}));
+// Tokens: searchInputSelector, timer, treeSelector
+$('#nsd_41vc_searchInput').keyup(function () {
+    if (window['nsd_jstTreeSearchTimer_nsd_41vd']) { 
+		clearTimeout(window['nsd_jstTreeSearchTimer_nsd_41vd']); 
+	}
+    window['nsd_jstTreeSearchTimer_nsd_41vd'] = setTimeout(function () {
+      var v = $('#nsd_41vc_searchInput').val();
+      $('#4eb4c484-3a7d-40ce-a13a-eb2c3c693c70-navigation-panel-nsd-app-nav-item-bf94f608-dafc-47ac-b0a7-7d91e753e8ef').jstree(true).search(v);
+    }, 250);
+  });
+
+});</script>
+          </div>
+        </div>
+        <div data-nsd-label-uuid="772211c5-8509-47dd-b59a-df6bc2b7ce53" data-nsd-action-uris="uuid:772211c5-8509-47dd-b59a-df6bc2b7ce53" class="col nsd-app-content-panel">
+          <div class="container-fluid">
+            <div class="row nsd-app-content-panel-breadcrumb-row">
+              <div class="col">
+                <nav aria-label="breadcrumb" class="nsd-app-content-panel-breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <a href="../../../../index.html" data-nsd-label-uuid="648236bf-5b6c-4e8c-a516-f6360e40965a">Architecture</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="../../../index.html" data-nsd-label-uuid="041a55a3-d9a2-4ef0-8266-66aad276732a"><span class="fas fa-cloud nsd-app-label-icon"></span>Cloud</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="../../index.html" data-nsd-label-uuid="e96a5c42-73e3-477c-8510-0c8f473b8914">Azure</a>
+                    </li>
+                    <li class="breadcrumb-item"><span>Compute</span>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="package-summary.html" data-nsd-label-uuid="e982a235-e071-45e2-b3c8-f61718fbb543">
+                        <img src="https://www.nasdanika.org/resources/images/ecore/EPackage.gif" class="nsd-app-label-icon"/>compute</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="VirtualMachineScaleSet.html" title="Azure virtual machine scale sets let you create and manage a group of identical, load balanced VMs." data-nsd-label-uuid="c0c5791b-5ffc-45e6-b1ec-943dbd453aab">
+                        <img src="https://cdn.jsdelivr.net/gh/Nasdanika/architecture@main/cloud/azure/icons/svg/Icons/compute/10034-icon-service-VM-Scale-Sets.svg" class="nsd-app-label-icon"/>Virtual Machine Scale Set</a>
+                    </li>
+                    <li class="breadcrumb-item active"><span data-nsd-label-uuid="772211c5-8509-47dd-b59a-df6bc2b7ce53">Load specification</span>
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+            <div class="row nsd-app-content-panel-title-and-items-row">
+              <div class="col-auto">
+                <H1><span data-nsd-label-uuid="772211c5-8509-47dd-b59a-df6bc2b7ce53" class="nsd-app-content-panel-title">Load specification</span>
+                </H1>
+              </div>
+            </div>
+            <div class="row nsd-app-content-panel-content-row">
+              <div class="col">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col">
+<div>
+  <div id="load-specification-table">
+    <nsd-table :columns="[{&quot;visible&quot;:true,&quot;sortable&quot;:true,&quot;label&quot;:&quot;Key&quot;,&quot;key&quot;:&quot;key&quot;},{&quot;visible&quot;:true,&quot;sortable&quot;:true,&quot;label&quot;:&quot;Type&quot;,&quot;key&quot;:&quot;type&quot;},{&quot;key&quot;:&quot;cardinality&quot;,&quot;visible&quot;:true,&quot;label&quot;:&quot;Cardinality&quot;},{&quot;key&quot;:&quot;homogenous&quot;,&quot;visible&quot;:true,&quot;label&quot;:&quot;Homogenous&quot;},{&quot;key&quot;:&quot;strict-containment&quot;,&quot;visible&quot;:true,&quot;label&quot;:&quot;Strict Containment&quot;},{&quot;key&quot;:&quot;exclusive-with&quot;,&quot;visible&quot;:true,&quot;label&quot;:&quot;Exclusive With&quot;},{&quot;key&quot;:&quot;description&quot;,&quot;visible&quot;:true,&quot;label&quot;:&quot;Description&quot;}]" :items="[{&quot;description&quot;:&quot;If this reference is not set then EObjectActionProvider creates a new Action using AppFactory in newAction() method. &quot;,&quot;type&quot;:&quot;EObject&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-action-prototype\&quot;&gt;action-prototype&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;&lt;B&gt;0..1&lt;\/B&gt;&quot;},{&quot;type&quot;:&quot;&lt;a href=\&quot;../../../../core/model/ActionRole.html\&quot;&gt;ActionRole&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-action-role\&quot;&gt;action-role&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;0..1&quot;},{&quot;description&quot;:&quot;Annotations are used to store custom data similar to Java and Ecore annotations.&quot;,&quot;homogenous&quot;:&quot;&lt;i class=\&quot;fas fa-check\&quot;&gt;&lt;\/i&gt;&quot;,&quot;type&quot;:&quot;&lt;a href=\&quot;../../../../../core/ncore/model/Property.html\&quot;&gt;Property&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-annotations\&quot;&gt;annotations&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;&lt;B&gt;0..*&lt;\/B&gt;&quot;},{&quot;description&quot;:&quot;Description in HTML.&quot;,&quot;type&quot;:&quot;EString&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-description\&quot;&gt;description&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;0..1&quot;},{&quot;type&quot;:&quot;&lt;a href=\&quot;Disk.html\&quot;&gt;Disk&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-disks\&quot;&gt;disks&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;&lt;B&gt;0..*&lt;\/B&gt;&quot;},{&quot;description&quot;:&quot;Element documentation.&quot;,&quot;type&quot;:&quot;EObject&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-documentation\&quot;&gt;documentation&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;&lt;B&gt;0..*&lt;\/B&gt;&quot;},{&quot;description&quot;:&quot;Positive period duration in ISO-8601 durations format. &quot;,&quot;type&quot;:&quot;&lt;a href=\&quot;../../../../../core/ncore/model/Duration.html\&quot;&gt;Duration&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-duration\&quot;&gt;duration&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;0..1&quot;},{&quot;strict-containment&quot;:&quot;&lt;i class=\&quot;fas fa-check\&quot;&gt;&lt;\/i&gt;&quot;,&quot;description&quot;:&quot;Period end.&quot;,&quot;homogenous&quot;:&quot;&lt;i class=\&quot;fas fa-check\&quot;&gt;&lt;\/i&gt;&quot;,&quot;type&quot;:&quot;&lt;a href=\&quot;../../../../../core/ncore/model/Temporal.html\&quot;&gt;Temporal&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-end\&quot;&gt;end&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;&lt;B&gt;0..1&lt;\/B&gt;&quot;},{&quot;description&quot;:&quot;Events associated with this architecture element. &quot;,&quot;type&quot;:&quot;&lt;a href=\&quot;../../../../core/model/Event.html\&quot;&gt;Event&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-events\&quot;&gt;events&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;&lt;B&gt;0..*&lt;\/B&gt;&quot;},{&quot;description&quot;:&quot;Facets allow to enrich an architecture element. &quot;,&quot;type&quot;:&quot;&lt;a href=\&quot;../../../../core/model/Facet.html\&quot;&gt;Facet&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-facets\&quot;&gt;facets&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;&lt;B&gt;0..*&lt;\/B&gt;&quot;},{&quot;description&quot;:&quot;Element ID to use as EKey - a unique identifier of this element among its siblings in the parent\u2019s containment reference.&quot;,&quot;type&quot;:&quot;EString&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-id\&quot;&gt;id&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;0..1&quot;},{&quot;type&quot;:&quot;&lt;a href=\&quot;VirtualMachineImage.html\&quot;&gt;Virtual Machine Image&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-image\&quot;&gt;image&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;0..1&quot;},{&quot;description&quot;:&quot;A resource can be associated with zero or more locations. &quot;,&quot;type&quot;:&quot;&lt;a href=\&quot;../../core/model/Location.html\&quot;&gt;Location&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-locations\&quot;&gt;locations&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;0..*&quot;},{&quot;description&quot;:&quot;Element name.&quot;,&quot;type&quot;:&quot;EString&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-name\&quot;&gt;name&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;0..1&quot;},{&quot;type&quot;:&quot;&lt;a href=\&quot;../../networking/model/NetworkInterface.html\&quot;&gt;NetworkInterface&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-network-interfaces\&quot;&gt;network-interfaces&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;&lt;B&gt;0..1&lt;\/B&gt;&quot;},{&quot;description&quot;:&quot;Architecture element properties&quot;,&quot;homogenous&quot;:&quot;&lt;i class=\&quot;fas fa-check\&quot;&gt;&lt;\/i&gt;&quot;,&quot;type&quot;:&quot;&lt;a href=\&quot;../../../../../core/ncore/model/Property.html\&quot;&gt;Property&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-properties\&quot;&gt;properties&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;&lt;B&gt;0..*&lt;\/B&gt;&quot;},{&quot;description&quot;:&quot;Error loading documentation: java.io.FileNotFoundException: C:\\Users\\Pavel\\git\\nasdanika.github.io\\target\\models\\org.nasdanika.ncore\\model\\doc\\model-element--representations.md (The system cannot find the file specified)&quot;,&quot;homogenous&quot;:&quot;&lt;i class=\&quot;fas fa-check\&quot;&gt;&lt;\/i&gt;&quot;,&quot;type&quot;:&quot;&lt;a href=\&quot;../../../../../core/ncore/model/RepresentationEntry.html\&quot;&gt;RepresentationEntry&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-representations\&quot;&gt;representations&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;&lt;B&gt;0..*&lt;\/B&gt;&quot;},{&quot;type&quot;:&quot;&lt;a href=\&quot;../../../../../core/ncore/model/StringProperty.html\&quot;&gt;StringProperty&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-resource-tags\&quot;&gt;resource-tags&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;&lt;B&gt;0..*&lt;\/B&gt;&quot;},{&quot;type&quot;:&quot;&lt;a href=\&quot;VirtualMachineSize.html\&quot;&gt;Virtual Machine Size&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-size\&quot;&gt;size&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;0..1&quot;},{&quot;description&quot;:&quot;Architecture element lifecycle stages. &quot;,&quot;type&quot;:&quot;&lt;a href=\&quot;../../../../core/model/Stage.html\&quot;&gt;Stage&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-stages\&quot;&gt;stages&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;&lt;B&gt;0..*&lt;\/B&gt;&quot;},{&quot;strict-containment&quot;:&quot;&lt;i class=\&quot;fas fa-check\&quot;&gt;&lt;\/i&gt;&quot;,&quot;description&quot;:&quot;Period start.&quot;,&quot;homogenous&quot;:&quot;&lt;i class=\&quot;fas fa-check\&quot;&gt;&lt;\/i&gt;&quot;,&quot;type&quot;:&quot;&lt;a href=\&quot;../../../../../core/ncore/model/Temporal.html\&quot;&gt;Temporal&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-start\&quot;&gt;start&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;&lt;B&gt;0..1&lt;\/B&gt;&quot;},{&quot;description&quot;:&quot;This element\u2019s tags&quot;,&quot;type&quot;:&quot;&lt;a href=\&quot;../../../../core/model/Tag.html\&quot;&gt;Tag&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-tags\&quot;&gt;tags&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;0..*&quot;},{&quot;description&quot;:&quot;Element URI\u2019s - there might be more than one. &quot;,&quot;type&quot;:&quot;EString&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-uris\&quot;&gt;uris&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;0..*&quot;},{&quot;description&quot;:&quot;Optional unique identifier for this model element. &quot;,&quot;type&quot;:&quot;EString&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-uuid\&quot;&gt;uuid&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;0..1&quot;},{&quot;type&quot;:&quot;&lt;a href=\&quot;../../../../core/model/View.html\&quot;&gt;View&lt;\/a&gt;&quot;,&quot;key&quot;:&quot;\r\n&lt;a href=\&quot;#key-section-views\&quot;&gt;views&lt;\/a&gt;&quot;,&quot;cardinality&quot;:&quot;&lt;B&gt;0..*&lt;\/B&gt;&quot;}]" config-key="335143863-VirtualMachineScaleSet-load-specification"/>
+  </div>
+  <script>new Vue({ el: '#load-specification-table' });</script>
+</div></div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:950e8918-5fb7-4ffb-935a-ece900b64855" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-action-prototype" data-nsd-label-uuid="950e8918-5fb7-4ffb-935a-ece900b64855" class="nsd-app-content-panel-title">action-prototype</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td>EObject</td>
+  </tr>
+</table><div class="markdown-body"><p>If this reference is not set then EObjectActionProvider creates a new Action using AppFactory in newAction() method. If this reference is set and is Action then a copy of the action is created and returned. Otherwise the reference value it is adapted to ActionProvider which is used to create an action. This allows to merge actions and chain action generation. E.g. generate Ecore model documentation and merge it into the Engineering documentation.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:8cf2f1b2-82e1-4ade-a3a7-0793218ce6de" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-action-role" data-nsd-label-uuid="8cf2f1b2-82e1-4ade-a3a7-0793218ce6de" class="nsd-app-content-panel-title">action-role</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../../../core/model/ActionRole.html">ActionRole</a></td>
+  </tr>
+</table></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:ca7d4d12-3b15-43e8-ae97-73f1fcdec0b3" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-annotations" data-nsd-label-uuid="ca7d4d12-3b15-43e8-ae97-73f1fcdec0b3" class="nsd-app-content-panel-title">annotations</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../../../../core/ncore/model/Property.html">Property</a></td>
+  </tr>
+  <tr>
+    <th>Homogenous</th>
+    <td>true</td>
+  </tr>
+</table><div class="markdown-body"><p>Annotations are used to store custom data similar to Java and Ecore annotations.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:f3ea89d9-e6f1-4615-82d4-9a2428007727" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-description" data-nsd-label-uuid="f3ea89d9-e6f1-4615-82d4-9a2428007727" class="nsd-app-content-panel-title">description</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td>EString</td>
+  </tr>
+</table><div class="markdown-body"><p>Description in HTML.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:9278cd86-e761-41e2-9343-652c79df02bf" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-disks" data-nsd-label-uuid="9278cd86-e761-41e2-9343-652c79df02bf" class="nsd-app-content-panel-title">disks</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="Disk.html">Disk</a></td>
+  </tr>
+</table></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:39fc5b28-d9a8-4b61-a7c1-917c7ef6e7e0" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-documentation" data-nsd-label-uuid="39fc5b28-d9a8-4b61-a7c1-917c7ef6e7e0" class="nsd-app-content-panel-title">documentation</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td>EObject</td>
+  </tr>
+</table><div class="markdown-body"><p>Element documentation.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:00b95486-2a37-48d5-8e79-57c0c3a63d01" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-duration" data-nsd-label-uuid="00b95486-2a37-48d5-8e79-57c0c3a63d01" class="nsd-app-content-panel-title">duration</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../../../../core/ncore/model/Duration.html">Duration</a></td>
+  </tr>
+</table><div class="markdown-body"><p>Positive period duration in <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO-8601 durations</a> format. E.g. <code>P1M</code> for one month or <code>P20D</code> for 20 days.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:7b832001-10e0-48f6-8250-81ac1b787379" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-end" data-nsd-label-uuid="7b832001-10e0-48f6-8250-81ac1b787379" class="nsd-app-content-panel-title">end</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../../../../core/ncore/model/Temporal.html">Temporal</a></td>
+  </tr>
+  <tr>
+    <th>Homogenous</th>
+    <td>true</td>
+  </tr>
+  <tr>
+    <th>Strict containment</th>
+    <td>true</td>
+  </tr>
+</table><div class="markdown-body"><p>Period end.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:360f4fe8-7788-4648-92d8-be733da37189" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-events" data-nsd-label-uuid="360f4fe8-7788-4648-92d8-be733da37189" class="nsd-app-content-panel-title">events</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../../../core/model/Event.html">Event</a></td>
+  </tr>
+</table><div class="markdown-body"><p>Events associated with this architecture element. Events can be used as bases for temporals and periods, e.g. other architecture elements or increments.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:a3d4716e-6b47-4a5a-9cae-a05322ee21a2" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-facets" data-nsd-label-uuid="a3d4716e-6b47-4a5a-9cae-a05322ee21a2" class="nsd-app-content-panel-title">facets</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../../../core/model/Facet.html">Facet</a></td>
+  </tr>
+</table><div class="markdown-body"><p>Facets allow to enrich an architecture element. For example, an increment might have a cost model facet describing different types of cost associated with the increment.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:e27acff5-379a-48cd-960d-490c6312551b" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-id" data-nsd-label-uuid="e27acff5-379a-48cd-960d-490c6312551b" class="nsd-app-content-panel-title">id</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td>EString</td>
+  </tr>
+</table><div class="markdown-body"><p>Element ID to use as EKey - a unique identifier of this element among its siblings in the parent&rsquo;s containment reference.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:23948805-0c27-4197-8ef1-b79225e28020" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-image" data-nsd-label-uuid="23948805-0c27-4197-8ef1-b79225e28020" class="nsd-app-content-panel-title">image</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="VirtualMachineImage.html">Virtual Machine Image</a></td>
+  </tr>
+</table></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:ad2e6dc3-b5e5-458f-ab60-ae3d450a0cc8" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-locations" data-nsd-label-uuid="ad2e6dc3-b5e5-458f-ab60-ae3d450a0cc8" class="nsd-app-content-panel-title">locations</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../core/model/Location.html">Location</a></td>
+  </tr>
+</table><div class="markdown-body"><p>A resource can be associated with zero or more locations. E.g. a VM can be deployed to a region or a specific availability zone in a region. A kubernetes cluster can be deployed to several availability zones.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:cbde8174-578d-4a87-b94a-796ca1bc80c6" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-name" data-nsd-label-uuid="cbde8174-578d-4a87-b94a-796ca1bc80c6" class="nsd-app-content-panel-title">name</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td>EString</td>
+  </tr>
+</table><div class="markdown-body"><p>Element name.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:aac37491-83f1-4c32-a89c-945611ae90e3" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-network-interfaces" data-nsd-label-uuid="aac37491-83f1-4c32-a89c-945611ae90e3" class="nsd-app-content-panel-title">network-interfaces</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../networking/model/NetworkInterface.html">NetworkInterface</a></td>
+  </tr>
+</table></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:88bd18ff-6533-474b-ba23-173dccf476f6" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-properties" data-nsd-label-uuid="88bd18ff-6533-474b-ba23-173dccf476f6" class="nsd-app-content-panel-title">properties</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../../../../core/ncore/model/Property.html">Property</a></td>
+  </tr>
+  <tr>
+    <th>Homogenous</th>
+    <td>true</td>
+  </tr>
+</table><div class="markdown-body"><p>Architecture element properties</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:9c64e7ad-b89b-4d1f-a53d-186585a3fcc1" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-representations" data-nsd-label-uuid="9c64e7ad-b89b-4d1f-a53d-186585a3fcc1" class="nsd-app-content-panel-title">representations</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../../../../core/ncore/model/RepresentationEntry.html">RepresentationEntry</a></td>
+  </tr>
+  <tr>
+    <th>Homogenous</th>
+    <td>true</td>
+  </tr>
+</table><div class="markdown-body"><div class='nsd-error'>Error loading documentation: java.io.FileNotFoundException: C:\Users\Pavel\git\nasdanika.github.io\target\models\org.nasdanika.ncore\model\doc\model-element--representations.md (The system cannot find the file specified)</div>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:92f80308-faa0-49ab-89a6-1f0788a445a3" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-resource-tags" data-nsd-label-uuid="92f80308-faa0-49ab-89a6-1f0788a445a3" class="nsd-app-content-panel-title">resource-tags</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../../../../core/ncore/model/StringProperty.html">StringProperty</a></td>
+  </tr>
+</table></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:94577954-8ab3-45d2-b58f-ec69c6ecbe97" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-size" data-nsd-label-uuid="94577954-8ab3-45d2-b58f-ec69c6ecbe97" class="nsd-app-content-panel-title">size</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="VirtualMachineSize.html">Virtual Machine Size</a></td>
+  </tr>
+</table></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:43950f5d-5eff-4fa5-8a85-d47263552b89" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-stages" data-nsd-label-uuid="43950f5d-5eff-4fa5-8a85-d47263552b89" class="nsd-app-content-panel-title">stages</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../../../core/model/Stage.html">Stage</a></td>
+  </tr>
+</table><div class="markdown-body"><p>Architecture element lifecycle stages. E.g. releases/versions for a technology product or lifecycle for a technology product release.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:0e954d45-504c-4d52-8b7b-bb6806f6f49c" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-start" data-nsd-label-uuid="0e954d45-504c-4d52-8b7b-bb6806f6f49c" class="nsd-app-content-panel-title">start</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../../../../core/ncore/model/Temporal.html">Temporal</a></td>
+  </tr>
+  <tr>
+    <th>Homogenous</th>
+    <td>true</td>
+  </tr>
+  <tr>
+    <th>Strict containment</th>
+    <td>true</td>
+  </tr>
+</table><div class="markdown-body"><p>Period start.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:97c110b9-8abc-427c-a3e4-c591544b7329" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-tags" data-nsd-label-uuid="97c110b9-8abc-427c-a3e4-c591544b7329" class="nsd-app-content-panel-title">tags</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../../../core/model/Tag.html">Tag</a></td>
+  </tr>
+</table><div class="markdown-body"><p>This element&rsquo;s tags</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:dcc1dc85-fec5-4c54-8a76-02c248c535ba" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-uris" data-nsd-label-uuid="dcc1dc85-fec5-4c54-8a76-02c248c535ba" class="nsd-app-content-panel-title">uris</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td>EString</td>
+  </tr>
+</table><div class="markdown-body"><p>Element URI&rsquo;s - there might be more than one. See <code>NcoreUtil.getUris()</code> for more details. URI&rsquo;s can be used for cross-referencing of elements in a resource-independent fashion.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:86103d5a-c56c-45f5-bfc0-8ef23e71345b" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-uuid" data-nsd-label-uuid="86103d5a-c56c-45f5-bfc0-8ef23e71345b" class="nsd-app-content-panel-title">uuid</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td>EString</td>
+  </tr>
+</table><div class="markdown-body"><p>Optional unique identifier for this model element. For root objects UUID is used to compute URI, if the URI is not set.</p>
+</div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div data-nsd-action-uris="uuid:4b4f771c-4dc9-4fa6-980a-5c9121840745" class="col">
+                      <div class="container-fluid">
+                        <div class="row nsd-app-content-panel-title-and-items-row">
+                          <div class="col-auto">
+                            <H2>
+                              <a name="key-section-views" data-nsd-label-uuid="4b4f771c-4dc9-4fa6-980a-5c9121840745" class="nsd-app-content-panel-title">views</a>
+                            </H2>
+                          </div>
+                        </div>
+                        <div class="row nsd-app-content-panel-content-row">
+                          <div class="col">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col">
+<table style="width:auto" class="table">
+  <tr>
+    <th>Type</th>
+    <td><a href="../../../../core/model/View.html">View</a></td>
+  </tr>
+</table></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col nsd-app-footer">
+          <ul class="nav nsd-app-footer-navs">
+            <li class="nav-item">
+              <a href="https://github.com/Nasdanika/nasdanika.github.io/" data-nsd-label-uuid="dad5022b-020c-4c65-931d-ba831f49703c" class="nav-link"><span class="fab fa-github nsd-app-label-icon"></span>Source</a>
+            </li>
+            <li class="nav-item"><span class="navbar-text">&nbsp;&bull;&nbsp;</span>
+            </li>
+            <li class="nav-item">
+              <a href="../../../../../support.html" data-nsd-label-uuid="5ee1d3a4-5341-4b36-a02c-f06ad888ce00" class="nav-link"><span class="far fa-life-ring nsd-app-label-icon"></span>Support</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

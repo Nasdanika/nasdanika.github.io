@@ -43,17 +43,18 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 						e, 
 						context, 
 						ePackagePathComputer, 
+						this::getEPackage, 
 						this::shallDocument,
 						this::getLabel,
 						this::getDiagramDialect,
 						this::getEClassifierRole)));	
 
-<span class="fc" id="L51">		registerAdapterFactory(</span>
+<span class="fc" id="L52">		registerAdapterFactory(</span>
 			new FunctionAdapterFactory&lt;EcoreActionSupplier, EClass&gt;(
 				EcorePackage.Literals.ECLASS, 
 				EcoreActionSupplier.class, 
-<span class="fc" id="L55">				this.getClass().getClassLoader(), </span>
-<span class="fc" id="L56">				e -&gt; new EClassActionSupplier(</span>
+<span class="fc" id="L56">				this.getClass().getClassLoader(), </span>
+<span class="fc" id="L57">				e -&gt; new EClassActionSupplier(</span>
 						e, 
 						context, 
 						ePackagePathComputer, 
@@ -64,12 +65,12 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 						this::isGenerateLoadSpecification, 
 						this::getDiagramDialect)));		
 
-<span class="fc" id="L67">		registerAdapterFactory(</span>
+<span class="fc" id="L68">		registerAdapterFactory(</span>
 			new FunctionAdapterFactory&lt;EcoreActionSupplier, EDataType&gt;(
 				EcorePackage.Literals.EDATA_TYPE, 
 				EcoreActionSupplier.class, 
-<span class="fc" id="L71">				this.getClass().getClassLoader(), </span>
-<span class="fc" id="L72">				e -&gt; new EDataTypeActionSupplier(</span>
+<span class="fc" id="L72">				this.getClass().getClassLoader(), </span>
+<span class="fc" id="L73">				e -&gt; new EDataTypeActionSupplier(</span>
 						e, 
 						context, 
 						ePackagePathComputer, 
@@ -78,12 +79,12 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 						this::shallDocument,
 						this::getLabel)));		
 
-<span class="fc" id="L81">		registerAdapterFactory(</span>
+<span class="fc" id="L82">		registerAdapterFactory(</span>
 			new FunctionAdapterFactory&lt;EcoreActionSupplier, EEnum&gt;(
 				EcorePackage.Literals.EENUM, 
 				EcoreActionSupplier.class, 
-<span class="fc" id="L85">				this.getClass().getClassLoader(), </span>
-<span class="fc" id="L86">				e -&gt; new EEnumActionSupplier(</span>
+<span class="fc" id="L86">				this.getClass().getClassLoader(), </span>
+<span class="fc" id="L87">				e -&gt; new EEnumActionSupplier(</span>
 						e, 
 						context, 
 						ePackagePathComputer, 
@@ -92,81 +93,81 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 						this::shallDocument,
 						this::getLabel)));		
 
-<span class="fc" id="L95">		registerAdapterFactory(</span>
+<span class="fc" id="L96">		registerAdapterFactory(</span>
 			new FunctionAdapterFactory&lt;EcoreActionSupplier, EEnumLiteral&gt;(
 				EcorePackage.Literals.EENUM_LITERAL, 
 				EcoreActionSupplier.class, 
-<span class="fc" id="L99">				this.getClass().getClassLoader(), </span>
-<span class="fc" id="L100">				e -&gt; new EEnumLiteralActionSupplier(</span>
+<span class="fc" id="L100">				this.getClass().getClassLoader(), </span>
+<span class="fc" id="L101">				e -&gt; new EEnumLiteralActionSupplier(</span>
 						e, 
 						context, 
 						ePackagePathComputer,
 						this::shallDocument,
 						this::getLabel)));		
 
-<span class="fc" id="L107">		registerAdapterFactory(</span>
+<span class="fc" id="L108">		registerAdapterFactory(</span>
 			new FunctionAdapterFactory&lt;EcoreActionSupplier, EAttribute&gt;(
 				EcorePackage.Literals.EATTRIBUTE, 
 				EcoreActionSupplier.class, 
-<span class="fc" id="L111">				this.getClass().getClassLoader(), </span>
-<span class="fc" id="L112">				e -&gt; new EAttributeActionSupplier(</span>
+<span class="fc" id="L112">				this.getClass().getClassLoader(), </span>
+<span class="fc" id="L113">				e -&gt; new EAttributeActionSupplier(</span>
 						e,
 						context,
 						ePackagePathComputer,
 						this::shallDocument,
 						this::getLabel)));		
 
-<span class="fc" id="L119">		registerAdapterFactory(</span>
+<span class="fc" id="L120">		registerAdapterFactory(</span>
 			new FunctionAdapterFactory&lt;EcoreActionSupplier, EReference&gt;(
 				EcorePackage.Literals.EREFERENCE, 
 				EcoreActionSupplier.class, 
-<span class="fc" id="L123">				this.getClass().getClassLoader(), </span>
-<span class="fc" id="L124">				e -&gt; new EReferenceActionSupplier(</span>
+<span class="fc" id="L124">				this.getClass().getClassLoader(), </span>
+<span class="fc" id="L125">				e -&gt; new EReferenceActionSupplier(</span>
 						e, 
 						context,
 						ePackagePathComputer,
 						this::shallDocument,
 						this::getLabel)));		
 
-<span class="fc" id="L131">		registerAdapterFactory(</span>
+<span class="fc" id="L132">		registerAdapterFactory(</span>
 			new FunctionAdapterFactory&lt;EcoreActionSupplier, EOperation&gt;(
 				EcorePackage.Literals.EOPERATION, 
 				EcoreActionSupplier.class, 
-<span class="fc" id="L135">				this.getClass().getClassLoader(), </span>
-<span class="fc" id="L136">				e -&gt; new EOperationActionSupplier(</span>
+<span class="fc" id="L136">				this.getClass().getClassLoader(), </span>
+<span class="fc" id="L137">				e -&gt; new EOperationActionSupplier(</span>
 						e, 
 						context, 
 						ePackagePathComputer,
 						this::shallDocument,
 						this::getLabel)));		
 
-<span class="fc" id="L143">		registerAdapterFactory(</span>
+<span class="fc" id="L144">		registerAdapterFactory(</span>
 			new FunctionAdapterFactory&lt;EcoreActionSupplier, EParameter&gt;(
 				EcorePackage.Literals.EPARAMETER, 
 				EcoreActionSupplier.class, 
-<span class="fc" id="L147">				this.getClass().getClassLoader(), </span>
-<span class="fc" id="L148">				e -&gt; new EParameterActionSupplier(</span>
+<span class="fc" id="L148">				this.getClass().getClassLoader(), </span>
+<span class="fc" id="L149">				e -&gt; new EParameterActionSupplier(</span>
 						e,
 						context,
 						ePackagePathComputer,
 						this::shallDocument,
 						this::getLabel)));	
-<span class="fc" id="L154">	}</span>
+<span class="fc" id="L155">	}</span>
 	
 	/**
 	 * Override to return false to suppress generation of load specification.
 	 * @return
 	 */
 	protected boolean isGenerateLoadSpecification() {
-<span class="fc" id="L161">		return true;</span>
+<span class="fc" id="L162">		return true;</span>
 	}
 	
 	protected String getDiagramDialect() {
-<span class="fc" id="L165">		return null;</span>
+<span class="fc" id="L166">		return null;</span>
 	}
 	
 	protected Object getEPackage(String nsURI) {
-<span class="fc" id="L169">		return EPackage.Registry.INSTANCE.get(nsURI);</span>
+<span class="fc" id="L170">		return EPackage.Registry.INSTANCE.get(nsURI);</span>
 	}
 	
 	/**
@@ -174,35 +175,35 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 	 * @return true if the element is documentable, its container shall be documented and for {@link ETypedElement}'s the type should be documented. 
 	 */
 	protected boolean shallDocument(EModelElement modelElement) {
-<span class="pc bpc" id="L177" title="1 of 2 branches missed.">		if (!isDocumentable(modelElement)) {</span>
-<span class="nc" id="L178">			return false;</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		if (!isDocumentable(modelElement)) {</span>
+<span class="nc" id="L179">			return false;</span>
 		}
-<span class="fc bfc" id="L180" title="All 2 branches covered.">		if (modelElement instanceof EPackage) {</span>
-<span class="fc" id="L181">			EPackage sp = ((EPackage) modelElement).getESuperPackage();</span>
-<span class="pc bpc" id="L182" title="1 of 4 branches missed.">			return sp == null || shallDocument(sp);</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">		if (modelElement instanceof EPackage) {</span>
+<span class="fc" id="L182">			EPackage sp = ((EPackage) modelElement).getESuperPackage();</span>
+<span class="pc bpc" id="L183" title="1 of 4 branches missed.">			return sp == null || shallDocument(sp);</span>
 		}
-<span class="fc bfc" id="L184" title="All 2 branches covered.">		if (modelElement instanceof EClass) {</span>
-<span class="fc" id="L185">			EPackage p = ((EClass) modelElement).getEPackage();</span>
-<span class="fc" id="L186">			return shallDocument(p);</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">		if (modelElement instanceof EClass) {</span>
+<span class="fc" id="L186">			EPackage p = ((EClass) modelElement).getEPackage();</span>
+<span class="fc" id="L187">			return shallDocument(p);</span>
 		}
-<span class="fc bfc" id="L188" title="All 2 branches covered.">		if (modelElement instanceof EStructuralFeature) {</span>
-<span class="fc" id="L189">			EStructuralFeature sf = (EStructuralFeature) modelElement;</span>
-<span class="fc" id="L190">			EClass c = sf.getEContainingClass();</span>
-<span class="fc" id="L191">			EClassifier t = sf.getEType();</span>
-<span class="pc bpc" id="L192" title="2 of 4 branches missed.">			return shallDocument(c) &amp;&amp; shallDocument(t);</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">		if (modelElement instanceof EStructuralFeature) {</span>
+<span class="fc" id="L190">			EStructuralFeature sf = (EStructuralFeature) modelElement;</span>
+<span class="fc" id="L191">			EClass c = sf.getEContainingClass();</span>
+<span class="fc" id="L192">			EClassifier t = sf.getEType();</span>
+<span class="pc bpc" id="L193" title="2 of 4 branches missed.">			return shallDocument(c) &amp;&amp; shallDocument(t);</span>
 		}
-<span class="fc bfc" id="L194" title="All 2 branches covered.">		if (modelElement instanceof EOperation) {</span>
-<span class="fc" id="L195">			EOperation op = (EOperation) modelElement;</span>
-<span class="fc" id="L196">			EClass c = op.getEContainingClass();</span>
-<span class="fc" id="L197">			EClassifier t = op.getEType();</span>
-<span class="pc bpc" id="L198" title="2 of 4 branches missed.">			return shallDocument(c) &amp;&amp; shallDocument(t);</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">		if (modelElement instanceof EOperation) {</span>
+<span class="fc" id="L196">			EOperation op = (EOperation) modelElement;</span>
+<span class="fc" id="L197">			EClass c = op.getEContainingClass();</span>
+<span class="fc" id="L198">			EClassifier t = op.getEType();</span>
+<span class="pc bpc" id="L199" title="2 of 4 branches missed.">			return shallDocument(c) &amp;&amp; shallDocument(t);</span>
 		}
-<span class="fc bfc" id="L200" title="All 2 branches covered.">		if (modelElement instanceof EEnumLiteral) {</span>
-<span class="fc" id="L201">			EEnum e = ((EEnumLiteral) modelElement).getEEnum();</span>
-<span class="fc" id="L202">			return shallDocument(e);</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">		if (modelElement instanceof EEnumLiteral) {</span>
+<span class="fc" id="L202">			EEnum e = ((EEnumLiteral) modelElement).getEEnum();</span>
+<span class="fc" id="L203">			return shallDocument(e);</span>
 		}
 		
-<span class="fc" id="L205">		return true;</span>
+<span class="fc" id="L206">		return true;</span>
 	}
 	
 	/**
@@ -211,16 +212,16 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 	 * @return
 	 */
 	protected boolean isDocumentable(EModelElement modelElement) {
-<span class="fc" id="L214">		return true;</span>
+<span class="fc" id="L215">		return true;</span>
 	}
 	
 	protected EReference getEClassifierRole(EClassifier eClassifier) {
-<span class="fc" id="L218">		String roleName = NcoreUtil.getNasdanikaAnnotationDetail(eClassifier, &quot;role&quot;, &quot;children&quot;);</span>
-<span class="fc" id="L219">		return (EReference) AppPackage.Literals.ACTION.getEStructuralFeature(roleName);</span>
+<span class="fc" id="L219">		String roleName = NcoreUtil.getNasdanikaAnnotationDetail(eClassifier, &quot;role&quot;, &quot;children&quot;);</span>
+<span class="fc" id="L220">		return (EReference) AppPackage.Literals.ACTION.getEStructuralFeature(roleName);</span>
 	}
 
 	protected String getLabel(ENamedElement eNamedElement, String defaultLabel) {
-<span class="fc" id="L223">		return NcoreUtil.getNasdanikaAnnotationDetail(eNamedElement, &quot;doc-label&quot;, defaultLabel);</span>
+<span class="fc" id="L224">		return NcoreUtil.getNasdanikaAnnotationDetail(eNamedElement, &quot;label&quot;, defaultLabel);</span>
 	}
 	
 }

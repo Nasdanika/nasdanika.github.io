@@ -107,7 +107,7 @@ public interface ResourcesPackage extends EPackage {
 	int RESOURCE__UUID = NcorePackage.MODEL_ELEMENT__UUID;
 
 	/**
-	 * The feature id for the '&lt;em&gt;&lt;b&gt;Action Prototype&lt;/b&gt;&lt;/em&gt;' reference.
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Action Prototype&lt;/b&gt;&lt;/em&gt;' containment reference.
 	 * &lt;!-- begin-user-doc --&gt;
 	 * &lt;!-- end-user-doc --&gt;
 	 * @generated
@@ -123,6 +123,15 @@ public interface ResourcesPackage extends EPackage {
 	 * @ordered
 	 */
 	int RESOURCE__REPRESENTATIONS = NcorePackage.MODEL_ELEMENT__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Annotations&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int RESOURCE__ANNOTATIONS = NcorePackage.MODEL_ELEMENT__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '&lt;em&gt;&lt;b&gt;Name&lt;/b&gt;&lt;/em&gt;' attribute.
@@ -225,7 +234,7 @@ public interface ResourcesPackage extends EPackage {
 	int CONTAINER__UUID = RESOURCE__UUID;
 
 	/**
-	 * The feature id for the '&lt;em&gt;&lt;b&gt;Action Prototype&lt;/b&gt;&lt;/em&gt;' reference.
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Action Prototype&lt;/b&gt;&lt;/em&gt;' containment reference.
 	 * &lt;!-- begin-user-doc --&gt;
 	 * &lt;!-- end-user-doc --&gt;
 	 * @generated
@@ -241,6 +250,15 @@ public interface ResourcesPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTAINER__REPRESENTATIONS = RESOURCE__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Annotations&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER__ANNOTATIONS = RESOURCE__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '&lt;em&gt;&lt;b&gt;Name&lt;/b&gt;&lt;/em&gt;' attribute.
@@ -370,7 +388,7 @@ public interface ResourcesPackage extends EPackage {
 	int FILE__UUID = RESOURCE__UUID;
 
 	/**
-	 * The feature id for the '&lt;em&gt;&lt;b&gt;Action Prototype&lt;/b&gt;&lt;/em&gt;' reference.
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Action Prototype&lt;/b&gt;&lt;/em&gt;' containment reference.
 	 * &lt;!-- begin-user-doc --&gt;
 	 * &lt;!-- end-user-doc --&gt;
 	 * @generated
@@ -386,6 +404,15 @@ public interface ResourcesPackage extends EPackage {
 	 * @ordered
 	 */
 	int FILE__REPRESENTATIONS = RESOURCE__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '&lt;em&gt;&lt;b&gt;Annotations&lt;/b&gt;&lt;/em&gt;' containment reference list.
+	 * &lt;!-- begin-user-doc --&gt;
+	 * &lt;!-- end-user-doc --&gt;
+	 * @generated
+	 * @ordered
+	 */
+	int FILE__ANNOTATIONS = RESOURCE__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '&lt;em&gt;&lt;b&gt;Name&lt;/b&gt;&lt;/em&gt;' attribute.
@@ -597,7 +624,7 @@ public interface ResourcesPackage extends EPackage {
 		 * @see org.nasdanika.exec.resources.impl.ResourcesPackageImpl#getResource()
 		 * @generated
 		 */
-<span class="fc" id="L600">		EClass RESOURCE = eINSTANCE.getResource();</span>
+<span class="fc" id="L627">		EClass RESOURCE = eINSTANCE.getResource();</span>
 
 		/**
 		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Name&lt;/b&gt;&lt;/em&gt;' attribute feature.
@@ -605,7 +632,7 @@ public interface ResourcesPackage extends EPackage {
 		 * &lt;!-- end-user-doc --&gt;
 		 * @generated
 		 */
-<span class="fc" id="L608">		EAttribute RESOURCE__NAME = eINSTANCE.getResource_Name();</span>
+<span class="fc" id="L635">		EAttribute RESOURCE__NAME = eINSTANCE.getResource_Name();</span>
 
 		/**
 		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Contents&lt;/b&gt;&lt;/em&gt;' containment reference list feature.
@@ -613,7 +640,7 @@ public interface ResourcesPackage extends EPackage {
 		 * &lt;!-- end-user-doc --&gt;
 		 * @generated
 		 */
-<span class="fc" id="L616">		EReference RESOURCE__CONTENTS = eINSTANCE.getResource_Contents();</span>
+<span class="fc" id="L643">		EReference RESOURCE__CONTENTS = eINSTANCE.getResource_Contents();</span>
 
 		/**
 		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Reconcile Action&lt;/b&gt;&lt;/em&gt;' attribute feature.
@@ -621,7 +648,7 @@ public interface ResourcesPackage extends EPackage {
 		 * &lt;!-- end-user-doc --&gt;
 		 * @generated
 		 */
-<span class="fc" id="L624">		EAttribute RESOURCE__RECONCILE_ACTION = eINSTANCE.getResource_ReconcileAction();</span>
+<span class="fc" id="L651">		EAttribute RESOURCE__RECONCILE_ACTION = eINSTANCE.getResource_ReconcileAction();</span>
 
 		/**
 		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Merger&lt;/b&gt;&lt;/em&gt;' containment reference feature.
@@ -629,7 +656,7 @@ public interface ResourcesPackage extends EPackage {
 		 * &lt;!-- end-user-doc --&gt;
 		 * @generated
 		 */
-<span class="fc" id="L632">		EReference RESOURCE__MERGER = eINSTANCE.getResource_Merger();</span>
+<span class="fc" id="L659">		EReference RESOURCE__MERGER = eINSTANCE.getResource_Merger();</span>
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.exec.resources.impl.ContainerImpl &lt;em&gt;Container&lt;/em&gt;}' class.
@@ -639,7 +666,7 @@ public interface ResourcesPackage extends EPackage {
 		 * @see org.nasdanika.exec.resources.impl.ResourcesPackageImpl#getContainer()
 		 * @generated
 		 */
-<span class="fc" id="L642">		EClass CONTAINER = eINSTANCE.getContainer();</span>
+<span class="fc" id="L669">		EClass CONTAINER = eINSTANCE.getContainer();</span>
 
 		/**
 		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Get Container&lt;/b&gt;&lt;/em&gt;' operation.
@@ -647,7 +674,7 @@ public interface ResourcesPackage extends EPackage {
 		 * &lt;!-- end-user-doc --&gt;
 		 * @generated
 		 */
-<span class="fc" id="L650">		EOperation CONTAINER___GET_CONTAINER__STRING = eINSTANCE.getContainer__GetContainer__String();</span>
+<span class="fc" id="L677">		EOperation CONTAINER___GET_CONTAINER__STRING = eINSTANCE.getContainer__GetContainer__String();</span>
 
 		/**
 		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Get File&lt;/b&gt;&lt;/em&gt;' operation.
@@ -655,7 +682,7 @@ public interface ResourcesPackage extends EPackage {
 		 * &lt;!-- end-user-doc --&gt;
 		 * @generated
 		 */
-<span class="fc" id="L658">		EOperation CONTAINER___GET_FILE__STRING = eINSTANCE.getContainer__GetFile__String();</span>
+<span class="fc" id="L685">		EOperation CONTAINER___GET_FILE__STRING = eINSTANCE.getContainer__GetFile__String();</span>
 
 		/**
 		 * The meta object literal for the '&lt;em&gt;&lt;b&gt;Find&lt;/b&gt;&lt;/em&gt;' operation.
@@ -663,7 +690,7 @@ public interface ResourcesPackage extends EPackage {
 		 * &lt;!-- end-user-doc --&gt;
 		 * @generated
 		 */
-<span class="fc" id="L666">		EOperation CONTAINER___FIND__STRING = eINSTANCE.getContainer__Find__String();</span>
+<span class="fc" id="L693">		EOperation CONTAINER___FIND__STRING = eINSTANCE.getContainer__Find__String();</span>
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.exec.resources.impl.FileImpl &lt;em&gt;File&lt;/em&gt;}' class.
@@ -673,7 +700,7 @@ public interface ResourcesPackage extends EPackage {
 		 * @see org.nasdanika.exec.resources.impl.ResourcesPackageImpl#getFile()
 		 * @generated
 		 */
-<span class="fc" id="L676">		EClass FILE = eINSTANCE.getFile();</span>
+<span class="fc" id="L703">		EClass FILE = eINSTANCE.getFile();</span>
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.exec.resources.ReconcileAction &lt;em&gt;Reconcile Action&lt;/em&gt;}' enum.
@@ -683,7 +710,7 @@ public interface ResourcesPackage extends EPackage {
 		 * @see org.nasdanika.exec.resources.impl.ResourcesPackageImpl#getReconcileAction()
 		 * @generated
 		 */
-<span class="fc" id="L686">		EEnum RECONCILE_ACTION = eINSTANCE.getReconcileAction();</span>
+<span class="fc" id="L713">		EEnum RECONCILE_ACTION = eINSTANCE.getReconcileAction();</span>
 
 	}
 

@@ -140,10 +140,16 @@ public class DocGenerator {
 		
 		Function<EPackage,String> getEPackagePath = ePackage -> {
 			if (isSameURI(ePackage, NcorePackage.eINSTANCE)) {
-				return "core/ncore";
+				return "core/ncore/model";
 			}
 			if (isSameURI(ePackage, ExecPackage.eINSTANCE)) {
 				return "core/exec/model";
+			}
+			if (isSameURI(ePackage, ContentPackage.eINSTANCE)) {
+				return "core/exec/model/content";
+			}
+			if (isSameURI(ePackage, ResourcesPackage.eINSTANCE)) {
+				return "core/exec/model/resources";
 			}
 
 			if (isSameURI(ePackage, AppPackage.eINSTANCE)) {
@@ -157,14 +163,39 @@ public class DocGenerator {
 			}
 			
 			if (isSameURI(ePackage, org.nasdanika.architecture.core.CorePackage.eINSTANCE)) {
-				return "architecture/core";
+				return "architecture/core/model";
 			}
 			if (isSameURI(ePackage, org.nasdanika.architecture.c4.C4Package.eINSTANCE)) {
-				return "architecture/c4";
+				return "architecture/c4/model";
 			}
 			
+			// Azure
+			if (isSameURI(ePackage, org.nasdanika.architecture.cloud.azure.core.CorePackage.eINSTANCE)) {
+				return "architecture/cloud/azure/core/model";
+			}
+			if (isSameURI(ePackage, org.nasdanika.architecture.cloud.azure.compute.ComputePackage.eINSTANCE)) {
+				return "architecture/cloud/azure/compute/model";
+			}
+			if (isSameURI(ePackage, org.nasdanika.architecture.cloud.azure.networking.NetworkingPackage.eINSTANCE)) {
+				return "architecture/cloud/azure/networking/model";
+			}
+			if (isSameURI(ePackage, org.nasdanika.architecture.cloud.azure.storage.StoragePackage.eINSTANCE)) {
+				return "architecture/cloud/azure/storage/model";
+			}
 			
-			// TODO - NASDAF
+			// Containers
+			if (isSameURI(ePackage, org.nasdanika.architecture.containers.docker.DockerPackage.eINSTANCE)) {
+				return "architecture/containers/docker/model";
+			}
+			if (isSameURI(ePackage, org.nasdanika.architecture.containers.kubernetes.KubernetesPackage.eINSTANCE)) {
+				return "architecture/containers/kubernetes/model";
+			}
+			if (isSameURI(ePackage, org.nasdanika.architecture.containers.helm.HelmPackage.eINSTANCE)) {
+				return "architecture/containers/helm/model";
+			}
+			
+			// Service Mesh
+			
 
 			for (int i = 0; i < Integer.MAX_VALUE; ++i) {
 				String path = i == 0 ? ePackage.getName() : ePackage.getName() + "_" + i;
@@ -219,7 +250,25 @@ public class DocGenerator {
 					return org.nasdanika.architecture.core.CorePackage.eINSTANCE;
 				case org.nasdanika.architecture.c4.C4Package.eNS_URI:
 					return org.nasdanika.architecture.c4.C4Package.eINSTANCE;
-				
+
+				// Azure
+				case org.nasdanika.architecture.cloud.azure.core.CorePackage.eNS_URI:
+					return org.nasdanika.architecture.cloud.azure.core.CorePackage.eINSTANCE;
+				case org.nasdanika.architecture.cloud.azure.compute.ComputePackage.eNS_URI:
+					return org.nasdanika.architecture.cloud.azure.compute.ComputePackage.eINSTANCE;
+				case org.nasdanika.architecture.cloud.azure.networking.NetworkingPackage.eNS_URI:
+					return org.nasdanika.architecture.cloud.azure.networking.NetworkingPackage.eINSTANCE;
+				case org.nasdanika.architecture.cloud.azure.storage.StoragePackage.eNS_URI:
+					return org.nasdanika.architecture.cloud.azure.storage.StoragePackage.eINSTANCE;
+					
+				// Containers	
+				case org.nasdanika.architecture.containers.docker.DockerPackage.eNS_URI:
+					return org.nasdanika.architecture.containers.docker.DockerPackage.eINSTANCE;
+				case org.nasdanika.architecture.containers.kubernetes.KubernetesPackage.eNS_URI:
+					return org.nasdanika.architecture.containers.kubernetes.KubernetesPackage.eINSTANCE;
+				case org.nasdanika.architecture.containers.helm.HelmPackage.eNS_URI:
+					return org.nasdanika.architecture.containers.helm.HelmPackage.eINSTANCE;
+					
 				default:
 					return super.getEPackage(nsURI);
 				}
@@ -239,7 +288,16 @@ public class DocGenerator {
 
 		bundleMap.put("architecture/core", "org.nasdanika.architecture.core");
 		bundleMap.put("architecture/c4", "org.nasdanika.architecture.c4");
-	
+
+		bundleMap.put("architecture/cloud/azure/core", "org.nasdanika.architecture.cloud.azure.core");
+		bundleMap.put("architecture/cloud/azure/compute", "org.nasdanika.architecture.cloud.azure.compute");
+		bundleMap.put("architecture/cloud/azure/networking", "org.nasdanika.architecture.cloud.azure.networking");
+		bundleMap.put("architecture/cloud/azure/storage", "org.nasdanika.architecture.cloud.azure.storage");
+		
+		bundleMap.put("architecture/containers/docker", "org.nasdanika.architecture.containers.docker");
+		bundleMap.put("architecture/containers/kubernetes", "org.nasdanika.architecture.containers.kubernetes");
+		bundleMap.put("architecture/containers/helm", "org.nasdanika.architecture.containers.helm");
+		
 		File modelDir = new File("target/models").getAbsoluteFile();
 		modelDir.mkdirs();
 		
@@ -255,7 +313,7 @@ public class DocGenerator {
 			File targetDir = new File(modelDir, be.getValue());
 			org.nasdanika.common.Util.copy(new File(sourceDir, "model"), new File(targetDir, "model"), true, (source, target) -> {
 				if (target.getName().endsWith(".genmodel")) {
-					modelToActionModelMap.put(URI.createFileURI(target.getAbsolutePath()), new File(modelDocActionsDir, target.getName() + ".xml"));
+					modelToActionModelMap.put(URI.createFileURI(target.getAbsolutePath()), new File(modelDocActionsDir, be.getValue() + "." + target.getName() + ".xml"));
 				}
 			});			
 			org.nasdanika.common.Util.copy(new File(sourceDir, "doc"), new File(targetDir, "doc"), true, null);

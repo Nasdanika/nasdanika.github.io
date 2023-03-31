@@ -577,38 +577,44 @@ public class EClassActionSupplier extends EClassifierActionSupplier&lt;EClass&gt
 <span class="nc" id="L577">					return appendOperations;</span>
 				}
 				
+				@Override
+				protected String qualifiedName(EClassifier eClassifier) {
+<span class="nc" id="L582">					Class&lt;?&gt; ic = getInstanceClass(eClassifier, ePackageResolver);</span>
+<span class="nc bnc" id="L583" title="All 2 branches missed.">					return ic == null ? super.qualifiedName(eClassifier) : ic.getName();</span>
+				}
+				
 			};
 		case DiagramGenerator.MERMAID_DIALECT:
-<span class="nc" id="L582">			return new MermaidTextGenerator(sb, elementPredicate, ec -&gt; path(ec, eObject), this::getEModelElementFirstDocSentence) {</span>
+<span class="nc" id="L588">			return new MermaidTextGenerator(sb, elementPredicate, ec -&gt; path(ec, eObject), this::getEModelElementFirstDocSentence) {</span>
 				
 				@Override
 				protected Collection&lt;EClass&gt; getSubTypes(EClass eClass) {
-<span class="nc" id="L586">					return EClassActionSupplier.this.getSubTypes(eClass);</span>
+<span class="nc" id="L592">					return EClassActionSupplier.this.getSubTypes(eClass);</span>
 				}
 				
 				@Override
 				protected Collection&lt;EClass&gt; getReferrers(EClass eClass) {
-<span class="nc" id="L591">					return EClassActionSupplier.this.getReferrers(eClass);</span>
+<span class="nc" id="L597">					return EClassActionSupplier.this.getReferrers(eClass);</span>
 				}
 				
 				@Override
 				protected Collection&lt;EClass&gt; getUses(EClassifier eClassifier) {
-<span class="nc" id="L596">					return EClassActionSupplier.this.getUses(eClassifier);</span>
+<span class="nc" id="L602">					return EClassActionSupplier.this.getUses(eClassifier);</span>
 				}
 				
 				@Override
 				protected boolean isAppendAttributes(EClass eClass) {
-<span class="nc" id="L601">					return appendAttributes;</span>
+<span class="nc" id="L607">					return appendAttributes;</span>
 				}
 				
 				@Override
 				protected boolean isAppendOperations(EClass eClass) {
-<span class="nc" id="L606">					return appendOperations;</span>
+<span class="nc" id="L612">					return appendOperations;</span>
 				}
 				
 			};
 		default:
-<span class="nc" id="L611">			throw new UnsupportedOperationException(&quot;Unsupported dialect: &quot; + dialect);</span>
+<span class="nc" id="L617">			throw new UnsupportedOperationException(&quot;Unsupported dialect: &quot; + dialect);</span>
 		}					
 	}
 	
@@ -619,17 +625,17 @@ public class EClassActionSupplier extends EClassifierActionSupplier&lt;EClass&gt
 			boolean appendOperations,
 			ProgressMonitor monitor) {
 
-<span class="fc" id="L622">		DiagramGenerator diagramGenerator = context.get(DiagramGenerator.class);		</span>
+<span class="fc" id="L628">		DiagramGenerator diagramGenerator = context.get(DiagramGenerator.class);		</span>
 		
-<span class="fc" id="L624">		StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L630">		StringBuilder sb = new StringBuilder();</span>
 
-<span class="fc" id="L626">		DiagramTextGenerator gen = getDiagramTextGenerator(sb, appendAttributes, appendOperations);</span>
-<span class="pc bpc" id="L627" title="1 of 2 branches missed.">		if (gen == null) {</span>
-<span class="fc" id="L628">			return null;</span>
+<span class="fc" id="L632">		DiagramTextGenerator gen = getDiagramTextGenerator(sb, appendAttributes, appendOperations);</span>
+<span class="pc bpc" id="L633" title="1 of 2 branches missed.">		if (gen == null) {</span>
+<span class="fc" id="L634">			return null;</span>
 		}
-<span class="nc" id="L630">		gen.appendWithRelationships(Collections.singleton(eObject), relationshipDirection, depth);</span>
+<span class="nc" id="L636">		gen.appendWithRelationships(Collections.singleton(eObject), relationshipDirection, depth);</span>
 		
-<span class="nc" id="L632">		return diagramGenerator.generateUmlDiagram(sb.toString());</span>
+<span class="nc" id="L638">		return diagramGenerator.generateUmlDiagram(sb.toString());</span>
 	}
 		
 	/**
@@ -640,31 +646,31 @@ public class EClassActionSupplier extends EClassifierActionSupplier&lt;EClass&gt
 	 */
 	protected Collection&lt;EClass&gt; getSubTypes(EClass eClass) {
 		TreeIterator&lt;?&gt; acit;
-<span class="fc" id="L643">		Resource eResource = eClass.eResource();</span>
-<span class="pc bpc" id="L644" title="1 of 2 branches missed.">		if (eResource == null) {</span>
-<span class="nc" id="L645">			EPackage ePackage = eClass.getEPackage();</span>
-<span class="nc bnc" id="L646" title="All 2 branches missed.">			if (ePackage == null) {</span>
-<span class="nc" id="L647">				return Collections.emptySet();</span>
+<span class="fc" id="L649">		Resource eResource = eClass.eResource();</span>
+<span class="pc bpc" id="L650" title="1 of 2 branches missed.">		if (eResource == null) {</span>
+<span class="nc" id="L651">			EPackage ePackage = eClass.getEPackage();</span>
+<span class="nc bnc" id="L652" title="All 2 branches missed.">			if (ePackage == null) {</span>
+<span class="nc" id="L653">				return Collections.emptySet();</span>
 			}
-<span class="nc" id="L649">			acit = ePackage.eAllContents();</span>
-<span class="nc" id="L650">		} else {</span>
-<span class="fc" id="L651">			ResourceSet resourceSet = eResource.getResourceSet();</span>
-<span class="pc bpc" id="L652" title="1 of 2 branches missed.">			acit = resourceSet == null ? eResource.getAllContents() : resourceSet.getAllContents();</span>
+<span class="nc" id="L655">			acit = ePackage.eAllContents();</span>
+<span class="nc" id="L656">		} else {</span>
+<span class="fc" id="L657">			ResourceSet resourceSet = eResource.getResourceSet();</span>
+<span class="pc bpc" id="L658" title="1 of 2 branches missed.">			acit = resourceSet == null ? eResource.getAllContents() : resourceSet.getAllContents();</span>
 		}
-<span class="fc" id="L654">		Set&lt;EClass&gt; ret = new HashSet&lt;&gt;();</span>
-<span class="fc" id="L655">		acit.forEachRemaining(obj -&gt; {</span>
-<span class="fc bfc" id="L656" title="All 4 branches covered.">			if (obj instanceof EClass &amp;&amp; ((EClass) obj).getESuperTypes().contains(eClass)) {</span>
-<span class="fc" id="L657">				ret.add((EClass) obj);</span>
+<span class="fc" id="L660">		Set&lt;EClass&gt; ret = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L661">		acit.forEachRemaining(obj -&gt; {</span>
+<span class="fc bfc" id="L662" title="All 4 branches covered.">			if (obj instanceof EClass &amp;&amp; ((EClass) obj).getESuperTypes().contains(eClass)) {</span>
+<span class="fc" id="L663">				ret.add((EClass) obj);</span>
 			}
-<span class="fc" id="L659">		});</span>
-<span class="fc" id="L660">		return ret;</span>
+<span class="fc" id="L665">		});</span>
+<span class="fc" id="L666">		return ret;</span>
 	}
 			
 	/**
 	 * @return Referrers to this class
 	 */	
 	protected Collection&lt;EClass&gt; getReferrers() {
-<span class="fc" id="L667">		return getReferrers(eObject);</span>
+<span class="fc" id="L673">		return getReferrers(eObject);</span>
 	}
 	
 }

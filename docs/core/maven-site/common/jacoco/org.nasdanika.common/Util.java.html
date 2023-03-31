@@ -790,21 +790,33 @@ public class Util {
 	 */
 	public static &lt;K, T&gt; Map&lt;K, List&lt;T&gt;&gt; groupBy(Collection&lt;T&gt; elements, java.util.function.Function&lt;? super T, ? extends K&gt; classifier) {
 <span class="nc" id="L792">		Map&lt;K, List&lt;T&gt;&gt; ret = new LinkedHashMap&lt;&gt;();</span>
-<span class="nc bnc" id="L793" title="All 2 branches missed.">		for (T e: elements) {</span>
-<span class="nc" id="L794">			K k = classifier.apply(e);</span>
-<span class="nc" id="L795">			ret.computeIfAbsent(k, key -&gt; new ArrayList&lt;&gt;()).add(e);</span>
-<span class="nc" id="L796">		}</span>
-<span class="nc" id="L797">		return ret;</span>
+<span class="nc" id="L793">		groupBy(elements, classifier, ret);</span>
+<span class="nc" id="L794">		return ret;</span>
 	}	
+	
+	/**
+	 * Grouping by with support of null keys.
+	 * @param &lt;K&gt;
+	 * @param &lt;T&gt;
+	 * @param elements
+	 * @param keyFeature
+	 * @return
+	 */
+	public static &lt;K, T&gt; void groupBy(Collection&lt;T&gt; elements, java.util.function.Function&lt;? super T, ? extends K&gt; classifier, Map&lt;K, List&lt;T&gt;&gt; collector) {
+<span class="nc bnc" id="L806" title="All 2 branches missed.">		for (T e: elements) {</span>
+<span class="nc" id="L807">			K k = classifier.apply(e);</span>
+<span class="nc" id="L808">			collector.computeIfAbsent(k, key -&gt; new ArrayList&lt;&gt;()).add(e);</span>
+<span class="nc" id="L809">		}</span>
+<span class="nc" id="L810">	}	</span>
 
 	// --- Property computers
 	
 	public static PropertyComputer createEmbeddedImagePropertyComputer(java.util.function.Function&lt;String,URL&gt; resolver) {
-<span class="nc" id="L803">		return new PropertyComputer() {</span>
+<span class="nc" id="L815">		return new PropertyComputer() {</span>
 			
 			@Override
 			public &lt;T&gt; T compute(Context context, String key, String path, Class&lt;T&gt; type) {
-<span class="nc" id="L807">				return computeEmbeddedImage(context, key, path, type, resolver);</span>
+<span class="nc" id="L819">				return computeEmbeddedImage(context, key, path, type, resolver);</span>
 			}
 			
 		};
@@ -812,41 +824,41 @@ public class Util {
 	
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public static &lt;U&gt; U computeEmbeddedImage(Context context, String key, String path, Class&lt;U&gt; type, java.util.function.Function&lt;String,URL&gt; resolver) { 
-<span class="nc bnc" id="L815" title="All 4 branches missed.">		if (type == null || type == String.class) { </span>
-<span class="nc" id="L816">			int idx = path.indexOf(&quot;/&quot;); </span>
-<span class="nc bnc" id="L817" title="All 2 branches missed.">			if (idx == -1) { </span>
-<span class="nc" id="L818">				return null;</span>
+<span class="nc bnc" id="L827" title="All 4 branches missed.">		if (type == null || type == String.class) { </span>
+<span class="nc" id="L828">			int idx = path.indexOf(&quot;/&quot;); </span>
+<span class="nc bnc" id="L829" title="All 2 branches missed.">			if (idx == -1) { </span>
+<span class="nc" id="L830">				return null;</span>
 			}
-<span class="nc" id="L820">			StringBuilder imageTag = new StringBuilder(&quot;&lt;img src=\&quot;&quot;);</span>
-<span class="nc" id="L821">			imageTag.append(computeEmbeddedImageData(context, key, path, type, resolver));</span>
-<span class="nc" id="L822">			imageTag.append(&quot;\&quot;/&gt;&quot;); </span>
-<span class="nc" id="L823">			String imagePath = path.substring(idx + 1).trim(); </span>
-<span class="nc" id="L824">			int spaceIdx = imagePath.indexOf(' ');</span>
-<span class="nc bnc" id="L825" title="All 2 branches missed.">			if (spaceIdx == -1) {</span>
-<span class="nc" id="L826">				return (U) imageTag.toString();</span>
+<span class="nc" id="L832">			StringBuilder imageTag = new StringBuilder(&quot;&lt;img src=\&quot;&quot;);</span>
+<span class="nc" id="L833">			imageTag.append(computeEmbeddedImageData(context, key, path, type, resolver));</span>
+<span class="nc" id="L834">			imageTag.append(&quot;\&quot;/&gt;&quot;); </span>
+<span class="nc" id="L835">			String imagePath = path.substring(idx + 1).trim(); </span>
+<span class="nc" id="L836">			int spaceIdx = imagePath.indexOf(' ');</span>
+<span class="nc bnc" id="L837" title="All 2 branches missed.">			if (spaceIdx == -1) {</span>
+<span class="nc" id="L838">				return (U) imageTag.toString();</span>
 			}
 			
-<span class="nc" id="L829">			StringBuilder tableBuilder = new StringBuilder(&quot;&lt;table style=\&quot;width:auto\&quot; class=\&quot;table\&quot;&gt;&quot;).append(System.lineSeparator())</span>
-<span class="nc" id="L830">					.append(&quot;  &lt;tbody&gt;&quot;).append(System.lineSeparator())</span>
-<span class="nc" id="L831">					.append(&quot;    &lt;tr&gt;&quot;).append(System.lineSeparator())</span>
-<span class="nc" id="L832">					.append(&quot;      &lt;td&gt;&quot;).append(imageTag).append(&quot;&lt;/td&gt;&quot;).append(System.lineSeparator())</span>
-<span class="nc" id="L833">					.append(&quot;    &lt;/tr&gt;&quot;).append(System.lineSeparator())</span>
-<span class="nc" id="L834">					.append(&quot;    &lt;tr class=\&quot;bg-light\&quot;&gt;&quot;).append(System.lineSeparator())</span>
-<span class="nc" id="L835">					.append(&quot;      &lt;td&gt;&quot;).append(imagePath.substring(spaceIdx + 1)).append(&quot;&lt;/td&gt;&quot;).append(System.lineSeparator())</span>
-<span class="nc" id="L836">					.append(&quot;    &lt;/tr&gt;&quot;).append(System.lineSeparator())</span>
-<span class="nc" id="L837">					.append(&quot;  &lt;/tbody&gt;&quot;).append(System.lineSeparator())</span>
-<span class="nc" id="L838">					.append(&quot;&lt;/table&gt;&quot;).append(System.lineSeparator());</span>
-<span class="nc" id="L839">			return (U) tableBuilder.toString();</span>
+<span class="nc" id="L841">			StringBuilder tableBuilder = new StringBuilder(&quot;&lt;table style=\&quot;width:auto\&quot; class=\&quot;table\&quot;&gt;&quot;).append(System.lineSeparator())</span>
+<span class="nc" id="L842">					.append(&quot;  &lt;tbody&gt;&quot;).append(System.lineSeparator())</span>
+<span class="nc" id="L843">					.append(&quot;    &lt;tr&gt;&quot;).append(System.lineSeparator())</span>
+<span class="nc" id="L844">					.append(&quot;      &lt;td&gt;&quot;).append(imageTag).append(&quot;&lt;/td&gt;&quot;).append(System.lineSeparator())</span>
+<span class="nc" id="L845">					.append(&quot;    &lt;/tr&gt;&quot;).append(System.lineSeparator())</span>
+<span class="nc" id="L846">					.append(&quot;    &lt;tr class=\&quot;bg-light\&quot;&gt;&quot;).append(System.lineSeparator())</span>
+<span class="nc" id="L847">					.append(&quot;      &lt;td&gt;&quot;).append(imagePath.substring(spaceIdx + 1)).append(&quot;&lt;/td&gt;&quot;).append(System.lineSeparator())</span>
+<span class="nc" id="L848">					.append(&quot;    &lt;/tr&gt;&quot;).append(System.lineSeparator())</span>
+<span class="nc" id="L849">					.append(&quot;  &lt;/tbody&gt;&quot;).append(System.lineSeparator())</span>
+<span class="nc" id="L850">					.append(&quot;&lt;/table&gt;&quot;).append(System.lineSeparator());</span>
+<span class="nc" id="L851">			return (U) tableBuilder.toString();</span>
 		}
-<span class="nc" id="L841">		return null;</span>
+<span class="nc" id="L853">		return null;</span>
 	}
 	
 	public static PropertyComputer createEmbeddedImageDataPropertyComputer(java.util.function.Function&lt;String,URL&gt; resolver) {
-<span class="nc" id="L845">		return new PropertyComputer() {</span>
+<span class="nc" id="L857">		return new PropertyComputer() {</span>
 			
 			@Override
 			public &lt;T&gt; T compute(Context context, String key, String path, Class&lt;T&gt; type) {
-<span class="nc" id="L849">				return computeEmbeddedImageData(context, key, path, type, resolver);</span>
+<span class="nc" id="L861">				return computeEmbeddedImageData(context, key, path, type, resolver);</span>
 			}
 			
 		};
@@ -854,33 +866,33 @@ public class Util {
 		
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public static &lt;U&gt; U computeEmbeddedImageData(Context context, String key, String path, Class&lt;U&gt; type, java.util.function.Function&lt;String,URL&gt; resolver) { 
-<span class="nc bnc" id="L857" title="All 4 branches missed.">		if (type == null || type == String.class) { </span>
-<span class="nc" id="L858">			int idx = path.indexOf(&quot;/&quot;); </span>
-<span class="nc bnc" id="L859" title="All 2 branches missed.">			if (idx == -1) { </span>
-<span class="nc" id="L860">				return null;</span>
+<span class="nc bnc" id="L869" title="All 4 branches missed.">		if (type == null || type == String.class) { </span>
+<span class="nc" id="L870">			int idx = path.indexOf(&quot;/&quot;); </span>
+<span class="nc bnc" id="L871" title="All 2 branches missed.">			if (idx == -1) { </span>
+<span class="nc" id="L872">				return null;</span>
 			}
 			try {
-<span class="nc" id="L863">				StringBuilder imageData = new StringBuilder(&quot;data:image/&quot; + path.substring(0, idx) + &quot;;base64,&quot;);</span>
-<span class="nc" id="L864">				String imagePath = path.substring(idx + 1).trim(); </span>
-<span class="nc" id="L865">				int spaceIdx = imagePath.indexOf(' ');</span>
-<span class="nc bnc" id="L866" title="All 2 branches missed.">				URL imageURL = resolver.apply(spaceIdx == -1 ? imagePath : imagePath.substring(0, spaceIdx));</span>
-<span class="nc" id="L867">				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE); </span>
-<span class="nc" id="L868">				byte[] imageBytes = converter.convert(imageURL.openStream(), byte[].class); </span>
-<span class="nc" id="L869">				imageData.append(Base64.getEncoder().encodeToString(imageBytes)); </span>
-<span class="nc" id="L870">				return (U) imageData.toString();</span>
-<span class="nc" id="L871">			} catch (Exception e) {</span>
-<span class="nc" id="L872">				throw new NasdanikaException(&quot;Error embedding image data '&quot; + path + &quot;': &quot; + e, e);</span>
+<span class="nc" id="L875">				StringBuilder imageData = new StringBuilder(&quot;data:image/&quot; + path.substring(0, idx) + &quot;;base64,&quot;);</span>
+<span class="nc" id="L876">				String imagePath = path.substring(idx + 1).trim(); </span>
+<span class="nc" id="L877">				int spaceIdx = imagePath.indexOf(' ');</span>
+<span class="nc bnc" id="L878" title="All 2 branches missed.">				URL imageURL = resolver.apply(spaceIdx == -1 ? imagePath : imagePath.substring(0, spaceIdx));</span>
+<span class="nc" id="L879">				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE); </span>
+<span class="nc" id="L880">				byte[] imageBytes = converter.convert(imageURL.openStream(), byte[].class); </span>
+<span class="nc" id="L881">				imageData.append(Base64.getEncoder().encodeToString(imageBytes)); </span>
+<span class="nc" id="L882">				return (U) imageData.toString();</span>
+<span class="nc" id="L883">			} catch (Exception e) {</span>
+<span class="nc" id="L884">				throw new NasdanikaException(&quot;Error embedding image data '&quot; + path + &quot;': &quot; + e, e);</span>
 			}
 		}
-<span class="nc" id="L875">		return null;</span>
+<span class="nc" id="L887">		return null;</span>
 	}
 	
 	public static PropertyComputer createIncludePropertyComputer(java.util.function.Function&lt;String,URL&gt; resolver) {
-<span class="nc" id="L879">		return new PropertyComputer() {</span>
+<span class="nc" id="L891">		return new PropertyComputer() {</span>
 			
 			@Override
 			public &lt;T&gt; T compute(Context context, String key, String path, Class&lt;T&gt; type) {
-<span class="nc" id="L883">				return computeInclude(context, key, path, type, resolver);</span>
+<span class="nc" id="L895">				return computeInclude(context, key, path, type, resolver);</span>
 			}
 			
 		};
@@ -888,43 +900,43 @@ public class Util {
 	
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public static &lt;U&gt; U computeInclude(Context context, String key, String path, Class&lt;U&gt; type, java.util.function.Function&lt;String,URL&gt; resolver) { 
-<span class="nc bnc" id="L891" title="All 4 branches missed.">		if (type == null || type == String.class) { </span>
+<span class="nc bnc" id="L903" title="All 4 branches missed.">		if (type == null || type == String.class) { </span>
 			try {
-<span class="nc" id="L893">				URL includeURL = resolver.apply(path);</span>
-<span class="nc" id="L894">				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE);</span>
-<span class="nc" id="L895">				String includeContent = converter.convert(includeURL.openStream(), String.class); </span>
-<span class="nc" id="L896">				return (U) context.interpolateToString(includeContent);</span>
-<span class="nc" id="L897">			} catch (Exception e) {</span>
-<span class="nc" id="L898">				throw new NasdanikaException(&quot;Error including '&quot; + path +	&quot;': &quot; + e, e);</span>
+<span class="nc" id="L905">				URL includeURL = resolver.apply(path);</span>
+<span class="nc" id="L906">				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE);</span>
+<span class="nc" id="L907">				String includeContent = converter.convert(includeURL.openStream(), String.class); </span>
+<span class="nc" id="L908">				return (U) context.interpolateToString(includeContent);</span>
+<span class="nc" id="L909">			} catch (Exception e) {</span>
+<span class="nc" id="L910">				throw new NasdanikaException(&quot;Error including '&quot; + path +	&quot;': &quot; + e, e);</span>
 			}
 		}
-<span class="nc" id="L901">		return null;</span>
+<span class="nc" id="L913">		return null;</span>
 	}
 	
 	public static PropertyComputer createIncludeMarkdownPropertyComputer(java.util.function.Function&lt;String,URL&gt; resolver) {
-<span class="nc" id="L905">		return new PropertyComputer() {</span>
+<span class="nc" id="L917">		return new PropertyComputer() {</span>
 			
 			@Override
 			public &lt;T&gt; T compute(Context context, String key, String path, Class&lt;T&gt; type) {
-<span class="nc" id="L909">				return computeIncludeMarkdown(context, key, path, type, resolver);</span>
+<span class="nc" id="L921">				return computeIncludeMarkdown(context, key, path, type, resolver);</span>
 			}
 		};
 	}
 	
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public static &lt;U&gt; U computeIncludeMarkdown(Context context, String key, String path, Class&lt;U&gt; type, java.util.function.Function&lt;String,URL&gt; resolver) { 
-<span class="nc bnc" id="L916" title="All 4 branches missed.">		if (type == null || type == String.class) {</span>
+<span class="nc bnc" id="L928" title="All 4 branches missed.">		if (type == null || type == String.class) {</span>
 			try {
-<span class="nc" id="L918">				URL includeURL = resolver.apply(path);</span>
-<span class="nc" id="L919">				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE);</span>
-<span class="nc" id="L920">				String markdown = converter.convert(includeURL.openStream(), String.class);</span>
-<span class="nc" id="L921">				String html = context.get(MarkdownHelper.class, MarkdownHelper.INSTANCE).markdownToHtml(markdown);</span>
-<span class="nc" id="L922">				return (U) context. interpolateToString(html) ;</span>
-<span class="nc" id="L923">			} catch (Exception e) {</span>
-<span class="nc" id="L924">				throw new NasdanikaException(&quot;Error including markdown '&quot; + path + &quot;': &quot; + e, e);</span>
+<span class="nc" id="L930">				URL includeURL = resolver.apply(path);</span>
+<span class="nc" id="L931">				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE);</span>
+<span class="nc" id="L932">				String markdown = converter.convert(includeURL.openStream(), String.class);</span>
+<span class="nc" id="L933">				String html = context.get(MarkdownHelper.class, MarkdownHelper.INSTANCE).markdownToHtml(markdown);</span>
+<span class="nc" id="L934">				return (U) context. interpolateToString(html) ;</span>
+<span class="nc" id="L935">			} catch (Exception e) {</span>
+<span class="nc" id="L936">				throw new NasdanikaException(&quot;Error including markdown '&quot; + path + &quot;': &quot; + e, e);</span>
 			}
 		}
-<span class="nc" id="L927">		return null;</span>
+<span class="nc" id="L939">		return null;</span>
 	}
 	
 	/**
@@ -935,7 +947,7 @@ public class Util {
 	 */
 	@SuppressWarnings({ &quot;unchecked&quot;, &quot;rawtypes&quot; })
 	public static &lt;T&gt; Class&lt;SupplierFactory&lt;T&gt;&gt; getSupplierFactoryClass(Class&lt;T&gt; type) {
-<span class="nc" id="L938">		return (Class&lt;SupplierFactory&lt;T&gt;&gt;) (Class) SupplierFactory.class;</span>
+<span class="nc" id="L950">		return (Class&lt;SupplierFactory&lt;T&gt;&gt;) (Class) SupplierFactory.class;</span>
 	}
 	
 	/**
@@ -946,7 +958,7 @@ public class Util {
 	 */
 	@SuppressWarnings({ &quot;unchecked&quot;, &quot;rawtypes&quot; })
 	public static &lt;T&gt; Class&lt;ConsumerFactory&lt;T&gt;&gt; getConsumerFactoryClass(Class&lt;T&gt; type) {
-<span class="nc" id="L949">		return (Class&lt;ConsumerFactory&lt;T&gt;&gt;) (Class) ConsumerFactory.class;</span>
+<span class="nc" id="L961">		return (Class&lt;ConsumerFactory&lt;T&gt;&gt;) (Class) ConsumerFactory.class;</span>
 	}
 	
 	/**
@@ -957,7 +969,7 @@ public class Util {
 	 */
 	@SuppressWarnings({ &quot;unchecked&quot;, &quot;rawtypes&quot; })
 	public static &lt;T,R&gt; Class&lt;FunctionFactory&lt;T,R&gt;&gt; getFunctionFactoryClass(Class&lt;T&gt; type, Class&lt;R&gt; returnType) {
-<span class="nc" id="L960">		return (Class&lt;FunctionFactory&lt;T,R&gt;&gt;) (Class) FunctionFactory.class;</span>
+<span class="nc" id="L972">		return (Class&lt;FunctionFactory&lt;T,R&gt;&gt;) (Class) FunctionFactory.class;</span>
 	}
 
 	/**
@@ -968,11 +980,11 @@ public class Util {
 	 * @return
 	 */
 	public static String wrap(String text, int initialLineWidth, int widthIncrementPerLine, String separator) {
-<span class="nc bnc" id="L971" title="All 4 branches missed.">		if (Util.isBlank(text) || text.length() &lt; initialLineWidth) { </span>
-<span class="nc" id="L972">			return text;</span>
+<span class="nc bnc" id="L983" title="All 4 branches missed.">		if (Util.isBlank(text) || text.length() &lt; initialLineWidth) { </span>
+<span class="nc" id="L984">			return text;</span>
 		}
-<span class="nc" id="L974">		double lines = quadraticRoot(widthIncrementPerLine, initialLineWidth - widthIncrementPerLine, -text.length()); </span>
-<span class="nc" id="L975">		return WordUtils.wrap(text, initialLineWidth + (int) (widthIncrementPerLine * Math.ceil(lines)), separator, false);</span>
+<span class="nc" id="L986">		double lines = quadraticRoot(widthIncrementPerLine, initialLineWidth - widthIncrementPerLine, -text.length()); </span>
+<span class="nc" id="L987">		return WordUtils.wrap(text, initialLineWidth + (int) (widthIncrementPerLine * Math.ceil(lines)), separator, false);</span>
 	}
 	
 	/**
@@ -990,29 +1002,29 @@ public class Util {
 			int widthIncrementPerLine, 
 			java.util.function.Supplier&lt;T&gt; wordSeparatorSupplier,			
 			java.util.function.Supplier&lt;T&gt; lineSeparatorSupplier) {
-<span class="nc" id="L993">		int length = elements.stream().mapToInt(elementLengthComputer).sum();		</span>
-<span class="nc" id="L994">		int wrapLength = initialLineWidth;</span>
-<span class="nc bnc" id="L995" title="All 2 branches missed.">		if (length &gt; initialLineWidth) { </span>
-<span class="nc" id="L996">			wrapLength += (int) (widthIncrementPerLine * Math.ceil(quadraticRoot(widthIncrementPerLine, initialLineWidth - widthIncrementPerLine, -length)));</span>
+<span class="nc" id="L1005">		int length = elements.stream().mapToInt(elementLengthComputer).sum();		</span>
+<span class="nc" id="L1006">		int wrapLength = initialLineWidth;</span>
+<span class="nc bnc" id="L1007" title="All 2 branches missed.">		if (length &gt; initialLineWidth) { </span>
+<span class="nc" id="L1008">			wrapLength += (int) (widthIncrementPerLine * Math.ceil(quadraticRoot(widthIncrementPerLine, initialLineWidth - widthIncrementPerLine, -length)));</span>
 		}
-<span class="nc" id="L998">		List&lt;T&gt; ret = new ArrayList&lt;T&gt;();</span>
-<span class="nc" id="L999">		int lineLength = 0;</span>
-<span class="nc bnc" id="L1000" title="All 2 branches missed.">		for (T element: elements) {</span>
-<span class="nc bnc" id="L1001" title="All 2 branches missed.">			if (lineLength &gt; wrapLength) {</span>
-<span class="nc" id="L1002">				ret.add(lineSeparatorSupplier.get());</span>
-<span class="nc" id="L1003">				lineLength = 0;</span>
+<span class="nc" id="L1010">		List&lt;T&gt; ret = new ArrayList&lt;T&gt;();</span>
+<span class="nc" id="L1011">		int lineLength = 0;</span>
+<span class="nc bnc" id="L1012" title="All 2 branches missed.">		for (T element: elements) {</span>
+<span class="nc bnc" id="L1013" title="All 2 branches missed.">			if (lineLength &gt; wrapLength) {</span>
+<span class="nc" id="L1014">				ret.add(lineSeparatorSupplier.get());</span>
+<span class="nc" id="L1015">				lineLength = 0;</span>
 			} 
-<span class="nc bnc" id="L1005" title="All 2 branches missed.">			if (lineLength &gt; 0) {</span>
-<span class="nc" id="L1006">				ret.add(wordSeparatorSupplier.get());</span>
+<span class="nc bnc" id="L1017" title="All 2 branches missed.">			if (lineLength &gt; 0) {</span>
+<span class="nc" id="L1018">				ret.add(wordSeparatorSupplier.get());</span>
 			}
-<span class="nc" id="L1008">			ret.add(element);</span>
-<span class="nc" id="L1009">			lineLength += elementLengthComputer.applyAsInt(element);</span>
-<span class="nc" id="L1010">		}</span>
-<span class="nc" id="L1011">		return ret;</span>
+<span class="nc" id="L1020">			ret.add(element);</span>
+<span class="nc" id="L1021">			lineLength += elementLengthComputer.applyAsInt(element);</span>
+<span class="nc" id="L1022">		}</span>
+<span class="nc" id="L1023">		return ret;</span>
 	}	
 	
 	private static double quadraticRoot(double a, double b, double c) { 
-<span class="nc" id="L1015">		return (-b + Math.sqrt(b*b - 4 * a * c)) / (2 * a);</span>
+<span class="nc" id="L1027">		return (-b + Math.sqrt(b*b - 4 * a * c)) / (2 * a);</span>
 	}
 	
 	private static final String PACKAGE_SUMMARY_HTML = &quot;package-summary.html&quot;;
@@ -1020,7 +1032,7 @@ public class Util {
 	/**
 	 * Java 8 uses package-list, Java 11 uses element-list.
 	 */
-<span class="fc" id="L1023">	private static final String[] PACKAGE_LIST_LOCATIONS = { &quot;package-list&quot;, &quot;element-list&quot; };	</span>
+<span class="fc" id="L1035">	private static final String[] PACKAGE_LIST_LOCATIONS = { &quot;package-list&quot;, &quot;element-list&quot; };	</span>
 	
 	private static final String MODULE_PREFIX = &quot;module:&quot;;
 	
@@ -1032,99 +1044,99 @@ public class Util {
 	 */
 	public static java.util.function.Function&lt;String, String&gt; createJavadocResolver(Map&lt;URL,URL&gt; urls, ProgressMonitor progressMonitor) {
 		// package -&gt; Base URL.
-<span class="nc" id="L1035">		Map&lt;String,String&gt; unsortedPackageMap = new HashMap&lt;&gt;();		</span>
-<span class="nc" id="L1036">		progressMonitor.setWorkRemaining(urls.size());</span>
-<span class="nc bnc" id="L1037" title="All 2 branches missed.">		Z: for (Map.Entry&lt;URL, URL&gt; urlEntry: urls.entrySet()) {</span>
-<span class="nc bnc" id="L1038" title="All 2 branches missed.">			for (String packageListLocation: PACKAGE_LIST_LOCATIONS) {</span>
-<span class="nc" id="L1039">				try (BufferedReader br = new BufferedReader(new InputStreamReader(new URL(urlEntry.getValue(), packageListLocation).openStream()))) {</span>
-<span class="nc" id="L1040">					String module = null;</span>
+<span class="nc" id="L1047">		Map&lt;String,String&gt; unsortedPackageMap = new HashMap&lt;&gt;();		</span>
+<span class="nc" id="L1048">		progressMonitor.setWorkRemaining(urls.size());</span>
+<span class="nc bnc" id="L1049" title="All 2 branches missed.">		Z: for (Map.Entry&lt;URL, URL&gt; urlEntry: urls.entrySet()) {</span>
+<span class="nc bnc" id="L1050" title="All 2 branches missed.">			for (String packageListLocation: PACKAGE_LIST_LOCATIONS) {</span>
+<span class="nc" id="L1051">				try (BufferedReader br = new BufferedReader(new InputStreamReader(new URL(urlEntry.getValue(), packageListLocation).openStream()))) {</span>
+<span class="nc" id="L1052">					String module = null;</span>
 					String line;
-<span class="nc bnc" id="L1042" title="All 2 branches missed.">					while ((line = br.readLine()) != null) {</span>
-<span class="nc bnc" id="L1043" title="All 2 branches missed.">						if (line.startsWith(MODULE_PREFIX)) {</span>
-<span class="nc" id="L1044">							module = line.substring(MODULE_PREFIX.length()); </span>
+<span class="nc bnc" id="L1054" title="All 2 branches missed.">					while ((line = br.readLine()) != null) {</span>
+<span class="nc bnc" id="L1055" title="All 2 branches missed.">						if (line.startsWith(MODULE_PREFIX)) {</span>
+<span class="nc" id="L1056">							module = line.substring(MODULE_PREFIX.length()); </span>
 						} else {
-<span class="nc bnc" id="L1046" title="All 2 branches missed.">							String packageLocation = urlEntry.getKey().toString() + (module == null ? &quot;index.html?&quot; : module + &quot;/&quot;);</span>
-<span class="nc" id="L1047">							unsortedPackageMap.put(line.trim(), packageLocation);</span>
-<span class="nc" id="L1048">						}</span>
+<span class="nc bnc" id="L1058" title="All 2 branches missed.">							String packageLocation = urlEntry.getKey().toString() + (module == null ? &quot;index.html?&quot; : module + &quot;/&quot;);</span>
+<span class="nc" id="L1059">							unsortedPackageMap.put(line.trim(), packageLocation);</span>
+<span class="nc" id="L1060">						}</span>
 					}
-<span class="nc" id="L1050">					progressMonitor.worked(Status.SUCCESS, 1, &quot;Loaded package list from &quot; + urlEntry.getValue() + &quot; for &quot; + urlEntry.getKey());</span>
+<span class="nc" id="L1062">					progressMonitor.worked(Status.SUCCESS, 1, &quot;Loaded package list from &quot; + urlEntry.getValue() + &quot; for &quot; + urlEntry.getKey());</span>
 					continue Z;
-<span class="nc" id="L1052">				} catch (Exception e) {</span>
-<span class="nc" id="L1053">					progressMonitor.worked(Status.ERROR, 1, &quot;Could not download package list from &quot; + urlEntry.getValue() + &quot; - &quot; + e);</span>
+<span class="nc" id="L1064">				} catch (Exception e) {</span>
+<span class="nc" id="L1065">					progressMonitor.worked(Status.ERROR, 1, &quot;Could not download package list from &quot; + urlEntry.getValue() + &quot; - &quot; + e);</span>
 				}
 			}
-<span class="nc" id="L1056">		}</span>
+<span class="nc" id="L1068">		}</span>
 		
-<span class="nc" id="L1058">		Map&lt;String,String&gt; sortedPackageMap = new LinkedHashMap&lt;&gt;();</span>
-<span class="nc" id="L1059">		unsortedPackageMap.keySet().stream().sorted((k1,k2) -&gt; k2.length() - k1.length()).forEach(k -&gt; sortedPackageMap.put(k, unsortedPackageMap.get(k)));</span>
+<span class="nc" id="L1070">		Map&lt;String,String&gt; sortedPackageMap = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L1071">		unsortedPackageMap.keySet().stream().sorted((k1,k2) -&gt; k2.length() - k1.length()).forEach(k -&gt; sortedPackageMap.put(k, unsortedPackageMap.get(k)));</span>
 		
-<span class="nc" id="L1061">		return new java.util.function.Function&lt;String, String&gt;() {</span>
+<span class="nc" id="L1073">		return new java.util.function.Function&lt;String, String&gt;() {</span>
 			
 			private String getRef(String spec) {
-<span class="nc" id="L1064">				int hashIdx = spec.indexOf(&quot;#&quot;);</span>
-<span class="nc bnc" id="L1065" title="All 2 branches missed.">				if (hashIdx != -1) {</span>
-<span class="nc" id="L1066">					spec = spec.substring(0, hashIdx);</span>
+<span class="nc" id="L1076">				int hashIdx = spec.indexOf(&quot;#&quot;);</span>
+<span class="nc bnc" id="L1077" title="All 2 branches missed.">				if (hashIdx != -1) {</span>
+<span class="nc" id="L1078">					spec = spec.substring(0, hashIdx);</span>
 				}
-<span class="nc bnc" id="L1068" title="All 2 branches missed.">				for (Entry&lt;String, String&gt; location: sortedPackageMap.entrySet()) {</span>
-<span class="nc" id="L1069">					String key = location.getKey();</span>
-<span class="nc" id="L1070">					String value = location.getValue();</span>
-<span class="nc bnc" id="L1071" title="All 2 branches missed.">					if (key.equals(spec)) { // Package</span>
-<span class="nc" id="L1072">						return value + spec.replace('.', '/') + &quot;/&quot; + PACKAGE_SUMMARY_HTML;</span>
+<span class="nc bnc" id="L1080" title="All 2 branches missed.">				for (Entry&lt;String, String&gt; location: sortedPackageMap.entrySet()) {</span>
+<span class="nc" id="L1081">					String key = location.getKey();</span>
+<span class="nc" id="L1082">					String value = location.getValue();</span>
+<span class="nc bnc" id="L1083" title="All 2 branches missed.">					if (key.equals(spec)) { // Package</span>
+<span class="nc" id="L1084">						return value + spec.replace('.', '/') + &quot;/&quot; + PACKAGE_SUMMARY_HTML;</span>
 					}
 					
-<span class="nc" id="L1075">					int idx = spec.lastIndexOf('.');</span>
-<span class="nc bnc" id="L1076" title="All 4 branches missed.">					if (idx != -1 &amp;&amp; spec.substring(0, idx).equals(key)) { // Class</span>
-<span class="nc" id="L1077">						return value + spec.replace('.', '/').replace('$', '.') + &quot;.html&quot;;				</span>
+<span class="nc" id="L1087">					int idx = spec.lastIndexOf('.');</span>
+<span class="nc bnc" id="L1088" title="All 4 branches missed.">					if (idx != -1 &amp;&amp; spec.substring(0, idx).equals(key)) { // Class</span>
+<span class="nc" id="L1089">						return value + spec.replace('.', '/').replace('$', '.') + &quot;.html&quot;;				</span>
 					}
-<span class="nc" id="L1079">				}</span>
-<span class="nc" id="L1080">				return null;				</span>
+<span class="nc" id="L1091">				}</span>
+<span class="nc" id="L1092">				return null;				</span>
 			}
 
 			@Override
 			public String apply(String key) {
-<span class="nc bnc" id="L1085" title="All 2 branches missed.">				if (key == null) {</span>
-<span class="nc" id="L1086">					return key;</span>
+<span class="nc bnc" id="L1097" title="All 2 branches missed.">				if (key == null) {</span>
+<span class="nc" id="L1098">					return key;</span>
 				}
 				
-<span class="nc" id="L1089">				int spaceIdx = key.indexOf(' ');</span>
-<span class="nc bnc" id="L1090" title="All 2 branches missed.">				String spec = spaceIdx == -1 ? key : key.substring(0, spaceIdx);</span>
-<span class="nc bnc" id="L1091" title="All 2 branches missed.">				String text = spaceIdx == -1 ? null : key.substring(spaceIdx + 1);</span>
+<span class="nc" id="L1101">				int spaceIdx = key.indexOf(' ');</span>
+<span class="nc bnc" id="L1102" title="All 2 branches missed.">				String spec = spaceIdx == -1 ? key : key.substring(0, spaceIdx);</span>
+<span class="nc bnc" id="L1103" title="All 2 branches missed.">				String text = spaceIdx == -1 ? null : key.substring(spaceIdx + 1);</span>
 				
-<span class="nc" id="L1093">				String href = getRef(spec);</span>
-<span class="nc bnc" id="L1094" title="All 2 branches missed.">				if (href == null) {</span>
-<span class="nc" id="L1095">					return spec;</span>
+<span class="nc" id="L1105">				String href = getRef(spec);</span>
+<span class="nc bnc" id="L1106" title="All 2 branches missed.">				if (href == null) {</span>
+<span class="nc" id="L1107">					return spec;</span>
 				}
 								
-<span class="nc" id="L1098">				int hashIdx = spec.indexOf(&quot;#&quot;);</span>
-<span class="nc bnc" id="L1099" title="All 2 branches missed.">				if (hashIdx != -1) {</span>
-<span class="nc" id="L1100">					String fragment = spec.substring(hashIdx+1);</span>
-<span class="nc" id="L1101">					int firstParenthesisIdx = fragment.indexOf(&quot;(&quot;);</span>
-<span class="nc bnc" id="L1102" title="All 4 branches missed.">					if (firstParenthesisIdx &gt; 0 &amp;&amp; fragment.endsWith(&quot;)&quot;)) {</span>
+<span class="nc" id="L1110">				int hashIdx = spec.indexOf(&quot;#&quot;);</span>
+<span class="nc bnc" id="L1111" title="All 2 branches missed.">				if (hashIdx != -1) {</span>
+<span class="nc" id="L1112">					String fragment = spec.substring(hashIdx+1);</span>
+<span class="nc" id="L1113">					int firstParenthesisIdx = fragment.indexOf(&quot;(&quot;);</span>
+<span class="nc bnc" id="L1114" title="All 4 branches missed.">					if (firstParenthesisIdx &gt; 0 &amp;&amp; fragment.endsWith(&quot;)&quot;)) {</span>
 						// Convert (type[,type]) to -type-type-						
-<span class="nc" id="L1104">						StringBuilder fragmentBuilder = new StringBuilder(fragment.substring(0, firstParenthesisIdx)).append(&quot;-&quot;);</span>
-<span class="nc" id="L1105">						String[] pTypes = fragment.substring(firstParenthesisIdx+1, fragment.length()-1).split(&quot;,&quot;);</span>
-<span class="nc bnc" id="L1106" title="All 2 branches missed.">						for (String pType: pTypes) {</span>
-<span class="nc" id="L1107">							pType = pType.trim();</span>
-<span class="nc" id="L1108">							int bIdx = pType.indexOf(&quot;[]&quot;);</span>
-<span class="nc bnc" id="L1109" title="All 2 branches missed.">							if (bIdx == -1) {</span>
-<span class="nc" id="L1110">								fragmentBuilder.append(pType);</span>
+<span class="nc" id="L1116">						StringBuilder fragmentBuilder = new StringBuilder(fragment.substring(0, firstParenthesisIdx)).append(&quot;-&quot;);</span>
+<span class="nc" id="L1117">						String[] pTypes = fragment.substring(firstParenthesisIdx+1, fragment.length()-1).split(&quot;,&quot;);</span>
+<span class="nc bnc" id="L1118" title="All 2 branches missed.">						for (String pType: pTypes) {</span>
+<span class="nc" id="L1119">							pType = pType.trim();</span>
+<span class="nc" id="L1120">							int bIdx = pType.indexOf(&quot;[]&quot;);</span>
+<span class="nc bnc" id="L1121" title="All 2 branches missed.">							if (bIdx == -1) {</span>
+<span class="nc" id="L1122">								fragmentBuilder.append(pType);</span>
 							} else {
-<span class="nc" id="L1112">								fragmentBuilder.append(pType.substring(0, bIdx));</span>
-<span class="nc bnc" id="L1113" title="All 2 branches missed.">								for (int bc = bIdx; bc &lt; pType.length(); bc+=2) {</span>
-<span class="nc" id="L1114">									fragmentBuilder.append(&quot;:A&quot;);</span>
+<span class="nc" id="L1124">								fragmentBuilder.append(pType.substring(0, bIdx));</span>
+<span class="nc bnc" id="L1125" title="All 2 branches missed.">								for (int bc = bIdx; bc &lt; pType.length(); bc+=2) {</span>
+<span class="nc" id="L1126">									fragmentBuilder.append(&quot;:A&quot;);</span>
 								}
 							}
-<span class="nc" id="L1117">							fragmentBuilder.append(&quot;-&quot;);</span>
+<span class="nc" id="L1129">							fragmentBuilder.append(&quot;-&quot;);</span>
 						}
-<span class="nc" id="L1119">						fragment = fragmentBuilder.toString();</span>
+<span class="nc" id="L1131">						fragment = fragmentBuilder.toString();</span>
 					} 
-<span class="nc" id="L1121">					href += &quot;#&quot; + fragment;</span>
+<span class="nc" id="L1133">					href += &quot;#&quot; + fragment;</span>
 				}
-<span class="nc" id="L1123">				return new StringBuilder(&quot;&lt;a href='&quot;)</span>
-<span class="nc" id="L1124">						.append(href)</span>
-<span class="nc" id="L1125">						.append(&quot;'&gt;&quot;)</span>
-<span class="nc bnc" id="L1126" title="All 2 branches missed.">						.append(Util.isBlank(text) ? spec.replace('#', '.').replace('$', '.') : text)</span>
-<span class="nc" id="L1127">						.append(&quot;&lt;/a&gt;&quot;).toString();</span>
+<span class="nc" id="L1135">				return new StringBuilder(&quot;&lt;a href='&quot;)</span>
+<span class="nc" id="L1136">						.append(href)</span>
+<span class="nc" id="L1137">						.append(&quot;'&gt;&quot;)</span>
+<span class="nc bnc" id="L1138" title="All 2 branches missed.">						.append(Util.isBlank(text) ? spec.replace('#', '.').replace('$', '.') : text)</span>
+<span class="nc" id="L1139">						.append(&quot;&lt;/a&gt;&quot;).toString();</span>
 			}
 			
 		};
@@ -1136,9 +1148,9 @@ public class Util {
 	 * @return Function which given a fully qualified class name returns a URL of Javadoc page for the class.
 	 */
 	public static java.util.function.Function&lt;String, String&gt; createJavadocResolver(Collection&lt;URL&gt; urls, ProgressMonitor progressMonitor) {
-<span class="nc" id="L1139">		Map&lt;URL,URL&gt; urlMap = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L1140">		urls.forEach(url -&gt; urlMap.put(url, url));</span>
-<span class="nc" id="L1141">		return createJavadocResolver(urlMap, progressMonitor);</span>
+<span class="nc" id="L1151">		Map&lt;URL,URL&gt; urlMap = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L1152">		urls.forEach(url -&gt; urlMap.put(url, url));</span>
+<span class="nc" id="L1153">		return createJavadocResolver(urlMap, progressMonitor);</span>
 	}
 	
 	/**
@@ -1149,44 +1161,44 @@ public class Util {
 	 * @throws IOException 
 	 */
 	public static java.util.function.Function&lt;String, String&gt; createNasdanikaJavadocResolver(File gitDir, ProgressMonitor progressMonitor) throws IOException {
-<span class="nc" id="L1152">		Map&lt;URL,URL&gt; urls = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L1164">		Map&lt;URL,URL&gt; urls = new HashMap&lt;&gt;();</span>
 
-<span class="nc" id="L1154">		URL java11 = new URL(&quot;https://docs.oracle.com/en/java/javase/11/docs/api/&quot;);</span>
-<span class="nc" id="L1155">		urls.put(java11, java11);</span>
+<span class="nc" id="L1166">		URL java11 = new URL(&quot;https://docs.oracle.com/en/java/javase/11/docs/api/&quot;);</span>
+<span class="nc" id="L1167">		urls.put(java11, java11);</span>
 		
 		// Core
-<span class="nc" id="L1158">		addUrl(urls, new URL(&quot;https://docs.nasdanika.org/core/apidocs/&quot;), gitDir, &quot;core/target/site/apidocs&quot;);</span>
+<span class="nc" id="L1170">		addUrl(urls, new URL(&quot;https://docs.nasdanika.org/core/apidocs/&quot;), gitDir, &quot;core/target/site/apidocs&quot;);</span>
 		
 		// HTML
-<span class="nc" id="L1161">		addUrl(urls, new URL(&quot;https://docs.nasdanika.org/html/apidocs/&quot;), gitDir, &quot;html/target/site/apidocs&quot;);</span>
+<span class="nc" id="L1173">		addUrl(urls, new URL(&quot;https://docs.nasdanika.org/html/apidocs/&quot;), gitDir, &quot;html/target/site/apidocs&quot;);</span>
 		
 		// Architecture Framework		
-<span class="nc" id="L1164">		addUrl(urls, new URL(&quot;https://docs.nasdanika.org/architecture-framework/apidocs/&quot;), gitDir, &quot;architecture-framework/target/site/apidocs&quot;);</span>
+<span class="nc" id="L1176">		addUrl(urls, new URL(&quot;https://docs.nasdanika.org/architecture-framework/apidocs/&quot;), gitDir, &quot;architecture-framework/target/site/apidocs&quot;);</span>
 		
-<span class="nc" id="L1166">		return createJavadocResolver(urls, progressMonitor);</span>
+<span class="nc" id="L1178">		return createJavadocResolver(urls, progressMonitor);</span>
 	}
 	
 	private static void addUrl(Map&lt;URL,URL&gt; urls, URL onlineURL, File gitDir, String offlinePath) throws IOException {
-<span class="nc" id="L1170">		URL offlineURL = onlineURL;</span>
-<span class="nc bnc" id="L1171" title="All 4 branches missed.">		if (gitDir != null &amp;&amp; gitDir.isDirectory()) {</span>
-<span class="nc" id="L1172">			File offlineDir = new File(gitDir, offlinePath);</span>
-<span class="nc bnc" id="L1173" title="All 2 branches missed.">			if (offlineDir.isDirectory()) {</span>
-<span class="nc" id="L1174">				offlineURL = offlineDir.getCanonicalFile().toURI().toURL();</span>
+<span class="nc" id="L1182">		URL offlineURL = onlineURL;</span>
+<span class="nc bnc" id="L1183" title="All 4 branches missed.">		if (gitDir != null &amp;&amp; gitDir.isDirectory()) {</span>
+<span class="nc" id="L1184">			File offlineDir = new File(gitDir, offlinePath);</span>
+<span class="nc bnc" id="L1185" title="All 2 branches missed.">			if (offlineDir.isDirectory()) {</span>
+<span class="nc" id="L1186">				offlineURL = offlineDir.getCanonicalFile().toURI().toURL();</span>
 			}
 		}
-<span class="nc" id="L1177">		urls.put(onlineURL, offlineURL);</span>
-<span class="nc" id="L1178">	}</span>
+<span class="nc" id="L1189">		urls.put(onlineURL, offlineURL);</span>
+<span class="nc" id="L1190">	}</span>
 	
 	public static PropertyComputer createJavadocPropertyComputer(java.util.function.Function&lt;String, String&gt; javadocResolver) {
-<span class="nc" id="L1181">		return new PropertyComputer() {</span>
+<span class="nc" id="L1193">		return new PropertyComputer() {</span>
 			
 			@SuppressWarnings(&quot;unchecked&quot;)
 			@Override
 			public &lt;T&gt; T compute(Context context, String key, String path, Class&lt;T&gt; type) {
-<span class="nc bnc" id="L1186" title="All 4 branches missed.">				if (type == null || type.isAssignableFrom(String.class)) {</span>
-<span class="nc" id="L1187">					return (T) javadocResolver.apply(path);</span>
+<span class="nc bnc" id="L1198" title="All 4 branches missed.">				if (type == null || type.isAssignableFrom(String.class)) {</span>
+<span class="nc" id="L1199">					return (T) javadocResolver.apply(path);</span>
 				}
-<span class="nc" id="L1189">				return null;</span>
+<span class="nc" id="L1201">				return null;</span>
 			}
 		};
 	}
@@ -1203,74 +1215,74 @@ public class Util {
 	 * @throws IOException
 	 */
 	public static void walk(String path, BiConsumer&lt;File,String&gt; listener, File... files) {
-<span class="nc bnc" id="L1206" title="All 2 branches missed.">		if (files != null) {</span>
-<span class="nc bnc" id="L1207" title="All 2 branches missed.">			for (File file: files) {</span>
-<span class="nc bnc" id="L1208" title="All 2 branches missed.">				String filePath = path == null ? file.getName() : path + &quot;/&quot; + file.getName();</span>
-<span class="nc bnc" id="L1209" title="All 2 branches missed.">				if (file.isDirectory()) {</span>
-<span class="nc" id="L1210">					walk(filePath, listener, file.listFiles());</span>
-<span class="nc bnc" id="L1211" title="All 4 branches missed.">				} else if (file.isFile() &amp;&amp; listener != null) {</span>
-<span class="nc" id="L1212">					listener.accept(file, filePath);</span>
+<span class="nc bnc" id="L1218" title="All 2 branches missed.">		if (files != null) {</span>
+<span class="nc bnc" id="L1219" title="All 2 branches missed.">			for (File file: files) {</span>
+<span class="nc bnc" id="L1220" title="All 2 branches missed.">				String filePath = path == null ? file.getName() : path + &quot;/&quot; + file.getName();</span>
+<span class="nc bnc" id="L1221" title="All 2 branches missed.">				if (file.isDirectory()) {</span>
+<span class="nc" id="L1222">					walk(filePath, listener, file.listFiles());</span>
+<span class="nc bnc" id="L1223" title="All 4 branches missed.">				} else if (file.isFile() &amp;&amp; listener != null) {</span>
+<span class="nc" id="L1224">					listener.accept(file, filePath);</span>
 				}
 			}
 		}
-<span class="nc" id="L1216">	}</span>
+<span class="nc" id="L1228">	}</span>
 	
 	public static void copy(File source, File target, boolean cleanTarget, BiConsumer&lt;File,File&gt; listener) throws IOException {
-<span class="nc bnc" id="L1219" title="All 4 branches missed.">		if (cleanTarget &amp;&amp; target.isDirectory()) {</span>
-<span class="nc" id="L1220">			delete(target.listFiles());</span>
+<span class="nc bnc" id="L1231" title="All 4 branches missed.">		if (cleanTarget &amp;&amp; target.isDirectory()) {</span>
+<span class="nc" id="L1232">			delete(target.listFiles());</span>
 		}
-<span class="nc bnc" id="L1222" title="All 2 branches missed.">		if (source.isDirectory()) {</span>
-<span class="nc" id="L1223">			target.mkdirs();</span>
-<span class="nc bnc" id="L1224" title="All 2 branches missed.">			for (File sc: source.listFiles()) {</span>
-<span class="nc" id="L1225">				copy(sc, new File(target, sc.getName()), false, listener);</span>
+<span class="nc bnc" id="L1234" title="All 2 branches missed.">		if (source.isDirectory()) {</span>
+<span class="nc" id="L1235">			target.mkdirs();</span>
+<span class="nc bnc" id="L1236" title="All 2 branches missed.">			for (File sc: source.listFiles()) {</span>
+<span class="nc" id="L1237">				copy(sc, new File(target, sc.getName()), false, listener);</span>
 			}
-<span class="nc bnc" id="L1227" title="All 2 branches missed.">		} else if (source.isFile()) {</span>
-<span class="nc" id="L1228">			Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);			</span>
-<span class="nc bnc" id="L1229" title="All 2 branches missed.">			if (listener != null) {</span>
-<span class="nc" id="L1230">				listener.accept(source, target);</span>
+<span class="nc bnc" id="L1239" title="All 2 branches missed.">		} else if (source.isFile()) {</span>
+<span class="nc" id="L1240">			Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);			</span>
+<span class="nc bnc" id="L1241" title="All 2 branches missed.">			if (listener != null) {</span>
+<span class="nc" id="L1242">				listener.accept(source, target);</span>
 			}
 		}
-<span class="nc" id="L1233">	}</span>
+<span class="nc" id="L1245">	}</span>
 	
 	public static void delete(File... files) {
-<span class="nc bnc" id="L1236" title="All 2 branches missed.">		for (File file: files) {</span>
-<span class="nc bnc" id="L1237" title="All 2 branches missed.">			if (file.exists()) {</span>
-<span class="nc bnc" id="L1238" title="All 2 branches missed.">				if (file.isDirectory()) {</span>
-<span class="nc" id="L1239">					delete(file.listFiles());</span>
+<span class="nc bnc" id="L1248" title="All 2 branches missed.">		for (File file: files) {</span>
+<span class="nc bnc" id="L1249" title="All 2 branches missed.">			if (file.exists()) {</span>
+<span class="nc bnc" id="L1250" title="All 2 branches missed.">				if (file.isDirectory()) {</span>
+<span class="nc" id="L1251">					delete(file.listFiles());</span>
 				}
-<span class="nc" id="L1241">				file.delete();</span>
+<span class="nc" id="L1253">				file.delete();</span>
 			}
 		}
-<span class="nc" id="L1244">	}</span>
+<span class="nc" id="L1256">	}</span>
 		
 	public static void copy(File source, File target, boolean cleanTarget, Predicate&lt;String&gt; cleanPredicate, BiConsumer&lt;File,File&gt; listener) throws IOException {
-<span class="nc bnc" id="L1247" title="All 4 branches missed.">		if (cleanTarget &amp;&amp; target.isDirectory()) {</span>
-<span class="nc" id="L1248">			delete(null, cleanPredicate, target.listFiles());</span>
+<span class="nc bnc" id="L1259" title="All 4 branches missed.">		if (cleanTarget &amp;&amp; target.isDirectory()) {</span>
+<span class="nc" id="L1260">			delete(null, cleanPredicate, target.listFiles());</span>
 		}
-<span class="nc bnc" id="L1250" title="All 2 branches missed.">		if (source.isDirectory()) {</span>
-<span class="nc" id="L1251">			target.mkdirs();</span>
-<span class="nc bnc" id="L1252" title="All 2 branches missed.">			for (File sc: source.listFiles()) {</span>
-<span class="nc" id="L1253">				copy(sc, new File(target, sc.getName()), false, listener);</span>
+<span class="nc bnc" id="L1262" title="All 2 branches missed.">		if (source.isDirectory()) {</span>
+<span class="nc" id="L1263">			target.mkdirs();</span>
+<span class="nc bnc" id="L1264" title="All 2 branches missed.">			for (File sc: source.listFiles()) {</span>
+<span class="nc" id="L1265">				copy(sc, new File(target, sc.getName()), false, listener);</span>
 			}
-<span class="nc bnc" id="L1255" title="All 2 branches missed.">		} else if (source.isFile()) {</span>
-<span class="nc" id="L1256">			Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);			</span>
-<span class="nc bnc" id="L1257" title="All 2 branches missed.">			if (listener != null) {</span>
-<span class="nc" id="L1258">				listener.accept(source, target);</span>
+<span class="nc bnc" id="L1267" title="All 2 branches missed.">		} else if (source.isFile()) {</span>
+<span class="nc" id="L1268">			Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);			</span>
+<span class="nc bnc" id="L1269" title="All 2 branches missed.">			if (listener != null) {</span>
+<span class="nc" id="L1270">				listener.accept(source, target);</span>
 			}
 		}
-<span class="nc" id="L1261">	}</span>
+<span class="nc" id="L1273">	}</span>
 	
 	public static void delete(String path, Predicate&lt;String&gt; deletePredicate, File... files) {
-<span class="nc bnc" id="L1264" title="All 2 branches missed.">		for (File file: files) {</span>
-<span class="nc bnc" id="L1265" title="All 2 branches missed.">			String filePath = path == null ? file.getName() : path + &quot;/&quot; + file.getName();</span>
-<span class="nc bnc" id="L1266" title="All 6 branches missed.">			if (file.exists() &amp;&amp; (deletePredicate == null || deletePredicate.test(filePath))) {</span>
-<span class="nc bnc" id="L1267" title="All 2 branches missed.">				if (file.isDirectory()) {</span>
-<span class="nc" id="L1268">					delete(filePath, deletePredicate, file.listFiles());</span>
+<span class="nc bnc" id="L1276" title="All 2 branches missed.">		for (File file: files) {</span>
+<span class="nc bnc" id="L1277" title="All 2 branches missed.">			String filePath = path == null ? file.getName() : path + &quot;/&quot; + file.getName();</span>
+<span class="nc bnc" id="L1278" title="All 6 branches missed.">			if (file.exists() &amp;&amp; (deletePredicate == null || deletePredicate.test(filePath))) {</span>
+<span class="nc bnc" id="L1279" title="All 2 branches missed.">				if (file.isDirectory()) {</span>
+<span class="nc" id="L1280">					delete(filePath, deletePredicate, file.listFiles());</span>
 				}
-<span class="nc" id="L1270">				file.delete();</span>
+<span class="nc" id="L1282">				file.delete();</span>
 			}
 		}
-<span class="nc" id="L1273">	}	</span>
+<span class="nc" id="L1285">	}	</span>
 	
 	
 	

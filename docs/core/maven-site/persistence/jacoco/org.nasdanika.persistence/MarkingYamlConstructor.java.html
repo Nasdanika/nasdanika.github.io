@@ -26,60 +26,62 @@ public class MarkingYamlConstructor extends Constructor {
 	
 	private String location;
 
-<span class="nc" id="L29">	public MarkingYamlConstructor(String location) {</span>
-<span class="nc" id="L30">		this.location = location;</span>
-<span class="nc" id="L31">	}</span>
+	public MarkingYamlConstructor(LoaderOptions loadingConfig, String location) {
+<span class="nc" id="L30">		super(loadingConfig);</span>
+<span class="nc" id="L31">		this.location = location;</span>
+<span class="nc" id="L32">	}</span>
 	
 	@Override
 	protected List&lt;? extends Object&gt; constructSequence(SequenceNode node) {
-<span class="nc" id="L35">		MarkedArrayList&lt;? extends Object&gt; ret = (MarkedArrayList&lt;? extends Object&gt;) super.constructSequence(node);</span>
-<span class="nc" id="L36">		node.getValue().forEach(n -&gt; ret.getElementMarkers().add(Collections.singletonList(new MarkerImpl(location, n.getStartMark()))));</span>
-<span class="nc" id="L37">		Iterator&lt;? extends Object&gt; eit = ret.iterator();</span>
-<span class="nc" id="L38">		Iterator&lt;List&lt;? extends Marker&gt;&gt; mit = ret.getElementMarkers().iterator();</span>
-<span class="nc bnc" id="L39" title="All 4 branches missed.">		while (eit.hasNext() &amp;&amp; mit.hasNext()) {</span>
-<span class="nc" id="L40">			Object e = eit.next();</span>
-<span class="nc" id="L41">			List&lt;? extends Marker&gt; ml = mit.next();</span>
-<span class="nc bnc" id="L42" title="All 2 branches missed.">			if (e instanceof Markable) {</span>
-<span class="nc" id="L43">				((Markable) e).mark(ml);</span>
+<span class="nc" id="L36">		MarkedArrayList&lt;? extends Object&gt; ret = (MarkedArrayList&lt;? extends Object&gt;) super.constructSequence(node);</span>
+<span class="nc" id="L37">		node.getValue().forEach(n -&gt; ret.getElementMarkers().add(Collections.singletonList(new MarkerImpl(location, n.getStartMark()))));</span>
+<span class="nc" id="L38">		Iterator&lt;? extends Object&gt; eit = ret.iterator();</span>
+<span class="nc" id="L39">		Iterator&lt;List&lt;? extends Marker&gt;&gt; mit = ret.getElementMarkers().iterator();</span>
+<span class="nc bnc" id="L40" title="All 4 branches missed.">		while (eit.hasNext() &amp;&amp; mit.hasNext()) {</span>
+<span class="nc" id="L41">			Object e = eit.next();</span>
+<span class="nc" id="L42">			List&lt;? extends Marker&gt; ml = mit.next();</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">			if (e instanceof Markable) {</span>
+<span class="nc" id="L44">				((Markable) e).mark(ml);</span>
 			}
-<span class="nc" id="L45">		}</span>
-<span class="nc" id="L46">		return ret;</span>
+<span class="nc" id="L46">		}</span>
+<span class="nc" id="L47">		return ret;</span>
 	}
 	
 	@Override
 	protected List&lt;Object&gt; newList(SequenceNode node) {
-<span class="nc" id="L51">		return new MarkedArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L52">		return new MarkedArrayList&lt;Object&gt;();</span>
 	}
 				
 	@Override
 	protected Map&lt;Object, Object&gt; constructMapping(MappingNode node) {
-<span class="nc" id="L56">		MarkedLinkedHashMap&lt;Object, Object&gt; ret = (MarkedLinkedHashMap&lt;Object, Object&gt;) super.constructMapping(node);</span>
-<span class="nc" id="L57">		node.getValue()</span>
-<span class="nc" id="L58">			.stream()</span>
-<span class="nc" id="L59">			.map(NodeTuple::getKeyNode)</span>
-<span class="nc" id="L60">			.filter(n -&gt; n instanceof ScalarNode)</span>
-<span class="nc" id="L61">			.forEach(keyNode -&gt; ret.markEntry(((ScalarNode) keyNode).getValue(), new MarkerImpl(location, keyNode.getStartMark())));</span>
+<span class="nc" id="L57">		MarkedLinkedHashMap&lt;Object, Object&gt; ret = (MarkedLinkedHashMap&lt;Object, Object&gt;) super.constructMapping(node);</span>
+<span class="nc" id="L58">		node.getValue()</span>
+<span class="nc" id="L59">			.stream()</span>
+<span class="nc" id="L60">			.map(NodeTuple::getKeyNode)</span>
+<span class="nc" id="L61">			.filter(n -&gt; n instanceof ScalarNode)</span>
+<span class="nc" id="L62">			.forEach(keyNode -&gt; ret.markEntry(((ScalarNode) keyNode).getValue(), new MarkerImpl(location, keyNode.getStartMark())));</span>
 		
-<span class="nc bnc" id="L63" title="All 2 branches missed.">		for (Entry&lt;Object, Object&gt; e: ret.entrySet()) {</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">			if (e.getValue() instanceof Markable) {</span>
-<span class="nc" id="L65">				((Markable) e.getValue()).mark(ret.getEntryMarkers(e.getKey()));</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">		for (Entry&lt;Object, Object&gt; e: ret.entrySet()) {</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">			if (e.getValue() instanceof Markable) {</span>
+<span class="nc" id="L66">				((Markable) e.getValue()).mark(ret.getEntryMarkers(e.getKey()));</span>
 			}
-<span class="nc" id="L67">		}</span>
-<span class="nc" id="L68">		return ret;</span>
+<span class="nc" id="L68">		}</span>
+<span class="nc" id="L69">		return ret;</span>
 	}
 	
 	@Override
 	protected Map&lt;Object, Object&gt; newMap(MappingNode node) {
-<span class="nc" id="L73">		return new MarkedLinkedHashMap&lt;Object, Object&gt;();</span>
+<span class="nc" id="L74">		return new MarkedLinkedHashMap&lt;Object, Object&gt;();</span>
 	}					
 		
 	/**
 	 * @return Yaml which uses this {@link MarkingYamlConstructor} to create collections with markers.
 	 */
 	public static Yaml createMarkingYaml(String location) {
-<span class="nc" id="L80">		LoaderOptions loaderOptions = new LoaderOptions();</span>
-<span class="nc" id="L81">		loaderOptions.setAllowDuplicateKeys(false);</span>
-<span class="nc" id="L82">		return new Yaml(new MarkingYamlConstructor(location), new Representer(), new DumperOptions(), loaderOptions, new Resolver());</span>
+<span class="nc" id="L81">		LoaderOptions loaderOptions = new LoaderOptions();</span>
+<span class="nc" id="L82">		loaderOptions.setAllowDuplicateKeys(false);</span>
+<span class="nc" id="L83">		DumperOptions dumperOptions = new DumperOptions();</span>
+<span class="nc" id="L84">		return new Yaml(new MarkingYamlConstructor(loaderOptions, location), new Representer(dumperOptions), dumperOptions, loaderOptions, new Resolver());</span>
 	}
 
 }

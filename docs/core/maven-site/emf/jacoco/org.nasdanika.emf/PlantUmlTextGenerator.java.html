@@ -632,113 +632,117 @@ public class PlantUmlTextGenerator implements DiagramTextGenerator {
 <span class="nc" id="L632">	}</span>
 	
 	protected String qualifiedName(EClassifier eClassifier) {
-<span class="nc" id="L635">		EPackage ePackage = eClassifier.getEPackage();</span>
-<span class="nc bnc" id="L636" title="All 2 branches missed.">		if (ePackage == null) {</span>
-<span class="nc" id="L637">			return getLabel(eClassifier);				</span>
+<span class="nc" id="L635">		Class&lt;?&gt; ic = eClassifier.getInstanceClass();</span>
+<span class="nc bnc" id="L636" title="All 2 branches missed.">		if (ic != null) {</span>
+<span class="nc" id="L637">			return ic.getName();</span>
 		}
-<span class="nc" id="L639">		return &quot;\&quot;&quot;+getLabel(ePackage)+&quot; (&quot;+ePackage.getNsURI()+&quot;).&quot;+getLabel(eClassifier)+&quot;\&quot;&quot;;</span>
+<span class="nc" id="L639">		EPackage ePackage = eClassifier.getEPackage();</span>
+<span class="nc bnc" id="L640" title="All 2 branches missed.">		if (ePackage == null) {</span>
+<span class="nc" id="L641">			return getLabel(eClassifier);				</span>
+		}
+<span class="nc" id="L643">		return &quot;\&quot;&quot;+getLabel(ePackage)+&quot; (&quot;+ePackage.getNsURI()+&quot;).&quot;+getLabel(eClassifier)+&quot;\&quot;&quot;;</span>
 	}	
 	
 	protected String typeParameters(EClassifier eClassifier) {
-<span class="nc bnc" id="L643" title="All 2 branches missed.">		if (eClassifier.getETypeParameters().isEmpty()) {</span>
-<span class="nc" id="L644">			return &quot;&quot;;</span>
+<span class="nc bnc" id="L647" title="All 2 branches missed.">		if (eClassifier.getETypeParameters().isEmpty()) {</span>
+<span class="nc" id="L648">			return &quot;&quot;;</span>
 		}
-<span class="nc" id="L646">		StringBuilder typeParameters = new StringBuilder();</span>
-<span class="nc bnc" id="L647" title="All 2 branches missed.">		for (ETypeParameter typeParameter: eClassifier.getETypeParameters()) {</span>
-<span class="nc bnc" id="L648" title="All 2 branches missed.">			if (typeParameters.length() &gt; 0) {</span>
-<span class="nc" id="L649">				typeParameters.append(&quot;,&quot;);</span>
+<span class="nc" id="L650">		StringBuilder typeParameters = new StringBuilder();</span>
+<span class="nc bnc" id="L651" title="All 2 branches missed.">		for (ETypeParameter typeParameter: eClassifier.getETypeParameters()) {</span>
+<span class="nc bnc" id="L652" title="All 2 branches missed.">			if (typeParameters.length() &gt; 0) {</span>
+<span class="nc" id="L653">				typeParameters.append(&quot;,&quot;);</span>
 			}
-<span class="nc" id="L651">			typeParameters.append(genericName(typeParameter));</span>
-<span class="nc" id="L652">		}		</span>
+<span class="nc" id="L655">			typeParameters.append(genericName(typeParameter));</span>
+<span class="nc" id="L656">		}		</span>
 		
-<span class="nc" id="L654">		return &quot;&lt;&quot; + typeParameters +&quot;&gt;&quot;;</span>
+<span class="nc" id="L658">		return &quot;&lt;&quot; + typeParameters +&quot;&gt;&quot;;</span>
 	}	
 	
 	protected String genericName(ETypeParameter typeParameter) {
-<span class="nc" id="L658">		StringBuilder ret = new StringBuilder(getLabel(typeParameter));</span>
-<span class="nc bnc" id="L659" title="All 2 branches missed.">		for (EGenericType bound : typeParameter.getEBounds()) {</span>
-<span class="nc bnc" id="L660" title="All 2 branches missed.">			if (bound.getEUpperBound() != null) {</span>
-<span class="nc" id="L661">				ret.append(&quot; extends &quot;).append(genericName(bound.getEUpperBound()));</span>
+<span class="nc" id="L662">		StringBuilder ret = new StringBuilder(getLabel(typeParameter));</span>
+<span class="nc bnc" id="L663" title="All 2 branches missed.">		for (EGenericType bound : typeParameter.getEBounds()) {</span>
+<span class="nc bnc" id="L664" title="All 2 branches missed.">			if (bound.getEUpperBound() != null) {</span>
+<span class="nc" id="L665">				ret.append(&quot; extends &quot;).append(genericName(bound.getEUpperBound()));</span>
 			}
-<span class="nc bnc" id="L663" title="All 2 branches missed.">			if (bound.getELowerBound() != null) {</span>
-<span class="nc" id="L664">				ret.append(&quot; super &quot;).append(genericName(bound.getELowerBound()));</span>
+<span class="nc bnc" id="L667" title="All 2 branches missed.">			if (bound.getELowerBound() != null) {</span>
+<span class="nc" id="L668">				ret.append(&quot; super &quot;).append(genericName(bound.getELowerBound()));</span>
 			}
-<span class="nc" id="L666">		}</span>
+<span class="nc" id="L670">		}</span>
 		
-<span class="nc" id="L668">		return ret.toString();</span>
+<span class="nc" id="L672">		return ret.toString();</span>
 	}
 	
 	protected String genericName(EGenericType eGenericType) {
-<span class="nc bnc" id="L672" title="All 2 branches missed.">		if (eGenericType == null) {</span>
-<span class="nc" id="L673">			return &quot;void&quot;;</span>
+<span class="nc bnc" id="L676" title="All 2 branches missed.">		if (eGenericType == null) {</span>
+<span class="nc" id="L677">			return &quot;void&quot;;</span>
 		}
-<span class="nc" id="L675">		StringBuilder ret = new StringBuilder();		</span>
-<span class="nc bnc" id="L676" title="All 2 branches missed.">		if (eGenericType.getETypeParameter() != null) {</span>
-<span class="nc" id="L677">			ret.append(getLabel(eGenericType.getETypeParameter()));</span>
-<span class="nc bnc" id="L678" title="All 2 branches missed.">		} else if (eGenericType.getEClassifier() != null) {</span>
-<span class="nc" id="L679">			ret.append(getLabel(eGenericType.getEClassifier()));			</span>
+<span class="nc" id="L679">		StringBuilder ret = new StringBuilder();		</span>
+<span class="nc bnc" id="L680" title="All 2 branches missed.">		if (eGenericType.getETypeParameter() != null) {</span>
+<span class="nc" id="L681">			ret.append(getLabel(eGenericType.getETypeParameter()));</span>
+<span class="nc bnc" id="L682" title="All 2 branches missed.">		} else if (eGenericType.getEClassifier() != null) {</span>
+<span class="nc" id="L683">			ret.append(getLabel(eGenericType.getEClassifier()));			</span>
 		}
-<span class="nc" id="L681">		ret.append(genericTypeArguments(eGenericType));</span>
-<span class="nc" id="L682">		return ret.toString();</span>
+<span class="nc" id="L685">		ret.append(genericTypeArguments(eGenericType));</span>
+<span class="nc" id="L686">		return ret.toString();</span>
 	}
 
 	protected String genericTypeArguments(EGenericType eGenericType) {
-<span class="nc" id="L686">		StringBuilder ret = new StringBuilder();</span>
-<span class="nc" id="L687">		Iterator&lt;EGenericType&gt; it = eGenericType.getETypeArguments().iterator();</span>
-<span class="nc bnc" id="L688" title="All 2 branches missed.">		if (it.hasNext()) {</span>
-<span class="nc" id="L689">			ret.append(&quot;&lt;&quot;);</span>
-<span class="nc bnc" id="L690" title="All 2 branches missed.">			while (it.hasNext()) {</span>
-<span class="nc" id="L691">				ret.append(genericName(it.next()));</span>
-<span class="nc bnc" id="L692" title="All 2 branches missed.">				if (it.hasNext()) {</span>
-<span class="nc" id="L693">					ret.append(&quot;,&quot;);</span>
+<span class="nc" id="L690">		StringBuilder ret = new StringBuilder();</span>
+<span class="nc" id="L691">		Iterator&lt;EGenericType&gt; it = eGenericType.getETypeArguments().iterator();</span>
+<span class="nc bnc" id="L692" title="All 2 branches missed.">		if (it.hasNext()) {</span>
+<span class="nc" id="L693">			ret.append(&quot;&lt;&quot;);</span>
+<span class="nc bnc" id="L694" title="All 2 branches missed.">			while (it.hasNext()) {</span>
+<span class="nc" id="L695">				ret.append(genericName(it.next()));</span>
+<span class="nc bnc" id="L696" title="All 2 branches missed.">				if (it.hasNext()) {</span>
+<span class="nc" id="L697">					ret.append(&quot;,&quot;);</span>
 				}
 			}
-<span class="nc" id="L696">			ret.append(&quot;&gt;&quot;);</span>
+<span class="nc" id="L700">			ret.append(&quot;&gt;&quot;);</span>
 		}
-<span class="nc" id="L698">		return ret.toString();</span>
+<span class="nc" id="L702">		return ret.toString();</span>
 	}
 
 	public void appendEClass(EClass eClass, Set&lt;EClassifier&gt; allClassifiers) throws IOException {
-<span class="nc" id="L702">		appendEClass(eClass, null, allClassifiers);</span>
-<span class="nc" id="L703">	}</span>
+<span class="nc" id="L706">		appendEClass(eClass, null, allClassifiers);</span>
+<span class="nc" id="L707">	}</span>
 	
-<span class="nc" id="L705">	protected Comparator&lt;ENamedElement&gt; eNamedElementComparator = (a,b) -&gt; labelProvider.apply(a, a.getName()).compareTo(labelProvider.apply(b, b.getName()));</span>
+<span class="nc" id="L709">	protected Comparator&lt;ENamedElement&gt; eNamedElementComparator = (a,b) -&gt; labelProvider.apply(a, a.getName()).compareTo(labelProvider.apply(b, b.getName()));</span>
 	
 	public void appendEClass(EClass eClass, String style, Set&lt;EClassifier&gt; allClassifiers) throws IOException {
-<span class="nc bnc" id="L708" title="All 4 branches missed.">		String modifiers = eClass.isAbstract() &amp;&amp; !eClass.isInterface() ? &quot;abstract&quot; : null;</span>
-<span class="nc bnc" id="L709" title="All 2 branches missed.">		appendClassStart(modifiers, eClass.isInterface() ? &quot;interface&quot; : &quot;class&quot;, qualifiedName(eClass) + typeParameters(eClass), getEClassifierLink(eClass), style);</span>
-<span class="nc bnc" id="L710" title="All 2 branches missed.">		if (isAppendAttributes(eClass)) {</span>
-<span class="nc bnc" id="L711" title="All 2 branches missed.">			for (EAttribute attribute: eClass.getEAttributes().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList())) {			</span>
-<span class="nc" id="L712">				EGenericType eGenericType = attribute.getEGenericType();</span>
-<span class="nc bnc" id="L713" title="All 2 branches missed.">				if (eGenericType != null) {</span>
-<span class="nc bnc" id="L714" title="All 2 branches missed.">					appendAttribute(null, null, genericName(eGenericType) + (attribute.isMany() ? &quot;[]&quot; : &quot;&quot;), getLabel(attribute));</span>
+<span class="nc bnc" id="L712" title="All 4 branches missed.">		String modifiers = eClass.isAbstract() &amp;&amp; !eClass.isInterface() ? &quot;abstract&quot; : null;</span>
+<span class="nc bnc" id="L713" title="All 2 branches missed.">		appendClassStart(modifiers, eClass.isInterface() ? &quot;interface&quot; : &quot;class&quot;, qualifiedName(eClass) + typeParameters(eClass), getEClassifierLink(eClass), style);</span>
+<span class="nc bnc" id="L714" title="All 2 branches missed.">		if (isAppendAttributes(eClass)) {</span>
+<span class="nc bnc" id="L715" title="All 2 branches missed.">			for (EAttribute attribute: eClass.getEAttributes().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList())) {			</span>
+<span class="nc" id="L716">				EGenericType eGenericType = attribute.getEGenericType();</span>
+<span class="nc bnc" id="L717" title="All 2 branches missed.">				if (eGenericType != null) {</span>
+<span class="nc bnc" id="L718" title="All 2 branches missed.">					appendAttribute(null, null, genericName(eGenericType) + (attribute.isMany() ? &quot;[]&quot; : &quot;&quot;), getLabel(attribute));</span>
 				}						
-<span class="nc" id="L716">			}</span>
+<span class="nc" id="L720">			}</span>
 		}
-<span class="nc" id="L718">		collector.append(CLASS_COMPARTMENT_SEPARATOR_LINE);</span>
-<span class="nc bnc" id="L719" title="All 2 branches missed.">		for (EReference reference: eClass.getEReferences().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList())) {</span>
-<span class="nc" id="L720">			EGenericType eGenericType = reference.getEGenericType();			</span>
-<span class="nc bnc" id="L721" title="All 4 branches missed.">			if (eGenericType == null || !allClassifiers.contains(reference.getEReferenceType())) {</span>
-<span class="nc bnc" id="L722" title="All 2 branches missed.">				appendAttribute(null, null, genericName(eGenericType) + (reference.isMany() ? &quot;[]&quot; : &quot;&quot;), getLabel(reference));</span>
+<span class="nc" id="L722">		collector.append(CLASS_COMPARTMENT_SEPARATOR_LINE);</span>
+<span class="nc bnc" id="L723" title="All 2 branches missed.">		for (EReference reference: eClass.getEReferences().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList())) {</span>
+<span class="nc" id="L724">			EGenericType eGenericType = reference.getEGenericType();			</span>
+<span class="nc bnc" id="L725" title="All 4 branches missed.">			if (eGenericType == null || !allClassifiers.contains(reference.getEReferenceType())) {</span>
+<span class="nc bnc" id="L726" title="All 2 branches missed.">				appendAttribute(null, null, genericName(eGenericType) + (reference.isMany() ? &quot;[]&quot; : &quot;&quot;), getLabel(reference));</span>
 			}						
-<span class="nc" id="L724">		}</span>
+<span class="nc" id="L728">		}</span>
 		
-<span class="nc" id="L726">		collector.append(CLASS_COMPARTMENT_SEPARATOR_LINE);</span>
-<span class="nc bnc" id="L727" title="All 2 branches missed.">		if (isAppendOperations(eClass)) {</span>
-<span class="nc bnc" id="L728" title="All 2 branches missed.">			for (EOperation op : eClass.getEOperations().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList())) {</span>
-<span class="nc" id="L729">				Collection&lt;String&gt; parameters = new ArrayList&lt;String&gt;();</span>
-<span class="nc bnc" id="L730" title="All 2 branches missed.">				for (EParameter parameter : op.getEParameters()) {</span>
-<span class="nc" id="L731">					String paramString = getLabel(parameter);</span>
-<span class="nc bnc" id="L732" title="All 2 branches missed.">					if (parameter.getEGenericType() != null) {</span>
-<span class="nc" id="L733">						paramString = genericName(parameter.getEGenericType()) + &quot; &quot; + paramString;</span>
+<span class="nc" id="L730">		collector.append(CLASS_COMPARTMENT_SEPARATOR_LINE);</span>
+<span class="nc bnc" id="L731" title="All 2 branches missed.">		if (isAppendOperations(eClass)) {</span>
+<span class="nc bnc" id="L732" title="All 2 branches missed.">			for (EOperation op : eClass.getEOperations().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList())) {</span>
+<span class="nc" id="L733">				Collection&lt;String&gt; parameters = new ArrayList&lt;String&gt;();</span>
+<span class="nc bnc" id="L734" title="All 2 branches missed.">				for (EParameter parameter : op.getEParameters()) {</span>
+<span class="nc" id="L735">					String paramString = getLabel(parameter);</span>
+<span class="nc bnc" id="L736" title="All 2 branches missed.">					if (parameter.getEGenericType() != null) {</span>
+<span class="nc" id="L737">						paramString = genericName(parameter.getEGenericType()) + &quot; &quot; + paramString;</span>
 					}
-<span class="nc" id="L735">					parameters.add(paramString);</span>
-<span class="nc" id="L736">				}</span>
-<span class="nc" id="L737">				appendOperation(null, null, genericName(op.getEGenericType()), getLabel(op), parameters);</span>
-<span class="nc" id="L738">			}</span>
+<span class="nc" id="L739">					parameters.add(paramString);</span>
+<span class="nc" id="L740">				}</span>
+<span class="nc" id="L741">				appendOperation(null, null, genericName(op.getEGenericType()), getLabel(op), parameters);</span>
+<span class="nc" id="L742">			}</span>
 		}
-<span class="nc" id="L740">		appendClassEnd();</span>
-<span class="nc" id="L741">	}</span>
+<span class="nc" id="L744">		appendClassEnd();</span>
+<span class="nc" id="L745">	}</span>
 
 	/**
 	 * Constructs {@link EClassifier} with the first documentation sentence as a tooltip. 
@@ -746,71 +750,71 @@ public class PlantUmlTextGenerator implements DiagramTextGenerator {
 	 * @return
 	 */
 	protected String getEClassifierLink(EClassifier eClassifier) {
-<span class="nc" id="L749">		String link = null;</span>
-<span class="nc bnc" id="L750" title="All 4 branches missed.">		if (eClassifier != null &amp;&amp; eClassifierLinkResolver != null) {</span>
-<span class="nc" id="L751">			link = eClassifierLinkResolver.apply(eClassifier);</span>
-<span class="nc bnc" id="L752" title="All 4 branches missed.">			if (link != null &amp;&amp; eModelElementFirstDocSentenceProvider != null) {</span>
-<span class="nc" id="L753">				String firstDocSentence = eModelElementFirstDocSentenceProvider.apply(eClassifier);</span>
-<span class="nc bnc" id="L754" title="All 2 branches missed.">				if (!org.nasdanika.common.Util.isBlank(firstDocSentence)) {</span>
-<span class="nc" id="L755">					link += &quot;{&quot; + firstDocSentence + &quot;}&quot;;</span>
+<span class="nc" id="L753">		String link = null;</span>
+<span class="nc bnc" id="L754" title="All 4 branches missed.">		if (eClassifier != null &amp;&amp; eClassifierLinkResolver != null) {</span>
+<span class="nc" id="L755">			link = eClassifierLinkResolver.apply(eClassifier);</span>
+<span class="nc bnc" id="L756" title="All 4 branches missed.">			if (link != null &amp;&amp; eModelElementFirstDocSentenceProvider != null) {</span>
+<span class="nc" id="L757">				String firstDocSentence = eModelElementFirstDocSentenceProvider.apply(eClassifier);</span>
+<span class="nc bnc" id="L758" title="All 2 branches missed.">				if (!org.nasdanika.common.Util.isBlank(firstDocSentence)) {</span>
+<span class="nc" id="L759">					link += &quot;{&quot; + firstDocSentence + &quot;}&quot;;</span>
 				}
 			}
 		}
-<span class="nc" id="L759">		return link;</span>
+<span class="nc" id="L763">		return link;</span>
 	}
 	
 	protected boolean isAppendAttributes(EClass eClass) {
-<span class="nc" id="L763">		return true;</span>
+<span class="nc" id="L767">		return true;</span>
 	}
 	
 	protected boolean isAppendOperations(EClass eClass) {
-<span class="nc" id="L767">		return true;</span>
+<span class="nc" id="L771">		return true;</span>
 	}
 
 	public void appendEDataType(EDataType dataType, Set&lt;EClassifier&gt; allClassifiers) throws IOException {
-<span class="nc" id="L771">		appendEDataType(dataType, null, allClassifiers);</span>
-<span class="nc" id="L772">	}	</span>
+<span class="nc" id="L775">		appendEDataType(dataType, null, allClassifiers);</span>
+<span class="nc" id="L776">	}	</span>
 	
 	public void appendEDataType(EDataType dataType, String background, Set&lt;EClassifier&gt; allClassifiers) throws IOException {
-<span class="nc" id="L775">		appendClassStart(null, &quot;class&quot;, qualifiedName(dataType)+&quot; &lt;&lt; (D,orchid) &gt;&gt;&quot;, getEClassifierLink(dataType), background);</span>
-<span class="nc bnc" id="L776" title="All 2 branches missed.">		if (dataType.getInstanceClassName() != null) {</span>
-<span class="nc" id="L777">			appendAttribute(null, null, null, dataType.getInstanceClassName());</span>
+<span class="nc" id="L779">		appendClassStart(null, &quot;class&quot;, qualifiedName(dataType)+&quot; &lt;&lt; (D,orchid) &gt;&gt;&quot;, getEClassifierLink(dataType), background);</span>
+<span class="nc bnc" id="L780" title="All 2 branches missed.">		if (dataType.getInstanceClassName() != null) {</span>
+<span class="nc" id="L781">			appendAttribute(null, null, null, dataType.getInstanceClassName());</span>
 		}
-<span class="nc" id="L779">		appendClassEnd();</span>
-<span class="nc" id="L780">	}</span>
+<span class="nc" id="L783">		appendClassEnd();</span>
+<span class="nc" id="L784">	}</span>
 
 	public void appendEEnum(EEnum eEnum, Set&lt;EClassifier&gt; allClassifiers) throws IOException {
-<span class="nc" id="L783">		appendEEnum(eEnum, null, allClassifiers);</span>
-<span class="nc" id="L784">	}</span>
+<span class="nc" id="L787">		appendEEnum(eEnum, null, allClassifiers);</span>
+<span class="nc" id="L788">	}</span>
 	
 	public void appendEEnum(EEnum eEnum, String background, Set&lt;EClassifier&gt; allClassifiers) throws IOException {
-<span class="nc" id="L787">		appendClassStart(null, &quot;enum&quot;, qualifiedName(eEnum), getEClassifierLink(eEnum), background);</span>
-<span class="nc bnc" id="L788" title="All 2 branches missed.">		for (EEnumLiteral literal : eEnum.getELiterals()) {</span>
-<span class="nc bnc" id="L789" title="All 2 branches missed.">			appendAttribute(String.valueOf(literal.getValue()), null, getLabel(literal), literal.getName().equals(literal.getLiteral()) ? &quot;&quot; : literal.getLiteral());</span>
-<span class="nc" id="L790">		}</span>
-<span class="nc" id="L791">		appendClassEnd();</span>
-<span class="nc" id="L792">	}</span>
+<span class="nc" id="L791">		appendClassStart(null, &quot;enum&quot;, qualifiedName(eEnum), getEClassifierLink(eEnum), background);</span>
+<span class="nc bnc" id="L792" title="All 2 branches missed.">		for (EEnumLiteral literal : eEnum.getELiterals()) {</span>
+<span class="nc bnc" id="L793" title="All 2 branches missed.">			appendAttribute(String.valueOf(literal.getValue()), null, getLabel(literal), literal.getName().equals(literal.getLiteral()) ? &quot;&quot; : literal.getLiteral());</span>
+<span class="nc" id="L794">		}</span>
+<span class="nc" id="L795">		appendClassEnd();</span>
+<span class="nc" id="L796">	}</span>
 
 	protected String getTypeName(EClassifier type) {
-<span class="nc" id="L795">		String typeName = null;</span>
-<span class="nc bnc" id="L796" title="All 2 branches missed.">		if (type != null) {</span>
-<span class="nc bnc" id="L797" title="All 2 branches missed.">			if (type instanceof EDataType) {</span>
-<span class="nc" id="L798">				typeName = type.getInstanceClassName();</span>
+<span class="nc" id="L799">		String typeName = null;</span>
+<span class="nc bnc" id="L800" title="All 2 branches missed.">		if (type != null) {</span>
+<span class="nc bnc" id="L801" title="All 2 branches missed.">			if (type instanceof EDataType) {</span>
+<span class="nc" id="L802">				typeName = type.getInstanceClassName();</span>
 			}
-<span class="nc bnc" id="L800" title="All 2 branches missed.">			if (typeName == null) {</span>
-<span class="nc" id="L801">				typeName = getLabel(type);</span>
+<span class="nc bnc" id="L804" title="All 2 branches missed.">			if (typeName == null) {</span>
+<span class="nc" id="L805">				typeName = getLabel(type);</span>
 			}
 		}
-<span class="nc" id="L804">		return getSimpleName(typeName);</span>
+<span class="nc" id="L808">		return getSimpleName(typeName);</span>
 	}
 	
 	public void appendStartUml() throws IOException {
-<span class="nc" id="L808">		collector.append(&quot;@startuml&quot;).append(System.lineSeparator());</span>
-<span class="nc" id="L809">	}</span>
+<span class="nc" id="L812">		collector.append(&quot;@startuml&quot;).append(System.lineSeparator());</span>
+<span class="nc" id="L813">	}</span>
 	
 	public void appendEndUml() throws IOException {
-<span class="nc" id="L812">		collector.append(&quot;@enduml&quot;).append(System.lineSeparator());</span>
-<span class="nc" id="L813">	}</span>
+<span class="nc" id="L816">		collector.append(&quot;@enduml&quot;).append(System.lineSeparator());</span>
+<span class="nc" id="L817">	}</span>
 	
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
