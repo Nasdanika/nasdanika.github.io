@@ -3,20 +3,21 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nasdanika</groupId>
-	<version>2023.4.0</version>
+	<version>2023.4.1</version>
 	<artifactId>docs</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika Documentation Site</name>
 	
 	<properties>
-		<architecture.version>2023.4.0</architecture.version>
+		<html.version>2023.4.1</html.version>
+		<architecture.version>2023.4.1</architecture.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
 			<artifactId>ecore</artifactId>
-			<version>2023.4.0</version>
+			<version>${html.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.nasdanika.architecture</groupId>
