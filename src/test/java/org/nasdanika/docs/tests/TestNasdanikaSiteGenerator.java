@@ -37,6 +37,11 @@ public class TestNasdanikaSiteGenerator {
 				return resourceSet;
 			}
 			
+			@Override
+			protected boolean isDeleteOutputPath(String path) {
+				return !"CNAME".equals(path) && !"favicon.ico".equals(path) && !path.startsWith("images/");
+			}			
+			
 		};
 		
 		File nasdanikaDiagramFile = new File("model/nasdanika.drawio").getCanonicalFile();
