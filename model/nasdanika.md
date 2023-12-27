@@ -1,7 +1,7 @@
 # Overview
 
-```drawio-resource
-./nasdanika.drawio
+```drawio
+${representations/drawio/diagram}
 ```
 
 * [Core](modules/core/index.html) - foundational functionality
