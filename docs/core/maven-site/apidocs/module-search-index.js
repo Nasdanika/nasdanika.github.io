@@ -1,1 +1,0 @@
-moduleSearchIndex = [{"l":"org.nasdanika.common"},{"l":"org.nasdanika.drawio"},{"l":"org.nasdanika.emf"},{"l":"org.nasdanika.exec"},{"l":"org.nasdanika.exec.gen"},{"l":"org.nasdanika.graph"},{"l":"org.nasdanika.maven"},{"l":"org.nasdanika.ncore"},{"l":"org.nasdanika.ncore.gen"},{"l":"org.nasdanika.persistence"},{"l":"org.nasdanika.resources"}];updateSearchResults();

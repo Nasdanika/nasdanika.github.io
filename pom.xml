@@ -3,86 +3,33 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nasdanika</groupId>
-	<version>2023.4.1</version>
+	<version>2023.12.0</version>
 	<artifactId>docs</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika Documentation Site</name>
 	
 	<properties>
-		<html.version>2023.4.1</html.version>
-		<architecture.version>2023.4.1</architecture.version>
+		<html.version>2023.12.0</html.version>
+		<architecture.version>2023.12.0</architecture.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
+			<groupId>org.nasdanika</groupId>
+			<artifactId>plantuml-diagram-generator</artifactId>
+			<version>2023.12.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.nasdanika.html</groupId>
-			<artifactId>ecore</artifactId>
-			<version>${html.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.nasdanika.architecture</groupId>
-			<artifactId>c4</artifactId>
-			<version>${architecture.version}</version>
-		</dependency>
-
-		<!-- Azure --> 
-		<dependency>
-			<groupId>org.nasdanika.architecture.cloud.azure</groupId>
-			<artifactId>core</artifactId>
-			<version>${architecture.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.nasdanika.architecture.cloud.azure</groupId>
-			<artifactId>compute</artifactId>
-			<version>${architecture.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.nasdanika.architecture.cloud.azure</groupId>
-			<artifactId>networking</artifactId>
-			<version>${architecture.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.nasdanika.architecture.cloud.azure</groupId>
-			<artifactId>storage</artifactId>
-			<version>${architecture.version}</version>
-		</dependency>
-		
-		<!-- Containers --> 
-		<dependency>
-			<groupId>org.nasdanika.architecture.containers</groupId>
-			<artifactId>docker</artifactId>
-			<version>${architecture.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.nasdanika.architecture.containers</groupId>
-			<artifactId>kubernetes</artifactId>
-			<version>${architecture.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.nasdanika.architecture.containers</groupId>
-			<artifactId>helm</artifactId>
-			<version>${architecture.version}</version>
-		</dependency>
-		
+			<artifactId>app-model-gen</artifactId>
+			<version>2023.12.0</version>
+		</dependency>		
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
 		    <artifactId>junit-jupiter-api</artifactId>
-		    <version>5.9.1</version>
+		    <version>5.10.0</version>
 		    <scope>test</scope>
 		</dependency>		
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>3.20.2</version>
-			<scope>test</scope>
-		</dependency>		
-		
-		<dependency>
-		    <groupId>net.sourceforge.plantuml</groupId>
-		    <artifactId>plantuml</artifactId>
-		    <version>1.2023.5</version>
-		</dependency>				
-					
 	</dependencies>
 
 	<build>

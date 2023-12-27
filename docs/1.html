@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="EN">
   <head>
-    <title>HTML</title>
+    <title>Application Page Template</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cerulean/bootstrap.min.css" id="nsd-bootstrap-theme-stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -33,7 +33,7 @@
   gtag('config', 'G-9BRJVLK8CC');
 </script>    
 
-<script src="../search-documents.js"></script>
+<script src="search-documents.js"></script>
 
 <script src="https://cdn.jsdelivr.net/gh/olivernn/lunr.js@v2.3.9/lunr.js"></script>
 
@@ -73,14 +73,14 @@ window.nsdJsTreeSearchCallback = function(str, node) {
     <div class="container-fluid nsd-app-container">
       <div class="row">
         <div class="col nsd-app-header">
-          <a href="../index.html" data-nsd-label-uuid="5edb5965-f6c5-4eb1-9145-153c08be72ac" class="nsd-app-header-title">
+          <a href="index.html" data-nsd-label-uuid="5edb5965-f6c5-4eb1-9145-153c08be72ac" class="nsd-app-header-title">
             <img src="https://docs.nasdanika.org/images/nasdanika-logo.png" class="nsd-app-label-icon">Nasdanika</a>
           <ul class="nav nsd-app-header-navs">
             <li class="nav-item">
-              <a href="../search.html" data-nsd-label-uuid="aaf8e221-f645-4f31-b6f3-199ed66aba68" class="nav-link"><span class="fas fa-search nsd-app-label-icon"></span>Search</a>
+              <a href="search.html" data-nsd-label-uuid="aaf8e221-f645-4f31-b6f3-199ed66aba68" class="nav-link"><span class="fas fa-search nsd-app-label-icon"></span>Search</a>
             </li>
             <li class="nav-item">
-              <a href="../glossary.html" data-nsd-label-uuid="0ce19274-df77-4382-af3c-029b09765e36" class="nav-link">Glossary</a>
+              <a href="glossary.html" data-nsd-label-uuid="0ce19274-df77-4382-af3c-029b09765e36" class="nav-link">Glossary</a>
             </li>
           </ul>
         </div>
@@ -91,26 +91,26 @@ window.nsdJsTreeSearchCallback = function(str, node) {
           </div>
           <div id="nsd-nav-panel-1602e310-1f31-41bc-83fd-e5431399f099-collapsible" style="clear:right" class="nsd-collapsible collapse show">
             <div class="list-group list-group-flush">
-              <a href="../core/index.html" title="Core functionality" data-nsd-label-uuid="473b690a-f699-413b-a458-1038bdfdb455" class="list-group-item list-group-action">Core</a>
+              <a href="core/index.html" title="Core functionality" data-nsd-label-uuid="473b690a-f699-413b-a458-1038bdfdb455" class="list-group-item list-group-action">Core</a>
             </div>
             <div class="card">
               <div class="card-header"><span data-toggle="collapse" data-target="#nsd-app-nav-item-798b7d82-7514-4e22-8c49-4ccc5340f0aa-collapsible" aria-expanded="true" aria-controls="nsd-app-nav-item-798b7d82-7514-4e22-8c49-4ccc5340f0aa-collapsible" title="Toggle card" id="nsd-app-nav-item-798b7d82-7514-4e22-8c49-4ccc5340f0aa-collapsible-trigger" class="nsd-collapsible-trigger"><i aria-hidden="true" class="fa"></i></span>
-                <a title="Libraries for generating HTML - elements, pages, sites">HTML</a>
+                <a href="html/index.html" title="Libraries for generating HTML - elements, pages, sites">HTML</a>
               </div>
               <div id="nsd-app-nav-item-798b7d82-7514-4e22-8c49-4ccc5340f0aa-collapsible" class="card-body p-1 nsd-collapsible collapse show">
-                <input type="text" id="nsd_28_searchInput" title="Full-text search. You can use wildcards, e.g. 'foo*' or 'f*o'; title or content fields, e.g. 'title:foo* bar'; boosts, e.g. 'foo^10 bar'; fuzzy matches, e.g. 'foo~1'; and term presence, e.g. '+foo bar -baz'" class="form-control">
+                <input type="text" id="nsd_19_searchInput" title="Full-text search. You can use wildcards, e.g. 'foo*' or 'f*o'; title or content fields, e.g. 'title:foo* bar'; boosts, e.g. 'foo^10 bar'; fuzzy matches, e.g. 'foo~1'; and term presence, e.g. '+foo bar -baz'" class="form-control">
                 <div id="69ba6c03-5713-4f18-9105-5052affc24ff-navigation-panel-nsd-app-nav-item-798b7d82-7514-4e22-8c49-4ccc5340f0aa"></div>
               </div>
             </div>
             <script>$(document).ready( function() {
-$('#69ba6c03-5713-4f18-9105-5052affc24ff-navigation-panel-nsd-app-nav-item-798b7d82-7514-4e22-8c49-4ccc5340f0aa').jstree(function(tree) { tree.state.filter = function(state) { delete state.core.selected; return state; };  tree.search.search_callback = function(searchStr, node) { if (typeof window.nsdJsTreeSearchCallback === 'function') return window.nsdJsTreeSearchCallback(searchStr, node); var sf = new $.vakata.search(searchStr, true, { caseSensitive : false, fuzzy : false }); return sf.search(node.text).isMatch; }; return tree; }({"core":{"data":[{"a_attr":{"title":"Ecore models for generating HTML markup, pages, and sites/applications","onclick":"window.location='models/index.html';"},"children":[{"a_attr":{"title":"Ecore model of an application (a hierarchy of actions) and adapters for generation of HTML sites from the model","onclick":"window.location='models/app/index.html';"},"children":[{"a_attr":{"title":"Ecore model of application elements","onclick":"window.location='models/app/model/index.html';"},"data-nsd-label-uuid":"0146f538-b5a1-4d35-a64b-80b840c09973","id":"nsd-app-nav-item-9de0f2b3-ab53-44b8-893b-642e376b220e","text":"Model","type":"leaf"}],"data-nsd-label-uuid":"8c6e9213-ed99-416d-a108-790348621ff8","id":"nsd-app-nav-item-04250c6b-9068-4b58-a571-d396abedd314","text":"App"}],"data-nsd-label-uuid":"2348c34e-16a7-43c0-86bc-b5933049ca55","id":"nsd-app-nav-item-b691dc5a-2868-4259-98ce-3e3eea262af9","text":"Models"}]},"search":{"show_only_matches":true,"show_only_matches_children":true},"types":{"leaf":{"icon":"jstree-file"}},"plugins":["state","type","search"],"state":{"key":"69ba6c03-5713-4f18-9105-5052affc24ff-navigation-panel"}}));
+$('#69ba6c03-5713-4f18-9105-5052affc24ff-navigation-panel-nsd-app-nav-item-798b7d82-7514-4e22-8c49-4ccc5340f0aa').jstree(function(tree) { tree.state.filter = function(state) { delete state.core.selected; return state; };  tree.search.search_callback = function(searchStr, node) { if (typeof window.nsdJsTreeSearchCallback === 'function') return window.nsdJsTreeSearchCallback(searchStr, node); var sf = new $.vakata.search(searchStr, true, { caseSensitive : false, fuzzy : false }); return sf.search(node.text).isMatch; }; return tree; }({"core":{"data":[{"a_attr":{"title":"Ecore models for generating HTML markup, pages, and sites/applications","onclick":"window.location='html/models/index.html';"},"children":[{"a_attr":{"title":"Ecore model of an application (a hierarchy of actions) and adapters for generation of HTML sites from the model","onclick":"window.location='html/models/app/index.html';"},"children":[{"a_attr":{"title":"Ecore model of application elements","onclick":"window.location='html/models/app/model/index.html';"},"data-nsd-label-uuid":"0146f538-b5a1-4d35-a64b-80b840c09973","id":"nsd-app-nav-item-9de0f2b3-ab53-44b8-893b-642e376b220e","text":"Model","type":"leaf"}],"data-nsd-label-uuid":"8c6e9213-ed99-416d-a108-790348621ff8","id":"nsd-app-nav-item-04250c6b-9068-4b58-a571-d396abedd314","text":"App"}],"data-nsd-label-uuid":"2348c34e-16a7-43c0-86bc-b5933049ca55","id":"nsd-app-nav-item-b691dc5a-2868-4259-98ce-3e3eea262af9","text":"Models"}]},"search":{"show_only_matches":true,"show_only_matches_children":true},"types":{"leaf":{"icon":"jstree-file"}},"plugins":["state","type","search"],"state":{"key":"69ba6c03-5713-4f18-9105-5052affc24ff-navigation-panel"}}));
 // Tokens: searchInputSelector, timer, treeSelector
-$('#nsd_28_searchInput').keyup(function () {
-    if (window['nsd_jstTreeSearchTimer_nsd_29']) { 
-		clearTimeout(window['nsd_jstTreeSearchTimer_nsd_29']); 
+$('#nsd_19_searchInput').keyup(function () {
+    if (window['nsd_jstTreeSearchTimer_nsd_1a']) { 
+		clearTimeout(window['nsd_jstTreeSearchTimer_nsd_1a']); 
 	}
-    window['nsd_jstTreeSearchTimer_nsd_29'] = setTimeout(function () {
-      var v = $('#nsd_28_searchInput').val();
+    window['nsd_jstTreeSearchTimer_nsd_1a'] = setTimeout(function () {
+      var v = $('#nsd_19_searchInput').val();
       $('#69ba6c03-5713-4f18-9105-5052affc24ff-navigation-panel-nsd-app-nav-item-798b7d82-7514-4e22-8c49-4ccc5340f0aa').jstree(true).search(v);
     }, 250);
   });
@@ -118,14 +118,8 @@ $('#nsd_28_searchInput').keyup(function () {
 });</script>
           </div>
         </div>
-        <div data-nsd-label-uuid="165de654-c2ef-49cb-9d57-96e5ea4d790d" data-nsd-action-uris="uuid:165de654-c2ef-49cb-9d57-96e5ea4d790d" class="col nsd-app-content-panel">
+        <div data-nsd-label-uuid="d8e92ee1-428e-460e-9e50-38b22f0e2276" data-nsd-action-uris="uuid:d8e92ee1-428e-460e-9e50-38b22f0e2276" class="col nsd-app-content-panel">
           <div class="container-fluid">
-            <div class="row nsd-app-content-panel-title-and-items-row">
-              <div class="col-auto">
-                <h1><span title="Libraries for generating HTML - elements, pages, sites" data-nsd-label-uuid="165de654-c2ef-49cb-9d57-96e5ea4d790d" class="nsd-app-content-panel-title">HTML</span>
-                </h1>
-              </div>
-            </div>
             <div class="row nsd-app-content-panel-content-row">
               <div class="col">
                 <div class="container-fluid"></div>
@@ -143,7 +137,7 @@ $('#nsd_28_searchInput').keyup(function () {
             <li class="nav-item"><span class="navbar-text">&nbsp;•&nbsp;</span>
             </li>
             <li class="nav-item">
-              <a href="../support.html" data-nsd-label-uuid="fea62fb2-d4e2-4e60-90d4-d2b03f20d502" class="nav-link"><span class="far fa-life-ring nsd-app-label-icon"></span>Support</a>
+              <a href="support.html" data-nsd-label-uuid="fea62fb2-d4e2-4e60-90d4-d2b03f20d502" class="nav-link"><span class="far fa-life-ring nsd-app-label-icon"></span>Support</a>
             </li>
           </ul>
         </div>
