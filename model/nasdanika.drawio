@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-01-06T04:22:46.180Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.16 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="_czWVOjzIrDubiBMvu1f" version="22.1.16" type="device">
+<mxfile host="Electron" modified="2024-01-07T16:25:32.452Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.16 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="D4l5bvu8Ju_-2cgppY8M" version="22.1.16" type="device">
   <diagram id="HQOKvbAvWCf9tJ4usP6P" name="Nasdanika">
-    <mxGraphModel dx="1418" dy="1928" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="3008" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <object label="" type="Action" page-element="true" feature-map="container:&#xa;  self: &#xa;    children:&#xa;      path: 1&#xa;" doc-ref="nasdanika.md" spec-ref="root-action.yml" id="0">
           <mxCell />
@@ -9,138 +9,143 @@
           <mxCell parent="0" />
         </object>
         <object label="Core" placeholders="1" type="Action" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;" spec="location: %id%/index.html" base-uri="%id%/" doc-ref="readme.md" id="core">
-          <mxCell style="swimlane;whiteSpace=wrap;html=1;collapsible=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxCell style="swimlane;whiteSpace=wrap;html=1;collapsible=0;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
             <mxGeometry x="100" y="280" width="460" height="130" as="geometry" />
           </mxCell>
         </object>
         <object label="Common" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="common">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="core">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
             <mxGeometry x="10" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Resources" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="resources">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="core">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
             <mxGeometry x="100" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Persistence" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="persistence">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="core">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
             <mxGeometry x="190" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Ncore" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="ncore">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="core">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
             <mxGeometry x="280" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Diagram" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="diagram">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="core">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
             <mxGeometry x="10" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Graph" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="graph">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="core">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
             <mxGeometry x="100" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Drawio" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="drawio">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="core">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
             <mxGeometry x="190" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="EMF" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="emf">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="core">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
             <mxGeometry x="280" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Exec" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="exec">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="core">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
             <mxGeometry x="370" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Maven" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="maven">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="core">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
             <mxGeometry x="370" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="HTML" placeholders="1" type="Action" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;" spec="location: %id%/index.html" base-uri="%id%/" doc-ref="readme.md" id="html">
-          <mxCell style="swimlane;whiteSpace=wrap;html=1;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxCell style="swimlane;whiteSpace=wrap;html=1;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
             <mxGeometry x="100" y="100" width="460" height="170" as="geometry" />
           </mxCell>
         </object>
         <object label="HTML" type="Action" placeholders="1" spec="location: html/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="html/" doc-ref="readme.md" id="1O0O-SB--TNPAReoqQZB-13">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="html">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="html" vertex="1">
             <mxGeometry x="20" y="120" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Models" placeholders="1" type="Action" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" spec="location: %id%/index.html" base-uri="%id%/" doc-ref="readme.md" id="models">
-          <mxCell style="swimlane;whiteSpace=wrap;html=1;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="html">
+          <mxCell style="swimlane;whiteSpace=wrap;html=1;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="html" vertex="1">
             <mxGeometry x="10" y="30" width="280" height="80" as="geometry" />
           </mxCell>
         </object>
         <object label="HTML" type="Action" placeholders="1" spec="location: html/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="html/" doc-ref="readme.md" id="html-model">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="models">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="models" vertex="1">
             <mxGeometry x="10" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Bootstrap" type="Action" placeholders="1" spec="location: bootstrap/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="bootstrap/" doc-ref="readme.md" id="1O0O-SB--TNPAReoqQZB-17">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="models">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="models" vertex="1">
             <mxGeometry x="100" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="App" type="Action" placeholders="1" spec="location: app/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="app/" doc-ref="readme.md" id="1O0O-SB--TNPAReoqQZB-18">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="models">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="models" vertex="1">
             <mxGeometry x="190" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="JsTree" type="Action" placeholders="1" spec="location: jstree/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="jstree/" doc-ref="readme.md" id="1O0O-SB--TNPAReoqQZB-20">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="html">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="html" vertex="1">
             <mxGeometry x="200" y="120" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Bootstrap" type="Action" placeholders="1" spec="location: bootstrap/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="bootstrap/" doc-ref="readme.md" id="1O0O-SB--TNPAReoqQZB-19">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="html">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="html" vertex="1">
             <mxGeometry x="110" y="120" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="EMF" type="Action" placeholders="1" spec="location: emf/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="emf/" doc-ref="readme.md" id="1O0O-SB--TNPAReoqQZB-22">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="html">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="html" vertex="1">
             <mxGeometry x="290" y="120" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Models" placeholders="1" type="Action" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;" spec="location: models/index.html" base-uri="models/" doc-ref="readme.md" id="1O0O-SB--TNPAReoqQZB-23">
-          <mxCell style="swimlane;whiteSpace=wrap;html=1;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxCell style="swimlane;whiteSpace=wrap;html=1;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
             <mxGeometry x="100" y="-40" width="460" height="130" as="geometry" />
           </mxCell>
         </object>
         <object label="GitLab" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="gitlab">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1O0O-SB--TNPAReoqQZB-23">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
             <mxGeometry x="10" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Family" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="family">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1O0O-SB--TNPAReoqQZB-23">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
             <mxGeometry x="10" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Architecture" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="architecture">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1O0O-SB--TNPAReoqQZB-23">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
             <mxGeometry x="100" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Graph" type="Action" placeholders="1" spec="location: graph/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="graph/" doc-ref="readme.md" id="1O0O-SB--TNPAReoqQZB-30">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1O0O-SB--TNPAReoqQZB-23">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
             <mxGeometry x="190" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Excel" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="excel">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1O0O-SB--TNPAReoqQZB-23">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
             <mxGeometry x="280" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="ECharts" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="echarts">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1O0O-SB--TNPAReoqQZB-23">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
             <mxGeometry x="370" y="30" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Nature" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="nature">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1O0O-SB--TNPAReoqQZB-23">
+            <mxGeometry x="100" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
       </root>
