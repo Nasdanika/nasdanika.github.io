@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-01-11T17:19:20.234Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.16 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="sFXvPtR8R57xeZAutFd6" version="22.1.16" type="device">
+<mxfile host="Electron" modified="2024-01-15T00:11:55.222Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.16 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="K3dqw-PPsCFgaDKoiquJ" version="22.1.16" type="device">
   <diagram id="HQOKvbAvWCf9tJ4usP6P" name="Nasdanika">
-    <mxGraphModel dx="1434" dy="3008" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="1984" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <object label="" type="Action" page-element="true" feature-map="container:&#xa;  self: &#xa;    children:&#xa;      path: 1&#xa;" doc-ref="nasdanika.md" spec-ref="root-action.yml" id="0">
           <mxCell />
@@ -149,7 +149,52 @@
           </mxCell>
         </object>
         <object label="Bank" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="bank">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1O0O-SB--TNPAReoqQZB-23">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+            <mxGeometry x="190" y="80" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Retrieval Augmented Generation (RAG)" placeholders="1" link="https://rag.nasdanika.org/" id="Kfxj3GkCVfem0rcadOE8-1">
+          <mxCell style="swimlane;whiteSpace=wrap;html=1;collapsible=0;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+            <mxGeometry x="100" y="-180" width="460" height="130" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Data Sources" placeholders="1" link="https://rag.nasdanika.org/r0/data-sources/index.html" id="Kfxj3GkCVfem0rcadOE8-9">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="Kfxj3GkCVfem0rcadOE8-1">
+            <mxGeometry x="10" y="30" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Loader" placeholders="1" link="https://rag.nasdanika.org/r0/loader/index.html" id="Kfxj3GkCVfem0rcadOE8-10">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="Kfxj3GkCVfem0rcadOE8-1">
+            <mxGeometry x="100" y="30" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Store" placeholders="1" link="https://rag.nasdanika.org/r0/store/index.html" id="Kfxj3GkCVfem0rcadOE8-11">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="Kfxj3GkCVfem0rcadOE8-1">
+            <mxGeometry x="190" y="30" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Key Extractor" placeholders="1" link="https://rag.nasdanika.org/r0/key-extractor/index.html" id="Kfxj3GkCVfem0rcadOE8-12">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="Kfxj3GkCVfem0rcadOE8-1">
+            <mxGeometry x="280" y="30" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Query Engine" placeholders="1" link="https://rag.nasdanika.org/r0/query-engine/index.html" id="Kfxj3GkCVfem0rcadOE8-13">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="Kfxj3GkCVfem0rcadOE8-1">
+            <mxGeometry x="370" y="30" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Requestor" placeholders="1" link="https://rag.nasdanika.org/r0/requestor/index.html" id="Kfxj3GkCVfem0rcadOE8-14">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="Kfxj3GkCVfem0rcadOE8-1">
+            <mxGeometry x="10" y="80" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Generator" placeholders="1" link="https://rag.nasdanika.org/r0/generator/index.html" id="Kfxj3GkCVfem0rcadOE8-15">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="Kfxj3GkCVfem0rcadOE8-1">
+            <mxGeometry x="100" y="80" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Responder" placeholders="1" link="https://rag.nasdanika.org/r0/responder/index.html" id="Kfxj3GkCVfem0rcadOE8-16">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="Kfxj3GkCVfem0rcadOE8-1">
             <mxGeometry x="190" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>

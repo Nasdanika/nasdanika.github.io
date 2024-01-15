@@ -51,7 +51,7 @@ public class TestNasdanikaSiteGenerator {
 		Map<String, Collection<String>> errors = actionSiteGenerator.generate(
 				URI.createFileURI(nasdanikaDiagramFile.getAbsolutePath()).appendFragment("/"), 
 				pageTemplateURI, 
-				"https://nasdanika.org", 
+				"https://docs.nasdanika.org", 
 				new File("docs"),  
 				new File("target/doc-site-work-dir"), 
 				true);
