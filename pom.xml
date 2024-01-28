@@ -3,25 +3,20 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nasdanika</groupId>
-	<version>2023.12.0</version>
+	<version>2024.1.0</version>
 	<artifactId>docs</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika Documentation Site</name>
 	
 	<properties>
-		<html.version>2023.12.1</html.version>
+		<html.version>2024.1.0</html.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.nasdanika</groupId>
-			<artifactId>plantuml-diagram-generator</artifactId>
-			<version>2023.12.1</version>
-		</dependency>
-		<dependency>
 			<groupId>org.nasdanika.html</groupId>
 			<artifactId>app-model-gen</artifactId>
-			<version>2023.12.1</version>
+			<version>2024.1.0</version>
 		</dependency>		
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>

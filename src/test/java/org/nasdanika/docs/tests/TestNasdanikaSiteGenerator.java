@@ -9,11 +9,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.junit.jupiter.api.Test;
 import org.nasdanika.common.Context;
-import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.ExecutionException;
-import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.diagramgenerator.plantuml.PlantUMLDiagramGenerator;
 import org.nasdanika.html.model.app.gen.ActionSiteGenerator;
 import org.nasdanika.html.model.app.util.AppDrawioResourceFactory;
 
@@ -22,13 +19,6 @@ public class TestNasdanikaSiteGenerator {
 	@Test
 	public void testGenerateNasdanikaSite() throws Exception {
 		ActionSiteGenerator actionSiteGenerator = new ActionSiteGenerator() {
-			
-			@Override
-			protected Context createContext(ProgressMonitor progressMonitor) {
-				MutableContext context = super.createContext(progressMonitor).fork();
-				context.register(DiagramGenerator.class, new PlantUMLDiagramGenerator());
-				return context;
-			}
 			
 			@Override
 			protected ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
