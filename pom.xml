@@ -3,31 +3,31 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nasdanika</groupId>
-	<version>2024.1.0</version>
+	<version>2024.3.0</version>
 	<artifactId>docs</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika Documentation Site</name>
 	
 	<properties>
-		<html.version>2024.1.0</html.version>
+		<html.version>2024.3.0</html.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
 			<artifactId>app-model-gen</artifactId>
-			<version>2024.1.0</version>
+			<version>2024.3.0</version>
 		</dependency>		
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
 		    <artifactId>junit-jupiter-api</artifactId>
-		    <version>5.10.1</version>
+		    <version>5.10.2</version>
 		    <scope>test</scope>
 		</dependency>		
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
 		    <artifactId>junit-jupiter-engine</artifactId>
-		    <version>5.10.1</version>
+		    <version>5.10.2</version>
 		    <scope>test</scope>
 		</dependency>		
 	</dependencies>
@@ -37,12 +37,12 @@
 		        <plugin>
 		            <groupId>org.apache.maven.plugins</groupId>
 		            <artifactId>maven-surefire-plugin</artifactId>
-		            <version>3.2.3</version>
+		            <version>3.2.5</version>
 		            <dependencies>
 		                <dependency>
 		                    <groupId>org.junit.jupiter</groupId>
 		                    <artifactId>junit-jupiter-engine</artifactId>
-		                    <version>5.10.1</version>
+		                    <version>5.10.2</version>
 		                </dependency>
 		            </dependencies>
 		        </plugin>
