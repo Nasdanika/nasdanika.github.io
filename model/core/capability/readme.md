@@ -144,6 +144,13 @@ Reactive approach with filtering and sorting may be helpful in selecting a solut
 For example, if the total size of data is under a few gigabytes an in-memory store may be a better choice than, say, an external (vector) database.
 Also an old good bag of words might be better than embeddings. E.g. it might be cheaper. 
 
+Solution alternatives may include temporal aspect or monetary aspects.
+For example, version X of Y is available at time Z. 
+Z might be absolute or relative. Say, Z days after project kick-off or license fee payment.
+Identified solutions meeting requirements can have different quality attributes - costs (to build, to run), timeline, etc.
+These quality attributes can be used for solution analysis.
+E.g. one solution can be selected as a transition architecture and another as the target architecture.   
+
 ### Backward chaining
 
 [Family reasoning](https://github.com/Nasdanika-Models/family/tree/main/demos/reasoning) demonstrates application of the capability framework as a backward chaining engine.
