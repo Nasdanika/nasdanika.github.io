@@ -21,7 +21,7 @@ with service type being a requirement and an instance of the service class being
 Nasdanika capability framework can operate on top of ``ServiceLoader`` and may be thought of as a generalization of service loading.
 In essence, the capability framework is a [backward chaining](https://en.wikipedia.org/wiki/Backward_chaining) engine as shown in one of the example below.
 
-## Client code - requiring a capability
+## Client code - requesting a capability
 
 Capabilities are loaded by [CapabilityLoader](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/CapabilityLoader.html). 
 Capability loader can take an iterable of capability factories in its constructor, or it can load them using ``ServiceLoader``
@@ -168,3 +168,37 @@ A trading engine would submit a requirement for strategies.
 A strategy factory may produce multiple strategies with different configurations.
 The trading engine would perform "paper" trades, select well-performing strategies and discard ones which perform poorly.
 This can be an ongoing process - if a strategy deteriorates then it is discarded and a new strategy is requested from strategy publishers - this process can be infinite.  
+
+### AI model training/fine-tuning
+
+This application is similar to stream processing and may be combined with backward reasoning.
+Let's say we want to train a model to answer questions about [family relationships](https://family.models.nasdanika.org/demos/mapping/) for a specific family. 
+For example, "Who is [Alan's](https://family.models.nasdanika.org/demos/mapping/references/members/alain/index.html) great grandmother?"
+A single relationship in the model can be expressed in multiple ways in natural language. 
+And multiple relationships can be expressed in a single sentence.
+For example:
+
+* Elias is a person
+* Elias is a man
+* Elias is a male
+* Elias is a parent of Fiona
+* Fiona is a child of Elias
+* Elias is a father of Fiona
+* Fiona is a daughter of Elias
+* Paul and Isa are parents of Lea and Elias
+* ...
+
+So, on top of a model there might be a collection of text generators. Output of those generators can be fed to a model:
+
+* Supervised - question and answer
+    * "How many sisters does Bryan have?" - "Two"
+    * "Who are Bryan's sisters?" - "Clara and Fiona"
+* Unsupervised - factual statements
+
+A similar approach can be applied to other models - customer/accounts, organization or [architecture](https://architecture.models.nasdanika.org/) model, etc.
+
+For example, from the [Internet Banking System](https://architecture.models.nasdanika.org/demo/internet-banking-system/index.html) we can generate something like "[Accounts Summary Controller](https://architecture.models.nasdanika.org/demo/internet-banking-system/r0/internet-banking-system/rh/api-application/rh/accounts-summary-controller/index.html) uses [Mainframe Banking System Facade](https://architecture.models.nasdanika.org/demo/internet-banking-system/r0/internet-banking-system/rh/api-application/rh/mainframe-banking-system-facade/index.html) to make API calls to the [Mainframe Banking System](https://architecture.models.nasdanika.org/demo/internet-banking-system/r0/mainframe-banking-system/index.html) over XML/HTTPS".
+"make API calls" may also be generated as "connect" or "make requests".
+
+In a similar fashion a number of questions/answers can be generated.
+
