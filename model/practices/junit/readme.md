@@ -1,3 +1,78 @@
+This practice is a specialization of the [Java Analysis, Visualization & Generation Practice](../java/readme.md) for generation of [JUnit](https://junit.org) tests. 
+In particular:
+
+* Generation of tests for methods or classes with low [test coverage](https://en.wikipedia.org/wiki/Code_coverage)
+* Leveraging [Gen AI](https://en.wikipedia.org/wiki/Generative_artificial_intelligence) such as [OpenAI ChatGPT](https://openai.com/chatgpt) or [Azure OpenAI Service](https://azure.microsoft.com/en-us/products/ai-services/openai-service) for test generation
+
+```drawio-resource
+practices/junit/junit-practice.drawio
+```
+
+The above diagram shows Java development activities and artifacts. 
+Black arrows show the typical process, blue arrows show the test generation loop.
+
+The developer produces source artifacts which may include non-java artifacts used to generate Java code (e.g. Ecore models), "main" Java sources and test Java sources. 
+Java sources are compiled into [bytecode](https://en.wikipedia.org/wiki/Bytecode) (class files).
+Here it is important to note that matching of bytecode classes and methods to source code classes and methods might be non-trivial because of:
+
+* Lambdas
+* Anonymous and method-scope classes
+* Annotation processors like [Lombok](https://projectlombok.org/) 
+ 
+JUnit tests are compiled and executed. 
+If code coverage, such as [jacoco](https://www.jacoco.org/jacoco/), is configured then test execution produces coverage data. 
+Jacoco stores coverage data in ``jacoco.exec`` file.
+This file is used to generate a coverage report and upload coverage information to systems like [SonarQube](https://www.sonarsource.com/products/sonarqube/). 
+In this practice it is also used to select which methods to generate tests for based on coverage data.
+
+
+```drawio-resource
+practices/junit/test-generation.drawio
+```
+
+This diagram provides an insight into the test generation activity:
+
+* Coverage data and bytecode are used as input to load the [Coverage model](https://coverage.models.nasdanika.org/).
+* Source files, the coverage model, and bytecode (optional) are used to load the [Java model](https://java.models.nasdanika.org/) of source code. 
+* The generator traverses the model and generates unit tests for method with low coverage using a combination of programmatic (traditional) generation and Gen AI. Tests are generated as a Java model as well and then are delivered to the developer for review, modification, and inclusion into the unit test suite.
+
+The following section provides an overview of two "local loop" reference implementations (a.k.a. designs/embodiments) - all-in-one and componentized.
+There are many possible designs leveraging different alternatives at multiple variation points. 
+The sections after the reference implementations section provide an overview of variation points, alternatives, and factors to take into consideration during alternative selection.
+
+----
+
+[TOC levels=6]
+
+
+## Reference Implementations
+
+This section explains two reference implementations
+
+### All-in-one
+
+
+
+### Componentized
+
+## Variation points and alternatives
+
+### Tests generator
+
+### Delivery of generated tests
+
+### Test generation execution
+
+Maven plugin, pipeline, crawling
+
+### Access to artifacts
+
+Jenkins workspace, Maven repository, Maven classloader / artifacts loader - reference Maven model
+
+
+
+----
+
 
 TODO: Diagram (site - activities, artifacts, variation points), manually created sources, generated source, bytecode, coverage report. Lombok, ecore. 
 
@@ -32,3 +107,20 @@ TODO:
 * Pet clinic demo - G/H fork, use GPT 4, specify SpringBoot and Mockito in prompt, tags - as is/disabled test methods
 * Use with G/H copilot - complementary, different
 * Unit tests delivery - branch, fork
+* SonarQube - class level. 
+* jacoco.exec - Maven repository - evidence for other purposes. Coverage storage. Jenkins workspace
+* Mention assembly of a solution from alternatives, use capability and decision analysis.
+* Coverage - jacoco.exec + class files, sq api, JSON, DB/REST API (part of the enterprise model, mention the generic thing), XMI/Binary. Storage - local, Jenkins workspace, sq, maven binary repository
+* Mock opportunities - we know methods being called, constructors etc. We can generate mock generation and try/catch for static methods and constructors.
+* Branches, switch cases in particular and enums
+* Generate review/explain 
+* @Mock, @InjectMocks
+* Cost value for each acitivity, opportunities
+* Sort by dependency, lower-level may be (partially) testes as part of higher level
+* Prompt building - eContainer, resource, resource set (on-demand loading), mention enterprise model from the generic
+* Massaging generated sources - peeling back-ticks, parsing, imports - in the snippet, implicit/assumed.
+* All in one code snippet, rules - diagram and snippets
+* Generation - lombok
+* Recipe book 
+* Loops - local, pipeline, issues, scan repos, pull/merge request, sq
+

@@ -19,3 +19,17 @@ A java analogy for progressive specialization would be incremental binding of ge
 * ``MyMap<String> theMap = ...;`` -  fully bound map.
 
  [^java]: The page provides a general overview and the [book](https://leanpub.com/java-analysis) goes into more details.
+ 
+ Decisions are bound at ``variation point``. 
+ For example, "storage" is a variation point, "blob storage" is one of alternatives, decision to use "blob storage" binds the variation point to a specific alternative.
+Decision binding forms a graph. Once you bind, say, "storage" variation point, some downstream alternatives may become unavailable because they are incompatible with that binding.
+Some might be available, but make no sense. 
+For example, a decision to send data unencrypted over a public network is compatible with a decision to purchase some additional strong encryption hardware to use on-prem, but does it make business sense? 
+ 
+Different alternatives feature different "quality attributes" - performance, reliability, cost. 
+As the number of variation points and alternatives grows purely human-based decision making becomes inefficient.
+In this case variation points can be modeled as requirements and alternatives as capability providers or capabilities with quality attributes (see[capability](https://docs.nasdanika.org/core/capability/index.html)). 
+After this a list of "designs" (a.k.a. "provisioning plans") can be created.
+A design/provisioning plan is a collection of compatible capabilities.
+If a list of designs is short enough it can be analyzed by humans directly.
+In the case of long lists or a large number of very similar designs [decision analysis](https://mcda.models.nasdanika.org/) can be employed for making a selection of a design which is best fit for purpose. 
