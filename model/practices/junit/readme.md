@@ -1,4 +1,4 @@
-This practice is a specialization of the [Java Analysis, Visualization & Generation Practice](../java/readme.md) for generation of [JUnit](https://junit.org) tests. 
+This practice is a specialization of the [Java Analysis, Visualization & Generation Practice](../java/index.html) for generation of [JUnit](https://junit.org) tests. 
 In particular:
 
 * Generation of tests for methods or classes with low [test coverage](https://en.wikipedia.org/wiki/Code_coverage)
