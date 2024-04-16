@@ -24,3 +24,11 @@ https://pubs.opengroup.org/togaf-standard/applying-the-adm/chap04.html#tag_04,
 https://pubs.opengroup.org/togaf-standard/introduction/chap03.html#tag_03_12_03
 
 Create a diagram, roll-up
+
+translationists, elaborationists, mdd book reference, lombock - post human, ecore - pre-human & merge
+
+https://www.amazon.com/MDA-Explained-Architecture%C2%BF-Practice-Promise/dp/032119442X
+
+Source is essentially a model, bytecode is executed, not source
+
+Elaborationism options - subclassing (Java), merging (any structured text)

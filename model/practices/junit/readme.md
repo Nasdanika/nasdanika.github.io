@@ -25,7 +25,6 @@ Jacoco stores coverage data in ``jacoco.exec`` file.
 This file is used to generate a coverage report and upload coverage information to systems like [SonarQube](https://www.sonarsource.com/products/sonarqube/). 
 In this practice it is also used to select which methods to generate tests for based on coverage data.
 
-
 ```drawio-resource
 practices/junit/test-generation.drawio
 ```
@@ -64,6 +63,146 @@ Componentized test generation which is also executed in one go is implemented in
 * [Coverage Inspector](https://github.com/Nasdanika-Models/rules/blob/main/tests/inspectors/src/main/java/org/nasdanika/models/rules/tests/inspectors/JavaCoverageReflectiveInspectors.java) - generates tests for methods with low coverage leveraging [TestGenerator](https://github.com/Nasdanika-Models/rules/blob/main/tests/inspectors/src/main/java/org/nasdanika/models/rules/tests/inspectors/TestGenerator.java) [capability](../../core/capability/index.html) provided by [OpenAITestGenerator](https://github.com/Nasdanika-Models/rules/blob/main/tests/inspectors/src/main/java/org/nasdanika/models/rules/tests/inspectors/OpenAITestGenerator.java).
 
 ## Variation points and alternatives
+
+As you have seen above, you can have an AI-powered JUnit test generator in about 230 lines of code, and maybe it would all you need.
+However, there are many variation points (design dimensions), alternatives at each point and, as such, possible permutations of thereof (designs).
+This section provides a high level overview of variation points and alternatives. 
+How to assemble a solution from those alternative is specific to your context and there might be different solutions for different contexts and multiple solutions complementing each other. 
+As you proceed with assembling a solution, or a portfolio of solutions, you may identify more variation points and alternatives.
+To manage the complexity you may use:
+
+* [Enterprise Model](https://enterprise.models.nasdanika.org/) for general guidance, 
+* [Capability framework](../../core/capability/index.html) or [Capability model](https://capability.models.nasdanika.org/) to create a catalog of variation points and alternatives and compute solutions (designs) from them
+* [Decision Analysis](https://mcda.models.nasdanika.org/) to select from the computed list of designs
+* [Flow](https://flow.models.nasdanika.org/) to map your development process AS-IS and then augment it with test generation activities at different points. 
+
+In this section we'll use the below diagram and the concept of an [Enterprise](https://enterprise.models.nasdanika.org/references/eClassifiers/Enterprise/index.html) with [Stakeholders](https://enterprise.models.nasdanika.org/references/eClassifiers/Stakeholder/index.html) performing activities and exchanging [Messages](https://enterprise.models.nasdanika.org/references/eClassifiers/Message/index.html) over [Channels](https://enterprise.models.nasdanika.org/references/eClassifiers/Channel/index.html). 
+
+```drawio-resource
+practices/junit/test-generation.drawio
+```
+
+The mission of our enterprise is to deliver quality Java code. 
+The loss function to minimize is ``loss function = cost * risk / business value``.
+For our purposes we'll define risk as inversely proportional to tests coverage ``risk = missed lines / total lines`` - that's all we can measure in this simple model.
+The cost includes resources costs - salary, usage fees for OpenAI.
+
+Below is a summary of our enterprise:
+
+* Stakeholders & Activities:
+    * Developer - writes code
+    * Build machine - compiles code and executes tests
+    * Test generator - generates unit tests
+    * GenAI - leveraged by the Test Generator
+* Messages:
+    * Source code
+    * Bytecode
+    * Coverage results
+    * Prompt to generate a test
+    * Generated tests
+* Channels
+    * Developer -> Build Machine : Source code
+    * Developer -> Test Generation : Source code
+    * Build Machine -> Test Generator : Coverage results, possibly with bytecode
+    * Test Generation -> Developer : Generated tests      
+    * Test Generation - GenAI : Prompt   
+
+The below sections outline variation points and alternatives for the list items above
+
+### Stakeholders & Activities
+
+#### Developer
+
+A developer writes code - both "business" and test. 
+They use some kind of an editor, likely an IDE - Eclipse, IntelliJ, VS Code.
+Different IDE's come with different sets of plug-ins, including AI assistants. 
+Forcing a developer to switch from their IDE of preference to another IDE is likely to cause considerable 
+productivity drop, at least for some period of time, even if the new IDE is considered superior to the old IDE.
+So, if you want to switch to another IDE just because it has some plug-in which you like - think twice.
+
+#### Build machine
+
+A build machine compiles code and executes tests. 
+Technically, compilation and test execution may be separated in two individual activities. 
+We are not doing it for this analysis because it doesn't carry much relevance to test generation. 
+You can do it for yours.
+
+#### Test generator
+
+Test generator generates tests by "looking" at the source code, bytecode, and code coverage results.
+
+Because the source code is a model element representing piece of code ([method](https://java.models.nasdanika.org/references/eClassifiers/Method/index.html), [constructor](https://java.models.nasdanika.org/references/eClassifiers/Constructor/index.html), ...), the generator may traverse the model to "understand" the context. 
+E.g. it may take a look at the method's class, other classes in the module. 
+If the sources are loaded from a version control system, it may take a look at the commits.
+And if the source model is part of an organization model, it may look at "sibling" modules and other resources.
+Using this information it may build a wide variety of prompts for GenAI.
+
+By analyzing source and bytecode the generator would know which methods a given method calls, which objects it creates, and also it would know methods calling the method.
+It will also "know" branch conditions, e.g. switch cases.
+Using this information the generator may:
+
+* Generate comments to help the developer
+* Generate mocks, including constructor and static methods mocks
+* Generate tests for different branches
+
+#### GenAI
+
+There may GenAI models out there - cloud, self hosted.
+Which one to use heavily depends on the context. 
+For example, if you have a large codebase with considerable amount of technical debt having an on-prem model may be a good choice because:
+
+* You may fine-tune it.
+* Even if you don't have tons of GPU power and your model is relatively slow you can crawl you code base, generate tests and deliver them to developers for review and inclusion into test suites.
+
+In this scenario your cost is on-prem infrastructure and power. 
+Your savings are not having to pay for GenAI in the cloud and developer productivity if your fined tuned model turns out to be more efficient than a "vanilla" LLM.
+
+There are many other considerations, of course!
+
+### Messages
+
+In this section we'll take a look just at bytecode and coverage results delivered to the test generator.
+The generator operates on models.
+As such, bytecode and coverage results can be delivered in a "raw" format to be loaded to a model by the generator, 
+or pre-loaded to a model and saved to a file.
+The second option results in fewer files to pass to the test generator.
+The model file can be in XMI format or in compressed binary.
+The XMI format is human-readable, the binary format takes less space on disk.
+
+### Channels
+
+#### Developer -> Build Machine/Test Generation : Source code
+
+For local development the build machine is the same machine where developer creates sources.
+The test generator is also executed on the developer's workstation.
+As such, the delivery channels is the file system.
+
+In the case of CI/CD pipeline/build server such as [Jenkins](https://www.jenkins.io/) or GitHub Actions, a version control systems is the delivery channel. 
+
+#### Build Machine -> Test Generator : Coverage results, possibly with bytecode
+
+The test generator needs coverage results.
+If the coverage results are delivered in the raw form, it also needs bytecode (class files) to make sense of the results.
+
+Coverage results can be delivered to the test generator using the following channels:
+
+* Filesystem
+* Jenkins workspace made available to the test generator over HTTP(S)
+* Binary repository. For example, coverage results might be published to the Maven repository as an assembly along with sources, jar file, and javadoc. They can be published in a raw format or as a model. In this modality the tests generator can get everything it needs from a Maven repository. 
+* TODO - specialized repo for coverage info 
+
+#### Test Generation -> Developer : Generated tests      
+
+Filtering, throttling, jira
+
+#### Test Generation - GenAI : Prompt   
+
+Billing, throttling, caching, authentication, ...
+
+
+
+
+
 
 ### Tests generator
 
@@ -125,4 +264,8 @@ both have merits and might be applicable in diffent situations. bottom-up for ne
 * Recipe book 
 * Loops - local, pipeline, issues, scan repos, pull/merge request, sq
 * TODO - sequence diagram for the componentized
-
+* Re-generation: add @Generated annotation, source digest, generated source digest. Regenerate if source digest changed, but generated digest hasn't
+* Assign different generated tests to different people by complexity/size and skill level.
+* Build API delivery - throttling (rate limit), budgeting, billing
+* Tech debt
+* Prompt libraries/generators - context
