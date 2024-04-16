@@ -79,7 +79,7 @@ To manage the complexity you may use:
 In this section we'll use the below diagram and the concept of an [Enterprise](https://enterprise.models.nasdanika.org/references/eClassifiers/Enterprise/index.html) with [Stakeholders](https://enterprise.models.nasdanika.org/references/eClassifiers/Stakeholder/index.html) performing activities and exchanging [Messages](https://enterprise.models.nasdanika.org/references/eClassifiers/Message/index.html) over [Channels](https://enterprise.models.nasdanika.org/references/eClassifiers/Channel/index.html). 
 
 ```drawio-resource
-practices/junit/test-generation.drawio
+practices/junit/loop.drawio
 ```
 
 The mission of our enterprise is to deliver quality Java code. 
@@ -188,7 +188,7 @@ Coverage results can be delivered to the test generator using the following chan
 
 * Filesystem
 * Jenkins workspace made available to the test generator over HTTP(S)
-* Binary repository. For example, coverage results might be published to the Maven repository as an assembly along with sources, jar file, and javadoc. They can be published in a raw format or as a model. In this modality the tests generator can get everything it needs from a Maven repository. 
+* Binary repository. For example, coverage results might be published to the Maven repository as an assembly along with sources, jar file, and javadoc. They can be published in a raw format or as a model. In this modality the tests generator can get everything it needs from a Maven repository. TODO - artifact resolver.
 * TODO - specialized repo for coverage info 
 
 #### Test Generation -> Developer : Generated tests      
