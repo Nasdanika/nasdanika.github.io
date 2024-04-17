@@ -37,3 +37,37 @@ Models can be visualized using:
 
 * [ECharts](https://echarts.apache.org/en/index.html) using the [ECharts model](https://echarts.models.nasdanika.org/graph/), [ECharts-Java](https://github.com/ECharts-Java/ECharts-Java) or by directly generating JavaScript/JSON. [Example](https://architecture.models.nasdanika.org/default-graph-with-dependencies-and-subpackages.html).
 * [PlantUML](https://plantuml.com/#google_vignette) using [DiagramGenerator](https://javadoc.io/static/org.nasdanika.core/common/2024.4.0/org.nasdanika.common/org/nasdanika/common/DiagramGenerator.html), the [diagram module](https://javadoc.io/doc/org.nasdanika.core/diagram/latest/org.nasdanika.diagram/module-summary.html) or by directly generating PlantUML text and calling Plant UML API's. [Example](https://architecture.models.nasdanika.org/diagram.html).
+
+
+## Holistic model of an organization
+
+One use case for the modeling approach outlined above is creation of a holistic model of an organization/corporation as exemplified by the below diagram[^corporate_structure]
+
+```drawio-resource
+practices/generic/corporate-structure.drawio
+```
+
+[^corporate_structure]: [Corporate structure](https://en.wikipedia.org/wiki/Corporate_structure)
+
+In a corporation different elements of the model are typically stored in different systems and documents like Excel spreadsheets. 
+The modeling approach allows to load those elements in a single resource set and cross-reference them. 
+Elements which are not stored in structured formats can be captured by modeling them in diagrams and mapping those diagrams to models, see [Beyond Diagrams](https://leanpub.com/beyond-diagrams).
+
+One important reason why a holistic model might be beneficial for an organization is the ability of using it for AI insights. 
+For example, using [RAG](https://rag.nasdanika.org/)/Chat on top of the organization model. 
+Such chat can be made context-aware, chatting with the Operations will return result relevant to operations.
+
+The above diagram is very simple, a large organization may have many layers, thousands of applications, millions of lines of code.   
+A model for such an organization would take some time to build, but it can be built incrementally - department by department, application by application.
+
+While the resulting model might be "large", ... define large. 
+Experiments show that a model element in a model like the above takes ~ 500 bytes of RAM. 
+As such, 1 GB of RAM would hold about 2 million model elements.
+Also, model resources are loaded on demand, so only the model elements needed by some task would be loaded to complete that task.
+With [DynamicDelegate](https://javadoc.io/doc/org.nasdanika.core/emf/latest/org.nasdanika.emf/org/nasdanika/emf/DynamicDelegate.html) it is possible to have model elements loading their data from multiple sources on demand.
+
+The organization model can be built on top of existing "generic" models such as [Java](https://java.models.nasdanika.org/), [Maven](https://maven.models.nasdanika.org/), [GitLab](https://gitlab.models.nasdanika.org/), [Azure](https://azure.models.nasdanika.org/diagram.html), ...
+
+### Resources
+
+* [TOGAF Enterprise Metamodel](https://pubs.opengroup.org/togaf-standard/introduction/chap03.html#tag_03_12_03)
