@@ -58,7 +58,8 @@ For example, using [RAG](https://rag.nasdanika.org/)/Chat on top of the organiza
 Such chat can be made context-aware, chatting with the Operations will return result relevant to operations.
 
 The above diagram is very simple, a large organization may have many layers, thousands of applications, millions of lines of code.   
-A model for such an organization would take some time to build, but it can be built incrementally - department by department, application by application.
+A model for such an organization would take some time to build, but it can be built incrementally - department by department, application by application. 
+The value of building such a model will grow exponentially as more and more elements are added due to the [network effect](https://en.wikipedia.org/wiki/Network_effect).
 
 While the resulting model might be "large", ... define large. 
 Experiments show that a model element in a model like the above takes ~ 500 bytes of RAM. 
