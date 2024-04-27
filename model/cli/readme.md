@@ -1,1 +1,1 @@
-Nasdanika Command Line Interface (CLI).
+Nasdanika Command Line Interface (CLI) is a collection of Nasdanika offerings packaged as command line tools. 

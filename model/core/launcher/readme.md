@@ -44,6 +44,7 @@ Module jars can be loaded to the library folder using Maven dependency plugin as
 							<outputDirectory>
 								${project.build.directory}/lib
 							</outputDirectory>
+							<useRepositoryLayout>true</useRepositoryLayout>							
 						</configuration>
 					</execution>
 				</executions>
