@@ -113,11 +113,14 @@ public class BuildDistributionIT {
 
 If the Maven project which builds the distribution does not contribute its own code, then the ``for`` loop copying the jar file can be omitted.
 
-To generate a command line which can be used from any directory use ``-P`` (prefix) option set to the installation directory.
+To generate a command line which can be used from any directory use ``-s`` (absolute) option or ``-P`` (prefix) option set to the installation directory.
 
-If you encounter command line length limit (8191 characters on Windows), move command options (``-p``, ``-classpath``, ``-m``) to a file and use ``@`` syntax.
+If you encounter command line length limit (8191 characters on Windows), move command options (``-p``, ``-classpath``, ``-m``) to a file 
+or use ``-t`` option to generate just options. 
+Then use ``@`` syntax. 
 For example:
 
 ```
-@java @<installation directory>\config %*
+@java @<installation directory>\options %*
 ```  
+
