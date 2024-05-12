@@ -43,6 +43,9 @@ The sections after the reference implementations section provide an overview of 
 
 [TOC levels=6]
 
+## Command line
+
+[Nasdanika CLI](https://docs.nasdanika.org/nsd-cli/index.html) features [JUnit](https://docs.nasdanika.org/nsd-cli/nsd/java/junit/index.html) command which generates JUnit tests as explained above.
 
 ## Reference Implementations
 

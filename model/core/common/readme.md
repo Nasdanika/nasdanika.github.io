@@ -1,1 +1,1 @@
-TODO
+[Javadoc](https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/module-summary.html)

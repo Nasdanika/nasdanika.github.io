@@ -1,4 +1,4 @@
-Nasdanika Capability framework allows to discover/load capabilities which meet a requirement.
+Nasdanika Capability framework[^javadoc] allows to discover/load capabilities which meet a requirement.
 Capabilities are provided by [CapabilityFactory](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/CapabilityFactory.html) ``create()`` method. 
 Capability factories may request other capabilities they need.
 As such, capabilities can be chained.
@@ -6,6 +6,8 @@ Factories create [CapabilityLoader](https://javadoc.io/doc/org.nasdanika.core/ca
 It allows to have an infinite stream of capabilities which are consumed (and produced) as needed.
 Capability providers may furnish additional information about capabilities.
 This information can be used for filtering or sorting providers. 
+
+[^javadoc]: [Javadoc](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/package-summary.html)
 
 A non-technical example of requirement/capability chain graph is a food chain/graph. 
 Food is a requirement. Or "I want to eat" is a requirement.
