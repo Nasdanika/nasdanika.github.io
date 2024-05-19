@@ -23,6 +23,10 @@ with service type being a requirement and an instance of the service class being
 Nasdanika capability framework can operate on top of ``ServiceLoader`` and may be thought of as a generalization of service loading.
 In essence, the capability framework is a [backward chaining](https://en.wikipedia.org/wiki/Backward_chaining) engine as shown in one of the example below.
 
+----
+
+[TOC levels=6]
+
 ## Client code - requesting a capability
 
 Capabilities are loaded by [CapabilityLoader](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/CapabilityLoader.html). 
@@ -121,6 +125,129 @@ public class TestCapabilityFactory implements CapabilityFactory<TestCapabilityFa
 
 }
 ```
+
+## EMF
+
+Most of Nasdanika capabilities are based on [Eclipse Modeling Framework](https://eclipse.dev/modeling/emf/) (EMF)[^vogella_emf], Ecore[^ecore] models in particular.
+One of key objects in EMF Ecore is a [ResourceSet](https://javadoc.io/static/org.eclipse.emf/org.eclipse.emf.ecore/2.33.0/org/eclipse/emf/ecore/resource/ResourceSet.html).
+Resource set has a package registry, resource factory registry, and URI converter.
+``org.nasdanika.capability.emf`` packages provides capability factories for contributing to resource set. 
+It allows to request resource set from a capability loader and the returned resource set would be configured with registered EPackages, resource factories, adapter factories and URIHandlers.  
+
+[^vogella_emf]: See [Eclipse Modeling Framework (EMF) - Tutorial](https://www.vogella.com/tutorials/EclipseEMF/article.html) and [EMF Eclipse Modeling Framework](https://www.amazon.com/EMF-Eclipse-Modeling-Framework-2nd/dp/0321331885) book for more details.
+[^ecore]: See EMF Ecore chapter in [Beyond Diagrams](https://leanpub.com/beyond-diagrams) book for a high-level overview of EMF Ecore.
+
+### Requesting a ResourceSet
+
+#### With all packages and factories
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+Requirement<ResourceSetRequirement, ResourceSet> requirement = ServiceCapabilityFactory.createRequirement(ResourceSet.class);		
+for (CapabilityProvider<?> capabilityProvider: capabilityLoader.load(requirement, progressMonitor)) {
+	ResourceSet resourceSet = (ResourceSet) capabilityProvider.getPublisher().blockFirst();
+}
+```
+
+#### Selecting contributors
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+
+Predicate<ResourceSetContributor> contributorPredicate = ...;
+ResourceSetRequirement serviceRequirement = new ResourceSetRequirement(null, contributorPredicate);
+		
+Requirement<ResourceSetRequirement, ResourceSet> requirement = ServiceCapabilityFactory.createRequirement(ResourceSet.class, null, serviceRequirement);		
+
+for (CapabilityProvider<?> capabilityProvider: capabilityLoader.load(requirement, progressMonitor)) {
+	ResourceSet resourceSet = (ResourceSet) capabilityProvider.getPublisher().blockFirst();
+}
+```
+
+#### Providing ResourceSet instance
+
+You may provide an instance of ResourceSet to configure in the requirement. 
+
+### Contributing
+#### EPackages
+
+Create a class extending ``EPackageCapabilityFactory``:
+
+```java
+public class NcoreEPackageResourceSetCapabilityFactory extends EPackageCapabilityFactory {
+
+	@Override
+	protected EPackage getEPackage() {
+		return NcorePackage.eINSTANCE;
+	}
+
+	@Override
+	protected URI getDocumentationURI() {
+		return URI.createURI("https://ncore.models.nasdanika.org/");
+	}
+
+}
+```
+
+and add it to ``module-info.java`` provides:
+
+```java
+provides CapabilityFactory with NcoreEPackageResourceSetCapabilityFactory;
+```
+
+#### Resource factories
+
+Create a class extending ``ResourceFactoryCapabilityFactory``:
+
+```java
+public class XMIResourceFactoryCapabilityFactory extends ResourceFactoryCapabilityFactory {
+
+	@Override
+	protected Factory getResourceFactory() {
+		return new XMIResourceFactoryImpl();
+	}
+	
+	@Override
+	protected String getExtension() {
+		return Resource.Factory.Registry.DEFAULT_EXTENSION;
+	}
+
+}
+```
+
+and add it to ``module-info.java`` provides CapabilityFactory.
+
+#### URI handlers
+
+Create a class extending ``URIConverterContributorCapabilityFactory``:
+
+```java
+public class ClassPathURIHandlerResourceSetCapabilityFactory extends URIConverterContributorCapabilityFactory {
+
+	@Override
+	protected void contribute(URIConverter uriConverter, ProgressMonitor progressMonitor) {	
+		uriConverter.getURIHandlers().add(0, new URIHandlerImpl() {
+
+			@Override
+			public boolean canHandle(URI uri) {
+				return uri != null && Util.CLASSPATH_SCHEME.equals(uri.scheme());
+			}
+
+			@Override
+			public InputStream createInputStream(URI uri, Map<?, ?> options) throws IOException {
+				return DefaultConverter.INSTANCE.toInputStream(uri);
+			}
+			
+		});
+		
+	}
+	
+}
+```
+
+and add it to ``module-info.java`` provides CapabilityFactory.
 
 ## Applications
 
