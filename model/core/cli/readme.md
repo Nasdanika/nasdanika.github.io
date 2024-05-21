@@ -13,6 +13,10 @@ These sub-commands would replace (override) basic sub-commands during constructi
 
 [Javadoc](https://javadoc.io/doc/org.nasdanika.core/cli/latest/org.nasdanika.cli/org/nasdanika/cli/package-summary.html)
 
+----
+
+[TOC levels=6]
+
 ## Contributing sub-commands
 
 In addition to the picocli way of adding sub-commands programmatically and using ``@Command`` annotation ``subcommands`` element this module provides a few more ways to contribute sub-commands which are explained below.
@@ -94,14 +98,35 @@ A command/mix-in overrides another command/mix-in if:
 
 You may annotate commands with [``@Description``](https://javadoc.io/doc/org.nasdanika.core/cli/latest/org.nasdanika.cli/org/nasdanika/cli/Description.html) to provide additional information in generated HTML site.
 
+## Commands
+
+The CLI module provides several base command classes:
+
+* ``CommandBase`` - base class with standard help mix-in
+* ``CommandGroup`` - base class for commands which don't have own functionality, only sub-commands
+* ``ContextCommand`` - command with options to configure [Context](https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/org/nasdanika/common/Context.html)
+* ``DelegatingCommand`` - options to configure Context and [ProgressMonitor](https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/org/nasdanika/common/ProgressMonitor.html) and delegate execution to [SupplierFactory<Integer>](https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/org/nasdanika/common/SupplierFactory.html)
+* ``HelpCommand`` - outputs usage for the command hierarchy in text, html, action model, or generates a documentation site
+
+## Mix-ins
+
+The module also provides several mix-ins:
+
+* ``ContextMixIn`` - creates and configures Context
+* ``ProgressMonitorMixIn`` - creates and configures ProgressMonitor
+* ``ResourceSetMixIn`` - creates and configures [ResourceSet](https://javadoc.io/static/org.eclipse.emf/org.eclipse.emf.ecore/2.33.0/org/eclipse/emf/ecore/resource/ResourceSet.html) using [CapabilityLoader](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/CapabilityLoader.html) to add packages, resource and adapter factories, ...
+
 ## Building distributions
 
 A distribution is a collection of modules contributing commands and mix-ins plus launcher scripts for different operating systems.
 [``org.nasdanika.cli``](https://github.com/Nasdanika/core/tree/master/cli) and [``org.nasdanika.launcher``](https://github.com/Nasdanika/cli) modules are examples of building distributions as part of Maven build.
-Building a distribution involves two steps:
+Building a distribution involves the following steps:
 
 * Downloading modules (dependencies)
 * Generating launcher scripts
+* Building an assembly (zip)
+
+All of the above steps are executed by ``mvn verify`` or ``mvn clean verify``
 
 ### Downloading dependencies
 
@@ -202,3 +227,55 @@ public class BuildDistributionIT {
 
 If the Maven project which builds the distribution does not contribute its own code, then the ``for`` loop copying the jar file can be omitted.
 
+### Assembly
+
+Create an assembly file ``dist.xml`` similar to the one below in ``src\assembly`` directory:
+
+```xml
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+  <id>dist</id>
+  <formats>
+    <format>tar.gz</format>
+    <format>tar.bz2</format>
+    <format>zip</format>
+  </formats>
+  <fileSets>
+    <fileSet>
+      <directory>${project.build.directory}/dist</directory>
+      <outputDirectory>/</outputDirectory>
+      <useDefaultExcludes>false</useDefaultExcludes>
+    </fileSet>
+  </fileSets>
+</assembly>
+```
+
+then add the following plugin definition to ``pom.xml``:
+
+```xml
+<plugin>
+	<artifactId>maven-assembly-plugin</artifactId>
+	<version>3.7.1</version>
+	<configuration>
+		<outputDirectory>${project.build.directory}</outputDirectory>
+		<formats>zip</formats>
+		<appendAssemblyId>false</appendAssemblyId>
+		<finalName>nsd-cli-${project.version}</finalName>
+		<descriptors>
+			<descriptor>src/assembly/dist.xml</descriptor>
+		</descriptors>
+	</configuration>
+        <executions>
+          <execution>
+            <id>create-archive</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+</plugin>		        			
+```
+
+Change the final name to your CLI name. E.g. ``my-company-cli``.
