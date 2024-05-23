@@ -23,6 +23,8 @@ with service type being a requirement and an instance of the service class being
 Nasdanika capability framework can operate on top of ``ServiceLoader`` and may be thought of as a generalization of service loading.
 In essence, the capability framework is a [backward chaining](https://en.wikipedia.org/wiki/Backward_chaining) engine as shown in one of the example below.
 
+[Sources](https://github.com/Nasdanika/core/tree/master/capability)
+
 ----
 
 [TOC levels=6]

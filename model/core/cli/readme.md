@@ -11,7 +11,8 @@ For example, a base CLI package may have a basic implementation of some sub-comm
 A derived package would add dependencies with advanced sub-commands to ``pom.xml``.
 These sub-commands would replace (override) basic sub-commands during construction of the command hierarchy.
 
-[Javadoc](https://javadoc.io/doc/org.nasdanika.core/cli/latest/org.nasdanika.cli/org/nasdanika/cli/package-summary.html)
+* [Sources](https://github.com/Nasdanika/core/tree/master/cli)
+* [Javadoc](https://javadoc.io/doc/org.nasdanika.core/cli/latest/org.nasdanika.cli/org/nasdanika/cli/package-summary.html)
 
 ----
 
