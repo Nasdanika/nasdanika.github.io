@@ -128,6 +128,9 @@ public class TestCapabilityFactory implements CapabilityFactory<TestCapabilityFa
 }
 ```
 
+There is a number of implementations of ``CapabilityFactory`` is different Nasdanika modules, most of them extending ``ServiceCapability``.
+In Eclipse or other IDE open ``CapabilityFactory`` type hierarchy to discover available implementations.
+
 ## EMF
 
 Most of Nasdanika capabilities are based on [Eclipse Modeling Framework](https://eclipse.dev/modeling/emf/) (EMF)[^vogella_emf], Ecore[^ecore] models in particular.
