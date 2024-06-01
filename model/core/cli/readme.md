@@ -13,6 +13,7 @@ These sub-commands would replace (override) basic sub-commands during constructi
 
 * [Sources](https://github.com/Nasdanika/core/tree/master/cli)
 * [Javadoc](https://javadoc.io/doc/org.nasdanika.core/cli/latest/org.nasdanika.cli/org/nasdanika/cli/package-summary.html)
+* [Beyond PicoCLI Medium story](https://medium.com/nasdanika/beyond-picocli-f1164de0cc3f)
 
 ----
 
