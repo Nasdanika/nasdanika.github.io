@@ -118,10 +118,19 @@ The module also provides several mix-ins:
 * ``ProgressMonitorMixIn`` - creates and configures ProgressMonitor
 * ``ResourceSetMixIn`` - creates and configures [ResourceSet](https://javadoc.io/static/org.eclipse.emf/org.eclipse.emf.ecore/2.33.0/org/eclipse/emf/ecore/resource/ResourceSet.html) using [CapabilityLoader](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/CapabilityLoader.html) to add packages, resource and adapter factories, ...
 
+## Shell
+
+[ShellCommand](https://javadoc.io/doc/org.nasdanika.core/cli/latest/org.nasdanika.cli/org/nasdanika/cli/ShellCommand.html) can be used to execute multiple commands in the same JVM.
+
+## Closing commands
+
+Commands implementing [org.nasdanika.common.Closeable](https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/org/nasdanika/common/Closeable.html), including CommandBase and its subclasses are closed recursively.
+This functionality can be used to release resources or save state to the permanent storage, e.g. file system.
+
 ## Building distributions
 
 A distribution is a collection of modules contributing commands and mix-ins plus launcher scripts for different operating systems.
-[``org.nasdanika.cli``](https://github.com/Nasdanika/core/tree/master/cli) and [``org.nasdanika.launcher``](https://github.com/Nasdanika/cli) modules are examples of building distributions as part of Maven build.
+[``org.nasdanika.cli``](https://github.com/Nasdanika/core/tree/master/cli) and [``org.nasdanika.launcher``](https://github.com/Nasdanika/cli) modules are examples of building distributions as part of a Maven build.
 Building a distribution involves the following steps:
 
 * Downloading modules (dependencies)
