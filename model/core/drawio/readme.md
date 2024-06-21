@@ -24,7 +24,8 @@ The below diagram shows relationships between the above interfaces including the
 
 [Util](https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/Util.html) provides utility methods such as ``layout()`` and methods to navigate and query documents and their elements.
 
-[Sources](https://github.com/Nasdanika/core/tree/master/drawio) 
+* [Sources](https://github.com/Nasdanika/core/tree/master/drawio) 
+* [JavaDoc](https://javadoc.io/doc/org.nasdanika.core/drawio)
 
 ## Model
 
@@ -36,5 +37,6 @@ The model makes it more convenient to work with the diagram elements by:
 * Making a reference between pages and model elements bi-directional.
 * Introducing [Tag](https://javadoc.io/doc/org.nasdanika.core/drawio-model/latest/org.nasdanika.drawio.model/org/nasdanika/drawio/model/Tag.html) class as opposed to a string in the API. ``Tag`` is contained by ``Page`` and has bi-directional reference with tagged elements.
 
-[Sources](https://github.com/Nasdanika/core/tree/master/drawio.model)
+* [Sources](https://github.com/Nasdanika/core/tree/master/drawio.model)
+* [JavaDoc](https://javadoc.io/doc/org.nasdanika.core/drawio-model)
  
