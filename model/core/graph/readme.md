@@ -136,21 +136,92 @@ Processors are created in two steps:
 
 #### Reflection
 
-A good deal of processor creation logic is selection of a processor to create for a given graph element is a given situation/context and then "wiring" configuration to the processor. 
+A good deal of processor creation logic is selection of a processor to create for a given graph element in a given situation/context and then "wiring" configuration to the processor. 
 There are two processor factory classes and [ReflectiveProcessorWirer](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ReflectiveProcessorWirer.html) class which make the selection/matching/wiring process easier.
 
-###### Capability
-
-[CapabilityProcessorFactory](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/CapabilityProcessorFactory.html) uses the [Nasdanika Capability Framework](../capability/index.html) to delegate processor creation to [ReflectiveProcessorServiceFactory](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ReflectiveProcessorServiceFactory.html)s. 
-ReflectiveProcessorServiceFactory, in turn, delegates processor creation to methods annotated with ``ReflectiveProcessorServiceFactory.ProcessorFactory`` annotation.
 
 ##### ReflectiveProcessorFactoryProvider 
 
-[ReflectiveProcessorFactoryProvider](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ReflectiveProcessorFactoryProvider.html) invokes method annotated with [Processor](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/Processor.html) annotationto create processors.
+[ReflectiveProcessorFactoryProvider](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ReflectiveProcessorFactoryProvider.html) invokes methods annotated with [Processor](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/Processor.html) annotation to create processors.
+
+[SyncProcessorFactory](https://github.com/Nasdanika-Models/function-flow/blob/main/processors/targets/java/src/main/java/org/nasdanika/models/functionflow/processors/targets/java/sync/SyncProcessorFactory.java) is an example of  reflective processor factory. Below is one of factory methods:
+
+```java
+@Processor(
+	type = NodeAdapter.class,
+	value = "get() instanceof T(org.nasdanika.models.functionflow.FunctionFlow)")
+public Object createFunctionFlowProcessor(
+	NodeProcessorConfig<?,?> config, 
+	boolean parallel, 
+	BiConsumer<Element,BiConsumer<ProcessorInfo<Object>,ProgressMonitor>> infoProvider,
+	Function<ProgressMonitor, Object> next,		
+	ProgressMonitor progressMonitor) {	
+	return new FunctionFlowProcessor();
+}
+```
+
+###### Capability
+
+[CapabilityProcessorFactory](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/CapabilityProcessorFactory.html) uses the [Nasdanika Capability Framework](../capability/index.html) to delegate processor creation to capability factories. 
+[ReflectiveProcessorServiceFactory](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ReflectiveProcessorServiceFactory.html) provides such a capability by collecting reflective targets from capability providers and then using ``ReflectiveProcessorFactoryProvider`` mentioned above.
+This approach provides high level of decoupling between code which executes the graph and code which creates processors.
+
+[FunctionFlowTests](https://github.com/Nasdanika-Models/function-flow/blob/main/processors/targets/java/src/test/java/org/nasdanika/models/functionflow/processors/targets/java/tests/FunctionFlowTests.java) executes a graph loaded from a [Drawio](../drawio/index.html) diagram. 
+It constructs a processor factory as shown below:
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();		
+CapabilityProcessorFactory<Object, BiFunction<Object, ProgressMonitor, Object>> processorFactory = new CapabilityProcessorFactory<Object, BiFunction<Object, ProgressMonitor, Object>>(
+		BiFunction.class, 
+		BiFunction.class, 
+		BiFunction.class, 
+		null, 
+		capabilityLoader); 
+```
+
+``SyncProcessorFactory`` mentioned above is contributed by [SyncCapabilityFactory](https://github.com/Nasdanika-Models/function-flow/blob/main/processors/targets/java/src/main/java/org/nasdanika/models/functionflow/processors/targets/java/sync/SyncCapabilityFactory.java):
+
+```java
+@Override
+public boolean canHandle(Object requirement) {
+	if (requirement instanceof ReflectiveProcessorFactoryProviderTargetRequirement) {
+		ReflectiveProcessorFactoryProviderTargetRequirement<?,?> targetRequirement = (ReflectiveProcessorFactoryProviderTargetRequirement<?,?>) requirement;
+		if (targetRequirement.processorType() == BiFunction.class) { // To account for generic parameters create a non-generic sub-interface binding those parameters.
+			ProcessorRequirement<?, ?> processorRequiremment = targetRequirement.processorRequirement();
+			if (processorRequiremment.handlerType() == BiFunction.class && processorRequiremment.endpointType() == BiFunction.class) {
+				return processorRequiremment.requirement() == null; // Customize if needed
+			}
+		}
+	}
+	return false;
+}
+
+@Override
+public CompletionStage<Iterable<CapabilityProvider<Object>>> create(
+	ReflectiveProcessorFactoryProviderTargetRequirement<Object, BiFunction<Object, ProgressMonitor, Object>> requirement,
+	BiFunction<Object, ProgressMonitor, CompletionStage<Iterable<CapabilityProvider<Object>>>> resolver,
+	ProgressMonitor progressMonitor) {		
+	return CompletableFuture.completedStage(Collections.singleton(CapabilityProvider.of(new SyncProcessorFactory())));	
+}
+```
+
+``canHandle()`` returns true if the factory can handle the requriement passed to it. ``create()`` creates a new instance of ``SyncProcessorFactory``. 
+Note, that ``create()`` may request other capabilities. Say, an instsance of [OpenAIClient](https://javadoc.io/doc/com.azure/azure-ai-openai/latest/com/azure/ai/openai/OpenAIClient.html) to generate code using chat completions.
+
+``SyncCapabilityFactory`` is registered in [module-info.java](https://github.com/Nasdanika-Models/function-flow/blob/main/processors/targets/java/src/main/java/module-info.java):
+
+```java
+exports org.nasdanika.models.functionflow.processors.targets.java.sync;
+opens org.nasdanika.models.functionflow.processors.targets.java.sync to org.nasdanika.common; // For loading resources
+
+provides CapabilityFactory with SyncCapabilityFactory;
+```
+
+Note that a package containing reflective factories and processors shall be opened to ``org.nasdanika.common`` for reflection to work.
 
 ##### Wiring
  
-If ``wire`` Processor(Factory) annotation attribute is set to ``true`` (default), then processors created by the above factories are introspected for the following annotations:
+Processors created by the above factories are introspected for the following annotations:
 
 * All processors:
     * [ChildProcessor](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ChildProcessor.html) - field a method to inject processor or config of element's child matching the selector expression.
@@ -173,46 +244,28 @@ If ``wire`` Processor(Factory) annotation attribute is set to ``true`` (default)
     * [SourceHandler](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/SourceHandler.html) - field or method from which the connection source handler is obtained.
     * [TargetEndpoint](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/TargetEndpoint.html) - field or method into which a connection target endpoint is injected. Target endpoint allows the connection processor to interact with the connection target handler.
     * [TargetHandler](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/TargetHandler.html) - Field or method from which the connection target handler is obtained.
+    
+Element/Node/Connection configuration is declaratively "wired" to processors' fields and methods. Configuration can also be wired imperatively. Declarative and imperative styles can be used together.
 
-Below is an example of a node processor:
-
-```java
-public class AliceProcessor extends BobHouseProcessor {
-	
-	@ProcessorElement
-	public Node aliceNode;
-	
-	@OutgoingHandler("target.label == 'Bob'")
-	public Function<String,String> replyToBob = request -> {
-		return request + System.lineSeparator() + "[" + aliceNode.getLabel() + "] My name is " + aliceNode.getLabel() + ".";
-	};
-	
-	@OutgoingEndpoint("target.label == 'Bob'")
-	public Function<String,String> bobEndpoint;
-	
-	public String talkToBob(String str) {
-		return bobEndpoint.apply("[" + aliceNode.getLabel() + "] Hello!");
-	}	
-
-}
-```       
-
-Below is an example of a connection processor:
+Below is an example of using ``@OutgointEndpoint`` annotation by [StartProcessor](https://github.com/Nasdanika-Models/function-flow/blob/main/processors/targets/java/src/main/java/org/nasdanika/models/functionflow/processors/targets/java/sync/StartProcessor.java):
 
 ```java
-public class AliceBobConnectionProcessor {
+public class StartProcessor implements BiFunction<Object, ProgressMonitor, Object> {
+
+	protected Collection<BiFunction<Object, ProgressMonitor, Object>> outgoingEndpoints = Collections.synchronizedCollection(new ArrayList<>());	
 	
-	@SourceEndpoint
-	public Function<String,String> sourceEndpoint;
+	@Override
+	public Object apply(Object arg, ProgressMonitor progressMonitor) {
+		Map<BiFunction<Object, ProgressMonitor, Object>, Object> outgoingEndpointsResults = new LinkedHashMap<>();
+		for (BiFunction<Object, ProgressMonitor, Object> e: outgoingEndpoints) {
+			outgoingEndpointsResults.put(e, e.apply(arg, progressMonitor));
+		}
+		return outgoingEndpointsResults;
+	}
 	
-	@TargetEndpoint
-	public Function<String,String> targetEndpoint;
-	
-	@SourceHandler
-	public Function<String,String> sourceHandler = request -> ">> " + targetEndpoint.apply(request);
-	
-	@TargetHandler
-	public Function<String,String> targetHandler = response -> "<< " + sourceEndpoint.apply(response);	
-	
-}
-```
+	@OutgoingEndpoint
+	public void addOutgoingEndpoint(BiFunction<Object, ProgressMonitor, Object> endpoint) {
+		outgoingEndpoints.add(endpoint);
+	}
+
+}```       
