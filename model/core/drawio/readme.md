@@ -1,6 +1,8 @@
 Nasdankia provides two Maven modules for working with Drawio diagrams - API and Model. 
 The modules require Java 17 or above.
 
+[TOC levels=6]
+
 ## API
 
 [Drawio](https://mvnrepository.com/artifact/org.nasdanika.core/drawio) module provides [Java API](https://javadoc.io/doc/org.nasdanika.core/drawio) for reading and manipulating [Drawio](https://www.drawio.com/) diagrams.
@@ -26,6 +28,21 @@ The below diagram shows relationships between the above interfaces including the
 
 * [Sources](https://github.com/Nasdanika/core/tree/master/drawio) 
 * [JavaDoc](https://javadoc.io/doc/org.nasdanika.core/drawio)
+
+### Executable diagrams
+
+With Nasdanika Drawio API and other products you can make your diagrams executable.
+There are two primary methods:
+
+* Creating graph element processors for diagram elements
+* Mapping diagrams to a semantic model and then making the model executable, possibly using graph processors
+
+The first option requires less coding, the second is more flexible.
+
+[Executable (computational) graphs & diagrams](https://medium.com/nasdanika/executable-computational-graphs-diagrams-1eeffc80976d) provides a high level overview of executable graphs and diagrams.
+[Graph documentation](../graph/index.html) features more technical details and code samples.
+[Beyond Diagrams](https://leanpub.com/beyond-diagrams) book explains the mapping approach.
+And [Compute Graph Demo](https://github.com/Nasdanika-Demos/compute-graph) provides examples of the both approaches using the compute graph from the "Executable (computational) graphs & diagrams" story.
 
 ## Model
 
