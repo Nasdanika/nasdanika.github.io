@@ -39,7 +39,7 @@ There are two primary methods:
 
 The first option requires less coding, the second is more flexible.
 
-[Executable (computational) graphs & diagrams](https://medium.com/nasdanika/executable-computational-graphs-diagrams-1eeffc80976d) provides a high level overview of executable graphs and diagrams.
+[Executable (computational) graphs & diagrams](https://medium.com/nasdanika/executable-computational-graphs-diagrams-1eeffc80976d) story provides a high level overview of executable graphs and diagrams.
 [Graph documentation](../graph/index.html) features more technical details and code samples.
 [Beyond Diagrams](https://leanpub.com/beyond-diagrams) book explains the mapping approach.
 And [Compute Graph Demo](https://github.com/Nasdanika-Demos/compute-graph) provides examples of the both approaches using the compute graph from the "Executable (computational) graphs & diagrams" story.
