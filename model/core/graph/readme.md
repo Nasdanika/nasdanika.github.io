@@ -234,7 +234,7 @@ Processors created by the above factories are introspected for the following ann
     * [IncomingEndpoint](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/IncomingEndpoint.html) - field or method to inject a matching incoming endpoint.
     * [IncomingEndpoints](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/IncomingEndpoints.html) - field or method to inject a map of incoming connections to their endpoints completion stages.
     * [IncomingHandler](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/IncomingHandler.html) - field or method to obtain a handler for an incoming connection.
-    * [IncomingHandlerConsumers](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/IncomingHandlerConsumers.htlm) - field or method to inject a map of incoming connections to ``java.util.function.Consumer``s of handlers. 
+    * [IncomingHandlerConsumers](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/IncomingHandlerConsumers.html) - field or method to inject a map of incoming connections to ``java.util.function.Consumer``s of handlers. 
     * [OutgoingEndpoint](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/OutgoingEndpoint.html) - field or method to inject a matching outgoing endpoint.
     * [OutgoingEndpoints](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/OutgoingEndpoints.html) - field or method to inject a map of outgoing connections to their endpoints completion stages.
     * [OutgoingHandler](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/OutgoingHandler.html) - field or method to obtain a handler for an outgoing connection.
@@ -247,7 +247,7 @@ Processors created by the above factories are introspected for the following ann
     
 Element/Node/Connection configuration is declaratively "wired" to processors' fields and methods. Configuration can also be wired imperatively. Declarative and imperative styles can be used together.
 
-Below is an example of using ``@OutgointEndpoint`` annotation by [StartProcessor](https://github.com/Nasdanika-Models/function-flow/blob/main/processors/targets/java/src/main/java/org/nasdanika/models/functionflow/processors/targets/java/sync/StartProcessor.java):
+Below is an example of using ``@OutgoingEndpoint`` annotation by [StartProcessor](https://github.com/Nasdanika-Models/function-flow/blob/main/processors/targets/java/src/main/java/org/nasdanika/models/functionflow/processors/targets/java/sync/StartProcessor.java):
 
 ```java
 public class StartProcessor implements BiFunction<Object, ProgressMonitor, Object> {

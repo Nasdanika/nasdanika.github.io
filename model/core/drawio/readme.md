@@ -1,4 +1,4 @@
-Nasdankia provides two Maven modules for working with Drawio diagrams - API and Model. 
+Nasdankia provides two Maven modules for working with [Drawio](https://www.drawio.com/) diagrams - API and Model. 
 The modules require Java 17 or above.
 
 [TOC levels=6]
