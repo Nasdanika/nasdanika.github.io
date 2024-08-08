@@ -29,6 +29,35 @@ The below diagram shows relationships between the above interfaces including the
 * [Sources](https://github.com/Nasdanika/core/tree/master/drawio) 
 * [JavaDoc](https://javadoc.io/doc/org.nasdanika.core/drawio)
 
+### Page and element links
+
+Nasdanika Drawio API extends the concept of linking to pages to cross-document linking to pages and page elements by name or ID.
+Link targets (pages or elements) are available via ``getLinkTarget()`` method.
+
+Drawio page links have the following format: ``data:page/id,<page id>``.
+
+Nasdanika Drawio API extends it to  ``data:<type>/[<resource URI>#]<type selector>``.
+
+* Type - ``page`` or ``element``
+* Resource URI - resolved relative to the current document URI
+* Type selector:
+    * Page:
+        * ``id,<page id>``
+        * ``name,<URL encoded page name>``
+    * Element:
+        * Same page
+            * ``id,<element id>``
+            * ``name,<URL encoded element name>``
+        * Different page
+            * ``<page selector>/id,<element id>``
+            * ``<page selector>/name,<URL encoded element name>``
+        
+This approach allows to create a multi-resource graph of diagrams. 
+Nasdanika Drawio API also supports loading of documents from arbitrary URI's using a URI resolver. 
+For example, ``maven://<gav>/<resource path>`` to load from Maven resources or ``gitlab://<project>/<path>`` to load resources from GitLab without cloning a repository, provided there is a handler (``Function<URI,InputStream>``) supporting the aforementioned URI's. 
+
+Example: ``data:page/my-system.drawio#name,My+Component/id,my-class`` links to a diagram element with ``my-class`` id on the ``My Component`` page in ``my-system.drawio`` resource. 
+
 ### Executable diagrams
 
 With Nasdanika Drawio API and other products you can make your diagrams executable.
@@ -51,7 +80,7 @@ A model instance can be obtained from the API document by calling ``Document.toM
 
 The model makes it more convenient to work with the diagram elements by:
 
-* Making a reference between pages and model elements bi-directional.
+* Making links from diagram elements to pages and other diagram elements bi-directional.
 * Introducing [Tag](https://javadoc.io/doc/org.nasdanika.core/drawio-model/latest/org.nasdanika.drawio.model/org/nasdanika/drawio/model/Tag.html) class as opposed to a string in the API. ``Tag`` is contained by ``Page`` and has bi-directional reference with tagged elements.
 
 * [Sources](https://github.com/Nasdanika/core/tree/master/drawio.model)
