@@ -34,29 +34,33 @@ The below diagram shows relationships between the above interfaces including the
 Nasdanika Drawio API extends the concept of linking to pages to cross-document linking to pages and page elements by name or ID.
 Link targets (pages or elements) are available via ``getLinkTarget()`` method.
 
-Drawio page links have the following format: ``data:page/id,<page id>``.
+Drawio page links have the following format: ``data:page/id,<page id>`` with ``page/id`` being the "media type" and ``<page id>`` being the "data" of a [Data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs).
 
-Nasdanika Drawio API extends it to  ``data:<type>/[<resource URI>#]<type selector>``.
+Nasdanika Drawio API extends it to additional media types:
 
-* Type - ``page`` or ``element``
-* Resource URI - resolved relative to the current document URI
-* Type selector:
-    * Page:
+* ``page/name``
+* ``element/id``
+* ``element/name``
+
+The data (selector) format has the following format: 
+
+* Page: ``[<diagram resource>#]<page selector>``
+    * Diagram resource is a URI resolved relative to the current document URI. If not present then the link target page is in the same document.
+    * Page selector is either page ID or URL encoded page name depending on the media type - id or name.
+* Element: ``[<diagram resource>#][<page selector>/]<element selector>]``
+    * Diagram resource is a URI resolved relative to the current document URI. If not present then the link target element is in the same document.
+    * Page selector is either of:
         * ``id,<page id>``
         * ``name,<URL encoded page name>``
-    * Element:
-        * Same page
-            * ``id,<element id>``
-            * ``name,<URL encoded element name>``
-        * Different page
-            * ``<page selector>/id,<element id>``
-            * ``<page selector>/name,<URL encoded element name>``
+    * Element selector is either page ID or URL encoded element label text (stripped of HTML formatting) depending on the media type - id or name.
+    
+For elements URL's page selector is required if diagram resource URI is present.    
+Example: ``data:element/id,my-system.drawio#name,My+Component/id,my-class`` links to a diagram element with id ``my-class`` on the ``My Component`` page in ``my-system.drawio`` resource. 
+
         
 This approach allows to create a multi-resource graph of diagrams. 
 Nasdanika Drawio API also supports loading of documents from arbitrary URI's using a URI resolver. 
 For example, ``maven://<gav>/<resource path>`` to load from Maven resources or ``gitlab://<project>/<path>`` to load resources from GitLab without cloning a repository, provided there is a handler (``Function<URI,InputStream>``) supporting the aforementioned URI's. 
-
-Example: ``data:page/my-system.drawio#name,My+Component/id,my-class`` links to a diagram element with ``my-class`` id on the ``My Component`` page in ``my-system.drawio`` resource. 
 
 ### Executable diagrams
 
