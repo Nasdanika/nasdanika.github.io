@@ -55,12 +55,28 @@ The data (selector) format has the following format:
     * Element selector is either page ID or URL encoded element label text (stripped of HTML formatting) depending on the media type - id or name.
     
 For elements URL's page selector is required if diagram resource URI is present.    
-Example: ``data:element/id,my-system.drawio#name,My+Component/id,my-class`` links to a diagram element with id ``my-class`` on the ``My Component`` page in ``my-system.drawio`` resource. 
+Examples:
 
+* Page links:
+    * ``data:page/name,compressed.drawio#Page-1`` - Link to compressed first page
+    * ``data:page/name,compressed.drawio#Page+2`` - Link to compressed second page
+* Element links:
+    * ``data:element/id,7KSC1_O8d7ACaxm1iSCq-1`` - Link by ID to an element on the same page
+    * ``data:element/name,name,Page+2/Linked`` - Link by name to Linked on Page 2 referenced by name
+    * ``data:element/name,compressed.drawio#name,Page+2/Linked`` - Link to Linked on compressed second page
         
 This approach allows to create a multi-resource graph of diagrams. 
 Nasdanika Drawio API also supports loading of documents from arbitrary URI's using a URI resolver. 
 For example, ``maven://<gav>/<resource path>`` to load from Maven resources or ``gitlab://<project>/<path>`` to load resources from GitLab without cloning a repository, provided there is a handler (``Function<URI,InputStream>``) supporting the aforementioned URI's. 
+
+### Generating documentation sites
+
+With [Nasdanika CLI](/nsd-cli/index.html) *[drawio](/nsd-cli/nsd/drawio/index.html) <diagram file> [html-app](/nsd-cli/nsd/drawio/html-app/index.html) ... [site](/nsd-cli/nsd/drawio/html-app/site/index.html) ...* 
+command pipeline can be used to generate documentation web sites from Drawio diagrams:
+
+* [Demo](https://nasdanika-demos.github.io/bob-the-builder/)
+* [Video](https://www.youtube.com/watch?v=OtifPFetg9o) explaining how the above demo was created
+* [Template repository](https://github.com/Nasdanika-Templates/drawio-site)
 
 ### Executable diagrams
 
