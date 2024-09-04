@@ -29,7 +29,7 @@ The below diagram shows relationships between the above interfaces including the
 * [Sources](https://github.com/Nasdanika/core/tree/master/drawio) 
 * [JavaDoc](https://javadoc.io/doc/org.nasdanika.core/drawio)
 
-### Page and element links
+## Page and element links
 
 Nasdanika Drawio API extends the concept of linking to pages to cross-document linking to pages and page elements by name or ID.
 Link targets (pages or elements) are available via ``getLinkTarget()`` method.
@@ -69,7 +69,7 @@ This approach allows to create a multi-resource graph of diagrams.
 Nasdanika Drawio API also supports loading of documents from arbitrary URI's using a URI resolver. 
 For example, ``maven://<gav>/<resource path>`` to load from Maven resources or ``gitlab://<project>/<path>`` to load resources from GitLab without cloning a repository, provided there is a handler (``Function<URI,InputStream>``) supporting the aforementioned URI's. 
 
-### Generating documentation sites
+## Generating documentation sites
 
 With [Nasdanika CLI](/nsd-cli/index.html) *[drawio](/nsd-cli/nsd/drawio/index.html) <diagram file> [html-app](/nsd-cli/nsd/drawio/html-app/index.html) ... [site](/nsd-cli/nsd/drawio/html-app/site/index.html) ...* 
 command pipeline can be used to generate documentation web sites from Drawio diagrams:
@@ -78,7 +78,7 @@ command pipeline can be used to generate documentation web sites from Drawio dia
 * [Video](https://www.youtube.com/watch?v=OtifPFetg9o) explaining how the above demo was created
 * [Template repository](https://github.com/Nasdanika-Templates/drawio-site)
 
-### Executable diagrams
+## Executable diagrams
 
 With Nasdanika Drawio API and other products you can make your diagrams executable.
 There are two primary methods:
