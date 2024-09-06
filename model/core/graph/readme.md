@@ -11,7 +11,7 @@ On the diagram below containment relationships are shown in bold black and conne
 
 Examples of such graphs:
 
-* A file systems with directories containing files and other directories. Connections may take multiple forms such as symbolic links or files, e.g. HTML files, referencing other files.
+* A file system with directories containing files and other directories. Connections may take multiple forms such as symbolic links or files, e.g. HTML files, referencing other files.
 * Organizational structure with a hierarchy of organizational units and connections between them. For example, one unit may pass work product to another unit, or a unit may provide services to other units.
 * Country, state, county, city, street, house, people living in that house; family relationships between people and ownership relationships between people and houses.
 * Diagrams, such as [Drawio](https://www.diagrams.net/) diagrams with a diagram file (resource) containing a [Document](https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/Document.html) which contains [pages](https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/Page.html), pages containing [layers](https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/Layer.html), and layers containing [nodes](https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/Node.html) and [connections](https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/Connection.html). Nodes may be nested. [Nasdanika Drawio](../drawio/index.html) is a module for working with Drawio diagrams. It is built on top of this module.
