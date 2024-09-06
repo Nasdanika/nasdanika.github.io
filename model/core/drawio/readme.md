@@ -71,12 +71,13 @@ For example, ``maven://<gav>/<resource path>`` to load from Maven resources or `
 
 ## Generating documentation sites
 
-With [Nasdanika CLI](/nsd-cli/index.html) *[drawio](/nsd-cli/nsd/drawio/index.html) <diagram file> [html-app](/nsd-cli/nsd/drawio/html-app/index.html) ... [site](/nsd-cli/nsd/drawio/html-app/site/index.html) ...* 
+With [Nasdanika CLI](/nsd-cli/index.html) *[drawio](/nsd-cli/nsd/drawio/index.html) > [html-app](/nsd-cli/nsd/drawio/html-app/index.html) > [site](/nsd-cli/nsd/drawio/html-app/site/index.html)* 
 command pipeline can be used to generate documentation web sites from Drawio diagrams:
 
 * [Demo](https://nasdanika-demos.github.io/bob-the-builder/)
 * [Video](https://www.youtube.com/watch?v=OtifPFetg9o) explaining how the above demo was created
 * [Template repository](https://github.com/Nasdanika-Templates/drawio-site)
+* [Internet Banking System](https://nasdanika-demos.github.io/internet-banking-system/index.html) - another demo: a sample C4 Model
 
 ## Executable diagrams
 
