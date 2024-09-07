@@ -1,6 +1,6 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.5 Chrome/126.0.6478.183 Electron/31.3.0 Safari/537.36" version="24.7.5">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.8 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.8">
   <diagram id="Ly-4iOIysEdwdJdt6LdU" name="Page-1">
-    <mxGraphModel dx="855" dy="845" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1139" dy="1127" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -29,16 +29,6 @@
             <mxGeometry x="600" y="280" width="80" height="40" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="amjMeJWWiZx3OYlnt_bU-1" value="Link [0..1]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="HkdYnn8kueRe9c6gts7R-6" target="HkdYnn8kueRe9c6gts7R-2" edge="1">
-          <mxGeometry x="0.9661" y="30" relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="980" y="290" />
-              <mxPoint x="980" y="460" />
-              <mxPoint x="260" y="460" />
-            </Array>
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
         <UserObject label="Layer&lt;br&gt;Element" link="https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/LayerElement.html" id="HkdYnn8kueRe9c6gts7R-6">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fontStyle=2" parent="1" vertex="1">
             <mxGeometry x="720" y="280" width="80" height="40" as="geometry" />
@@ -49,7 +39,7 @@
             <mxGeometry x="423" y="40" width="80" height="40" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="I5wwQAHqrQvuLUtJiKU9-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="HkdYnn8kueRe9c6gts7R-8" target="I5wwQAHqrQvuLUtJiKU9-1">
+        <mxCell id="I5wwQAHqrQvuLUtJiKU9-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="HkdYnn8kueRe9c6gts7R-8" target="I5wwQAHqrQvuLUtJiKU9-1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="690" y="220" />
@@ -261,24 +251,22 @@
         <mxCell id="amjMeJWWiZx3OYlnt_bU-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" parent="1" source="amjMeJWWiZx3OYlnt_bU-2" target="HkdYnn8kueRe9c6gts7R-6" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="400" y="450" />
-              <mxPoint x="970" y="450" />
-              <mxPoint x="970" y="310" />
+              <mxPoint x="280" y="460" />
+              <mxPoint x="970" y="460" />
+              <mxPoint x="970" y="300" />
             </Array>
           </mxGeometry>
         </mxCell>
         <UserObject label="Tag" id="amjMeJWWiZx3OYlnt_bU-2">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-            <mxGeometry x="360" y="360" width="80" height="40" as="geometry" />
+            <mxGeometry x="240" y="404" width="80" height="40" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="amjMeJWWiZx3OYlnt_bU-4" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;startArrow=diamondThin;startFill=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="HkdYnn8kueRe9c6gts7R-2" target="amjMeJWWiZx3OYlnt_bU-2" edge="1">
+        <mxCell id="amjMeJWWiZx3OYlnt_bU-4" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;startArrow=diamondThin;startFill=1;" parent="1" source="HkdYnn8kueRe9c6gts7R-2" target="amjMeJWWiZx3OYlnt_bU-2" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="210" y="310" as="sourcePoint" />
             <mxPoint x="250" y="310" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="300" y="380" />
-            </Array>
+            <Array as="points" />
           </mxGeometry>
         </mxCell>
         <mxCell id="amjMeJWWiZx3OYlnt_bU-5" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" parent="amjMeJWWiZx3OYlnt_bU-4" connectable="0" vertex="1">
@@ -293,17 +281,17 @@
           <mxGeometry x="801" y="312" width="20" height="10" as="geometry" />
         </mxCell>
         <UserObject label="Link Target" link="https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/LinkTarget.html" id="I5wwQAHqrQvuLUtJiKU9-1">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fontStyle=2" vertex="1" parent="1">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fontStyle=2" parent="1" vertex="1">
             <mxGeometry x="423" y="130" width="80" height="40" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="I5wwQAHqrQvuLUtJiKU9-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=block;endFill=0;" edge="1" parent="1" source="I5wwQAHqrQvuLUtJiKU9-1" target="HkdYnn8kueRe9c6gts7R-7">
+        <mxCell id="I5wwQAHqrQvuLUtJiKU9-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=block;endFill=0;" parent="1" source="I5wwQAHqrQvuLUtJiKU9-1" target="HkdYnn8kueRe9c6gts7R-7" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="690" y="230" as="sourcePoint" />
             <mxPoint x="860" y="190" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="I5wwQAHqrQvuLUtJiKU9-4" value="source 0..1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="1">
+        <mxCell id="I5wwQAHqrQvuLUtJiKU9-4" value="linkTarget 0..1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" parent="1" connectable="0" vertex="1">
           <mxGeometry x="510" y="146" as="geometry" />
         </mxCell>
       </root>
