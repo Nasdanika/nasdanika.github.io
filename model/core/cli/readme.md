@@ -13,7 +13,9 @@ These sub-commands would replace (override) basic sub-commands during constructi
 
 * [Sources](https://github.com/Nasdanika/core/tree/master/cli)
 * [Javadoc](https://javadoc.io/doc/org.nasdanika.core/cli/latest/org.nasdanika.cli/org/nasdanika/cli/package-summary.html)
-* [Beyond PicoCLI Medium story](https://medium.com/nasdanika/beyond-picocli-f1164de0cc3f)
+* Medium stories:
+    * [Beyond PicoCLI](https://medium.com/nasdanika/beyond-picocli-f1164de0cc3f)
+    * [Declarative Command Pipelines](https://medium.com/nasdanika/declarative-command-pipelines-5c70468e7a7e)
 
 ----
 
@@ -46,10 +48,11 @@ However:
 * Sub-commands are collected using the capability framework from ``SubCommandCapabilityFactory``'s.
 * Sub-commands types listed in the annotation are base types - classes or interfaces - not necessarily concrete implementation types. E.g. you may have ``HelpCommand`` interface or base class and all commands implementing/extending this class will be added to the parent command. If there are two commands with the same name one of them might override the other as explained below.
 
-### @Parent annotation
+### @ParentCommands annotation
 
-In this case the sub-command or mix-in class are annotated with ``@Parent`` annotation listing types of parents.
+In this case the sub-command or mix-in class are annotated with [``@ParentCommands``](https://javadoc.io/doc/org.nasdanika.core/cli/latest/org.nasdanika.cli/org/nasdanika/cli/ParentCommands.html) annotation listing types of parents.
 The sub-command/mix-in will be added to all commands in the hierarchy which are instances of the specified parent types - exact class, interface implementation, or sub-class.
+This allows to create declarative command pipelines as explained in the [Declarative Command Pipelines](https://medium.com/nasdanika/declarative-command-pipelines-5c70468e7a7e) Medium story.
 
 ### Programmatic match
 
@@ -79,9 +82,9 @@ Add to ``module-info.java``:
 * Mix-ins are collected using the capability framework from ``MixInCapabilityFactory``'s.
 * Mix-in types listed in the annotation are base types - classes or interfaces - not necessarily concrete implementation types. 
 
-### @Parent annotation
+### @ParentCommands annotation
 
-See "@Parent annotation" sub-section in "Contributing sub-commands" section above.
+See "@ParentCommands annotation" sub-section in "Contributing sub-commands" section above.
 
 ### Programmatic match
 

@@ -78,6 +78,7 @@ command pipeline can be used to generate documentation web sites from Drawio dia
 * [Video](https://www.youtube.com/watch?v=OtifPFetg9o) explaining how the above demo was created
 * [Template repository](https://github.com/Nasdanika-Templates/drawio-site)
 * [Internet Banking System](https://nasdanika-demos.github.io/internet-banking-system/index.html) - another demo: a sample C4 Model
+* [Visual Communication Continuum](https://medium.com/nasdanika/visual-communication-continuum-4946f44ba853) - a Medium story which provides an overview of the approach and compares it with semantic mapping
 
 ## Executable diagrams
 
