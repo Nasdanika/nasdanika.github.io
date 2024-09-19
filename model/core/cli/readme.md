@@ -51,7 +51,8 @@ However:
 ### @ParentCommands annotation
 
 In this case the sub-command or mix-in class are annotated with [``@ParentCommands``](https://javadoc.io/doc/org.nasdanika.core/cli/latest/org.nasdanika.cli/org/nasdanika/cli/ParentCommands.html) annotation listing types of parents.
-The sub-command/mix-in will be added to all commands in the hierarchy which are instances of the specified parent types - exact class, interface implementation, or sub-class.
+The sub-command/mix-in will be added to all commands in the hierarchy which are instances of the specified parent types - exact class, interface implementation, or sub-class, or implement [``Adaptable``](https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/org/nasdanika/common/Adaptable.html)
+and return non-null value from ``adaptTo(Class)`` method.
 This allows to create declarative command pipelines as explained in the [Declarative Command Pipelines](https://medium.com/nasdanika/declarative-command-pipelines-5c70468e7a7e) Medium story.
 
 ### Programmatic match

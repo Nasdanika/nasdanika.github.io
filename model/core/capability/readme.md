@@ -6,6 +6,12 @@ Factories create [CapabilityLoader](https://javadoc.io/doc/org.nasdanika.core/ca
 It allows to have an infinite stream of capabilities which are consumed (and produced) as needed.
 Capability providers may furnish additional information about capabilities.
 This information can be used for filtering or sorting providers. 
+Capability providers may also provide functionality such as:
+
+* Implement ``Autocloseable`` and release resources associated with capabilities upon closing.
+* Implement ``Lock`` or ``ReadWriteLock`` to guard access to provided capabilities.
+* Extending on the above, a capability provider may implement Domain/Realm with a command stack - obtain, execute commands with locking, close.
+ 
 
 [^javadoc]: [Javadoc](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/package-summary.html)
 
@@ -14,6 +20,7 @@ Food is a requirement. Or "I want to eat" is a requirement.
 Bread and, say fried eggs are two capabilities meeting/addressing the requirement. 
 Bread requires "wheat", "water", and "bake" capabilities. 
 Fried eggs require "egg", "oil", and "fry" capabilities.
+"bake" capability is provided by an oven which may have a command stack or a lock because only one thing can be baked at a time.
 Bread capability provider may implement ``Vegan`` marker interface which can be used for filtering.
 All food capabilities may implement ``NutritionalInformation`` interface - it can be used for filtering or sorting.
 
@@ -21,9 +28,10 @@ A more technical example is Java [ServiceLoader](https://docs.oracle.com/en/java
 with service type being a requirement and an instance of the service class being a capability.   
 
 Nasdanika capability framework can operate on top of ``ServiceLoader`` and may be thought of as a generalization of service loading.
-In essence, the capability framework is a [backward chaining](https://en.wikipedia.org/wiki/Backward_chaining) engine as shown in one of the example below.
+In essence, the capability framework is a [backward chaining](https://en.wikipedia.org/wiki/Backward_chaining) engine as shown in one of the examples below.
 
-[Sources](https://github.com/Nasdanika/core/tree/master/capability)
+* [Sources](https://github.com/Nasdanika/core/tree/master/capability)
+* [Javadoc](https://javadoc.io/doc/org.nasdanika.core/capability/)
 
 ----
 
@@ -131,9 +139,16 @@ public class TestCapabilityFactory implements CapabilityFactory<TestCapabilityFa
 There is a number of implementations of ``CapabilityFactory`` is different Nasdanika modules, most of them extending ``ServiceCapability``.
 In Eclipse or other IDE open ``CapabilityFactory`` type hierarchy to discover available implementations.
 
+## Loading Invocables from URIs
+
+TODO
+
+
+
+
 ## EMF
 
-Most of Nasdanika capabilities are based on [Eclipse Modeling Framework](https://eclipse.dev/modeling/emf/) (EMF)[^vogella_emf], Ecore[^ecore] models in particular.
+Many of Nasdanika capabilities are based on [Eclipse Modeling Framework](https://eclipse.dev/modeling/emf/) (EMF)[^vogella_emf], Ecore[^ecore] models in particular.
 One of key objects in EMF Ecore is a [ResourceSet](https://javadoc.io/static/org.eclipse.emf/org.eclipse.emf.ecore/2.33.0/org/eclipse/emf/ecore/resource/ResourceSet.html).
 Resource set has a package registry, resource factory registry, and URI converter.
 ``org.nasdanika.capability.emf`` packages provides capability factories for contributing to resource set. 
