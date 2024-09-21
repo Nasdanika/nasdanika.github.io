@@ -291,16 +291,173 @@ public static MyTestClass factory(
 
 ##### Script
 
+The below snippet exectutes ``test.groovy`` script in the current directory. [ScriptEngineManger](https://docs.oracle.com/en/java/javase/17/docs/api/java.scripting/javax/script/ScriptEngineManager.html) is used to get a [ScriptEngine](https://docs.oracle.com/en/java/javase/17/docs/api/java.scripting/javax/script/ScriptEngine.html) by extension. 
+Therefore, the engine factory shall be registered with the script engine manager.
 
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+URI requirement = URI.createFileURI(new File("test.groovy").getCanonicalPath());
+Invocable invocable = capabilityLoader.loadOne(
+		ServiceCapabilityFactory.createRequirement(Invocable.class, null, requirement),
+		progressMonitor);
+Object result = invocable.invoke();
+System.out.println(result);
+```
 
-##### YAML spec
+This is the test script: 
 
+```groovy
+import org.nasdanika.capability.CapabilityFactory.Loader
+import org.nasdanika.common.ProgressMonitor
+
+// Script arguments for reference
+Loader loader = args[0];
+ProgressMonitor loaderProgressMonitor = args[1];
+Object data = args[2];
+
+System.out.println(args);
+"I've got " + args.length + " arguments!"
+```
+
+Similar to Java constructors and static methods, it takes the following arguments:
+
+* [CapabilityFactory.Loader](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/CapabilityFactory.Loader.html) to request additional capabilities if needed
+* [ProgressMonitor](https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/org/nasdanika/common/ProgressMonitor.html) to report progress and pass to the loader methods
+* URI's fragment value or null
+* Invocable arguments
+
+In the below code the script receives ``Hello`` as its third argument (binding) and ``Universe`` as its fourth argument:
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+URI requirement = URI.createFileURI(new File("test.groovy").getCanonicalPath()).appendFragment("Hello");
+Invocable invocable = capabilityLoader.loadOne(
+		ServiceCapabilityFactory.createRequirement(Invocable.class, null, requirement),
+		progressMonitor);
+Object result = invocable.invoke("Universe");
+System.out.println(result);
+```
+
+##### Spec
+
+Spec URI's allow to specify Maven dependencies to construct a [ClassLoader](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/ClassLoader.html) for loading Java classes including script engine factories.
+It is also to specify a module path to construct a [module layer](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/ModuleLayer.html).
+
+###### JSON
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+URI specUri = URI.createFileURI(new File("test-specs/java.json").getCanonicalPath()).appendFragment("Hello+World");
+Invocable invocable = capabilityLoader.loadOne(
+		ServiceCapabilityFactory.createRequirement(Invocable.class, null, new URIInvocableRequirement(specUri)),
+		progressMonitor);
+Object result = invocable.invoke();
+System.out.println(result);
+```
+
+The above snippet uses the below spec to create an instance of ``MyTestClass``:
+
+```json
+{
+	"type": "org.nasdanika.capability.tests.MyTestClass",
+	"bind": [
+		"data:value/String,Some+other+value"
+	]
+}	
+```
+
+Similar to data URL's a matching constructor is found for the following arguments:
+
+* CapabilityFactory.Loader
+* ProgressMonitor
+* String - URL decoded URI fragment, may be null
+* Bindings loaded from the ``bind`` array of URI's
+
+Below is the matching constructor:
+
+```java	
+public MyTestClass(
+		CapabilityFactory.Loader loader, 
+		ProgressMonitor progressMonitor, 
+		String fragment,
+		String bind) {
+	...;
+}	
+```
+
+###### YAML
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor(true);
+URI specUri = URI.createFileURI(new File("test-specs/groovy.yml").getCanonicalPath()).appendFragment("Hello+World");
+Invocable invocable = capabilityLoader.loadOne(
+		ServiceCapabilityFactory.createRequirement(Invocable.class, null, new URIInvocableRequirement(specUri)),
+		progressMonitor);
+Object result = invocable.invoke();
+System.out.println(result);
+```
+
+The above snippet executes Groovy script specified inline in the below YAML:
+
+```yaml
+script:
+  engineFactory: org.codehaus.groovy.jsr223.GroovyScriptEngineFactory
+  source: |
+    "Hello, world! " + myBinding + " " + args[2]
+  bindings:
+    myBinding: data:value/String,Some+value
+dependencies: org.apache.groovy:groovy-all:pom:4.0.23
+localRepository: target/groovy-test-repo
+```
+
+In this case ``org.apache.groovy:groovy-all:pom:4.0.23`` Maven coordinates are used to load Groovy with all dependencies and construct a ClassLoader.
+Because the engine was loaded at runtime, it is not known to the ScriptEngineManager and has to be explicitly specified.
+
+The script gets an ``args`` array with loader, progress monitor, decoded fragment and arguments passed to ``invoke()``. 
+It also gets named bindings loaded from the ``bindings`` map entries. 
 
 ##### Drawio diagram
 
+Below is a YAML spec with an embedded diagram:
+
+```yaml
+diagram:
+  source: |
+    <mxfile ...abridged... </mxfile>
+  processor: processor
+  bind: bind
+  interfaces: java.util.function.Function
+```  
+
+And this is a YAML specification which references a diagram:
+
+```yaml
+diagram:
+  location: diagram.drawio
+  processor: processor
+  bind: bind
+  interfaces: java.util.function.Function
+```
+
+The below code loads the spec, passes the fragment to the diagram as properties in addition to the properties from the spec, creates a dynamic proxy which invokes diagram element processors, and uses the proxy to execute the diagram logic:
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+URI specUri = URI.createFileURI(new File("diagram-function.yml").getCanonicalPath()).appendFragment("my-property=Hello");
+Invocable invocable = capabilityLoader.loadOne(
+		ServiceCapabilityFactory.createRequirement(Invocable.class, null, new URIInvocableRequirement(specUri)),
+		progressMonitor);
+Function<String,Object> result = invocable.invoke();
+System.out.println(result);
+System.out.println(result.apply("YAML"));
+```
 
 See [Capability tests](https://github.com/Nasdanika/core/tree/master/capability-tests/src/test/java/org/nasdanika/capability/tests/tests) and [Executable Diagrams Dynamic Proxy](https://github.com/Nasdanika-Demos/executable-diagram-dynamic-proxy/tree/main) demo for more examples.
-
 
 ### Specification
 
