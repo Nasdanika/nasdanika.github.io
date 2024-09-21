@@ -141,9 +141,173 @@ In Eclipse or other IDE open ``CapabilityFactory`` type hierarchy to discover av
 
 ## Loading Invocables from URIs
 
-TODO
+The capability framework allows to create/load implementations of [Invocable](https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/org/nasdanika/common/Invocable.html) from [URI](https://javadoc.io/doc/org.eclipse.emf/org.eclipse.emf.common/latest/org/eclipse/emf/common/util/URI.html)'s:
+
+* In conjunction with the [Maven](../maven/index.html) module implementations can be loaded from Maven repositories.
+* Invocables can be implemented in [scripting languages](https://docs.oracle.com/en/java/javase/17/docs/api/java.scripting/javax/script/package-summary.html), e.g. [Groovy](https://groovy-lang.org/). Scripts may use dependencies loaded from Maven repositories. Script engine themselves can be loaded from Maven repositories.
+* [Drawio](../drawio/index.html) diagrams can be made executable by adding invocable URI properties to diagram elements. They can then be wrapped into a [dynamic proxy](https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html) and invocable URI's.   
+
+### Examples
+
+#### String value
+
+##### URL encoded
+
+``data:value/String,Hello+World`` [data URL](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data) is converted to an Invocable which takes zero arguments and returns URL-decoded data part of the URL (after comma).
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+URI requirement = URI.createURI("data:value/String,Hello+World");
+Invocable invocable = capabilityLoader.loadOne(
+		ServiceCapabilityFactory.createRequirement(Invocable.class, null, requirement),
+		progressMonitor);
+Object result = invocable.invoke();
+System.out.println(result);
+```
+
+##### URL encoded
+
+``data:value/String;base64,SGVsbG8=`` is converted to an Invocable which takes zero arguments and returns URL-decoded and then [Base64](https://en.wikipedia.org/wiki/Base64) decoded data part converted to String.
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+URI requirement = URI.createURI("data:value/String;base64,SGVsbG8=");
+Invocable invocable = capabilityLoader.loadOne(
+		ServiceCapabilityFactory.createRequirement(Invocable.class, null, requirement),
+		progressMonitor);
+Object result = invocable.invoke();
+System.out.println(result);
+```
+
+#### Java
+
+##### Constructor
+
+``data:java/org.nasdanika.capability.tests.MyTestClass;base64,SGVsbG8=`` is converted to an Invocable which invokes [MyTestClass](https://github.com/Nasdanika/core/blob/master/capability-tests/src/main/java/org/nasdanika/capability/tests/MyTestClass.java) constructor.
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+URI requirement = URI.createURI("data:java/org.nasdanika.capability.tests.MyTestClass;base64,SGVsbG8=");
+Invocable invocable = capabilityLoader.loadOne(
+		ServiceCapabilityFactory.createRequirement(Invocable.class, null, requirement),
+		progressMonitor);
+Object result = invocable.invoke();
+System.out.println(result);
+```
+
+In the above code snippet invocable is invoked with no arguments, which matches the below constructor passing the decoded data part of the URL in ``binding`` argument:
+
+```java
+public MyTestClass(
+		CapabilityFactory.Loader loader, 
+		ProgressMonitor progressMonitor, 
+		byte[] binding) {
+	...
+}	
+```
+
+The below snippet passes ``33`` argument to ``invoke()``:
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+URI requirement = URI.createURI("data:java/org.nasdanika.capability.tests.MyTestClass;base64,SGVsbG8=");
+Invocable invocable = capabilityLoader.loadOne(
+		ServiceCapabilityFactory.createRequirement(Invocable.class, null, requirement),
+		progressMonitor);
+Object result = invocable.invoke(33);
+System.out.println(result);
+```
+
+Which matches the below constructor:
+
+```java
+public MyTestClass(
+		CapabilityFactory.Loader loader, 
+		ProgressMonitor progressMonitor, 
+		byte[] binding, 
+		int arg) {
+	...
+}
+```
+
+``33`` is passed via the ``arg`` argument.
+
+##### Static method
+
+Static methods can be addresed by adding ``::`` and method name after the class name as in this URL: ``data:java/org.nasdanika.capability.tests.MyTestClass::factory;base64,SGVsbG8=``. The resulting Invocable will select the best matching ``factory`` method.
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+URI requirement = URI.createURI("data:java/org.nasdanika.capability.tests.MyTestClass::factory;base64,SGVsbG8=");
+Invocable invocable = capabilityLoader.loadOne(
+		ServiceCapabilityFactory.createRequirement(Invocable.class, null, requirement),
+		progressMonitor);
+Object result = invocable.invoke();
+System.out.println(result);
+```
+
+In the above code snippet ``invoke()`` has no arguments and therefore the below method matches:
+
+```java
+public static MyTestClass factory(
+		CapabilityFactory.Loader loader, 
+		ProgressMonitor progressMonitor, 
+		byte[] binding) {
+	...
+}
+```
+
+As with constructors, the decoded data part is passed to the method as ``binding`` argument.
+
+In the below snippet ``invoke()`` takes ``55`` argument:
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+URI requirement = URI.createURI("data:java/org.nasdanika.capability.tests.MyTestClass::factory;base64,SGVsbG8=");
+Invocable invocable = capabilityLoader.loadOne(
+		ServiceCapabilityFactory.createRequirement(Invocable.class, null, requirement),
+		progressMonitor);
+Object result = invocable.invoke(55);
+System.out.println(result);
+```
+
+Which matches the below method:
+
+```java 
+public static MyTestClass factory(
+		CapabilityFactory.Loader loader, 
+		ProgressMonitor progressMonitor, 
+		byte[] binding,
+		int arg) {
+	...
+}
+```
+
+##### Script
 
 
+
+##### YAML spec
+
+
+##### Drawio diagram
+
+
+See [Capability tests](https://github.com/Nasdanika/core/tree/master/capability-tests/src/test/java/org/nasdanika/capability/tests/tests) and [Executable Diagrams Dynamic Proxy](https://github.com/Nasdanika-Demos/executable-diagram-dynamic-proxy/tree/main) demo for more examples.
+
+
+### Specification
+
+#### URI
+
+
+#### YAML/JSON configuration
 
 
 ## EMF
