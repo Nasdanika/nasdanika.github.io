@@ -166,7 +166,7 @@ Object result = invocable.invoke();
 System.out.println(result);
 ```
 
-##### URL encoded
+##### URL and Base64 encoded
 
 ``data:value/String;base64,SGVsbG8=`` is converted to an Invocable which takes zero arguments and returns URL-decoded and then [Base64](https://en.wikipedia.org/wiki/Base64) decoded data part converted to String.
 
@@ -289,7 +289,7 @@ public static MyTestClass factory(
 }
 ```
 
-##### Script
+#### Script
 
 The below snippet exectutes ``test.groovy`` script in the current directory. [ScriptEngineManger](https://docs.oracle.com/en/java/javase/17/docs/api/java.scripting/javax/script/ScriptEngineManager.html) is used to get a [ScriptEngine](https://docs.oracle.com/en/java/javase/17/docs/api/java.scripting/javax/script/ScriptEngine.html) by extension. 
 Therefore, the engine factory shall be registered with the script engine manager.
@@ -340,12 +340,12 @@ Object result = invocable.invoke("Universe");
 System.out.println(result);
 ```
 
-##### Spec
+#### Spec
 
 Spec URI's allow to specify Maven dependencies to construct a [ClassLoader](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/ClassLoader.html) for loading Java classes including script engine factories.
 It is also to specify a module path to construct a [module layer](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/ModuleLayer.html).
 
-###### JSON
+##### JSON
 
 ```java
 CapabilityLoader capabilityLoader = new CapabilityLoader();
@@ -388,7 +388,7 @@ public MyTestClass(
 }	
 ```
 
-###### YAML
+##### YAML
 
 ```java
 CapabilityLoader capabilityLoader = new CapabilityLoader();
@@ -420,7 +420,7 @@ Because the engine was loaded at runtime, it is not known to the ScriptEngineMan
 The script gets an ``args`` array with loader, progress monitor, decoded fragment and arguments passed to ``invoke()``. 
 It also gets named bindings loaded from the ``bindings`` map entries. 
 
-##### Drawio diagram
+#### Drawio diagram
 
 Below is a YAML spec with an embedded diagram:
 
@@ -463,9 +463,110 @@ See [Capability tests](https://github.com/Nasdanika/core/tree/master/capability-
 
 #### URI
 
+This section explains supported URI formats. 
+Please note that using a custom [URIHandler](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/requirements/URIHandler.html)
+you may:
 
-#### YAML/JSON configuration
+* Normalize "logical" URI's to supported "physical" URI's. 
+* Implement ``openStream()`` 
 
+For example normalized ``my-building-blocks://gen-ai/chat-completions`` to a specification of a chat completions component, say, ``gitlab://my-shared-components/open-ai/chat-completions.yml`` and then implement ``openStream()`` which supports ``gitlab`` scheme[^gitlab_urihandler]
+
+[^gilab_urihandler]: You can use [GitLabURIHandler](https://github.com/Nasdanika-Models/gitlab/blob/main/model/src/main/java/org/nasdanika/models/gitlab/util/GitLabURIHandler.java) as a starting point.
+
+##### Data
+
+Data URI has the following format: ``data:[<mediatype>][;base64],<data>[#fragment]``. 
+The following sections describe supported media types.
+
+###### value/<class name>
+
+an instance of the class is constructed from the data part bytes, fragment is ignored. if the class name does not contain dots then ``java.lang.`` prefix is added to the class name. Examples: 
+    * ``data:value/String,Hello+World``
+    * ``data:value/String;base64,SGVsbG8=``
+
+###### java/<class name or method reference>
+
+Class constructors or static methods are wrapped into an Invocable and the matching constructor/method is invoked from the resulting ``Invocable.invoke()``. 
+Constructors/methods shall have the following signature:
+
+* [CapabilityFactory.Loader](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/CapabilityFactory.Loader.html) to request additional capabilities if needed
+* [ProgressMonitor](https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/org/nasdanika/common/ProgressMonitor.html) to report progress and pass to the loader methods
+* byte[] - the data part
+* String - fragment
+* Optional additional parameters for arguments passed to the result Invocable
+
+Examples:
+
+* ``data:java/org.nasdanika.capability.tests.MyTestClass;base64,SGVsbG8=#World``
+* ``data:java/org.nasdanika.capability.tests.MyTestClass::factory;base64,SGVsbG8=``
+
+###### application/<format>/invocable
+
+With format being either ``yaml`` or ``json``. 
+YAML or JSON specification (see below) encoded into the data part.
+
+Example: ``data:application/yaml/invocable;base64,c2Nya...abridged...1yZXBv``
+
+##### Hierarchical
+
+If the hierarchical URI's last segment ends with ``.yml`` or ``.yaml`` (case insensitive) it is treated as a YAML specification (see below). 
+If the last segment ends with ``.json`` (also case insensitive) it is treated as a JSON specification. 
+Otherwise a script engine is looked up by extension (the part of the last segments after the last dot). E.g. ``groovy``.
+
+Scripts receive ``args`` binding (variable) of type ``Object[]`` with the following elements:
+
+* [CapabilityFactory.Loader](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/CapabilityFactory.Loader.html) to request additional capabilities if needed
+* [ProgressMonitor](https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/org/nasdanika/common/ProgressMonitor.html) to report progress and pass to the loader methods
+* String - fragment
+* Arguments passed to the result Invocable
+
+#### YAML/JSON specification
+
+YAML/JSON specification is pre-processed and then loaded into [InvocableRequirement](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/requirements/InvocableRequirement.html).
+
+The specification supports the following configuration entries:
+
+* ``diagram`` - Map, loaded into [DiagramRecord](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/requirements/DiagramRecord.html):
+    * ``location`` - String, URI of the diagram location relative to the specification location.
+    * ``source`` - String, diagram source. Either ``location`` or ``source`` shall be used.
+    * ``base`` - String, base URI if ``source`` is used
+    * ``properties`` - Map, properties to pass to the diagram. Nested properties can be addressed using "." (dot) separator. For arrays index is used as key. E.g. people.3.name. If URI fragment is present it is parsed into name/value pairs in the same way as query strings are parsed. Fragment properties overwrite spec properties.
+    * ``processor`` - optional String, property to load processor specifications from. One diagram element may have multiple processor specifications in different properties. Also, property expansion can be used to customize processor specification. E.g. ``%env%/storage.yaml`` would point to different specifications depending on the value of ``%env%`` property. 
+    * ``bind`` - optional String, property for a dynamic proxy method name or signature
+    * ``interfaces`` - optional String or List, dynamic proxy interfaces
+* ``type`` - String, class name or method reference is ends with ``::<static method name>``
+* ``script`` - Map, loaded into [ScriptRecord](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/requirements/ScriptRecord.html):
+    * ``location`` - String, URI of script sources
+    * ``source`` - String, script source. Either ``location`` or ``source`` shall be used
+    * ``language`` - String, script language (mime type) for source. For location if language is not specified it is derived from extension.
+    * ``engineFactory`` - String, fully qualified name of a script engine factory implementation. Use if the engine is loaded from dependencies and therefore is not visible to the script engine manager. If ``engineFactory`` is specified ``language`` and location extension are ignored.
+    * ``bindings`` - Map, values are treated as Invocable URIs providing binding values. Loader, progress monitor, fragment and invocable arguments are available to the script via the ``args`` binding of type ``Object[]``. 
+* ``bind`` - String or List, Invocable URIs to bind to the ``type`` Invocable. Not supported by ``diagram`` and ``script``.   
+* ``modulePath`` - optional String or List, module path. If null, derived from root modules if they are present
+* ``rootModules`` - optional String or List, root modules. The first root module is used to obtain the class loader
+* ``oneLayerClassLoader`` - optional boolean indicating whether a single class loader shall be used for all modules in in the layer
+* ``dependencies`` - optional String or List of dependencies in ``<groupId>:<artifactId>[:<extension>[:<classifier>]]:<version>}`` format. E.g. ``org.apache.groovy:groovy-all:pom:4.0.23``
+* ``managedDependencies`` - optional String or List of dependencies in ``<groupId>:<artifactId>[:<extension>[:<classifier>]]:<version>}`` format
+* ``remoteRepositories`` - Map (single remote repository) or List of Maps of remote repository definitions loaded into [RemoteRepoRecord](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/requirements/RemoteRepoRecord.html):
+    * ``id`` - String, repo ID
+    * ``type`` - String, optional repo type
+    * ``url`` - String, repository URL
+    * ``proxy`` - optional Map:
+        * ``type`` - String, ``http`` or ``https``
+        * ``host`` - String
+        * ``port`` - integer
+        * ``auth`` - authentication (see below)   
+    * ``auth`` - Map:
+        * ``username`` - String
+        * ``password`` - String    
+    * ``mirroredRepositories`` - Map or List, mirrored repositories
+* ``localRepository`` - optional String, path to the local repository to download dependencies to. Defaults to ``repository``.
+
+Maven dependency resolution uses default values as explained in the [Maven module documentation](../maven/index.html).
+``diagram``, ``type`` and ``script`` are mutually exclusive.     
+
+Note: ``extends`` key is reserved for future releases to support spec inheritance.
 
 ## EMF
 
