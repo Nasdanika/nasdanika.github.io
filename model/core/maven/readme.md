@@ -90,3 +90,20 @@ Property expansion can be escaped with additional ``{}`` e.g. ``${{my-property}}
         * ``password`` - String    
     * ``mirroredRepositories`` - Map or List, mirrored repositories
 * ``localRepository`` - optional String, path to the local repository to download dependencies to. Defaults to ``repository``.
+
+## URI Handler
+
+Maven URIHandler handles URIs of the following format: ``maven://<groupId>/<artifactId>/<extension>/<version>/<resource path>[?classifier=<classifier>]``.
+
+For example, for ``maven://org.nasdanika.models.architecture/model/jar/2024.8.0/model/architecture.ecore?classifier=model`` URI ``model/architecture.ecore`` resource would be loaded from ``model-2024.8.0-model.jar`` in 
+``org.nasdanika.models.architecture`` group ``model`` artifact version ``2024.8.0`` as shown in the snippet below:
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+Requirement<ResourceSetRequirement, ResourceSet> requirement = ServiceCapabilityFactory.createRequirement(ResourceSet.class);		
+ResourceSet resourceSet = capabilityLoader.loadOne(requirement, progressMonitor);
+URI modeURI = URI.createURI("maven://org.nasdanika.models.architecture/model/jar/2024.8.0/model/architecture.ecore?classifier=model");
+Resource resource = resourceSet.getResource(modeURI, true);
+System.out.println(resource.getContents());
+```

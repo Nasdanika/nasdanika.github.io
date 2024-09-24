@@ -141,7 +141,7 @@ In Eclipse or other IDE open ``CapabilityFactory`` type hierarchy to discover av
 
 ## Loading Invocables from URIs
 
-The capability framework allows to create/load implementations of [Invocable](https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/org/nasdanika/common/Invocable.html) from [URI](https://javadoc.io/doc/org.eclipse.emf/org.eclipse.emf.common/latest/org/eclipse/emf/common/util/URI.html)'s:
+The capability framework allows to create/load implementations of [Invocable](https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/org/nasdanika/common/Invocable.html) from [URI](https://javadoc.io/doc/org.eclipse.emf/org.eclipse.emf.common/latest/org/eclipse/emf/common/util/URI.html)s:
 
 * In conjunction with the [Maven](../maven/index.html) module implementations can be loaded from Maven repositories.
 * Invocables can be implemented in [scripting languages](https://docs.oracle.com/en/java/javase/17/docs/api/java.scripting/javax/script/package-summary.html), e.g. [Groovy](https://groovy-lang.org/). Scripts may use dependencies loaded from Maven repositories. Script engine themselves can be loaded from Maven repositories.
@@ -567,6 +567,11 @@ Maven dependency resolution uses default values as explained in the [Maven modul
 ``diagram``, ``type`` and ``script`` are mutually exclusive.     
 
 Note: ``extends`` key is reserved for future releases to support spec inheritance.
+
+Configuration is pre-pThe by interpolating system properties and environment variables. 
+E.g. ``${my-property}`` will be expanded to the value of ``my-property`` system property if it is set. 
+Respectively, ``${env.MY_ENV_VAR}`` will be expanded to the value of ``MY_ENV_VAR`` environment variable if it is set.
+Property expansion can be escaped with additional ``{}`` e.g. ``${{my-property}}`` will be expanded to ``${my-property}`` regardless of whether ``my-properety`` system property is set or not.
 
 ## EMF
 
