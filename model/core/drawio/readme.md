@@ -82,18 +82,31 @@ command pipeline can be used to generate documentation web sites from Drawio dia
 
 ## Executable diagrams
 
-With Nasdanika Drawio API and other products you can make your diagrams executable.
-There are two primary methods:
+With Nasdanika Drawio API and other products you can make your diagrams executable as explained in the following sections.
 
-* Creating graph element processors for diagram elements
-* Mapping diagrams to a semantic model and then making the model executable, possibly using graph processors
+### Invocable URIs
 
-The first option requires less coding, the second is more flexible.
+You may set diagram element properties to URIs of processors.
+This approach is explained in [General Purpose Executable Graphs and Diagrams](https://medium.com/nasdanika/general-purpose-executable-graphs-and-diagrams-8663deae5248) Medium story. 
+A demo repository is here - https://github.com/Nasdanika-Demos/executable-diagram-dynamic-proxy.
+You can use this site/ repository as a starting point for your diagramming ecosystem:
+
+* [Site](https://nasdanika-demos.github.io/general-purpose-executable-diagrams-story/)
+* [Code](https://github.com/Nasdanika-Demos/general-purpose-executable-diagrams-story)
+
+### Java
+
+You can create graph element processors for diagram elements in Java. 
 
 [Executable (computational) graphs & diagrams](https://medium.com/nasdanika/executable-computational-graphs-diagrams-1eeffc80976d) story provides a high level overview of executable graphs and diagrams.
 [Graph documentation](../graph/index.html) features more technical details and code samples.
-[Beyond Diagrams](https://leanpub.com/beyond-diagrams) book explains the mapping approach.
-And [Compute Graph Demo](https://github.com/Nasdanika-Demos/compute-graph) provides examples of the both approaches using the compute graph from the "Executable (computational) graphs & diagrams" story.
+[Compute Graph Demo](https://github.com/Nasdanika-Demos/compute-graph) provides examples of this and semantic mapping (below) approaches using the compute graph from the "Executable (computational) graphs & diagrams" story.
+
+### Semantic mapping
+
+Semantic mapping diagrams is mapping of diagram elements to a semantic model and then making the model executable, possibly using graph processors.
+[Visual Communication Continuum](https://medium.com/nasdanika/visual-communication-continuum-4946f44ba853) story provides an overview of semantic mapping and when to use it comparing to "direct generation". 
+[Beyond Diagrams](https://leanpub.com/beyond-diagrams) book explains the mapping approach in more detail.
 
 ## Model
 
