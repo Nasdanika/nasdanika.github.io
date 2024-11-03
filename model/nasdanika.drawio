@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.8 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.8">
   <diagram id="HQOKvbAvWCf9tJ4usP6P" name="Nasdanika">
-    <mxGraphModel dx="1709" dy="2790" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="3354" dy="3016" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <object label="" type="Action" page-element="true" feature-map="container:&#xa;  self: &#xa;    children:&#xa;      path: 1&#xa;" doc-ref="nasdanika.md" spec-ref="root-action.yml" id="0">
           <mxCell />
@@ -43,7 +43,7 @@
             <mxGeometry x="100" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Drawio" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="drawio">
+        <object label="Drawio" type="Action" placeholders="1" spec="location: %id%/index.html&#xa;children:&#xa;  - Action:&#xa;      location: semantic-mapping-reference.html&#xa;      text: Semantic Mapping Reference&#xa;      icon: /images/mapping.svg&#xa;      content:&#xa;        Interpolator:&#xa;          source:&#xa;            Markdown:&#xa;              style: true&#xa;              source:&#xa;                exec.content.Resource: semantic-mapping-reference.md&#xa;  - Action:&#xa;      location: feature-mapping-reference.html&#xa;      text: Feature Mapping Reference&#xa;      icon: /images/mind-map.svg&#xa;      content:&#xa;        Interpolator:&#xa;          source:&#xa;            Markdown:&#xa;              style: true&#xa;              source:&#xa;                exec.content.Resource: feature-mapping-reference.md&#xa;" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="drawio">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
             <mxGeometry x="370" y="30" width="80" height="40" as="geometry" />
           </mxCell>

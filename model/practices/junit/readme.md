@@ -246,7 +246,7 @@ Also, the top-down approach (callers first) might be better for addressing techn
 
 #### Test Generation - GenAI : Prompt   
 
-GenAI is neither free not blazing fast. 
+GenAI is neither free nor blazing fast. 
 As such, this channel may implement:
 
 * Billing

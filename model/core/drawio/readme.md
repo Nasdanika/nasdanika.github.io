@@ -104,11 +104,14 @@ You can create graph element processors for diagram elements in Java.
 
 ### Semantic mapping
 
-Semantic mapping diagrams is mapping of diagram elements to a semantic model and then making the model executable, possibly using graph processors.
+Semantic mapping is mapping of diagram elements to a semantic model and then making the model executable, possibly using graph processors.
 [Visual Communication Continuum](https://medium.com/nasdanika/visual-communication-continuum-4946f44ba853) story provides an overview of semantic mapping and when to use it comparing to "direct generation". 
 [Beyond Diagrams](https://leanpub.com/beyond-diagrams) book explains the mapping approach in more detail.
 
-## Model
+
+
+
+## Ecore Model
 
 [Drawio Model](https://mvnrepository.com/artifact/org.nasdanika.core/drawio-model) module provides an [EMF Ecore model](https://drawio.models.nasdanika.org/) for diagrams. 
 A model instance can be obtained from the API document by calling ``Document.toModelDocument()`` method.
