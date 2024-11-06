@@ -108,9 +108,6 @@ Semantic mapping is mapping of diagram elements to a semantic model and then mak
 [Visual Communication Continuum](https://medium.com/nasdanika/visual-communication-continuum-4946f44ba853) story provides an overview of semantic mapping and when to use it comparing to "direct generation". 
 [Beyond Diagrams](https://leanpub.com/beyond-diagrams) book explains the mapping approach in more detail.
 
-
-
-
 ## Ecore Model
 
 [Drawio Model](https://mvnrepository.com/artifact/org.nasdanika.core/drawio-model) module provides an [EMF Ecore model](https://drawio.models.nasdanika.org/) for diagrams. 

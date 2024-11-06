@@ -501,6 +501,15 @@ Examples:
 * ``data:java/org.nasdanika.capability.tests.MyTestClass;base64,SGVsbG8=#World``
 * ``data:java/org.nasdanika.capability.tests.MyTestClass::factory;base64,SGVsbG8=``
 
+###### spel/<URL-encoded SpEL expression>
+
+Evaluates a [Spring Expression Langauge](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions) (SpEL) expression.
+Binding by name sets variables. Arguments array is passed to the expression as the root object. It the array is of size 1 then its single element is used as the root object.
+
+Example: ``data:spel/%23myVar+%2B+%23this``
+
+This [online URL Decoder/Encoder](https://meyerweb.com/eric/tools/dencoder/) can be used to encode expressions.
+
 ###### application/<format>/invocable
 
 With format being either ``yaml`` or ``json``. 

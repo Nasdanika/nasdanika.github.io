@@ -20,17 +20,17 @@
         </object>
         <object label="Resources" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="resources">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
-            <mxGeometry x="10" y="130" width="80" height="40" as="geometry" />
+            <mxGeometry x="100" y="130" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Persistence" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="persistence">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
-            <mxGeometry x="460" y="80" width="80" height="40" as="geometry" />
+            <mxGeometry x="10" y="130" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Ncore" type="Link" placeholders="1" spec="location: https://ncore.models.nasdanika.org/" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" id="ncore">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
-            <mxGeometry x="370" y="80" width="80" height="40" as="geometry" />
+            <mxGeometry x="460" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Diagram" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="diagram">
@@ -43,7 +43,7 @@
             <mxGeometry x="100" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Drawio" type="Action" placeholders="1" spec="location: %id%/index.html&#xa;children:&#xa;  - Action:&#xa;      location: semantic-mapping-reference.html&#xa;      text: Semantic Mapping Reference&#xa;      icon: /images/mapping.svg&#xa;      content:&#xa;        Interpolator:&#xa;          source:&#xa;            Markdown:&#xa;              style: true&#xa;              source:&#xa;                exec.content.Resource: semantic-mapping-reference.md&#xa;  - Action:&#xa;      location: feature-mapping-reference.html&#xa;      text: Feature Mapping Reference&#xa;      icon: /images/mind-map.svg&#xa;      content:&#xa;        Interpolator:&#xa;          source:&#xa;            Markdown:&#xa;              style: true&#xa;              source:&#xa;                exec.content.Resource: feature-mapping-reference.md&#xa;" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="drawio">
+        <object label="Drawio" type="Action" placeholders="1" spec="location: %id%/index.html&#xa;" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="drawio">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
             <mxGeometry x="370" y="30" width="80" height="40" as="geometry" />
           </mxCell>
@@ -60,7 +60,7 @@
         </object>
         <object label="Maven" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="maven">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
-            <mxGeometry x="280" y="80" width="80" height="40" as="geometry" />
+            <mxGeometry x="370" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Capability" type="Action" placeholders="1" spec="location: %id%/index.html" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="capability">
@@ -76,6 +76,11 @@
         <object label="HTTP" type="Action" placeholders="1" spec="location: %id%/index.html&#xa;icon: /images/http.svg" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="http">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
             <mxGeometry x="190" y="80" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Mapping" type="Action" placeholders="1" spec="location: %id%/index.html&#xa;icon: /images/mapping.svg&#xa;children:&#xa;  - Action:&#xa;      location: semantic-mapping-reference.html&#xa;      text: Mapping Reference&#xa;      content:&#xa;        Interpolator:&#xa;          source:&#xa;            Markdown:&#xa;              style: true&#xa;              source:&#xa;                exec.content.Resource: mapping-reference.md&#xa;  - Action:&#xa;      location: feature-mapping-reference.html&#xa;      text: Feature Mapping Reference&#xa;      content:&#xa;        Interpolator:&#xa;          source:&#xa;            Markdown:&#xa;              style: true&#xa;              source:&#xa;                exec.content.Resource: feature-mapping-reference.md&#xa;" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;      comparator: label&#xa;" base-uri="%id%/" doc-ref="readme.md" id="mapping">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="core">
+            <mxGeometry x="280" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="HTML" placeholders="1" type="Action" feature-map="container:&#xa;  other: &#xa;    children:&#xa;      path: 1&#xa;" spec="location: %id%/index.html&#xa;icon: /images/html.svg" base-uri="%id%/" doc-ref="readme.md" id="html">

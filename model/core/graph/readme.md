@@ -21,15 +21,19 @@ Examples of such graphs:
 * In [Java](https://java.models.nasdanika.org/) a jar contains packages containing sub-packages and classes. Classes contain fields and methods. Fields reference their types, methods call methods of other classes, ...
 * [EMF Ecore](https://www.eclipse.org/modeling/emf/) models contain packages. Packages contain sub-packages and classifiers including classes. Classes contain references to other classes. References may be configured as containment (composition) or non-containment.
 
-
-
-* [Sources](https://github.com/Nasdanika/core/tree/master/graph)
-* [Javadoc](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/module-summary.html)
-* [Executable (computational) graphs & diagrams](https://medium.com/nasdanika/executable-computational-graphs-diagrams-1eeffc80976d) Medium Story
-
+   
 ---
 
 [TOC levels=6]
+
+## Resources
+
+* [Sources](https://github.com/Nasdanika/core/tree/master/graph)
+* [Javadoc](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/module-summary.html)
+* [Medium stories](https://medium.com/nasdanika):
+    * [General purpose executable graphs and diagrams](https://medium.com/nasdanika/general-purpose-executable-graphs-and-diagrams-8663deae5248)
+    * [Concurrent Executable Diagrams](https://medium.com/nasdanika/concurrent-executable-diagrams-0cd3bac61e2b)
+    * [Executable (computational) graphs & diagrams](https://medium.com/nasdanika/executable-computational-graphs-diagrams-1eeffc80976d)
 
 ## Graph API
 
