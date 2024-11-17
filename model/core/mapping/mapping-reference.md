@@ -1,6 +1,6 @@
-[TOC levels=6]
-
 This is old documentation - to be revised
+
+[TOC levels=6]
 
 ## base-uri
 

@@ -4,6 +4,8 @@ This module provides base mapping functionality and the Drawio module provides c
 This page provides a combined documentation for both generic and Drawio-specific mapping. 
 Most code snippets below are taken from the [semantic mapping demo](https://nasdanika-demos.github.io/semantic-mapping/index.html).
 
+[TOC levels=6]
+
 ## EMF Ecore
 
 This section is a brief introduction to EMF Ecore, which is used to create metamodels of problem domains.
