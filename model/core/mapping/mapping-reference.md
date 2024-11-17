@@ -1,5 +1,7 @@
 [TOC levels=6]
 
+This is old documentation - to be revised
+
 ## base-uri
 
 This property is used to compute base URI for resolving references such as ``doc-ref`` and ``spec-ref``.

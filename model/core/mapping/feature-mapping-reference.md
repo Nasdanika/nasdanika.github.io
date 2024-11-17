@@ -1,3 +1,5 @@
+This is old documentation - to be revised
+
 [TOC levels=6]
 
 Feature mapping value can be either a string or a map. If it is a string it is treated as a singleton map to ``true`` (unconditional mapping).

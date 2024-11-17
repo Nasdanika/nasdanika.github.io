@@ -204,7 +204,8 @@ In the above code snippet invocable is invoked with no arguments, which matches 
 public MyTestClass(
 		CapabilityFactory.Loader loader, 
 		ProgressMonitor progressMonitor, 
-		byte[] binding) {
+		byte[] binding,
+		String fragment) {
 	...
 }	
 ```
@@ -288,6 +289,10 @@ public static MyTestClass factory(
 	...
 }
 ```
+
+##### @Parameter annotation
+
+[Parameter](https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/org/nasdanika/common/Invocable.Parameter.html) annotation can be used on method and constructor parameters to provide parameter name and optionally narrow parameter type.
 
 #### Script
 
