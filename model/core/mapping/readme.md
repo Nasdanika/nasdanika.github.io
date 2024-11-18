@@ -123,13 +123,14 @@ This factory customizes mapping properties:
 * ``mapping`` - if this property is set, its value is parsed as YAML which is used as property source.
 * ``mapping-ref`` - if ``mapping`` property is not set and this property is set, then this property value treated as a location of a YAML resource containing mapping configuration. The location (URI) is resolved relative to the base URI of the element.
 
-## Phases
+## Phases & properties
 
 Mapping is a non-trivial process. 
 In the case of diagrams the order in which diagram elements are mapped is not under control of the user - it depends on the order of creation of the diagram elements.
 Therefore, the mapping process consists of several phases and some of them may involve multiple passes.
 This section describes the mapping process in the order of phases. 
 A phase section explains element configuration properties (keys) used for that phase.
+In some phases only one property is used. In this case the phase name is the same as the property name.
 In the mapping reference pages properties are ordered alphabetically.
 
 ### Initialization
@@ -252,5 +253,39 @@ If there is no semantic element yet, then ``ref-id`` is used to look it up in th
 You may use a "physical" URI to load objects on demand, or "logical"/"semantic" URI for already loaded objects.
 Say, ``ssn:123-45-6789`` to lookup a person by their SSN.
 
+### page-element
+
+If there is no semantic element for a diagram element yet and the diagram element's ``page-element`` property is set to ``true`` then its semantic element is 
+set to the first found semantic element of diagram elements linking to the page. 
+
+For example, on the [System Context Diagram](https://nasdanika-demos.github.io/internet-banking-system-c4/cerulean/index.html) the "Internet Banking System" element links to the [Container diagram](https://nasdanika-demos.github.io/internet-banking-system-c4/cerulean/references/elements/internet-banking-system/index.html) page where the "Internet Banking System" container is the page element.
+As a result, both of these diagram elements map to the same target (semantic) element.
+
+There should be one page element per page. Having more than one may lead to an unpredictable behavior.
+
+Using ``page-element`` you can define a high-level structure on one diagram page, link other pages to the diagram elements and 
+refine their definitions.
+This process can be repeated to build a hierarchy of pages as demonstrated in the "Internet Banking System Architecture" demo mentioned above.
+
+If the semantic element of a page element extends [``NamedElement``](https://ncore.models.nasdanika.org/references/eClassifiers/NamedElement/index.html) then the page name is used as element's name if hasn't been already set by other means.
+
+### selector
+
+``selector`` is [Spring Expression Language](https://docs.spring.io/spring-framework/reference/core/expressions.html) (SpEL) expression evaluating to a diagram element.
+The semantic element of that diagram element is used as the semantic element of this diagram element. 
+Selectors allow to use the same semantic element on multiple diagrams. 
+
+For example, in the "Internet Banking System" demo ``E-Mail System`` is defined on the System Context Diagram and selected (referenced) on the Container Diagram with ``getModel().getPage().getDocument().getModelElementByProperty('semantic-id', 'microsoft-exchange')`` expression.
+
+The expression is evaluated in the context of the diagram element with access to the following variables:
+
+* ``registry``
+* ``pass``
+* ``progressMonitor``
+
+Please note that you may also use the [extended link syntax](../drawio/index.html#page-and-element-links) to associate more than one diagram element with a single semantic element.
+If you are selecting by diagram element ``id`` or label, then the extended link syntax is preferable to using ``selector`` expression.
+
+In the "Internet Banking System" C4 Model demo ``Single-Page Application`` is defined on the Container Diagram and linked from on the API Application Component Diagram with ``data:element/id,name,Container+Diagram/single-page-application)`` link.
 
  
