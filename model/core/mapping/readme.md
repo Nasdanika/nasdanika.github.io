@@ -269,9 +269,33 @@ This process can be repeated to build a hierarchy of pages as demonstrated in th
 
 If the semantic element of a page element extends [``NamedElement``](https://ncore.models.nasdanika.org/references/eClassifiers/NamedElement/index.html) then the page name is used as element's name if hasn't been already set by other means.
 
+### prototype
+
+``prototype`` is a [Spring Expression Language](https://docs.spring.io/spring-framework/reference/core/expressions.html) (SpEL) expression evaluating to a diagram element.
+The semantic element of that diagram element is copied and the copy is used as the semantic element of this diagram element. 
+Also, prototype configuration (properties) is applied to this semantic element. 
+
+Example: ``getPage().getDocument().getModelElementById('web-server-prototype')``
+
+Prototypes allow to define common configuration in one element and then reuse it in other elements. 
+For example, a web server prototype may define an icon and then all web server elements would inherit that configuration.
+Prototypes can be chained - you may create an inheritance hierarchy of diagram elements. 
+
+Drawio classes provide convenience methods for finding diagram elements:
+
+* ``Element.getModelElementById(String id)``
+* ``Element.getModelElementByProperty(String name, String value)``
+* ``Element.getModelElementsByProperty(String name, String value)``
+* ``Document.getPageById(String id)``
+* ``Document.getPageByName(String name)``
+
+A prototype must have a semantic element defined - the loading process will keep evaluating the prototype expression until it returns non-null or until the maximum number of passes is exceeded. 
+In the latter case the loading process would fail.
+If you want to inherit just configuration, but not the semantic element, then use ``config-prototype`` property instead of ``prototype``.
+
 ### selector
 
-``selector`` is [Spring Expression Language](https://docs.spring.io/spring-framework/reference/core/expressions.html) (SpEL) expression evaluating to a diagram element.
+``selector`` is a Spring Expression Language (SpEL) expression evaluating to a diagram element.
 The semantic element of that diagram element is used as the semantic element of this diagram element. 
 Selectors allow to use the same semantic element on multiple diagrams. 
 
@@ -287,5 +311,54 @@ Please note that you may also use the [extended link syntax](../drawio/index.htm
 If you are selecting by diagram element ``id`` or label, then the extended link syntax is preferable to using ``selector`` expression.
 
 In the "Internet Banking System" C4 Model demo ``Single-Page Application`` is defined on the Container Diagram and linked from on the API Application Component Diagram with ``data:element/id,name,Container+Diagram/single-page-application)`` link.
+
+### target-selector
+
+Spring Expression Language (SpEL) expression evaluating to a target (semantic) element.
+Target selectors are similar to initializers with the following differences:
+
+* Target selectors are evaluated after initializers
+* An initializer may evaluate to ``null``, but a target selector must eventually evaluate to a non-null value
+* An initializer is evaluated once, but a target selector might be evaluated multiple times until it returns a non-null value
+* A target selector is only evaluated if there isn't a target element already
+
+Target selectors can be used to evaluate target elements using target elements of other elements. 
+For example, a target selector of a child node may need a target element of its parent to resolve its own target element.
+
+The expression is evaluated in the context of the diagram element with access to a ``registry``, ``pass`` and ``progressMonitor`` variables.
+
+### reference
+
+Diagram elements can be associated with target elements' references. 
+A Java analogy would be:
+
+```java
+List<Person> isaChildrenDiagramElement = familyWorkBook.findById("isa").getChildren();
+```
+
+``reference`` property associates a diagram element with a reference of the target element of the first matched ancestor for mapping purposes.
+If the element has mapped descendants, their matching targets elements are added to the reference.
+
+Reference value can be a string or a map. The string form is equivalent to the map form with just the ``name`` entry.
+
+
+The map form supports the following keys:
+
+* ``comparator`` - used to sort reference elements, see [Comparators](comparators.html).
+* ``condition`` - a SpEL ``boolean`` expression evaluated in the context of the ancestor target element. If not provided, matches the first mapped ancestor. Has access to the following variables:
+    * ``sourcePath`` - a list of ancestors starting with the parent
+    * ``registry``
+* ``expression`` - a SpEL ``EObject`` expression evaluated in the context of the ancestor target element. If not provided, the ancestor itself is used. Has access to the following variables:
+    * ``sourcePath`` - a list of ancestors starting with the parent
+    * ``registry``
+* ``name`` - reference name
+* ``element-condition`` - a SpEL ``boolean`` expression evaluated in the context of the descendant (contents) target element. If not provided, elements are matched by type compatibility with the reference type. Has access to the following variables:
+    * ``sourcePath`` - source containment path
+    * ``registry``
+* ``element-expression`` - a SpEL ``EObject`` expression evaluated in the context of the descendant (contents) target element. If not provided, the descendant itself is used. Has access to the following variables:
+    * ``sourcePath`` - source containment path
+    * ``registry``
+ 
+See [References](https://nasdanika-demos.github.io/semantic-mapping/references/index.html) demo for examples of using reference mapping.
 
  
