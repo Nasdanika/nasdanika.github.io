@@ -150,6 +150,8 @@ The invocable is bound to the following arguments by name:
 * ``registry`` - a map of source elements to target elements
 * ``contentProvider`` - content provider
 * ``progressMonitor`` - progress monitor
+* ``resourceSet`` - can be used to load target model elements
+* ``capabilityLoader`` - can be used to load [capabilities](https://docs.nasdanika.org/core/capability/index.html), including [invocable URIs](https://docs.nasdanika.org/core/capability/index.html#loading-invocables-from-uris)
 
 Then it is invoked with the source object as a single positional argument.
 
@@ -201,6 +203,8 @@ public static ArchitectureDescriptionElement nodeInitializer(
 		@Parameter(name = "contentProvider") ContentProvider<Element> contentProvider,
 		@Parameter(name = "registry") Consumer<BiConsumer<Map<EObject, EObject>,ProgressMonitor>> registry,
 		@Parameter(name = "progressMonitor") ProgressMonitor mappingProgressMonitor,
+		@Parameter(name = "resourceSet") ResourceSet resourceSet,
+		@Parameter(name = "capabilityLoader") CapabilityLoader capabilityLoader,
 		Element source) {
 	ArchitectureDescriptionElement architectureDescriptionElement = ArchitectureFactory.eINSTANCE.createArchitectureDescriptionElement();
 	architectureDescriptionElement.setDescription("I was created by a Java initializer");
@@ -306,6 +310,8 @@ The expression is evaluated in the context of the diagram element with access to
 * ``registry``
 * ``pass``
 * ``progressMonitor``
+* ``resourceSet``
+* ``capabilityLoader``
 
 Please note that you may also use the [extended link syntax](../drawio/index.html#page-and-element-links) to associate more than one diagram element with a single target element.
 If you are selecting by diagram element ``id`` or label, then the extended link syntax is preferable to using ``selector`` expression.
@@ -325,7 +331,12 @@ Target selectors are similar to initializers with the following differences:
 Target selectors can be used to evaluate target elements using target elements of other elements. 
 For example, a target selector of a child node may need a target element of its parent to resolve its own target element.
 
-The expression is evaluated in the context of the diagram element with access to a ``registry``, ``pass`` and ``progressMonitor`` variables.
+The expression is evaluated in the context of the diagram element with access to the following variables:
+* ``registry``
+* ``pass``
+* ``progressMonitor``
+* ``resourceSet``
+* ``capabilityLoader``
 
 ### reference
 
@@ -507,6 +518,188 @@ connection.getTarget().getChildren().add(connection.getSource());
 ``features-ref`` property value shall be a string which is treated as a URI resolved relative to the base URI. 
 Resource at the URI is parsed as YAML.
 
+### Representations
+
+For semantic elements which extend [ModelElement](https://ncore.models.nasdanika.org/references/eClassifiers/ModelElement/index.html)
+the loading process injects representations which can be used in Markdown documentation and as icons in generated HTML documentation. 
+
+The loading process injects two representations:
+
+* ``drawio`` - a Drawio diagram containing pages where the page element maps to this target element.
+* ``image`` - loaded from diagram element style ``image``. 
+
+Representation reduce documentation effort and drive consistency.
+
+### Configuration
+
+After diagram elements are mapped to target elements (initialized) and their features are mapped, they are configured using their diagram element properties 
+as explained below.
+
+#### config-prototype
+
+With ``config-prototype`` property you can inherit configuration from another diagram element.
+Property value shall be a Spring Expression Language (SpEL) expression evaluating to a diagram element.
+Diagram element configuration (properties) is applied to this semantic element. 
+
+Example: ``getDocument().getModelElementById('web-server-prototype')``
+
+Config prototypes allow to define common configuration in one element and then reuse it in other elements. 
+For example, a web server prototype may define an icon and then all web server element would inherit that configuration.
+Config prototypes can be chained - you may create an inheritance hierarchy of diagram elements. 
+
+#### Documentation
+
+Documentation properties can be used to add documentation to target elements which implement [Documented](https://ncore.models.nasdanika.org/references/eClassifiers/Documented/index.html) interface.
+
+Documentation can be provided in ``documentation`` property in Markdown, plain text, or HTML. 
+Markdown is the default documentation format. 
+You can modify it by setting ``doc-format`` property. Supported values are ``markdown``, ``text``, and ``html``.
+
+It might be more convenient to maintain documentation in an external resource. 
+In this case specify the documentation resource URI in ``doc-ref`` property. 
+The resource URI is resolved relative to the base URI of the diagram element. 
+If ``doc-format`` is not set, it is inferred from the resource extension - HTML for ``.htm`` and ``.html``, text for ``.txt``, Markdown otherwise. 
+
+Documentation may also be configured via ``configuration`` or ``configuration-ref``.
+
+#### Label
+
+If the target element extends [NamedElement](https://ncore.models.nasdanika.org/references/eClassifiers/NamedElement/index.html)
+and its name is not set, then diagram element label converted to plain text is used as semantic element name.
+
+#### Markers
+
+If the target element implements [Marked](https://ncore.models.nasdanika.org/references/eClassifiers/Marked/index.html) then the loading process
+adds diagram element markers to the semantic element. 
+It allows to track provenance of data elements.
+The loading process is aware of Git repositories - if it detects that the diagram file is under source control it would store Git-specific information
+in markers - repository path, branch, commit hash, remotes, and head references. 
+
+#### identity
+
+If the target element extends [``StringIdentity``](https://ncore.models.nasdanika.org/references/eClassifiers/StringIdentity/index.html), ``identity`` property can be used to specify the ``id`` attribute.
+If this property is not provided, then Drawio model element ID is used as identity. 
+Drawio element id's are editable, but duplicate id's are not allowed on the same page. 
+You may have duplicate semantic id's in different containers on the same page. 
+In this case you may use ``identity``. 
+Identity can also be set using the ``configuration`` and ``configuration-ref`` YAML, this property is a shortcut way.
+
+#### configuration
+
+Target elements may be configured by providing a YAML configuration map in the ``configuration`` property
+or a URI of a configuration resource in the ``configuration-ref`` property. The URI is resolved relative to the base URI of the diagram element.
+
+Configuration YAML maps target element features (attributes and references) to their values as shown in the below example:
+
+```yaml
+location: %id%/index.html
+icon: /images/mapping.svg
+children:
+  - Action:
+      location: mapping-reference.html
+      text: Mapping Reference
+      content:
+        Interpolator:
+          source:
+            Markdown:
+              style: true
+              source:
+                exec.content.Resource: mapping-reference.md
+```
+
+Note singleton maps specifying child elements. 
+The key of of such maps is a type as explained in the "Initialization" > "type" section:
+
+* ``Action`` - a short type name, there is only one Action class available during loading
+* ``Interpolator`` - also a short type name
+* ``exec.content.Resource`` - a fully qualified type name because there are two ``Resource`` classes - in the ``content`` package and in the ``resources`` package
+
+"Load specification" model documentation pages provide information about configuration keys supported by a specific type. 
+Examples:
+
+* Action class [Load Specification](https://html-app.models.nasdanika.org/references/eClassifiers/Action/load-specification.html)
+* Woman class [Load Specification](https://family.models.nasdanika.org/references/eClassifiers/Woman/load-specification.html)
+
+#### Tooltip
+
+If the target element extends [NamedElement](https://ncore.models.nasdanika.org/references/eClassifiers/ModelElement/index.html)
+and its description is not set, then diagram element tooltip is used as semantic element description.
+
+### Operations
+
+Using ``operations`` and ``operations-ref`` properties you may specify 
+target element operations to be invoked. 
+``operations`` value shall be a YAML map of operation names to invocation specifications explained below,
+``operations-ref`` shall be a URI of a resource containing a YAML map.
+The URI is resolved relative to the diagram element base URI. 
+
+The invocation specification is either a map or a list of maps. 
+The sections below describe the keys supported by the maps.
+
+Example:
+
+```yaml
+type: Fox
+operations:
+  eats: 
+    arguments:
+      food: "#registry.get(outgoingConnections[0].target)"
+    pass: 2
+```  
+
+See the [demo](https://nasdanika-demos.github.io/semantic-mapping/operations/index.html) for more examples.
+
+#### arguments
+
+A map of parameter names to SpEL expression evaluating their values in the context of the iterator element (see below).
+Argument names are used for operation selection/matching - a candidate operation must have parameters with matching names. 
+The map does not have to contain entries for all operation parameters. 
+Nulls are used as arguments for parameters which are not present in the map. 
+
+#### iterator
+
+An optional SpEL expression which returns a value to iterate over and invoke the operation for every element. 
+
+* If the result is ``java.util.Iterator`` then it is used AS-IS.
+* If the result is Iterable, Stream, or array, an iterator is created to iterate over the elements.
+* If the result is ``null``, then an empty iterator is created. 
+* Otherwise, a singleton iterator is created wrapping the result.
+
+It allows to invoke the operation zero or more times. 
+If not defined, the iterator contains the source diagram element. 
+
+#### pass
+
+An optional integer specifying the pass in which this operation shall be invoked.
+Use for ordering operation invocations. 
+
+In the above example, because we want the Fox to eat the Hare after the Hare eats the Grass, we need so set ``pass`` to ``1`` for the Fox.
+
+#### selector
+
+An optional SpEL boolean expression evaluated in the context of the operation to disambiguate overloaded operations.
+
+
+## Mapping Selector
+
+Mapping selector can be used to select zero or more target elements for feature mapping.
+If it is not provided, then the diagram element's target element is used for feature mapping, if it is present.
+
+Mapping selector shall be a YAML document containing either a single string or a list of strings.
+The strings are treated as Spring Expression Language (SpEL)] expression
+evaluating to a target element or a collection of target elements to use for feature mapping.
+Expressions are evaluated in the context of the diagram element and have access to the following variables:
+
+* ``registry``
+* ``progressMonitor``
+* ``resourceSet``
+* ``capabilityLoader``
+
+Mapping selectors may be used to associate multiple semantic elements with a diagram element for feature mapping purposes.
+
+Mapping selector can be defined in ``mapping-selector`` property or in an external resource with URI specified in ``mapping-selector-ref`` property.
+The resource URI is resolved relative to the base URI of the diagram element.
+
 ## Feature Mapping
 
 This section explains the structure of feature map values.
@@ -581,6 +774,9 @@ A SpEL boolean expression evaluated in the context of the candidate diagram elem
 * ``value`` - semantic element of the candidate diagram element
 * ``path`` - containment path
 * ``registry`` - a map of diagram element to semantic elements
+* ``progressMonitor``
+* ``resourceSet``
+* ``capabilityLoader``
 
 ### expression
 
@@ -589,6 +785,9 @@ A SpEL expression evaluating to a feature value in the context of the diagram el
 * ``value`` - semantic element of the diagram element
 * ``path`` - containment path
 * ``registry`` - a map of diagram element to semantic elements
+* ``progressMonitor``
+* ``resourceSet``
+* ``capabilityLoader``
 
 ### greedy
 
@@ -611,6 +810,8 @@ The invocable is bound to the following arguments by name:
 * ``registry``
 * ``sourcePath``
 * ``type``
+* ``resourceSet``
+* ``capabilityLoader``
 
 It is invoked with ``argument`` as positional argument and shall return feature value.
 
@@ -798,7 +999,12 @@ Same as ``flow`` but with target nodes being smaller than source nodes.
 ### expression
 
 A SpEL expression evaluated in the context of the feature element with ``other`` variable referencing the element to compare with. 
-The expression has access to ``registry`` variable containing a map of diagram elements to semantic elements.
+The expression has access to  the following variables:
+
+* ``registry`` 
+* ``progressMonitor``
+* ``resourceSet``
+* ``capabilityLoader``
 
 ### key
 
