@@ -2,7 +2,11 @@
 This module provides base mapping functionality and the Drawio module provides concrete implementation classes and several Drawio-specific comparators which use element properties and geometry.
 
 This page provides a combined documentation for both generic and Drawio-specific mapping. 
-Most code snippets below are taken from the [semantic mapping demo](https://nasdanika-demos.github.io/semantic-mapping/index.html).
+
+Resources:
+
+* [Semantic Mapping Medium Story](https://medium.com/nasdanika/semantic-mapping-3ccbef5d6c70) provides a high-level overview focusing more on the WHAT and the WHY while this page focuses more on the HOW.
+* Most code snippets below are taken from the [semantic mapping demo](https://nasdanika-demos.github.io/semantic-mapping/index.html).
 
 [TOC levels=6]
 
@@ -147,7 +151,7 @@ The following sections explain the configuration properties used in the initiali
 ``initializer`` property value shall be an [Invocable URI](../capability/index.html#loading-invocables-from-uris) resolved relative to the base URI.
 The invocable is bound to the following arguments by name:
 
-* ``registry`` - a map of source elements to target elements
+* ``registry`` - ``Consumer<BiConsumer<Map<EObject, EObject>,ProgressMonitor>>`` callback to obtain a map of source elements to target elements once all target elements are initialized (created), but not necessarily fully configured.
 * ``contentProvider`` - content provider
 * ``progressMonitor`` - progress monitor
 * ``resourceSet`` - can be used to load target model elements
@@ -214,10 +218,9 @@ public static ArchitectureDescriptionElement nodeInitializer(
 
 Note the use of positional and named parameters:
 
-* The first 4 parameters are bound positionally when [invocable URI is loaded](https://docs.nasdanika.org/core/capability/index.html#loading-invocables-from-uris)
-* The 3 named parameters a bound by name by the mapper
+* The first 4 parameters are bound positionally when invocable URI is loaded
+* The 5 named parameters a bound by name by the mapper
 * The last parameter is used for invocation (also positional)
-
 
 #### type
 
@@ -257,6 +260,10 @@ If there is no target element yet, then ``ref-id`` is used to look it up in the 
 You may use a "physical" URI to load objects on demand, or "logical"/"semantic" URI for already loaded objects.
 Say, ``ssn:123-45-6789`` to lookup a person by their SSN.
 
+#### Contributor.initialize()
+
+Initialization can be customized by creating a service capability of type ``AbstractMappingFactory.Contriutor`` and overriding its ``initialize()`` method.
+
 ### page-element
 
 If there is no target element for a diagram element yet and the diagram element's ``page-element`` property is set to ``true`` then its target element is 
@@ -293,8 +300,6 @@ Drawio classes provide convenience methods for finding diagram elements:
 * ``Document.getPageById(String id)``
 * ``Document.getPageByName(String name)``
 
-A prototype must have a target element defined - the loading process will keep evaluating the prototype expression until it returns non-null or until the maximum number of passes is exceeded. 
-In the latter case the loading process would fail.
 If you want to inherit just configuration, but not the target element, then use ``config-prototype`` property instead of ``prototype``.
 
 ### selector
@@ -324,8 +329,7 @@ Spring Expression Language (SpEL) expression evaluating to a target element.
 Target selectors are similar to initializers with the following differences:
 
 * Target selectors are evaluated after initializers
-* An initializer may evaluate to ``null``, but a target selector must eventually evaluate to a non-null value
-* An initializer is evaluated once, but a target selector might be evaluated multiple times until it returns a non-null value
+* An initializer is evaluated once, but a target selector might be evaluated multiple times until it returns a non-null value or the maximum number of passes is exceeded
 * A target selector is only evaluated if there isn't a target element already
 
 Target selectors can be used to evaluate target elements using target elements of other elements. 
@@ -625,6 +629,10 @@ Examples:
 If the target element extends [NamedElement](https://ncore.models.nasdanika.org/references/eClassifiers/ModelElement/index.html)
 and its description is not set, then diagram element tooltip is used as semantic element description.
 
+#### Contributor.configure()
+
+Configuration can be customized by creating a service capability of type ``AbstractMappingFactory.Contriutor`` and overriding its ``configure()`` method.
+
 ### Operations
 
 Using ``operations`` and ``operations-ref`` properties you may specify 
@@ -678,6 +686,89 @@ In the above example, because we want the Fox to eat the Hare after the Hare eat
 #### selector
 
 An optional SpEL boolean expression evaluated in the context of the operation to disambiguate overloaded operations.
+
+### invoke
+
+The last phase of mapping is invoking [Invocable URI](../capability/index.html#loading-invocables-from-uris)s specified in ``invoke`` property. 
+URIs are resolved relative to the base URI. 
+
+Invocables are bound to the following arguments by name:
+
+* ``target`` - target (semantic) element, can be null
+* ``pass``
+* ``registry`` - a map of source elements to target elements
+* ``contentProvider``
+* ``progressMonitor``
+* ``resourceSet``
+* ``capabilityLoader``
+
+Then it is invoked with the source element as a single positional argument.
+
+If the invokable return ``false`` it means that it could not complete its job in this pass and it will in invoked again in subsequent passes until it returns anything other than ``false``.
+
+This functionlity can be used for procedural/imperative mapping in configuration/declarative mapping is not enough
+or you just prefer to do things procedurally.
+
+#### Groovy mapper
+
+##### Mapping
+
+```yaml
+invoke: mapper.groovy
+```
+
+##### Script
+
+```groovy
+import org.nasdanika.models.nature.Color
+
+System.out.println("---");
+System.out.println("Source: " + args);
+System.out.println("Target: " + target);
+System.out.println("Pass: " + pass);
+
+target.setColor(Color.BROWN);
+
+return pass > 2; // Just to test multiple invocations
+```
+
+#### Java mapper
+
+##### Mapping
+
+```yaml
+invoke: data:java/org.nasdanika.demos.diagrams.mapping.Services::connectionMapper
+```
+
+##### Mapping method
+
+```java
+
+public static void connectionMapper(
+		CapabilityFactory.Loader loader, 
+		ProgressMonitor loadingProgressMonitor, 
+		byte[] binding,
+		String fragment,
+		@Parameter(name = "target") Object target,
+		@Parameter(name = "pass") int pass,
+		@Parameter(name = "contentProvider") ContentProvider<Element> contentProvider,
+		@Parameter(name = "registry") Map<EObject, EObject> registry,
+		@Parameter(name = "progressMonitor") ProgressMonitor mappingProgressMonitor,
+		@Parameter(name = "resourceSet") ResourceSet resourceSet,
+		@Parameter(name = "capabilityLoader") CapabilityLoader capabilityLoader,
+		Connection source) {
+
+	System.out.println("--- Java mapper ---");				
+	System.out.println("Connection: " + source);		
+	System.out.println("Pass: " + pass);		
+}	
+```
+
+Note the use of positional and named parameters:
+
+* The first 4 parameters are bound positionally when invocable URI is loaded
+* The 5 named parameters a bound by name by the mapper
+* The last parameter is used for invocation (also positional)
 
 
 ## Mapping Selector
@@ -988,9 +1079,7 @@ fallback: label
  condition: id != 'send-email'
 ```
 
-The condition specified that a connection with ``sent-mail`` ID shall not be traversed.
-
-![ibs-container-diagram](ibs-container-diagram.png "Container Diagram")
+The condition specifies that a connection with ``sent-mail`` ID shall not be traversed.
 
 #### reverse-flow
 

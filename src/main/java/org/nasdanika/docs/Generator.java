@@ -6,24 +6,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.nasdanika.common.Context;
 import org.nasdanika.common.ExecutionException;
-import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.html.model.app.gen.AppSiteGenerator;
-import org.nasdanika.html.model.app.util.AppDrawioResourceFactory;
+import org.nasdanika.models.app.gen.AppSiteGenerator;
 
 public class Generator {
 	
 	public static void main(String[] args) throws Exception {
 		AppSiteGenerator actionSiteGenerator = new AppSiteGenerator() {
-			
-			@Override
-			protected ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
-				ResourceSet resourceSet = super.createResourceSet(context, progressMonitor);
-				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("drawio", new AppDrawioResourceFactory(uri -> resourceSet.getEObject(uri, true)));						
-				return resourceSet;
-			}
 			
 			@Override
 			protected boolean isDeleteOutputPath(String path) {
@@ -42,7 +31,7 @@ public class Generator {
 				"https://docs.nasdanika.org", 
 				new File("docs"),  
 				new File("target/doc-site-work-dir"), 
-				true);
+				false);
 				
 		int errorCount = 0;
 		for (Entry<String, Collection<String>> ee: errors.entrySet()) {

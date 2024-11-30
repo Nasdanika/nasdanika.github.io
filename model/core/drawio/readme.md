@@ -78,7 +78,8 @@ command pipeline can be used to generate documentation web sites from Drawio dia
 * [Video](https://www.youtube.com/watch?v=OtifPFetg9o) explaining how the above demo was created
 * [Template repository](https://github.com/Nasdanika-Templates/drawio-site)
 * [Internet Banking System](https://nasdanika-demos.github.io/internet-banking-system/index.html) - another demo: a sample C4 Model
-* [Visual Communication Continuum](https://medium.com/nasdanika/visual-communication-continuum-4946f44ba853) - a Medium story which provides an overview of the approach and compares it with semantic mapping
+* [Visual Communication Continuum](https://medium.com/nasdanika/visual-communication-continuum-4946f44ba853) - a Medium story which provides an overview of the approach and compares it with [semantic mapping](../mapping/index.html)
+* [Semantic Mapping](https://medium.com/nasdanika/semantic-mapping-3ccbef5d6c70) - a medium story focusing on Semantic Mapping
 
 ## Executable diagrams
 
@@ -102,11 +103,6 @@ You can create graph element processors for diagram elements in Java.
 [Graph documentation](../graph/index.html) features more technical details and code samples.
 [Compute Graph Demo](https://github.com/Nasdanika-Demos/compute-graph) provides examples of this and semantic mapping (below) approaches using the compute graph from the "Executable (computational) graphs & diagrams" story.
 
-### Semantic mapping
-
-Semantic mapping is mapping of diagram elements to a semantic model and then making the model executable, possibly using graph processors.
-[Visual Communication Continuum](https://medium.com/nasdanika/visual-communication-continuum-4946f44ba853) story provides an overview of semantic mapping and when to use it comparing to "direct generation". 
-[Beyond Diagrams](https://leanpub.com/beyond-diagrams) book explains the mapping approach in more detail.
 
 ## Ecore Model
 

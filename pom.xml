@@ -7,16 +7,12 @@
 	<artifactId>docs</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika Documentation Site</name>
-	
-	<properties>
-		<html.version>2024.10.0</html.version>
-	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.nasdanika.html</groupId>
-			<artifactId>app-model-gen</artifactId>
-			<version>${html.version}</version>
+			<groupId>org.nasdanika.models.app</groupId>
+			<artifactId>gen</artifactId>
+			<version>2024.11.0</version>
 		</dependency>		
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
