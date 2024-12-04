@@ -534,6 +534,15 @@ The loading process injects two representations:
 
 Representation reduce documentation effort and drive consistency.
 
+#### Filtering
+
+Representations can be customized (filtered) by creating a service capability of type ``AbstractMappingFactory.Contributor`` implementing ``AbstractDrawioFactory.RepresentationElementFilter`` and implementing its ``filterRepresentation()`` method.
+This functionality can be used, for example to style elements based on information retrieved from external systems. For example:
+
+* Development status - Planned/Backlog, In Progress, Blocked, Done
+* Runtime status - Operational, Overloaded, Failed, Planned maintenance
+* Quality/technical debt status - OK, Warning, Danger
+
 ### Configuration
 
 After diagram elements are mapped to target elements (initialized) and their features are mapped, they are configured using their diagram element properties 
@@ -631,31 +640,41 @@ and its description is not set, then diagram element tooltip is used as semantic
 
 #### Contributor.configure()
 
-Configuration can be customized by creating a service capability of type ``AbstractMappingFactory.Contriutor`` and overriding its ``configure()`` method.
+Configuration can be customized by creating a service capability of type ``AbstractMappingFactory.Contributor`` and overriding its ``configure()`` method.
 
 ### Operations
 
 Using ``operations`` and ``operations-ref`` properties you may specify 
 target element operations to be invoked. 
-``operations`` value shall be a YAML map of operation names to invocation specifications explained below,
+``operations`` value shall be a YAML map of invocation target to operation names and then to invocation specifications explained below,
 ``operations-ref`` shall be a URI of a resource containing a YAML map.
 The URI is resolved relative to the diagram element base URI. 
+
+The invocation target is either ``self``, ``source`` or ``target`. 
+``source`` and ``target`` are applicable only to connections.
 
 The invocation specification is either a map or a list of maps. 
 The sections below describe the keys supported by the maps.
 
-Example:
+Examples:
 
 ```yaml
 type: Fox
 operations:
-  eats: 
-    arguments:
-      food: "#registry.get(outgoingConnections[0].target)"
-    pass: 2
+  self:
+    eats: 
+      arguments:
+        food: "#registry.get(outgoingConnections[0].target)"
+      pass: 2
 ```  
 
-See the [demo](https://nasdanika-demos.github.io/semantic-mapping/operations/index.html) for more examples.
+```yaml
+operations:
+  source:
+    eats: 
+      arguments:
+        food: "#registry.get(target)"
+```        
 
 #### arguments
 
