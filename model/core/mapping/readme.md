@@ -584,7 +584,7 @@ and its name is not set, then diagram element label converted to plain text is u
 
 If the target element implements [Marked](https://ncore.models.nasdanika.org/references/eClassifiers/Marked/index.html) then the loading process
 adds diagram element markers to the semantic element. 
-It allows to track provenance of data elements.
+It allows to track provenance of data elements which might important in scenarios where model elements are loaded from diverse sources and even a single element may be loaded from several sources. For example, attributes are loaded from an Excel workbook and relationships from a Drawio diagram.
 The loading process is aware of Git repositories - if it detects that the diagram file is under source control it would store Git-specific information
 in markers - repository path, branch, commit hash, remotes, and head references. 
 
