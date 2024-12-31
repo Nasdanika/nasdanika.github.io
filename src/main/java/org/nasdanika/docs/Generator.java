@@ -16,7 +16,7 @@ public class Generator {
 			
 			@Override
 			protected boolean isDeleteOutputPath(String path) {
-				return !"CNAME".equals(path) && !"favicon.ico".equals(path) && !path.startsWith("images/") && !path.startsWith("demos/");
+				return !"CNAME".equals(path) && !"favicon.ico".equals(path) && !path.startsWith("images/") && !path.startsWith("demos/") && !path.startsWith("resources/");
 			}			
 			
 		};
