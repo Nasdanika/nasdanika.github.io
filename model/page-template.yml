@@ -31,12 +31,13 @@ bootstrap.Page:
         gtag('js', new Date());
       
         gtag('config', 'G-9BRJVLK8CC');
-      </script>    
+      </script>   
+      
+      <!-- ${search-config} -->
+       
   body:
     app.Page:
       fluid: true
       navigation-panel:
         style: SEARCHABLE_TREE # COLLAPSIBLE_CARDS
         collapsible: true
-        
- 
