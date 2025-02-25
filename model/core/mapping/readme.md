@@ -44,9 +44,9 @@ More detailed documentation can be found here - https://ecore.models.nasdanika.o
         * **Attribute** - holds a "simple" value such as String, Date, number.
         * **Reference** - relationship between two objects (EObjects). Unidirectional, but can be associated with another reference (opposite) to form a bi-directional relationship. References can be containment (composition) and non-containment (aggregation). 
 * Model
-    * **Resource set** - a group of related resources identified by a URI. Resource sets have associated packages, resource factories, adapter factories, and URI handlers not shown on the diagram.
+    * **Resource set** - a group of related resources identified by a URI. Resource sets have associated packages, resource factories, adapter factories, and URI handlers.
     * **Resource** - a group of objects. A resource is identified by a URI.
-    * **Object** - an instance of a metamodel class.
+    * **Model Element** - an instance of a metamodel class.
     
 Below is a concrete example using the Family [metamodel](https://family.models.nasdanika.org/) and [model](https://family.models.nasdanika.org/demos/mapping/):
 
@@ -64,7 +64,7 @@ Below is a concrete example using the Family [metamodel](https://family.models.n
 * Model
     * **Resource set** - created with a factory which treats ``.drawio`` diagram files as resources with diagram elements mapped to the family model.
     * **Resource** - ``family.drawio`` file.
-    * **Object** - ``Paul`` and ``Elias`` are instances of ``Man`` class. ``Elias`` references ``Paul`` as his father. 
+    * **Model Element** - ``Paul`` and ``Elias`` are instances of ``Man`` class. ``Elias`` references ``Paul`` as his father. 
                
 It is important to note that resources are identified by URI's, not URL's. 
 It allows to load resources from multiple data sources - files, URL's, databases, source repositories such as Git, binary repositories such as Maven.
