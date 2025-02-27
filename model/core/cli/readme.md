@@ -102,7 +102,13 @@ A command/mix-in overrides another command/mix-in if:
 
 ## Extended documentation
 
-You may annotate commands with [``@Description``](https://javadoc.io/doc/org.nasdanika.core/cli/latest/org.nasdanika.cli/org/nasdanika/cli/Description.html) to provide additional information in generated HTML site.
+You may annotate commands, parameters, and options with [``@Description``](https://javadoc.io/doc/org.nasdanika.core/cli/latest/org.nasdanika.cli/org/nasdanika/cli/Description.html) to provide additional information in the generated HTML site.
+
+If ``@Description`` annotation does not have ``value`` or ``resource`` attributes set, then documentation resource name is implied from command, parameter, or option as follows:
+
+* **Command** - documentation resource name is ``<class name>.<extension>`` where ``<extension>`` is one of extensions supported by documentation factories. All factories and all extensions are iterated and the first found resource is used to generate documentation. Example: ``MyCommand.md``.
+* **Option** - documentation resource name is ``<declaring class name>-opt<option name>.<extension>``. All factories, all extensions, and all option names are iterated and the first found resource is used to generate documentation. Example: ``MyCommand-opt--my-option.md``.
+* **Parameter** - supported only for field parameters. Documentation resource name is ``<declaring class name>-param-<field name>.<extension>``. All factories and all extensions are iterated and the first found resource is used to generate documentation. Example: ``MyCommand-param--myParam.md``.
 
 ## Commands
 
