@@ -9,13 +9,6 @@ children:
         Interpolator:
           source:
             exec.content.Resource: classpath://org/nasdanika/models/app/gen/search.html
-  - Action:
-      location: ${base-uri}glossary.html
-      text: Glossary
-      content:
-        Interpolator:
-          source:
-            exec.content.Resource: classpath://org/nasdanika/models/app/gen/semantic-info.html
 navigation:
   - Action:
       text: Source
