@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.16 Chrome/132.0.6834.196 Electron/34.2.0 Safari/537.36" version="26.0.16">
   <diagram id="HQOKvbAvWCf9tJ4usP6P" name="Nasdanika">
-    <mxGraphModel dx="1403" dy="2521" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="3354" dy="3016" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <object label="" mapping="type: Action&#xa;page-element: true&#xa;doc-ref: nasdanika.md&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;configuration-ref: root-action.yml" id="0">
           <mxCell />
@@ -155,7 +155,7 @@
         </object>
         <object label="Source&lt;div&gt;Engineering&lt;/div&gt;" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="source-engineering">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
-            <mxGeometry x="190" y="230" width="80" height="40" as="geometry" />
+            <mxGeometry x="280" y="230" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Java" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //java%base-uri%" id="vXfipRjlebkK18-ft-n--5">
@@ -180,7 +180,7 @@
         </object>
         <object label="Rules" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="rules">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
-            <mxGeometry x="100" y="230" width="80" height="40" as="geometry" />
+            <mxGeometry x="190" y="230" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Azure" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="azure">
@@ -239,8 +239,13 @@
           </mxCell>
         </object>
         <object label="CrewAI" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="crew-ai">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1O0O-SB--TNPAReoqQZB-23">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
             <mxGeometry x="100" y="80" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Python" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="python">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1O0O-SB--TNPAReoqQZB-23">
+            <mxGeometry x="100" y="230" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Practices" placeholders="1" base-uri="%id%/" doc-ref="readme.md" mapping="type: Action&#xa;configuration:&#xa;  location: %base-uri%index.html&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;        comparator: right-down&#xa;doc-ref: readme.md" id="practices">
