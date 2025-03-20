@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.16 Chrome/132.0.6834.196 Electron/34.2.0 Safari/537.36" version="26.0.16">
   <diagram id="HQOKvbAvWCf9tJ4usP6P" name="Nasdanika">
-    <mxGraphModel dx="3354" dy="3016" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="2563" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <object label="" mapping="type: Action&#xa;page-element: true&#xa;doc-ref: nasdanika.md&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;configuration-ref: root-action.yml" id="0">
           <mxCell />
@@ -81,6 +81,11 @@
         <object label="Mapping" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;  icon: /images/mapping.svg&#xa;doc-ref: readme.md" id="mapping">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="core" vertex="1">
             <mxGeometry x="280" y="80" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Telemetry" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;  icon: /images/OpenTelemetry.svg&#xa;doc-ref: readme.md" id="telemetry">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="core">
+            <mxGeometry x="190" y="130" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="HTML" placeholders="1" base-uri="%id%/" maping="type: Actiongugu&#xa;configuration:&#xa;  location: %id%/index.html&#xa;  icon: /images/html.svg&#xa;doc-ref: readme.md&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;        comparator: label&#xa;" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;  icon: /images/html.svg&#xa;doc-ref: readme.md&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;        comparator: label&#xa;" id="html">
@@ -384,8 +389,13 @@
           </mxCell>
         </object>
         <object label="Latest AI Development&lt;div&gt;(CrewAI Model mapping)&lt;/div&gt;" placeholders="1" link="https://nasdanika-demos.github.io/latest-ai-development/" id="cG5xwEjt4-WsaSsuXJIM-1">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" vertex="1" parent="O1JD6lxALoep1QyESPxM-1">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" parent="O1JD6lxALoep1QyESPxM-1" vertex="1">
             <mxGeometry x="10" y="190" width="170" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Latest AI Development - Swimlanes&lt;div&gt;(CrewAI Model mapping)&lt;/div&gt;" placeholders="1" link="https://nasdanika-demos.github.io/latest-ai-development-swimlanes/" id="czXr21Eusl_9VKjMBNSq-1">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" parent="O1JD6lxALoep1QyESPxM-1" vertex="1">
+            <mxGeometry x="190" y="190" width="260" height="40" as="geometry" />
           </mxCell>
         </object>
       </root>
