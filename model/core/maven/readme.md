@@ -1,5 +1,5 @@
 Nasdanika Maven module uses [Maven Resolver Supplier](https://javadoc.io/doc/org.apache.maven.resolver/maven-resolver-supplier/1.9.22/) to provide
-capabilities for [Dependency](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/requirements/DependencyRequestRecord.html) and [ClassLoader](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/requirements/ClassLoaderRequirement.html) requirements.
+[capabilities](../capability/index.html) for [Dependency](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/requirements/DependencyRequestRecord.html) and [ClassLoader](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/requirements/ClassLoaderRequirement.html) requirements.
 
 * [Sources](https://github.com/Nasdanika/core/tree/master/maven)
 * [Javadoc](https://javadoc.io/doc/org.nasdanika.core/maven/latest/org.nasdanika.maven/module-summary.html)

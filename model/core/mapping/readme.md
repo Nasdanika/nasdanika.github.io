@@ -446,9 +446,9 @@ Contains one or more of the following sub-keys with each containing a map of fea
 
 ```yaml
 contents:
- other: 
-country:
- path: 2
+  other: 
+    country:
+      path: 2
 ```
 
 The above feature map for USA means that ``other`` is either Florida, Texas, Jane or Joe - they are all contained in USA directly or indirectly.
@@ -458,9 +458,9 @@ Path 2 means that only Jane and Joe match this mapping. And ``country`` means th
 
 ```yaml
 contents:
- self: 
-country:
- path: 2
+  self: 
+    country:
+      path: 2
 ```
 
 The above feature map for Joe means that ``other`` is either Texas or USA - they both contain Joe, Texas directly and USA transitively.

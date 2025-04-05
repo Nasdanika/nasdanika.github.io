@@ -12,7 +12,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
-				<version>3.3.2</version>
+				<version>3.4.1</version>
 				<configuration>
 					<filesets>
 						<fileset>
@@ -29,7 +29,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>4.0.0-M13</version>
+				<version>3.21.0</version>
 				<configuration>
 					<skip>true</skip>
 					<skipDeploy>true</skipDeploy>

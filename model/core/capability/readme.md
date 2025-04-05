@@ -1,4 +1,4 @@
-Nasdanika Capability framework[^javadoc] allows to discover/load capabilities which meet a requirement.
+Nasdanika Capability framework allows to discover/load capabilities which meet a requirement.
 Capabilities are provided by [CapabilityFactory](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/CapabilityFactory.html) ``create()`` method. 
 Capability factories may request other capabilities they need.
 As such, capabilities can be chained.
@@ -12,9 +12,6 @@ Capability providers may also provide functionality such as:
 * Implement ``Lock`` or ``ReadWriteLock`` to guard access to provided capabilities.
 * Extending on the above, a capability provider may implement Domain/Realm with a command stack - obtain, execute commands with locking, close.
  
-
-[^javadoc]: [Javadoc](https://javadoc.io/doc/org.nasdanika.core/capability/latest/org.nasdanika.capability/org/nasdanika/capability/package-summary.html)
-
 A non-technical example of requirement/capability chain graph is a food chain/graph. 
 Food is a requirement. Or "I want to eat" is a requirement.
 Bread and, say fried eggs are two capabilities meeting/addressing the requirement. 

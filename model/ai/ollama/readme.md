@@ -1,0 +1,1 @@
+This module will provide implementations of core capabilities backed by [Ollama](https://ollama.com/) over [REST API](https://www.postman.com/postman-student-programs/ollama-api/collection/suc47x8/ollama-rest-api).
