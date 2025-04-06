@@ -26,8 +26,10 @@ To create an installation which can be used from any directory you will need to 
 ### Windows
 
 ```
-nsd.bat launcher -f options-global -o nsd-global.bat -s -m org.nasdanika.launcher -c org.nasdanika.launcher.Launcher -M modules -j "@java"
+nsd.bat launcher -f options-global -o nsd-global.bat -s -m org.nasdanika.launcher -c org.nasdanika.launcher.Launcher --add-modules ALL-SYSTEM -M modules -j "@java"
 ```
+
+If you are using [telemetry](../core/telemetry/index.html), add telemetry options after ``@java``
 
 Add the installation to the ``PATH`` environment variable. 
 You may delete/rename ``nsd.bat`` and rename ``nsd-global.bat`` to ``nsd.bat``. 
