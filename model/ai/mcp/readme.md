@@ -1,78 +1,207 @@
-MCP modules provides building blocks to create [MCP](https://modelcontextprotocol.io/introduction) servers on top of Nasdanika capabilities with built-in [telemetry](../../core/telemetry/index.html).
+MCP modules provides building blocks to create [MCP](https://modelcontextprotocol.io/introduction) servers and clients on top of Nasdanika capabilities with built-in [telemetry](../../core/telemetry/index.html).
 
-There are two modules:
+There are three modules:
 
-* mcp - provides:
-    * [HttpClientTelemetrySseClientTransport](https://github.com/Nasdanika/ai/blob/main/mcp/src/main/java/org/nasdanika/ai/mcp/HttpClientTelemetrySseClientTransport.java) - SSE client with integrated telemetry. 
-    * [TelemetryMcpClientTransportFilter](https://github.com/Nasdanika/ai/blob/main/mcp/src/main/java/org/nasdanika/ai/mcp/TelemetryMcpClientTransportFilter.java) - a filter for [McpClientTransport](https://javadoc.io/doc/io.modelcontextprotocol.sdk/mcp/latest/io.modelcontextprotocol.sdk.mcp/io/modelcontextprotocol/spec/McpClientTransport.html) implementations adding telemetry.
-* mcp-http - provides [HttpServerRoutesTransportProvider](https://github.com/Nasdanika/ai/blob/main/mcp-http/src/main/java/org/nasdanika/ai/mcp/http/HttpServerRoutesTransportProvider.java) which provides an HTTP/SSE transport on top of [Reactor Netty HTTP Routing and SSE](https://projectreactor.io/docs/netty/1.2.5/reference/http-server.html#routing-http) with integrated telemetry.
+* ``mcp`` - core MCP-related functionality
+* ``mcp-sse`` - SSE/HTTP related functionality
+* ``mcp-help`` - Help contributor generating capabilities tables
 
-You can find examples of using the above classes to build telemetry-enabled MCP servers and clients in [TestMcp](https://github.com/Nasdanika/ai/blob/main/mcp/src/test/java/org/nasdanika/ai/mcp/tests/TestMcp.java) class.
-
-## Roadmap
+## Server
 
 Nasdanika MCP servers will have three dimensions:
 
-* Capabilities (tools, resources, ...) 
+* Capabilities (prompts, resources, tools) 
 * Transports (STDIO, SSE)
 * Telemetry instrumentation scope name
 
-The plan is to create the following classes:
+[McpServerCommandBase](https://github.com/Nasdanika/ai/blob/main/mcp/src/main/java/org/nasdanika/ai/mcp/McpServerCommandBase.java) class is a base class for MCP server [CLI](../../core/cli/index.html) commands.
+Subclasses shall override one or more ``getXXXSpecificaion()`` methods to provide capabilities. 
+The command implements ``McpAsyncServerProvider`` and there are two sub-commands binding to implementations of this interface - SSE and STDIO transport commands.
 
-### AbstractMcpServerCommand
+[McpServerCommand](https://github.com/Nasdanika/ai/blob/main/mcp/src/main/java/org/nasdanika/ai/mcp/McpServerCommand.java) is a concrete command which binds as a sub-command of the root command.
+It collects specification capabilities and binds to the root command if there is at least one capability.
+Help generator for the command generates documentation for provided capabilities.
 
-This class will extends ``CommandGroup`` and will use ``McpAsyncServer``. 
-It will obtain capabilities and instrumentation scope name from abstract methods and wrap them into telemetry filters.
-Sync capabilities will be wrapped into async capabilities in the same way as it is done in the ``McpSyncServer``:
+[MCP Server CLI assembly](https://nasdanika-demos.github.io/mcp-server/) demonstrates how to contribute MCP server capabilities.
 
-```java
-this.asyncServer.addTool(McpServerFeatures.AsyncToolSpecification.fromSync(toolHandler)).block();
-```
- 
-The command will have two sub-commands for transport providers.
+### Contributing a capability
 
-The transport provider sub-commands will be responsible for creating a transport provider and then passing it to the parent command for execution. 
-Something like this:
+#### Capability factory
 
 ```java
-McpServerTransportProvider transportProvider = ... // Create, use options and arguments
-parent.execute(transportProvider)
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletionStage;
+
+import org.nasdanika.capability.CapabilityProvider;
+import org.nasdanika.capability.ServiceCapabilityFactory;
+import org.nasdanika.common.ProgressMonitor;
+
+import io.modelcontextprotocol.server.McpServerFeatures;
+import io.modelcontextprotocol.server.McpServerFeatures.SyncToolSpecification;
+import io.modelcontextprotocol.spec.McpSchema.CallToolResult;
+import io.modelcontextprotocol.spec.McpSchema.Content;
+import io.modelcontextprotocol.spec.McpSchema.TextContent;
+import io.modelcontextprotocol.spec.McpSchema.Tool;
+
+public class SyncCalculatorCapabilityFactory extends ServiceCapabilityFactory<Void, SyncToolSpecification> {
+
+    @Override
+    public boolean isFor(Class<?> type, Object requirement) {
+        return SyncToolSpecification.class == type && requirement == null;
+    }
+
+    @Override
+    protected CompletionStage<Iterable<CapabilityProvider<SyncToolSpecification>>> createService(
+            Class<SyncToolSpecification> serviceType, 
+            Void serviceRequirement, 
+            Loader loader,
+            ProgressMonitor progressMonitor) {
+
+        
+        String schema = """
+                {
+                  "type" : "object",
+                  "id" : "urn:jsonschema:Operation",
+                  "properties" : {
+                    "operation" : {
+                      "type" : "string"
+                    },
+                    "a" : {
+                      "type" : "number"
+                    },
+                    "b" : {
+                      "type" : "number"
+                    }
+                  }
+                }
+                """;
+            
+            SyncToolSpecification syncToolSpecification = new McpServerFeatures.SyncToolSpecification(
+                new Tool("calculator", "Nasdanika calculator of all great things", schema), 
+                (exchange, arguments) -> {
+                    List<Content> result = new ArrayList<>();
+                    result.add(new TextContent("Result: " + arguments));
+                    
+                    return new CallToolResult(result, false);
+                }
+            );
+
+        return wrap(syncToolSpecification);         
+    }
+    
+}
 ```
 
-### McpServerCommand
+#### module-info.java
 
-This class will extends ``AbstractMcpServerCommand`` and bind to the root command. 
-It will take capabilities and instrumentation scope name as constructor arguments and implement abstract methods from the superclass to get capabilities and instrumentation scope name.
+```java
+import org.nasdanika.capability.CapabilityFactory;
+import org.nasdanika.demos.mcp.server.capabilities.SyncCalculatorCapabilityFactory;
 
-### Capability factory
+module org.nasdanika.demos.mcp.server {
+    
+    exports org.nasdanika.demos.mcp.server;
+    
+    requires transitive org.nasdanika.ai.mcp.sse;
+    
+    provides CapabilityFactory with 
+        SyncCalculatorCapabilityFactory;
+                
+}
+```
 
-The capability factory will collect specification capabilities, both sync and async, e.g. [SyncToolSpecification](https://javadoc.io/doc/io.modelcontextprotocol.sdk/mcp/latest/io.modelcontextprotocol.sdk.mcp/io/modelcontextprotocol/server/McpServerFeatures.SyncToolSpecification.html).
-If there is at least one capability, an instance of ``McpServerCommand`` would be created. 
-This approach would allow to assemble servers in a declarative way, by adding dependencies to ``pom.xml`` and ``module-info.java``.
+### Running a server
 
-### Documentation generator
+#### SSE
 
-A custom command documentation generator which would generate documentation for MCP server capabilities as child pages of the server command page.
-So the command documentation will also serve as a tools/resources catalog.
+```
+nsd mcp-server sse --http-port=8080
+```
 
-### Custom server commands
+#### STDIO
 
-Custom server commands can be created by extending ``AbstractMcpServerCommand``. 
-Capabilities for such commands can be loaded based on command configuration - command line arguments and options. 
+```
+nsd mcp-server stdio
+```
 
-For example:
+### Generating documentation
 
-* Resources loaded from ``search-documents.json`` files of sites generated from [HTML Application models](https://html-app.models.nasdanika.org/index.html). 
-E.g. [search-documents.json](../../search-documents.json) of this site.
-* Resources created from "narrated" models/diagrams. For example, in the [sample family](https://nasdanika-demos.github.io/family-semantic-mapping/)
-the model with derived relationships and capability-based reasoning can be used to explain that:
-    * [Isa](https://nasdanika-demos.github.io/family-semantic-mapping/references/members/isa/index.html) is a [Woman](https://family.models.nasdanika.org/references/eClassifiers/Woman/index.html) and a [mother](https://family.models.nasdanika.org/references/eClassifiers/Person/references/eStructuralFeatures/mother/index.html) of [Elias](https://nasdanika-demos.github.io/family-semantic-mapping/references/members/elias/index.html)
-    * Paul is a [parent](https://family.models.nasdanika.org/references/eClassifiers/Person/references/eStructuralFeatures/parents/index.html) of Lea
-    * Paul is a father of Lea
-    * Lea is a child of Paul
-    * Lea is a daughter of Paul
-    * Elias is a sibling of Lea
-    * Elias is a brother of Lea
-    * ...
-* RAG and chat on top of models/sites using [sampling](https://modelcontextprotocol.io/docs/concepts/sampling) or own LLMs. In the case of ``search-documents.json`` embeddings can be pre-calculated and stored in the file.
-* Tools/resources loaded from [Invocable URIs](../../core/capability/index.html#loading-invocables-from-uris)
+```
+nsd help site --page-template="page-template.yml#/" --root-action-icon=https://docs.nasdanika.org/images/nasdanika-logo.png --root-action-location=https://github.com/Nasdanika-Demos --root-action-text="Nasdanika Demos" docs
+```
+
+## Client
+
+[TelemetryMcpClientTransportFilter](https://github.com/Nasdanika/ai/blob/main/mcp/src/main/java/org/nasdanika/ai/mcp/TelemetryMcpClientTransportFilter.java) is a filter for [McpClientTransport](https://javadoc.io/doc/io.modelcontextprotocol.sdk/mcp/latest/io.modelcontextprotocol.sdk.mcp/io/modelcontextprotocol/spec/McpClientTransport.html) implementations adding telemetry.
+[HttpClientTelemetrySseClientTransport](https://github.com/Nasdanika/ai/blob/main/mcp/src/main/java/org/nasdanika/ai/mcp/HttpClientTelemetrySseClientTransport.java) propagates the trace to the server side. 
+It can be used if the server supports telemetry, e.g. if it is built using Nasdanika MCP classes.
+
+```java
+OpenTelemetry openTelemetry = GlobalOpenTelemetry.get();
+McpClientTransport transport = new HttpClientTelemetrySseClientTransport(
+        "http://localhost:8080", 
+        openTelemetry.getTracer(TestMcp.class.getName() + ".transport"),
+        openTelemetry.getPropagators().getTextMapPropagator(),
+        null);
+
+Tracer tracer = openTelemetry.getTracer(TestMcp.class.getName());       
+Span span = TelemetryUtil.buildSpan(tracer.spanBuilder("testSseTelemetryClient")).startSpan();
+        
+try (Scope scope = span.makeCurrent()) {
+    TelemetryMcpClientTransportFilter transportFilter = new TelemetryMcpClientTransportFilter(
+            transport, 
+            openTelemetry.getTracer(TestMcp.class.getName() + ".transportFilter"), 
+            Context.current());         
+
+    McpSyncClient client = McpClient.sync(transportFilter)
+            .requestTimeout(Duration.ofSeconds(10))
+            .capabilities(ClientCapabilities.builder()
+                .roots(true)      // Enable roots capability
+                .sampling()       // Enable sampling capability
+                .build())
+            .sampling(request -> {                  
+                CreateMessageResult result = null;
+                return result;
+            })
+            .build();       
+    
+    client.initialize();
+    ListResourcesResult resources = client.listResources();
+    System.out.println(resources);
+    
+    ReadResourceResult resource = client.readResource(new ReadResourceRequest("nasdanika://drawio"));           
+    System.out.println(resource.contents());
+    
+    // List available tools
+    ListToolsResult tools = client.listTools();
+    System.out.println(tools);
+
+    // Call a tool
+    CallToolResult result = client.callTool(
+        new CallToolRequest("calculator", 
+            Map.of("operation", "add", "a", 2, "b", 3))
+    );
+    System.out.println(result);         
+    
+    client.closeGracefully();
+} finally {
+    span.end();
+}
+```
+
+Please note that in the above example the current telemetry context is passed to the ``TelemetryMcpClientTransportFilter`` constructor. 
+It is needed because the context does not propagate all the way along the reactive chain. 
+
+You can find more examples of using the above classes to build telemetry-enabled MCP servers and clients in [TestMcp](https://github.com/Nasdanika/ai/blob/main/mcp-sse/src/test/java/org/nasdanika/ai/mcp/sse/tests/TestMcp.java) class.
+
+## Roadmap
+
+### Annotations and a reflective capability factory
+
+Create annotations for prompts, resources and tools, infer sync/async from the return type.
+Description and tool schema is inline with expansion tokens to include content loaded from a URI, including classpath resources.
+Category and documentation for command documentation generation.
+
+Reflective factory using ``Reflector``. 
+If tools need capabilities, they shall be obtained during target construction/initialization - the reflector would deal just with creation of specifications.
