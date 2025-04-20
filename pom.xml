@@ -71,6 +71,12 @@
 			</plugin>
 		</plugins>
 	</build>
+    <repositories>
+        <repository>
+            <id>nasdanika-snapshots</id>
+            <url>https://maven.nasdanika.org/snapshots</url>
+        </repository>
+    </repositories> 
 
 	<organization>
 		<name>Nasdanika</name>
