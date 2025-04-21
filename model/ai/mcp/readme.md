@@ -3,8 +3,14 @@ MCP modules provides building blocks to create [MCP](https://modelcontextprotoco
 There are three modules:
 
 * ``mcp`` - core MCP-related functionality
+    * [Source](https://github.com/Nasdanika/ai/tree/main/mcp)
+    * [Javadoc](https://javadoc.io/doc/org.nasdanika.ai/mcp)
 * ``mcp-sse`` - SSE/HTTP related functionality
+    * [Source](https://github.com/Nasdanika/ai/tree/main/mcp-sse)
+    * [Javadoc](https://javadoc.io/doc/org.nasdanika.ai/mcp-sse)
 * ``mcp-help`` - Help contributor generating capabilities tables
+    * [Source](https://github.com/Nasdanika/ai/tree/main/mcp-help)
+    * [Javadoc](https://javadoc.io/doc/org.nasdanika.ai/mcp-help)
 
 ## Server
 
