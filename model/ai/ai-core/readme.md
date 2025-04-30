@@ -222,14 +222,20 @@ An instance of similarity search can be adapted to another type using ``adapt(Fu
 One usage scenario is to adapt a structured type to text by "narrating" it. 
 For example, there is a [Drawio](../../core/drawio/index.html) diagram element or a [C4 Model](https://architecture.models.nasdanika.org/references/eSubpackages/c4/index.html) element, say [API Application](https://nasdanika-demos.github.io/internet-banking-system-c4/cerulean/references/elements/internet-banking-system/references/elements/api-application/index.html).
 
-In the case of a diagram element, it can be converted to text by explaining its label, tooltip, layer it belongs to, and other elements it connects to.
+In the case of a diagram element, it can be converted to text by explaining its label, tooltip, layer it belongs to, and other elements it connects to
+ - this is different from computer vision because tooltips and layers are not visible.
 The narration may also include styling such as color and geometry. E.g. "above", "to the right of".
 
 In the case of a model element the narration would include element documentation, its references, and its type. 
+
 E.g.:
 
 * The "API Application" is a [Container](https://architecture.models.nasdanika.org/references/eSubpackages/c4/references/eClassifiers/Container/index.html).
 * [Paul](https://nasdanika-demos.github.io/family-semantic-mapping/references/members/paul/index.html) is a [Man](https://family.models.nasdanika.org/references/eClassifiers/Man/index.html).
+
+Documentation may be in plain text or, for example, [Markdown](../../core/exec/index.html#markdown). 
+In the latter case fenced blocks with diagrams can be narrated as explained above and images can be explained using vision models like ChatGPT.
+Image alternative text can be used as well.
 
 Static ``embeddingSearch()`` method adapts a float multi-vector search to string (text) search.
 There is a static method to adapt a single vector search to a multi-vector search.
