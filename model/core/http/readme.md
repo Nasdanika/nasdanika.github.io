@@ -78,11 +78,30 @@ public class DemoReflectiveHttpRoutes {
         routes.get("/hello", (request, response) -> response.sendString(Mono.just("Hello from route builder method!")));
     };  
     
+    @Route
+    public JSONObject getApiSearch(
+            HttpServerRequest request, 
+            HttpServerResponse response) {
+        JSONObject result = new JSONObject();
+        result.put("result", "Hello World!");
+        return result;
+    }
+    
 }
 ```
 
 The code snippet above shows three GET handler methods, a route builder field and two flavors of builder methods. 
 All of their paths are prefixed with ``/test/`` from the class level annotation. 
+
+The last route method returns [JSONObject](https://javadoc.io/static/org.json/json/20250107/org/json/JSONObject.html). 
+The returned value is converted to ``String`` and is sent as a response with ``application/json`` content type header.
+Conversion of the following return values is supported:
+
+* ``String``
+* ``JSONObject``
+* ``JSONArray``
+* ``byte[]``
+* ``InputStream``  
 
 The code snippet below shows how to use the above handlers. Note that the handler target is registered with ``/reflective prefix``. 
 As such, the full path for, say, getHello() method, is ``/reflective/test/hello``.
@@ -237,6 +256,12 @@ provides CapabilityFactory with DemoDiagramRoutesBuilderFactory;
 ...
 
 ```
+
+### Telemetry
+
+You may pass [TelemetryFilter](https://github.com/Nasdanika/core/blob/master/http/src/main/java/org/nasdanika/http/TelemetryFilter.java) to ``ReflectiveHttpServerRouteBuilder``. 
+In this case route methods which return ``String``, ``JSONArray``, ``JSONObject``, ``byte[]`` or ``InputStream`` will be filtered to collect telemetry
+and propagate telemetry context along the reactive chain. 
 
 ## Graph/Diagram processors 
 
