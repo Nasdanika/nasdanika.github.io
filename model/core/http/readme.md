@@ -86,6 +86,13 @@ public class DemoReflectiveHttpRoutes {
         result.put("result", "Hello World!");
         return result;
     }
+        
+    @Route("do-something-else")
+    public Mono<String> doSomethingElse(
+            HttpServerRequest request, 
+            HttpServerResponse response) {
+        return Mono.just("do someting else");
+    }   
     
 }
 ```
@@ -93,7 +100,7 @@ public class DemoReflectiveHttpRoutes {
 The code snippet above shows three GET handler methods, a route builder field and two flavors of builder methods. 
 All of their paths are prefixed with ``/test/`` from the class level annotation. 
 
-The last route method returns [JSONObject](https://javadoc.io/static/org.json/json/20250107/org/json/JSONObject.html). 
+The ``getApiSearch()`` method returns [JSONObject](https://javadoc.io/static/org.json/json/20250107/org/json/JSONObject.html). 
 The returned value is converted to ``String`` and is sent as a response with ``application/json`` content type header.
 Conversion of the following return values is supported:
 
@@ -101,7 +108,12 @@ Conversion of the following return values is supported:
 * ``JSONObject``
 * ``JSONArray``
 * ``byte[]``
-* ``InputStream``  
+* ``InputStream`` 
+* ``Mono``
+* ``Flux`` 
+
+For ``Mono`` and ``Flux`` ``Mono|Flux<String>`` is assumed by default and ``request.sendString()`` is used.
+Set ``binary`` attribute of ``@Route`` annotation to ``true`` for binary content so ``request.sendByteArray()`` is used.
 
 The code snippet below shows how to use the above handlers. Note that the handler target is registered with ``/reflective prefix``. 
 As such, the full path for, say, getHello() method, is ``/reflective/test/hello``.
