@@ -102,18 +102,24 @@ All of their paths are prefixed with ``/test/`` from the class level annotation.
 
 The ``getApiSearch()`` method returns [JSONObject](https://javadoc.io/static/org.json/json/20250107/org/json/JSONObject.html). 
 The returned value is converted to ``String`` and is sent as a response with ``application/json`` content type header.
-Conversion of the following return values is supported:
 
-* ``String``
-* ``JSONObject``
-* ``JSONArray``
-* ``byte[]``
-* ``InputStream`` 
-* ``Mono``
-* ``Flux`` 
-
+Conversion works as explained below. 
 For ``Mono`` and ``Flux`` ``Mono|Flux<String>`` is assumed by default and ``request.sendString()`` is used.
+The mono result is mapped to ``String`` using ``ReflectiveHttpServerRouteBuilder.toString(Object)``. 
+
 Set ``binary`` attribute of ``@Route`` annotation to ``true`` for binary content so ``request.sendByteArray()`` is used.
+In this case mapping to ``byte[]`` is performed by ``ReflectiveHttpServerRouteBuilder.toByteArray(Object)``.
+
+Both ``ReflectiveHttpServerRouteBuilder.toString(Object)`` and ``ReflectiveHttpServerRouteBuilder.toByteArray(Object)`` use [DefaultConverter](https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/org/nasdanika/common/DefaultConverter.html).INSTANCE obtained from ``getConverter()`` method. 
+These methods can be overridden to add support for additional conversions. E.g. [URI](https://javadoc.io/doc/org.eclipse.emf/org.eclipse.emf.common/latest/org/eclipse/emf/common/util/URI.html) to ``String`` or ``byte[]`` using [ResourceSet](https://javadoc.io/doc/org.eclipse.emf/org.eclipse.emf.ecore/latest/org/eclipse/emf/ecore/resource/ResourceSet.html) [URI Converter](https://javadoc.io/doc/org.eclipse.emf/org.eclipse.emf.ecore/latest/org/eclipse/emf/ecore/resource/URIConverter.html) obtained as [capability](../capability/index.html) to, say, serve resources from Maven jars or GitLab using respective [URIHandler](https://javadoc.io/doc/org.eclipse.emf/org.eclipse.emf.ecore/latest/org/eclipse/emf/ecore/resource/URIHandler.html)s - see Maven/Gitlab models documentation for more details.
+
+* ``Publisher`` which is not ``Mono`` or ``Flux`` is cast to ``Publisher<Void>`` and returned.
+* ``String`` is not converted
+* ``JSONObject`` is converted to string and also ``application/json`` content type header is added
+* ``JSONArray`` is converted to string and also ``application/json`` content type header is added
+* ``byte[]`` is not converted
+* ``InputStream`` is converted to ``byte[]``
+* Other types are converted to a byte array, using ``ReflectiveHttpServerRouteBuilder.toByteArray(Object)``, if ``binary`` is true and to a string using ``ReflectiveHttpServerRouteBuilder.toString(Object)`` otherwise.
 
 The code snippet below shows how to use the above handlers. Note that the handler target is registered with ``/reflective prefix``. 
 As such, the full path for, say, getHello() method, is ``/reflective/test/hello``.
