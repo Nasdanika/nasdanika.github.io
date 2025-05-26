@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.2 Chrome/134.0.6998.205 Electron/35.3.0 Safari/537.36" version="27.0.2">
   <diagram id="HQOKvbAvWCf9tJ4usP6P" name="Nasdanika">
-    <mxGraphModel dx="1657" dy="2403" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1657" dy="2403" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <object label="" mapping="type: Action&#xa;page-element: true&#xa;doc-ref: nasdanika.md&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;configuration-ref: root-action.yml" id="0">
           <mxCell />
@@ -173,7 +173,7 @@
             <mxGeometry x="280" y="180" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Maven" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //maven%base-uri%" id="vXfipRjlebkK18-ft-n--6">
+        <object label="Maven" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //maven%base-uri%" id="maven-model">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
             <mxGeometry x="460" y="180" width="80" height="40" as="geometry" />
           </mxCell>
@@ -213,7 +213,7 @@
             <mxGeometry x="460" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="App" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://html-app.models.nasdanika.org/index.html" id="1O0O-SB--TNPAReoqQZB-18">
+        <object label="App" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%%base-uri%/index.html" id="html-app">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
             <mxGeometry x="100" y="30" width="80" height="40" as="geometry" />
           </mxCell>
@@ -243,7 +243,7 @@
             <mxGeometry x="280" y="130" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="HTML" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="html-app">
+        <object label="HTML" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //html%base-uri%" id="html-model">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
             <mxGeometry x="190" y="180" width="80" height="40" as="geometry" />
           </mxCell>
@@ -258,13 +258,13 @@
             <mxGeometry x="280" y="230" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="A2a" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://a2a.models.nasdanika.org/index.html" id="qTk8bLValcXK4dqhRGH--1">
+        <object label="A2a" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%%base-uri%/index.html" id="a2a">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
             <mxGeometry x="10" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Graph" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //graph.%base-uri%" id="graph-model">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1O0O-SB--TNPAReoqQZB-23">
+        <object label="Graph" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //graph%base-uri%" id="graph-model">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
             <mxGeometry x="100" y="180" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
