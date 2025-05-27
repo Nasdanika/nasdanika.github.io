@@ -113,158 +113,158 @@
             <mxGeometry x="280" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Models" placeholders="1" base-uri=".models.nasdanika.org" mapping="type: Link&#xa;configuration:&#xa;  location: https://github.com/Nasdanika-Models&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;        comparator: label" id="1O0O-SB--TNPAReoqQZB-23">
+        <object label="Models" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;doc-ref: readme.md&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;        comparator: label&#xa;" id="models">
           <mxCell style="swimlane;whiteSpace=wrap;html=1;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
             <mxGeometry x="100" y="280" width="550" height="280" as="geometry" />
           </mxCell>
         </object>
-        <object label="GitLab" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="gitlab">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="GitLab" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="gitlab">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="10" y="180" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Architecture" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //architecture%base-uri%" id="architecture">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Architecture" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org/index.html" id="architecture">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="190" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Git" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="git">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Git" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="git">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="460" y="130" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Excel" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="excel">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Excel" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="excel">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="100" y="130" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="ECharts Graph" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%/graph" id="echarts">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="ECharts Graph" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org/graph" id="echarts">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="370" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Nature" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="nature">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Nature" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="nature">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="10" y="230" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Bank" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="bank">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Bank" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="bank">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="370" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="PDF" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="pdf">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="PDF" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="pdf">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="190" y="230" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Party" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="party">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Party" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="party">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="100" y="230" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Source&lt;div&gt;Engineering&lt;/div&gt;" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="source-engineering">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Source&lt;div&gt;Engineering&lt;/div&gt;" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="source-engineering">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="460" y="230" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Java" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //java%base-uri%" id="vXfipRjlebkK18-ft-n--5">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Java" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://java.models.nasdanika.org" id="java-model">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="280" y="180" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Maven" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //maven%base-uri%" id="maven-model">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Maven" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://maven.models.nasdanika.org" id="maven-model">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="460" y="180" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Enterprise" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="enterprise">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Enterprise" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="enterprise">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="10" y="130" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Function Flow" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="function-flow">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Function Flow" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="function-flow">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="370" y="130" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Rules" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="rules">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Rules" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="rules">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="370" y="230" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Azure" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="azure">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Azure" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="azure">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="280" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Ecore" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="ecore">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Ecore" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="ecore">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="460" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Jira" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="jira">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Jira" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="jira">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="370" y="180" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Bootstrap" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="bootstrap">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Bootstrap" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="bootstrap">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="460" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="App" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%%base-uri%/index.html" id="html-app">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="App" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org/index.html" id="html-app">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="100" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Capability" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //capability%base-uri%" id="vXfipRjlebkK18-ft-n--13">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Capability" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://capability.models.nasdanika.org" id="capability-model">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="10" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Coverage" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="coverage">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Coverage" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="coverage">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="100" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Decision Analysis" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="mcda">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Decision Analysis" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="mcda">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="280" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Family" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="family">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Family" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="family">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="190" y="130" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Flow" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="flow">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Flow" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="flow">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="280" y="130" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="HTML" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //html%base-uri%" id="html-model">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="HTML" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://html.models.nasdanika.org" id="html-model">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="190" y="180" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="CrewAI" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="crew-ai">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="CrewAI" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="crew-ai">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="190" y="80" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Python" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //%id%%base-uri%" id="python">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Python" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="python">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="280" y="230" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="A2a" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%%base-uri%/index.html" id="a2a">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="A2a" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org/index.html" id="a2a">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="10" y="30" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Graph" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: //graph%base-uri%" id="graph-model">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1O0O-SB--TNPAReoqQZB-23" vertex="1">
+        <object label="Graph" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://graph.models.nasdanika.org" id="graph-model">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="100" y="180" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
