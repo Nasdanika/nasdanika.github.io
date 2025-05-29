@@ -49,7 +49,7 @@ try {
     Requirement<Embeddings.Requirement, Embeddings> requirement = ServiceCapabilityFactory.createRequirement(Embeddings.class);         
     Iterable<CapabilityProvider<Embeddings>> embeddingsProviders = capabilityLoader.load(requirement, progressMonitor);
     List<Embeddings> allEmbeddings = new ArrayList<>();
-    embeddingsProviders.forEach(ep -> ep.getPublisher().subscribe(allEmbeddings::add));
+    embeddingsProviders.forEach(ep -> ep.getPublisher().filter(Objects::nonNull).collectList().block().forEach(allEmbeddings::add));
     for (Embeddings embeddings: allEmbeddings) {                
         assertNotNull(embeddings);
         System.out.println("=== Embeddings ===");
@@ -93,7 +93,7 @@ try {
     Requirement<Embeddings.Requirement, Embeddings> requirement = ServiceCapabilityFactory.createRequirement(Embeddings.class, null, eReq);         
     Iterable<CapabilityProvider<Embeddings>> embeddingsProviders = capabilityLoader.load(requirement, progressMonitor);
     List<Embeddings> allEmbeddings = new ArrayList<>();
-    embeddingsProviders.forEach(ep -> ep.getPublisher().subscribe(allEmbeddings::add));
+    embeddingsProviders.forEach(ep -> ep.getPublisher().filter(Objects::nonNull).collectList().block().forEach(allEmbeddings::add));
     for (Embeddings embeddings: allEmbeddings) {                
         assertNotNull(embeddings);
         System.out.println("=== Embeddings ===");
