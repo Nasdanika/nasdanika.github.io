@@ -707,6 +707,96 @@ public class ClassPathURIHandlerResourceSetCapabilityFactory extends URIConverte
 
 and add it to ``module-info.java`` provides CapabilityFactory.
 
+## Loading configuration
+
+``org.nasdanika.capability.ConfigurationRequirement`` can be used to load configuration resources/files. 
+Its canonical constructor takes:
+
+* Module name
+* Configuration name
+* Configuration type
+
+All the above elements can be null. 
+There is also a number of "shortcut" constructors.
+
+The base configuration name is ``config`` it can be changed by setting ``org.nasdanika.config.base`` system property.
+If the module name is not null or blank then it is appended to the base configuration name separated with a slash (``/``).
+If the configuration name is not null or blank then it is also appended to the base configuration name separated with a slash.
+After that ``.yml``, ``.yaml``, ``.json`` extensions are appended in order to the configuration name is used to create a URL 
+which is then resolved relative to the current directory. 
+Then an attempt is made to load YAML or JSON (depending on the extension) from the resulting URL.
+
+If there is a configuration resource and configuration type is null, then ``Function<String,Object>`` is returned.
+If there is no configuration resource, then an "empty" function is returned - it always returns ``null`.
+
+If configuration type is not null, then it is instantiated by wrapping the configuration class into [Invocable]((https://javadoc.io/doc/org.nasdanika.core/common/latest/org.nasdanika.common/org/nasdanika/common/Invocable.html) with ``Invocable.of(Class)``
+method and then invoking its ``call(Map)`` method with loaded YAML or JSON converted to map or with an empty map if there are no configuration resources[^loading_java_records].
+
+### Examples
+
+#### Untyped default configuration for the caller module
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+    
+ConfigurationRequirement req = new ConfigurationRequirement();
+Function<String,Object> config = capabilityLoader.loadOne(req, progressMonitor);
+```
+
+For ``org.myorg.mymodule`` module configuration would be loaded from the first available resource in the below list:
+
+* ``config/org/myorg/mymodule.yml``
+* ``config/org/myorg/mymodule.yaml``
+* ``config/org/myorg/mymodule.json``
+
+
+#### Untyped default configuration for a specific module
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+    
+ConfigurationRequirement req = new ConfigurationRequirement(getClass().getModule());
+Function<String,Object> config = capabilityLoader.loadOne(req, progressMonitor);
+```
+
+#### Global typed configuration
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+    
+ConfigurationRequirement req = new ConfigurationRequirement((String) null, "global", ConfigRecord.class);
+ConfigRecord config = capabilityLoader.loadOne(req, progressMonitor);
+```
+
+In the above snippet configuration is loaded from ``config/global.<extension>`` resource where extension is ``yml``, ``yaml`` or ``json``.
+If the second requirement constructor parameter was null, then resource name would be ``config.<extension>``.
+
+#### Named typed requirement
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+    
+ConfigurationRequirement req = new ConfigurationRequirement(ConfigRecord.class);
+ConfigRecord config = capabilityLoader.loadOne(req, progressMonitor);
+```
+
+#### Named untyped requirement
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+    
+ConfigurationRequirement req = new ConfigurationRequirement("my-app");
+Function<String,Object> config = capabilityLoader.loadOne(req, progressMonitor);
+```
+
+[^loading_java_records]: See [Loading Java records from Map, YAML, JSON, …](https://medium.com/nasdanika/loading-java-records-from-map-yaml-json-399662d8e90f) Medium story for additional 
+information about loading records from YAML and JSON.
+
 ## Applications
 
 ### Services
