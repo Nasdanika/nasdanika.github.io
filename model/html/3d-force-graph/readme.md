@@ -13,7 +13,7 @@ Java bindings for [3d-force-graph](https://github.com/vasturiano/3d-force-graph)
 </dependency>               
 ```
 
-## Example
+## Java code
 
 ```java
 ForceGraph3DFactory forceGraph3DFactory = ForceGraph3DFactory.INSTANCE;
@@ -35,3 +35,15 @@ page.body(HTMLFactory.INSTANCE.div().id(forceGraphContainerId));
 page.body(TagName.script.create(System.lineSeparator(), forceGraph3D));
 Files.writeString(new File("docs/force-graph-3d.html").toPath(), page.toString());  
 ```
+
+## Examples
+
+* [Maven dependencies graph](https://nasdanika-demos.github.io/maven-graph/graph-3d.html)
+* [Maven dependencies graph with text](https://nasdanika-demos.github.io/maven-graph/force-graph-3d.html)
+* Ecore documentation (generated from [ECharts Graph Model](https://echarts.models.nasdanika.org/graph/index.html#3d-force-graphs)):
+    * [A2A](https://a2a.models.nasdanika.org/force-layout-graph-3d.html)
+    * [GitLab](https://gitlab.models.nasdanika.org/force-layout-graph-3d-with-dependencies-and-subpackages.html)
+    * [Ecore](https://ecore.models.nasdanika.org/force-layout-graph-3d.html)
+    * [ECharts](https://echarts.models.nasdanika.org/graph/force-layout-graph-3d.html)
+
+
