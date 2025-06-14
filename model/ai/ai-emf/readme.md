@@ -3,7 +3,49 @@ This module provides building blocks for AI solutions on top of EMF Ecore models
 * [Sources](https://github.com/Nasdanika/ai/tree/main/emf)
 * [Javadoc](https://javadoc.io/doc/org.nasdanika.ai/emf)
 
+
+[TOC levels=6]
+
 ## Similarity
+
+``org.nasdanika.ai.emf.similarity`` package provides a number of interfaces and classes for computing similarity between EObjects as 
+[connections](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/Connection.html) between [EObjectNodes](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/emf/EObjectNode.html).
+
+### Similarities
+
+Similarity can be of any type.
+The similarity package provides concrete classes for the below similarity types:
+
+* ``java.lang.Double``
+* ``java.lang.Float``
+* ``EStructuralFeatureSimilarity`` - similarity which has an aggregated similarity value and similarity values for individual features.
+    * ``DoubleEStructuralFeatureSimilarity`` - binding to ``Double``.
+    * ``FloatEStructuralFeatureSimilarity`` - binding to ``Float``.
+    
+### Connections
+
+* ``EStructuralFeatureConnection`` - a connection with a value and a structural feature (attribute or reference) indicating similarity of a feature of the target to the source 
+    * ``DoubleEStructuralFeatureConnection`` - binding to ``Double``.    
+    * ``FloatEStructuralFeatureConnection`` - binding to ``Float``.    
+* ``SimilarityConnection`` - a connection which indicates how much its target is similar to the source. Similarity does not have to be symmetrical. 
+    * ``DoubleSimilarityConnection`` - binding of ``SimilarityConnection`` to ``Double``.
+    * ``EStructuralFeatureVectorSimilarityConnection`` - binding to ``EStructuralFeatureSimilarity``
+        * ``DoubleEStructuralFeatureVectorSimilarityConnection`` - binding to ``Double``.
+        * ``FloatEStructuralFeatureVectorSimilarityConnection`` - binding to ``Float``.        
+    * ``FloatSimilarityConnection`` - binding of ``SimilarityConnection`` to ``Float``.
+
+### Connection factories
+
+* ``SimilarityConnectionFactory`` - abstract base class for creating similarity connections.
+    * ``EStructuralFeatureVectorSimilarityConnectionFactory`` - abstract base class for ``EStructuralFeatureVectorSimilarityConnection`` factories with ``EStructuralFeatureSimilarity`` value. Computes value from the outgoing ``EStructuralFeatureConnection``s.
+        * ``DoubleEStructuralFeatureVectorSimilarityConnectionFactory`` - binding to ``Double``. Computes value as a weighted sum of feature values. The default feature weight is ``1.0``, override ``getFeatureWeight()`` to customize.
+        * ``FloatEStructuralFeatureVectorSimilarityConnectionFactory`` - binding to ``Float``. Computes value as a weighted sum of feature values. The default feature weight is ``1.0``, override ``getFeatureWeight()`` to customize.
+    * ``DoubleEStructuralFeatureSimilarityConnectionFactory`` - creates ``DoubleSimilarityConnection`` by computing its value from outgoing ``DoubleEStructuralFeatureConnection``s using a weighted sum. The default feature weight is ``1.0``, override ``getFeatureWeight()`` to customize.
+    * ``FloatEStructuralFeatureSimilarityConnectionFactory`` - creates ``FloatSimilarityConnection`` by computing its value from outgoing ``FloatEStructuralFeatureConnection``s using a weighted sum. The default feature weight is ``1.0``, override ``getFeatureWeight()`` to customize.
+    * ``MessageCollectorSimilarityConnectionFactory`` - abstract base class for connections factories which collect messages to compute similarity (see graph similarity below)
+        * ``DoubleMessageCollectorSimilarityConnectionFactory`` - binding to ``DoubleSimilarityConnection``.
+        * ``EStructuralFeatureVectorMessageCollectorSimilarityConnectionFactory`` - computes ``EStructuralFeatureSimilarity`` from message ``EReferenceConnection``s in the message path.
+            * DoubleEStructuralFeatureVectorMessageCollectorSimilarityConnectionFactory - binding to ``Double``
 
 ### Graph similarity
 
@@ -90,24 +132,8 @@ DoubleEObjectGraphMessageProcessor<Void> messageProcessor = new DoubleEObjectGra
     
 };
 
-Collector<Double> collector = new Collector<Double>() {
-    
-    @Override
-    public void outgoing(Node node, Connection connection, Message<Double> input, ProgressMonitor progressMonitor) {
-        // Collect messages coming from the outgoing connections
-    }
-    
-    @Override
-    public void initial(Node node, Double value) {
-        // Collect initial message values if needed
-    }
-    
-    @Override
-    public void incoming(Node node, Connection connection, Message<Double> input, ProgressMonitor progressMonitor) {
-        // Collect messages coming from the incoming connections
-    }
-    
-};
+DoubleEStructuralFeatureVectorMessageCollectorSimilarityConnectionFactory similarityConnectionFactory = 
+    new DoubleEStructuralFeatureVectorMessageCollectorSimilarityConnectionFactory();
 
 // Optional selector to send messages only from some graph nodes
 Function<Map<Element, ProcessorInfo<BiFunction<Message<Double>, ProgressMonitor, Void>>>, Stream<BiFunction<Message<Double>, ProgressMonitor, Void>>> selector = processors -> {
@@ -120,13 +146,14 @@ BiFunction<Message<Double>, ProgressMonitor, Message<Double>> messageFilter = (m
     ...
 };
 
-// Processing in the calling thread, there is also a method for multi-threaded processing 
 messageProcessor.processes(
         1.0, 
         selector, 
         messageTransformer,
-        collector, 
+        similarityConnectionFactory, 
         progressMonitor);
+
+Collection<DoubleEStructuralFeatureVectorSimilarityConnection> similarityConnections = similarityConnectionFactory.createSimilarityConnections();
 ```
 
 [TestFamilySimilarity](https://github.com/Nasdanika-Demos/family-semantic-mapping/blob/main/src/test/java/org/nasdanika/models/family/demos/mapping/tests/TestFamilySimilarity.java) provides several examples of computing similarity of family members:
@@ -141,9 +168,9 @@ On a Windows 11 desktop with Intel i7-14700 2.1 GHz CPU:
 * Single thread - 500K messages/second
 * Cached thread pool (5-20) - 600k message/second
 
-#### Applications
+### Applications
 
-##### Graph RAG & fine tuning
+#### Graph RAG & fine tuning
 
 * Find objects similar to a given (context) object 
 * Generate descriptions for the context objects and similar objects
@@ -158,7 +185,7 @@ Let's say that API Application is a container image to be deployed to Kubernetes
 
 It may also be important that the [Internet Banking System](https://nasdanika-demos.github.io/internet-banking-system-c4/cerulean/references/elements/internet-banking-system/index.html) belongs to a specific line of business or product portfolio.
 
-##### Decision analysis
+#### Decision analysis
 
 In Multi-criteria Decision Analysis message sending can be used to compute alternatives' weights by sending a message from the goal.
 Messages would pass through the criteria (flat, hierarchy, network) and be collected by the alternative nodes. 
@@ -166,7 +193,7 @@ Message paths can be used to explain reasoning and to detect inconsistencies.
 
 See also [Task and design spaces with Visual Collaborative Multi-Criteria Decision Analysis](https://medium.com/nasdanika/task-and-design-spaces-visual-collaborative-multi-criteria-decision-analysis-2017c823b496)
 
-##### Product recommender
+#### Product recommender
 
 In [banking](https://bank.models.nasdanika.org/) and other businesses message passing can be used to compute similarity between
 [customers](https://bank.models.nasdanika.org/references/eClassifiers/Customer/index.html) and [products](https://bank.models.nasdanika.org/references/eClassifiers/Product/index.html).
@@ -180,7 +207,7 @@ Or vice versa - both checking and credit card accounts are used for payments.
 Then customer-product similarity can be computed by sending messages from a customer node to similar customers and then from
 those customer nodes to the products they use.
 
-##### Nature model
+#### Nature model
 
 This scenario is to demonstrate different types of similarity.
 
