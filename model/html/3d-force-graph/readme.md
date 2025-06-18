@@ -1,7 +1,7 @@
 Java bindings for [3d-force-graph](https://github.com/vasturiano/3d-force-graph).
 
 * [Sources](https://github.com/Nasdanika/html/tree/master/3d-force-graph)
-* [Javadoc](https://javadoc.io/doc/org.nasdanika.html/forcegraph3d)
+* [Javadoc](https://javadoc.io/doc/org.nasdanika.html/3d-force-graph)
 
 ## Maven dependency
 
