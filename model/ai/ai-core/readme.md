@@ -10,69 +10,67 @@ See [test sources](https://github.com/Nasdanika/ai/blob/main/tests/src/test/java
 
 ## Embeddings
 
-[Embeddings](https://github.com/Nasdanika/ai/blob/main/core/src/main/java/org/nasdanika/ai/Embeddings.java) interface allows to generate one or more vectors
-per string. 
-This follows the structure of Ollama REST API.
-This approach allows transparent chunking, which is provided by [ChunkingEmbeddings](https://github.com/Nasdanika/ai/blob/main/core/src/main/java/org/nasdanika/ai/ChunkingEmbeddings.java) class and its subclasses,
-[EncodingChunkingEmbeddings](https://github.com/Nasdanika/ai/blob/main/core/src/main/java/org/nasdanika/ai/EncodingChunkingEmbeddings.java) in particular.
+In [machine learning](https://en.wikipedia.org/wiki/Machine_learning) <a href="https://en.wikipedia.org/wiki/Embedding_(machine_learning)">embedding</a> is
 
-### Generating
+> a [representation learning](https://en.wikipedia.org/wiki/Feature_learning) technique that maps complex, high-dimensional data into a lower-dimensional [vector space](https://en.wikipedia.org/wiki/Vector_space) of numerical vectors
 
-#### Synchronous
+Here the word embedding is used in more [mathematical sense](https://en.wikipedia.org/wiki/Embedding) - [dimensionality](https://en.wikipedia.org/wiki/Dimensionality_reduction) with structure preservation.
+
+Below are a few examples of embeddings:
+
+* Vector embeddings of text or images
+* Textual description of an image, [diagram](../ai-drawio/index.html), or another complext structure such as a [graph](../../core/graph/index.html) or [Ecore model](../ai-emf/index.html).
+* Text summary
+
+With extended definition embedding generation can be chained. 
+Examples:
+
+* image -> text -> vector
+* (PDF) document, diagram or other complex structure -> text and images -> combine text with image descriptions -> vector
+
+In this module ``EmbeddingGenerator<S,E>`` is the base interface for generating embeddings. 
+Is has multiple sub-interfaces and implementations.
+It has the following methods:
+
+* ``Mono<E> generateAsync(S)`` - generates an embedding of type ``E`` from source ``S`` asynchronously/reactively. This is the only method of the interface which has to be implemented - the other methods have default implementations.
+* ``E generate(S)`` - generates an embedding synchronously.
+* ``Mono<Map<S,E>> generateAsync(List<S>)`` - asynchronous batch generation. For example, generation of vectors for text chunks.
+* ``Map<S,E> generate(List<S>)`` - synchronous batch generation. The default implementation calls generateAsync().block(), so actual processing is asynchronous.
+* ``<F> EmbeddingGenerator<S,F> then(EmbeddingGenerator<E,F> next)`` - combines two generators. For example, image narrator with text vector generator.
+* ``<V> EmbeddingGenerator<V,E> adapt(Function<V,Mono<S>> mapper)`` - adapts this generator to another source type using a mapper function. For example, image embedding generator can be adapted to input stream embedding generator.
+
+``EmbeddingGenerator`` interface also has a nested ``Requirement`` record for obtaining embedding generators using the [capability framework](../../core/capability/index.html).
+
+``EmbeddingModel`` interface extends ``EmbeddingGenerator`` and ``Coordinates`` interfaces, 
+so it has ``provider``, ``name``, and ``version`` attributes which can be used for requesting a specific model via the capability framework.
+
+``Narrator<S>`` interface extends ``EmbeddingGenerator<S, String>``.
+Specializations of this interface can be used for generating text from images, diagrams, graphs, models, ...
+There might be implementations generating text from text. For example a summary or translation to another language. 
+
+### Text
+
+Implementations of ``TextEmbeddingGenerator`` can be used to generate text embeddings.
+``TextFloatVectorEmbeddingModel`` is a specialization of ``TextEmbeddingGenerator`` for generating float vector embeddins.
+There are implementations of this interfaces for Ollama and OpenAI.
+
+``TextFloatVectorEmbeddingModel`` generates a list of vectors from a piece of text, which is provided by concrete subclasses of ``TextFloatVectorChunkingEmbeddingModel`` - ``TextFloatVectorCharChunkingEmbeddings`` and ``TextFloatVectorEncodingChunkingEmbeddingModel``.
+
+#### Generation
+
+##### Synchronous
 
 ```java
 CapabilityLoader capabilityLoader = new CapabilityLoader();
-ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+ProgressMonitor progressMonitor = new LoggerProgressMonitor(LOGGER);                
 try {
-    Requirement<Void, org.nasdanika.ai.Embeddings> requirement = ServiceCapabilityFactory.createRequirement(org.nasdanika.ai.Embeddings.class);         
-    org.nasdanika.ai.Embeddings embeddings = capabilityLoader.loadOne(requirement, progressMonitor);
-    
-    for(List<Float> vector: embeddings.generate("Hello world!")) {
-        System.out.println(vector.size());
-    }
-} finally {
-    capabilityLoader.close(progressMonitor);
-}
-```
-
-##### With telemetry
-
-###### All providers and models
-
-```java
-CapabilityLoader capabilityLoader = new CapabilityLoader();
-ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();             
-try {
-    OpenTelemetry openTelemetry = capabilityLoader.loadOne(ServiceCapabilityFactory.createRequirement(OpenTelemetry.class), progressMonitor);
-    assertNotNull(openTelemetry);           
-    
-    Requirement<Embeddings.Requirement, Embeddings> requirement = ServiceCapabilityFactory.createRequirement(Embeddings.class);         
-    Iterable<CapabilityProvider<Embeddings>> embeddingsProviders = capabilityLoader.load(requirement, progressMonitor);
-    List<Embeddings> allEmbeddings = new ArrayList<>();
-    embeddingsProviders.forEach(ep -> ep.getPublisher().filter(Objects::nonNull).collectList().block().forEach(allEmbeddings::add));
-    for (Embeddings embeddings: allEmbeddings) {                
-        assertNotNull(embeddings);
-        System.out.println("=== Embeddings ===");
-        System.out.println("Name:\t" + embeddings.getName());
-        System.out.println("Provider:\t" + embeddings.getProvider());
-        System.out.println("Max input:\t" + embeddings.getMaxInputTokens());
-        System.out.println("Dimensions:\t" + embeddings.getDimensions());
-                
-        Tracer tracer = openTelemetry.getTracer("test.ai");        
-        Span span = tracer
-            .spanBuilder("Embeddings")
-            .startSpan();
-        
-        try (Scope scope = span.makeCurrent()) {
-            Thread.sleep(200);
-            for (Entry<String, List<List<Float>>> vectors: embeddings.generate(List.of("Hello world!", "Hello universe!")).entrySet()) {        
-                System.out.println("\t" + vectors.getKey());
-                for (List<Float> vector: vectors.getValue()) {
-                    System.out.println("\t\t" + vector.size());
-                }
-            }
-        } finally {
-            span.end();
+    Requirement<EmbeddingGenerator.Requirement, TextFloatVectorEmbeddingModel> requirement = ServiceCapabilityFactory.createRequirement(TextFloatVectorEmbeddingModel.class);           
+    Iterable<CapabilityProvider<TextFloatVectorEmbeddingModel>> embeddingsProviders = capabilityLoader.load(requirement, progressMonitor);
+    List<TextFloatVectorEmbeddingModel  > allEmbeddings = new ArrayList<>();
+    embeddingsProviders.forEach(ep -> allEmbeddings.addAll(ep.getPublisher().collect(Collectors.toList()).block()));
+    for (TextFloatVectorEmbeddingModel embeddings: allEmbeddings) {             
+        for (List<Float> vector: embeddings.generate("Hello world!")) {     
+            System.out.println("\t\t" + vector.size());
         }
     }
 } finally {
@@ -80,28 +78,53 @@ try {
 }
 ```
 
-###### A specific provider 
+###### With telemetry
+
+####### All providers and models
 
 ```java
 CapabilityLoader capabilityLoader = new CapabilityLoader();
-ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();             
+ProgressMonitor progressMonitor = new LoggerProgressMonitor(LOGGER);new LoggerProgressMonitor(LOGGER);             
 try {
     OpenTelemetry openTelemetry = capabilityLoader.loadOne(ServiceCapabilityFactory.createRequirement(OpenTelemetry.class), progressMonitor);
-    assertNotNull(openTelemetry);           
     
-    Embeddings.Requirement eReq = new Embeddings.Requirement("Ollama", null, null, 0, 0);
-    Requirement<Embeddings.Requirement, Embeddings> requirement = ServiceCapabilityFactory.createRequirement(Embeddings.class, null, eReq);         
-    Iterable<CapabilityProvider<Embeddings>> embeddingsProviders = capabilityLoader.load(requirement, progressMonitor);
-    List<Embeddings> allEmbeddings = new ArrayList<>();
-    embeddingsProviders.forEach(ep -> ep.getPublisher().filter(Objects::nonNull).collectList().block().forEach(allEmbeddings::add));
-    for (Embeddings embeddings: allEmbeddings) {                
-        assertNotNull(embeddings);
-        System.out.println("=== Embeddings ===");
-        System.out.println("Name:\t" + embeddings.getName());
-        System.out.println("Provider:\t" + embeddings.getProvider());
-        System.out.println("Max input:\t" + embeddings.getMaxInputTokens());
-        System.out.println("Dimensions:\t" + embeddings.getDimensions());
-                
+    Requirement<EmbeddingGenerator.Requirement, TextFloatVectorEmbeddingModel> requirement = ServiceCapabilityFactory.createRequirement(TextFloatVectorEmbeddingModel.class);           
+    Iterable<CapabilityProvider<TextFloatVectorEmbeddingModel>> embeddingsProviders = capabilityLoader.load(requirement, progressMonitor);
+    List<TextFloatVectorEmbeddingModel  > allEmbeddings = new ArrayList<>();
+    embeddingsProviders.forEach(ep -> allEmbeddings.addAll(ep.getPublisher().collect(Collectors.toList()).block()));
+    Tracer tracer = openTelemetry.getTracer("test.ai");        
+    Span span = tracer
+        .spanBuilder("Embeddings")
+        .startSpan();
+    
+    try (Scope scope = span.makeCurrent()) {
+        for (TextFloatVectorEmbeddingModel embeddings: allEmbeddings) {             
+            for (List<Float> vector: embeddings.generate("Hello world!")) {     
+                System.out.println("\t\t" + vector.size());
+            }
+        }
+    } finally {
+        span.end();
+    }
+} finally {
+    capabilityLoader.close(progressMonitor);
+}
+```
+
+####### A specific provider 
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new LoggerProgressMonitor(LOGGER);             
+try {
+    OpenTelemetry openTelemetry = capabilityLoader.loadOne(ServiceCapabilityFactory.createRequirement(OpenTelemetry.class), progressMonitor);
+    
+    EmbeddingGenerator.Requirement eReq = TextFloatVectorEmbeddingModel.createRequirement("Ollama", null, null);
+    Requirement<EmbeddingGenerator.Requirement, TextFloatVectorEmbeddingModel> requirement = ServiceCapabilityFactory.createRequirement(TextFloatVectorEmbeddingModel.class, null, eReq);           
+    Iterable<CapabilityProvider<TextFloatVectorEmbeddingModel>> embeddingsProviders = capabilityLoader.load(requirement, progressMonitor);
+    List<TextFloatVectorEmbeddingModel> allEmbeddings = new ArrayList<>();
+    embeddingsProviders.forEach(ep -> ep.getPublisher().subscribe(allEmbeddings::add));
+    for (TextFloatVectorEmbeddingModel embeddings: allEmbeddings) {             
         Tracer tracer = openTelemetry.getTracer("test.ai");        
         Span span = tracer
             .spanBuilder("Embeddings")
@@ -125,20 +148,15 @@ try {
 }
 ```
 
-#### Asynchronous
+##### Asynchronous
 
 ```java
 CapabilityLoader capabilityLoader = new CapabilityLoader();
-ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+ProgressMonitor progressMonitor = new LoggerProgressMonitor(LOGGER);
 try {
-    Requirement<Embeddings.Requirement, Embeddings> requirement = ServiceCapabilityFactory.createRequirement(Embeddings.class);         
-    Embeddings embeddings = capabilityLoader.loadOne(requirement, progressMonitor);
-    
-    List<List<Float>> vectors = embeddings
-        .generateAsync("Hello world!")
-        .contextWrite(reactor.util.context.Context.of(Context.class, Context.current().with(span)))
-        .block();
-
+    Requirement<EmbeddingGenerator.Requirement, TextFloatVectorEmbeddingModel> requirement = ServiceCapabilityFactory.createRequirement(TextFloatVectorEmbeddingModel.class);           
+    TextFloatVectorEmbeddingModel embeddings = capabilityLoader.loadOne(requirement, progressMonitor);
+    List<List<Float>> vectors = embeddings.generateAsync("Hello world!").block();
     for (List<Float> vector: vectors) {
         System.out.println(vector.size());
     }
@@ -147,16 +165,17 @@ try {
 }
 ```
 
-##### With telemetry
+###### With telemetry
 
 ```java
 CapabilityLoader capabilityLoader = new CapabilityLoader();
-ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+ProgressMonitor progressMonitor = new LoggerProgressMonitor(LOGGER);
 try {
-    Requirement<Embeddings.Requirement, Embeddings> requirement = ServiceCapabilityFactory.createRequirement(Embeddings.class);         
-    Embeddings embeddings = capabilityLoader.loadOne(requirement, progressMonitor);
+    Requirement<EmbeddingGenerator.Requirement, TextFloatVectorEmbeddingModel> requirement = ServiceCapabilityFactory.createRequirement(TextFloatVectorEmbeddingModel.class);           
+    TextFloatVectorEmbeddingModel embeddings = capabilityLoader.loadOne(requirement, progressMonitor);
     
     OpenTelemetry openTelemetry = capabilityLoader.loadOne(ServiceCapabilityFactory.createRequirement(OpenTelemetry.class), progressMonitor);
+    assertNotNull(openTelemetry);
 
     Tracer tracer = openTelemetry.getTracer("test.ai");        
     Span span = tracer
@@ -177,23 +196,22 @@ try {
 }
 ```
 
-### Chunking
+#### Chunking
 
 Chunking embeddings for [``text-embedding-ada-002``](https://platform.openai.com/docs/guides/embeddings#embedding-models) using ``CL100K_BASE`` encoding.
 ``1000`` tokens chunks with ``20`` tokens overlap.
 
 ```java
-ChunkingEmbeddings<?> chunkingEmbeddings = new EncodingChunkingEmbeddings(
+TextFloatVectorEncodingChunkingEmbeddingModel chunkingEmbeddings = new TextFloatVectorEncodingChunkingEmbeddingModel(
         embeddings, 
         1000, 
         20, 
         EncodingType.CL100K_BASE);
 ```
 
-### Embeddings resource
+#### Embeddings resource
 
-[EmbeddingsResource](https://github.com/Nasdanika/ai/blob/main/core/src/main/java/org/nasdanika/ai/EmbeddingsResource.java) provides content with
-pre-computed embeddings.
+``TextFloatVectorEmbeddingResource`` provides content with pre-computed embeddings.
 It is modeled after [McpSchema.Resource](https://javadoc.io/doc/io.modelcontextprotocol.sdk/mcp/latest/io.modelcontextprotocol.sdk.mcp/io/modelcontextprotocol/spec/McpSchema.Resource.html) (see also [MCP Resources](https://modelcontextprotocol.io/docs/concepts/resources)) to make it easy to wrap an embedding resources into an MCP resource and vice versa.
 
 The idea is to publish text with embeddings and expose the data as an MCP resource and embeddings resource so it can be used by MCP clients, MCP tools, and there is no need to compute embeddings.
@@ -201,7 +219,103 @@ The idea is to publish text with embeddings and expose the data as an MCP resour
 Example: [search-documents-embeddings.json](https://docs.nasdanika.org/search-documents-embeddings.json) contains plain text for the pages of this site with
 pre-computed Ada embeddings of page chunks.
 
-## Similarity search
+### Images
+
+This module provides the following classes and interfaces for working with images:
+
+* Interfaces
+    * ``ImageEmbeddingGenerator<E> extends EmbeddingGenerator<BufferedImage, E>``
+    * ``ImageNarrator extends ImageEmbeddingGenerator<String>, Narrator<BufferedImage>``
+    * ``ImageFloatVectorEmbeddingModel extends EmbeddingModel<BufferedImage, List<List<Float>>>, ImageEmbeddingGenerator<List<List<Float>>>, FloatVectorEmbeddingGenerator<BufferedImage>``
+* Classes
+    * ``CachingImageEmbeddingGenerator<E> extends CachingEmbeddingGenerator<BufferedImage, E, String> implements ImageEmbeddingGenerator<E>``
+        * ``CachingImageNarrator extends CachingImageEmbeddingGenerator<String> implements ImageNarrator``
+    * ``ChatImageNarrator implements ImageNarrator`` - uses multi-modal chat (see below) to generate image descriptions, extract text, ...        
+    
+#### Narrate (describe) image
+
+```java
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new LoggerProgressMonitor(LOGGER);
+OpenTelemetry openTelemetry = capabilityLoader.loadOne(ServiceCapabilityFactory.createRequirement(OpenTelemetry.class), progressMonitor);
+
+List<Chat> chats = new ArrayList<>();       
+try {
+    Chat.Requirement cReq = new Chat.Requirement("OpenAI", "gpt-4o", null);
+    Requirement<Chat.Requirement, Chat> requirement = ServiceCapabilityFactory.createRequirement(Chat.class, null, cReq);           
+    for (CapabilityProvider<Chat> chatProvider: capabilityLoader.<Chat>load(requirement, progressMonitor)) {
+        chatProvider.getPublisher().subscribe(chats::add);
+    }
+    
+    Tracer tracer = openTelemetry.getTracer("test.ai");        
+    Span span = tracer
+        .spanBuilder("Chat")
+        .startSpan();
+    try (Scope scope = span.makeCurrent()) {            
+        for (Chat chat: chats) {
+            ChatImageNarrator chatImageNarrator = new ChatImageNarrator(chat);
+            String narration = chatImageNarrator.asFileEmbeddingGenerator().generate(new File("llama.png"));
+            System.out.println(narration);
+        }
+    } finally {
+        span.end();
+    }
+} finally {
+    capabilityLoader.close(progressMonitor);
+}
+```
+
+### Caching
+
+Generation of embeddigns can be an expensive operation time and money wise (token cost). 
+``CachingEmbeddingGenerator`` and its subclasses can be used for caching and sharing embeddings.
+
+One application of caching of image -> textual description caching is manual modification of descriptions for images such as icons and logos where there is much more than meets the eye.  
+For example, an architectural diagram may have an element with an image from an image library representing, say, a mainframe as on [this diagram](https://nasdanika-demos.github.io/internet-banking-system/index.html). 
+Or it may represent a specific enterprise system such as a payment processing mainframe. 
+Having a shared "visual glossary" would allow to generate higher quality diagram descriptions.
+
+#### CachingImageNarrator
+
+```java
+// Load cache here
+
+ChatImageNarrator chatImageNarrator = new ChatImageNarrator(chat);
+ImageNarrator cachingImageNarrator = new CachingImageNarrator(chatImageNarrator, cache);
+String narration = cachingImageNarrator.asFileEmbeddingGenerator().generate(new File("llama.png"));
+System.out.println(narration);
+
+// Save cache here
+```
+
+## Similarity
+
+One application of generating embeddings is to compute similarity between things such as text and images.
+
+### Computing
+
+``SimilarityComputer`` interface and its extensions and implementation provide functionality for computing similarity for text and images.
+
+``SimilarityComputer`` has the following methods:
+
+* ``S compute(T, T)``
+* ``Mono<S> computeAsync(T, T)``
+* ``Mono<S> computeAsync(Mono<T>, Mono<T>)``
+* ``<V> SimilarityComputer<V,S> adapt(Function<V, Mono<T>>)`` - adapts to another input type using a mapper function
+
+
+Sub-interfaces:
+
+* ``BufferedImageSimilarityComputer`` - binds the input generic parameter to ``BufferedImage`` and provides adapter methods loading images from ``InputStream``, ``URL`` or ``File`` and then computing similarity
+* ``TextSimilarityComputer`` - binds the input generic parameter to ``String``
+* ``VectorSimilarityComputer<E,S> extends SimilarityComputer<List<E>, S>`` - binds the input generic parameter to a list of vector elements
+    * ``FloatVectorSimilarityComputer extends VectorSimilarityComputer<Float, Float>`` - binds input element and similarity to ``Float``. Provides ``COSINE_SIMILARITY_COMPUTER`` constant
+    
+Implementations:
+
+* ``CompositeFloatSimilarityComputer<T> implements SimilarityComputer<T,Float>`` - computes combined float similarity from several similarity computers. Computers are added using ``addComputer(SimilarityComputer<? super T, Float> computer, float weight)`` method. Possible application - compute image similarity using visual similarity methods, e.g. leveraging [OpenCV](https://opencv.org/) or [Deep Java Library](https://djl.ai/). Then generate text descriptions and compute similarity between them. Finally, combine visual and textual similarity with weights.    
+
+### Search
 
 [SimilaritySearch](https://github.com/Nasdanika/ai/blob/main/core/src/main/java/org/nasdanika/ai/SimilaritySearch.java) interface is intended to be used for finding items similar to a query using one of ``find`` methods:
 
@@ -224,7 +338,7 @@ For example, there is a [Drawio](../../core/drawio/index.html) diagram element o
 
 In the case of a diagram element, it can be converted to text by explaining its label, tooltip, layer it belongs to, and other elements it connects to
  - this is different from computer vision because tooltips and layers are not visible.
-The narration may also include styling such as color and geometry. E.g. "above", "to the right of".
+The narration may also include styling such as color, description of a shape image and geometry. E.g. "above", "to the right of".
 
 In the case of a model element the narration would include element documentation, its references, and its type. 
 
@@ -237,7 +351,7 @@ Documentation may be in plain text or, for example, [Markdown](../../core/exec/i
 In the latter case fenced blocks with diagrams can be narrated as explained above and images can be explained using vision models like ChatGPT.
 Image alternative text can be used as well.
 
-Static ``embeddingSearch()`` method adapts a float multi-vector search to string (text) search.
+Static ``textFloatVectorEmbeddingSearch()`` method adapts a float multi-vector search to string (text) search.
 There is a static method to adapt a single vector search to a multi-vector search.
 
 The below code snippet shows how to create a vector search instance on top of [Hnswlib](https://github.com/jelmerk/hnswlib):
@@ -320,20 +434,20 @@ SimilaritySearch<List<List<Float>>, Float> multiVectorSearch = SimilaritySearch.
 and then to a text search: 
 
 ```java
-ChunkingEmbeddings<?> chunkingEmbeddings = new EncodingChunkingEmbeddings(
+TextFloatVectorChunkingEmbeddingModel chunkingEmbeddings = new TextFloatVectorChunkingEmbeddingModel(
         embeddings, 
         1000, 
         20, 
         EncodingType.CL100K_BASE);
 
-SimilaritySearch<String, Float> textSearch = SimilaritySearch.embeddingsSearch(multiVectorSearch, chunkingEmbeddings);
+SimilaritySearch<String, Float> textSearch = SimilaritySearch.textFloatVectorEmbeddingSearch(multiVectorSearch, chunkingEmbeddings);
 ```
 
 ## Chat
 
 ```java
 CapabilityLoader capabilityLoader = new CapabilityLoader();
-ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+ProgressMonitor progressMonitor = new LoggerProgressMonitor(LOGGER);
 try {
     Requirement<Void, Chat> requirement = ServiceCapabilityFactory.createRequirement(Chat.class);           
     org.nasdanika.ai.Chat chat = capabilityLoader.loadOne(requirement, progressMonitor);
@@ -357,7 +471,7 @@ try {
 
 ```java
 CapabilityLoader capabilityLoader = new CapabilityLoader();
-ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+ProgressMonitor progressMonitor = new LoggerProgressMonitor(LOGGER);
 try {
     Requirement<Void, Chat> requirement = ServiceCapabilityFactory.createRequirement(Chat.class);           
     org.nasdanika.ai.Chat chat = capabilityLoader.loadOne(requirement, progressMonitor);
