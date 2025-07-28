@@ -13,14 +13,15 @@ See [test sources](https://github.com/Nasdanika/ai/blob/main/tests/src/test/java
 
 In [machine learning](https://en.wikipedia.org/wiki/Machine_learning) <a href="https://en.wikipedia.org/wiki/Embedding_(machine_learning)">embedding</a> is
 
-> a [representation learning](https://en.wikipedia.org/wiki/Feature_learning) technique that maps complex, high-dimensional data into a lower-dimensional [vector space](https://en.wikipedia.org/wiki/Vector_space) of numerical vectors
+> a [representation learning](https://en.wikipedia.org/wiki/Feature_learning) technique that maps complex,
+> high-dimensional data into a lower-dimensional [vector space](https://en.wikipedia.org/wiki/Vector_space) of numerical vectors
 
-Here the word embedding is used in more [mathematical sense](https://en.wikipedia.org/wiki/Embedding) - [dimensionality](https://en.wikipedia.org/wiki/Dimensionality_reduction) with structure preservation.
+Here the word embedding is used in more [mathematical sense](https://en.wikipedia.org/wiki/Embedding) - [dimensionality reduction](https://en.wikipedia.org/wiki/Dimensionality_reduction) with structure preservation.
 
 Below are a few examples of embeddings:
 
 * Vector embeddings of text or images
-* Textual description of an image, [diagram](../ai-drawio/index.html), or another complext structure such as a [graph](../../core/graph/index.html) or [Ecore model](../ai-emf/index.html).
+* Textual description of an image, [diagram](../ai-drawio/index.html), or another complex structure such as a [graph](../../core/graph/index.html) or [Ecore model](../ai-emf/index.html).
 * Text summary
 
 With extended definition embedding generation can be chained. 
