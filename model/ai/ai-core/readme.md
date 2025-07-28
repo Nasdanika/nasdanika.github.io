@@ -81,7 +81,7 @@ try {
 
 ###### With telemetry
 
-####### All providers and models
+_All providers and models_
 
 ```java
 CapabilityLoader capabilityLoader = new CapabilityLoader();
@@ -112,7 +112,7 @@ try {
 }
 ```
 
-####### A specific provider 
+_A specific provider_ 
 
 ```java
 CapabilityLoader capabilityLoader = new CapabilityLoader();
