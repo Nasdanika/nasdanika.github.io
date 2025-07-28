@@ -2,6 +2,7 @@ This module provides AI interfaces implemented by provider modules such as [Open
 It also provides classes and interfaces for building similarity search and RAG solutions.
 
 * [Sources](https://github.com/Nasdanika/ai/tree/main/core)
+* [Maven Central](https://central.sonatype.com/artifact/org.nasdanika.ai/core)
 * [Javadoc](https://javadoc.io/doc/org.nasdanika.ai/core)
 
 See [test sources](https://github.com/Nasdanika/ai/blob/main/tests/src/test/java/org/nasdanika/ai/openai/tests/tests/TestAI.java) for examples of using Nasdanika AI classes.

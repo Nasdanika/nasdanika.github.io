@@ -1,6 +1,7 @@
 This module provides building blocks for command line AI solutions - [argument groups](https://picocli.info/#_argument_groups) and base commands.
 
 * [Sources](https://github.com/Nasdanika/ai/tree/main/cli)
+* [Maven Central](https://central.sonatype.com/artifact/org.nasdanika.ai/cli)
 * [Javadoc](https://javadoc.io/doc/org.nasdanika.ai/cli)
 
 

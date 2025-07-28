@@ -3,6 +3,7 @@ This module provides implementations of core capabilities backed by [Ollama](htt
 However, it doesn't register capability factories - it has to be done in (CLI) assemblies.
 
 * [Sources](https://github.com/Nasdanika/ai/tree/main/ollama)
+* [Maven Central](https://central.sonatype.com/artifact/org.nasdanika.ai/ollama)
 * [JavaDoc](https://javadoc.io/doc/org.nasdanika.ai/ollama/)
 
 Below are examples of how to register capabilities[^sources].

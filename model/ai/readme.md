@@ -4,4 +4,7 @@ Nasdanika AI:
 * Separates concerns of AI functionality such as chat/embeddings, and [monitoring/telemetry/observability](../core/telemetry/index.html) of, say, token use.
 * Provides building blocks for telemetry-enabled [Java MCP](https://modelcontextprotocol.io/sdk/java/mcp-overview) clients and servers.
 
-[Sources](https://github.com/Nasdanika/ai)
+----
+
+* [Sources](https://github.com/Nasdanika/ai)
+* [Maven Central](https://central.sonatype.com/namespace/org.nasdanika.ai)

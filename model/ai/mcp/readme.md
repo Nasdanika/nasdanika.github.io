@@ -4,12 +4,15 @@ There are three modules:
 
 * ``mcp`` - core MCP-related functionality
     * [Source](https://github.com/Nasdanika/ai/tree/main/mcp)
+    * [Maven Central](https://central.sonatype.com/artifact/org.nasdanika.ai/mcp)
     * [Javadoc](https://javadoc.io/doc/org.nasdanika.ai/mcp)
 * ``mcp-sse`` - SSE/HTTP related functionality
     * [Source](https://github.com/Nasdanika/ai/tree/main/mcp-sse)
+    * [Maven Central](https://central.sonatype.com/artifact/org.nasdanika.ai/mcp-sse)
     * [Javadoc](https://javadoc.io/doc/org.nasdanika.ai/mcp-sse)
 * ``mcp-help`` - Help contributor generating capabilities tables
     * [Source](https://github.com/Nasdanika/ai/tree/main/mcp-help)
+    * [Maven Central](https://central.sonatype.com/artifact/org.nasdanika.ai/mcp-help)
     * [Javadoc](https://javadoc.io/doc/org.nasdanika.ai/mcp-help)
 
 ## Server

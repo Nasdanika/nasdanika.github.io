@@ -5,6 +5,7 @@ with integrated telemetry.
 However, it doesn't register capability factories - it has to be done in (CLI) assemblies.
 
 * [Sources](https://github.com/Nasdanika/ai/tree/main/openai)
+* [Maven Central](https://central.sonatype.com/artifact/org.nasdanika.ai/openai)
 * [JavaDoc](https://javadoc.io/doc/org.nasdanika.ai/openai/)
 
 Below are examples of how to register capabilities[^sources].
