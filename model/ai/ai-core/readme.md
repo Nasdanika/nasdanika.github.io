@@ -233,6 +233,12 @@ This module provides the following classes and interfaces for working with image
     * ``CachingImageEmbeddingGenerator<E> extends CachingEmbeddingGenerator<BufferedImage, E, String> implements ImageEmbeddingGenerator<E>``
         * ``CachingImageNarrator extends CachingImageEmbeddingGenerator<String> implements ImageNarrator``
     * ``ChatImageNarrator implements ImageNarrator`` - uses multi-modal chat (see below) to generate image descriptions, extract text, ...        
+    * ``ImageMetadataNarrator<S> implements Narrator<S>`` - retrieves image description from image metadata "Description" keyword if it is available. The keyword can be changed by overriding ``getDescriptionKeyword``. This class is abstract with concrete implementations below:
+        * ``ByteArrayImageMetadataNarrator`` - loads image metadata from a byte array.
+        * ``DocumentImageMetadataNarrator`` in the [AI Drawio module](../ai-drawio/index.html) - if an image has an embedded diagram then the diagram is narrated to produce image narration. This class is abstract with ``byte[]``, ``File``, ``URI`` and ``URL`` concrete specializations.
+        * ``FileImageMetadataNarrator`` - loads image metadata from a file.
+        * ``UriImageMetadataNarrator`` - loads image metadata from a URI, supports data URIs.
+        * ``UriImageMetadataNarrator`` - loads image metadata from a URL.
     
 #### Narrate (describe) image
 
