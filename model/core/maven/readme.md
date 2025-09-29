@@ -67,7 +67,7 @@ The above code snippet:
 The loaded configuration is interpolated with system properties and environment variables. 
 E.g. ``${my-property}`` will be expanded to the value of ``my-property`` system property if it is set. 
 Respectively, ``${env.MY_ENV_VAR}`` will be expanded to the value of ``MY_ENV_VAR`` environment variable if it is set.
-Property expansion can be escaped with additional ``{}`` e.g. ``${{my-property}}`` will be expanded to ``${my-property}`` regardless of whether ``my-properety`` system property is set or not.
+Property expansion can be escaped with additional ``{}`` e.g. ``${{{my-property}}}`` will be expanded to ``${my-property}`` regardless of whether ``my-properety`` system property is set or not.
 
 ## Configuration specification
 
