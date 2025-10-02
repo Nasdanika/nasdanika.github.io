@@ -553,4 +553,63 @@ Please note that this is a very basic implementation:
 
 Also the example above is a single-shot - ask a question, get an answer, it is not a dialog.
 
+## Prediction 
+
+``Predictor`` interface and its sub-interfaces and implementations provide a framework for making predictions (forecasting).
+These interfaces do not implement any prediction algorithms - they provide methods for data processing and conversion. 
+There are several concrete implementations on top of Smile and Apache Commons Math classes.  
+
+### Predictor
+
+A base generic interface predicting output (labels) from input (features) synchronously or asynchronously. 
+The default synchronous prediction calls the asynchronous and blocks. 
+There are default methods for batch prediction.
+There are also methods to adapt between input/output types using mapping functions.
+
+Let's say you have a predictor of person's buying or banking preferences based on their income (BigDecimal) and where they live (Zip code). 
+You may adapt that predictor to take Person object as input my providing a mapping function which takes person argument and returns income and zip code. 
+You can do it asynchronously, if the function needs to call, say remote services. 
+
+### FittedPredictor
+
+This is a sub-interface of ``Predictor`` for predictors which were "fitted" or "trained" on a body of samples by a ``Fitter``.
+
+#### Fitter
+
+Fitters create (fit) FittedPredictors synchronously or asynchronously. 
+Asynchronous fitter takes a ``Flux`` and returns a ``Mono``. 
+Implementations may emit a predictor once there are enough samples to start making predictions or once
+predictions reach some level of quality (error drops below some threshold). 
+Such predictors may continue to be fitted on the Flux and make predictions at the same time. 
+For example, an MLP may make a prediction and once the correct answer is known be updated with that answer. 
+This way you may have predictors which "learn on the job".
+
+Fitters can be adapted to different feature and label types synchronously and asynchronously with mapping functions.
+
+Fitters can also be composed by using binary operators which add and subtract labels. 
+When composed the first fitter fits a predictor on input features and labels.
+Then it uses the fitted predictor to predict values, computes difference with labels and predictions and fits the next
+predictor on the original features and the differences as labels.
+When predicting, predictions are added to each other. 
+This way you may, say, predict linear trend with the first predictor, monthly seasonality with the second, weekly with the third, ...
+Using adapter methods you may compose predictors which use different parts of a complex structure, like a mmodel, to make predictions.
+
+##### AbstractDoubleFitter
+
+This is a base abstract class which implements ``Fitter<double[], double[], Double>``.
+It collects all samples to ``double[][]`` features and ``double[][]`` labels and then 
+then calls ``fit(double[][] features, double[][] labels)`` to fit ``Function<double[][],double[][]>`` 
+which makes predictions for multiple features at once. 
+This allows to use a single base class for multiple types of predictors including Multilayer perceptrons.
+Essentially it takes NxF matrix of features and NxL matrix of labels to fit a predictor.
+N is the number of samples, F is the number of features, and L is the number of labels.
+Then the predictor takes MxF matrix as input and outputs MxL matrix as prediction. 
+
+This class has two sub-classes:
+
+* AbstractMapReduceDoubleFitter - creates a ``Function<double[][],double[]`` predictor for each label element, predicts label elements using provided predictors and then combines 
+* AbstractRecursiveDoubleFitter - creates a ``Function<double[][],double[]>`` predictor for each label element with features for the later elements including labels for the earlier. During prediction earlier predictors outputs are used as inputs for later predictors. This is essentially how autoregression works.
+
+You can find concrete implementations in Smile and Math modules.
+
 
