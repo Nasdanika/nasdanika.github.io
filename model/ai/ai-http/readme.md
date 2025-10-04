@@ -7,7 +7,7 @@ This module provides building blocks for HTTP-based AI solutions.
 
 ## Chat
 
-The model provides several classes for building [Bootstrap](../../html/bootstrap/index.html)/[AlpineJS](../../html/alpine-js/index.html) chat Web UIs:
+The module provides several classes for building [Bootstrap](../../html/bootstrap/index.html)/[AlpineJS](../../html/alpine-js/index.html) chat Web UIs:
 
 * ``ChatBuilder`` - builds chat UI with an optional configuration dialog. 
 * ``AbstractChatRoutes`` - extends ``ChatBuilder`` and provides two HTTP routes:
@@ -15,14 +15,28 @@ The model provides several classes for building [Bootstrap](../../html/bootstrap
     * ``POST`` - processes chat requests
 * ``AbstractTelemetryChatRoutes`` - extends ``AbstractChatRoutes``, takes ``TelemetryFilter`` as a constructor argument for collecting [telemetry](../../core/telemetry/index.html).
 * ``AbstractAIChatRoutes`` extends ``AbstractTelemetryChatRoutes`` and takes ``Chat`` as a constructor argument. Subclasses shall implement two abstract methods:
-    * ``Mono<List<Chat.Message>> generateChatRequestMessages(String chatId, String question, JSONObject config)``
-    * ``Mono<String> generateResponseContent(String chatId, String question, List<? extends Chat.ResponseMessage> responses, JSONObject config)``
+    * ``Mono<List<Chat.Message>> generateChatRequestMessages(String chatId, String question, JSONObject config, JSONObject context)``
+    * ``Mono<String> generateResponseContent(String chatId, String question, List<? extends Chat.ResponseMessage> responses, JSONObject config, JSONObject context)``
     
-Below is a code snippet of a server with an echo chat:
+Below is a code snippet of a server with with gpt-5 chat:
 
 ```java    
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new LoggerProgressMonitor(LOGGER);
+OpenTelemetry openTelemetry = capabilityLoader.loadOne(ServiceCapabilityFactory.createRequirement(OpenTelemetry.class), progressMonitor);
+Tracer tracer = openTelemetry.getTracer(TestAI.class.getName() + ".testChatServerWithTelemetry");
+TelemetryFilter telemetryFilter = new TelemetryFilter(
+        tracer, 
+        openTelemetry.getPropagators().getTextMapPropagator(), 
+        (k, v) -> System.out.println(k + ": " + v), 
+        true);
+
+Chat.Requirement cReq = new Chat.Requirement("OpenAI", "gpt-5", null);
+Requirement<Chat.Requirement, Chat> chatRequirement = ServiceCapabilityFactory.createRequirement(Chat.class, null, cReq);           
+Chat chat = capabilityLoader.loadOne(chatRequirement, progressMonitor);
+        
 ReflectiveHttpServerRouteBuilder builder = new ReflectiveHttpServerRouteBuilder();
-builder.addTargets("/test-chat/", new AbstractAIChatRoutes(null, Chat.ECHO) {
+builder.addTargets("/test-chat/", new AbstractAIChatRoutes(telemetryFilter, chat) {
     
     @Override
     protected Object getConfigurator() {
@@ -35,7 +49,8 @@ builder.addTargets("/test-chat/", new AbstractAIChatRoutes(null, Chat.ECHO) {
     @Override
     protected JSONObject getConfig() {
         JSONObject jsonConfig = super.getConfig();
-        jsonConfig.put("test", "123");
+        jsonConfig.put("chat-provider", chat.getProvider());
+        jsonConfig.put("chat-model", chat.getName());
         return jsonConfig;
     }
 
@@ -44,7 +59,10 @@ builder.addTargets("/test-chat/", new AbstractAIChatRoutes(null, Chat.ECHO) {
             String chatId,
             String question,
             JSONObject config) {
-        return Mono.just(List.of(Chat.Role.user.createMessage(question)));
+        return Mono.just(List.of(
+            Chat.Role.system.createMessage("You are a helpful assistant. You you will be provided a user question. Answer in Markdown format with references to resources you used."),
+            Chat.Role.user.createMessage(question))
+        );
     }
 
     @Override
@@ -53,7 +71,8 @@ builder.addTargets("/test-chat/", new AbstractAIChatRoutes(null, Chat.ECHO) {
             String question,
             List<? extends ResponseMessage> responses, 
             JSONObject config) {
-        return Mono.just("Here we go [" + chatId +"]: " + question + " | " + responses.get(0).getContent() + " | " + config);
+        String responseContent = responses.get(0).getContent();
+        return Mono.just(MarkdownHelper.INSTANCE.markdownToHtml(responseContent));
     }
     
 });
@@ -85,4 +104,19 @@ try (Terminal terminal = TerminalBuilder.builder().system(true).build()) {
 server.dispose();
 server.onDispose().block();     
 ```
+
+* [Response screenshot](../../demos/ai/chat-response.png)
+* [Telemetry screenshot](../../demos/ai/chat-telemetry.png)
+
+The above example is hardcoded for GPT-5. It can be modified to collect all available chat models
+to allow user to select a model to use in the configuration dialog.
+It can also be modified to provide contextual information in ``generateChatRequestMessages``.
+Such information can include data from the context object sent as part of the chat request.
+This approach allows to generate multiple static chat pages with "baked-in" context and use a shared 
+chat route. 
+
+One application would be chat pages for generated documentation from models and other sources with 
+a chat page per model element, say, [Internet Banking System](https://nasdanika-demos.github.io/internet-banking-system-c4/cerulean/references/elements/internet-banking-system/index.html). 
+Context may include a "narration" of the model element and related model elements.r
+
     
