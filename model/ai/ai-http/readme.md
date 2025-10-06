@@ -58,7 +58,8 @@ builder.addTargets("/test-chat/", new AbstractAIChatRoutes(telemetryFilter, chat
     protected Mono<List<org.nasdanika.ai.Chat.Message>> generateChatRequestMessages(
             String chatId,
             String question,
-            JSONObject config) {
+            JSONObject config,
+            JSONObject context) {
         return Mono.just(List.of(
             Chat.Role.system.createMessage("You are a helpful assistant. You you will be provided a user question. Answer in Markdown format with references to resources you used."),
             Chat.Role.user.createMessage(question))
@@ -70,7 +71,8 @@ builder.addTargets("/test-chat/", new AbstractAIChatRoutes(telemetryFilter, chat
             String chatId, 
             String question,
             List<? extends ResponseMessage> responses, 
-            JSONObject config) {
+            JSONObject config,
+            JSONObject context) {
         String responseContent = responses.get(0).getContent();
         return Mono.just(MarkdownHelper.INSTANCE.markdownToHtml(responseContent));
     }
