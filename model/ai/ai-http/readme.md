@@ -7,14 +7,9 @@ This module provides building blocks for HTTP-based AI solutions.
 
 ## Chat
 
-The module provides several classes for building [Bootstrap](../../html/bootstrap/index.html)/[AlpineJS](../../html/alpine-js/index.html) chat Web UIs:
-
-* ``ChatBuilder`` - builds chat UI with an optional configuration dialog. 
-* ``AbstractChatRoutes`` - extends ``ChatBuilder`` and provides two HTTP routes:
-    * ``GET`` - which builds chat UI
-    * ``POST`` - processes chat requests
-* ``AbstractTelemetryChatRoutes`` - extends ``AbstractChatRoutes``, takes ``TelemetryFilter`` as a constructor argument for collecting [telemetry](../../core/telemetry/index.html).
-* ``AbstractAIChatRoutes`` extends ``AbstractTelemetryChatRoutes`` and takes ``Chat`` as a constructor argument. Subclasses shall implement two abstract methods:
+The module provides a class for building [Bootstrap](../../html/bootstrap/index.html)/[AlpineJS](../../html/alpine-js/index.html) AI chat Web UIs - ``AbstractAIChatRoutes``.
+The class extends ``AbstractTelemetryChatRoutes`` from the [HTML/HTTP](../../html/html-http/index.html) module and takes ``Chat`` as a constructor argument. 
+Subclasses shall implement two abstract methods:
     * ``Mono<List<Chat.Message>> generateChatRequestMessages(String chatId, String question, JSONObject config, JSONObject context)``
     * ``Mono<String> generateResponseContent(String chatId, String question, List<? extends Chat.ResponseMessage> responses, JSONObject config, JSONObject context)``
     
@@ -120,5 +115,3 @@ chat route.
 One application would be chat pages for generated documentation from models and other sources with 
 a chat page per model element, say, [Internet Banking System](https://nasdanika-demos.github.io/internet-banking-system-c4/cerulean/references/elements/internet-banking-system/index.html). 
 Context may include a "narration" of the model element and related model elements.r
-
-    
