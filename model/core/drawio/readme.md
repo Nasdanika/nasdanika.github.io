@@ -28,6 +28,7 @@ The below diagram shows relationships between the above interfaces including the
 
 * [Sources](https://github.com/Nasdanika/core/tree/master/drawio) 
 * [JavaDoc](https://javadoc.io/doc/org.nasdanika.core/drawio)
+* [Maven Central](https://central.sonatype.com/artifact/org.nasdanika.core/drawio)
 
 ## Page and element links
 
@@ -68,6 +69,24 @@ Examples:
 This approach allows to create a multi-resource graph of diagrams. 
 Nasdanika Drawio API also supports loading of documents from arbitrary URI's using a URI resolver. 
 For example, ``maven://<gav>/<resource path>`` to load from Maven resources or ``gitlab://<project>/<path>`` to load resources from GitLab without cloning a repository, provided there is a handler (``Function<URI,InputStream>``) supporting the aforementioned URI's. 
+
+## Magic properties
+
+The API implements placeholder interpolation ``%<property name>%`` in the same way as Draw.io does if the "Placeholders" checkbox is checked. 
+It also adds two "magic" properties to help with using model element values in structured properties. 
+For example, you may have a property with YAML configuration with some values computed from the element properties.
+
+### $style:<style name>
+
+Evaluates to a value of a specific style key.
+
+Example: ``$style:fillColor``
+
+### $spel:<expression>
+
+Evaluates a [Spring Expression Langauge](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions) (SpEL) expression.
+
+Example: ``$spel:style["fillColor"]``
 
 ## Generating documentation sites
 

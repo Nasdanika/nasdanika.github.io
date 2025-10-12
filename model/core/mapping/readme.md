@@ -1140,6 +1140,22 @@ Uses the diagram element label converted to plain text as a sorting key to compa
 
 Uses the feature element's ``compareTo()`` method for comparable elements. Otherwise compares using the hash code. Nulls are greater than non-nulls.
 
+### position
+
+Uses the diagram element position in the parent element for sorting. 
+Example:
+
+```yaml
+container:
+ self: 
+members:
+ comparator: position
+```
+
+### reverse-position
+
+Reversed ``position`` comparator.
+
 ### property
 
 Uses diagram element property as a sorting key. A singleton map. For example:
@@ -1151,5 +1167,146 @@ property: label
 ### property-descending
 
 The same as property, but compares in reverse alphabetical order.
+
+## Contributors
+
+In addition to loading Contributors via the capability framework they can get added to the contributors list programmatically.
+This scenario can be useful for contributors which are specific for a given digaram or piece of functionality.
+
+### Reflective contributors
+
+``ReflectiveContributor`` provides two method annotations - ``@Initalizer`` and ``@Configurator`` which allow to contribute to
+the mapping process using annotated methods. 
+This can be used for fine-grained contributions. 
+For example, you may have a UI wireframe diagram with high-level structure and configuration defined in the diagram and 
+some details (e.g. values retrieved from external systems) injected by annotated methods.
+
+Both annotations have the following attributes: 
+
+* ``value`` - If not blank (default), the value shall be a [Spring boolean expression](https://docs.spring.io/spring-framework/reference/core/expressions.html) which is evaluated in the context of the source with target as <code>target</code> variable. 
+* ``sourceType`` - source type matching is done by the first parameter type. This attribute can be used to narrow the match.
+* ``targetType`` - target type matching is done by the second parameter type. This attribute can be used to narrow the match.
+* ``priority`` - methods with higher priority value are invoked before methods with lower priority value
+
+Annotated methods for both annotations must have at least two parameters to accept source and target arguments. 
+
+Initializer methods can have up to 5 parameters with additional parameters listed below:
+
+3. ``BiConsumer<EObject, BiConsumer<EObject, ProgressMonitor>> elementProvider``
+4. ``Consumer<BiConsumer<Map<EObject, EObject>, ProgressMonitor>> registry``
+5. ``ProgressMonitor progressMonitor``
+
+Configurator methods can have up to 6 parameters with additional parameters listed below:
+
+3. ``Collection<EObject> documentation``
+4. ``Map<S, T> registry``
+5. ``boolean isPrototype``
+6. ``ProgressMonitor progressMonitor``
+
+
+#### Example
+
+##### Configurator
+
+```java
+public class Configurators {
+    
+    @Configurator("id == 'body-root-container'")
+    public void configure(Node source, Container target) {       
+        Appearance appearance = BootstrapFactory.eINSTANCE.createAppearance();      
+        target.setAppearance(appearance);
+        appearance.setBackground(Color.PRIMARY);
+    }
+
+}
+```
+
+In the above snippet ``configure`` method matches a source node with id ``body-root-containter`` which is mapped to ``Container``. 
+The method sets the container background color.
+
+##### Client code
+
+```java
+ReflectiveContributor<Element, EObject> rc = new ReflectiveContributor<>(List.of(new Configurators()));  
+Document document = Document.load(new File("bootstrap.drawio"));        
+
+ConnectionBase connectionBase = ConnectionBase.SOURCE;
+ContentProvider<Element> contentProvider = new DrawioContentProvider(
+        document, 
+        Context.BASE_URI_PROPERTY, 
+        MAPPING_PROPERTY, 
+        MAPPING_REF_PROPERTY, 
+        connectionBase);
+
+CapabilityLoader capabilityLoader = new CapabilityLoader();
+ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+Requirement<ResourceSetRequirement, ResourceSet> requirement = ServiceCapabilityFactory.createRequirement(ResourceSet.class);       
+ResourceSet resourceSet = capabilityLoader.loadOne(requirement, progressMonitor);
+        
+ConfigurationLoadingDrawioFactory<EObject> drawioFactory = new ConfigurationLoadingDrawioFactory<EObject>(
+        contentProvider, 
+        capabilityLoader, 
+        resourceSet, 
+        progressMonitor) {
+
+            @Override
+            protected EObject getByRefId(Element obj, String refId, int pass, Map<Element, EObject> registry) {
+                return null;
+            }
+    
+};
+
+drawioFactory.getContributors().add(rc);
+
+Transformer<Element,EObject> modelFactory = new Transformer<>(drawioFactory);
+List<Element> documentElements = new ArrayList<>();
+Consumer<Element> visitor = documentElements::add;
+@SuppressWarnings({ "rawtypes", "unchecked" })
+Consumer<org.nasdanika.graph.Element> traverser = (Consumer) org.nasdanika.drawio.Util.traverser(visitor, connectionBase);
+document.accept(traverser);
+
+Map<Element, EObject> modelElements = modelFactory.transform(documentElements, false, progressMonitor);
+
+List<EObject> cnt = new ArrayList<>();
+modelElements.values()
+    .stream()
+    .distinct()
+    .filter(modelElement -> modelElement != null && modelElement.eContainer() == null)
+    .forEach(cnt::add);
+
+// Saving for manual inspection
+URI xmiURI = URI.createFileURI(new File("target/bootstrap.xml").getAbsolutePath());
+Resource xmiResource = resourceSet.createResource(xmiURI);
+xmiResource.getContents().addAll(cnt);
+xmiResource.save(null);
+
+HtmlGenerator htmlGenerator = HtmlGenerator.load(
+        Context.EMPTY_CONTEXT, 
+        null, 
+        progressMonitor);
+        
+Producer<Object> processor = htmlGenerator.createProducer(cnt.get(0), progressMonitor);
+Object result = processor.produce(0);
+
+Files.writeString(Path.of("target", "bootstrap.html"), (String) result);
+```
+
+In the above snippet:
+
+* ``Configurator`` class is instantiated and added at the reflective contributor at line 1.
+* ``Document`` is loaded from a file at line 2 and then a content provider is created from it.
+* ``ResourceSet`` is obtained from ``CapabilityLoader``
+* ``ConfigurationLoadingDrawioFactory`` is instantiated with the content provider, capability loader, and resource set passed to its constructor.
+* Reflective contributor is added to the loading factory contributors.
+* ``Transformer`` is created from the factory and all diagram elements are added to its list of sources.
+* Diagram elements are transformed (mapped) to [Bootstrap model](https://bootstrap.models.nasdanika.org/) elements. ``configure`` method is invoked as part of this process.
+* The model is saved to an XML file.
+* HTML is generated from the model using ``HtmlGenerator`` and saved to a file.
+
+
+
+
+
+
 
  
