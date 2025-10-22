@@ -76,13 +76,13 @@ The API implements placeholder interpolation ``%<property name>%`` in the same w
 It also adds two "magic" properties to help with using model element values in structured properties. 
 For example, you may have a property with YAML configuration with some values computed from the element properties.
 
-### $style:<style name>
+### $style
 
-Evaluates to a value of a specific style key.
+Evaluates to a value of the style key provided after the colon.
 
 Example: ``$style:fillColor``
 
-### $spel:<expression>
+### $spel
 
 Evaluates a [Spring Expression Langauge](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions) (SpEL) expression.
 
