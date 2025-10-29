@@ -1,4 +1,4 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.5 Chrome/138.0.7204.251 Electron/37.6.1 Safari/537.36" version="28.2.5">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.7 Chrome/138.0.7204.251 Electron/37.7.1 Safari/537.36" version="28.2.7">
   <diagram id="HQOKvbAvWCf9tJ4usP6P" name="Nasdanika">
     <mxGraphModel dx="1408" dy="1923" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
       <root>
@@ -299,7 +299,7 @@
           </mxCell>
         </object>
         <object label="Process" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="process">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="models">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="370" y="230" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
@@ -430,7 +430,7 @@
         </object>
         <object label="Semantic&lt;div&gt;Mapping&lt;/div&gt;" placeholders="1" link="https://github.com/Nasdanika-Demos/semantic-mapping" id="O1JD6lxALoep1QyESPxM-3">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" parent="O1JD6lxALoep1QyESPxM-1" vertex="1">
-            <mxGeometry x="190" y="250" width="80" height="40" as="geometry" />
+            <mxGeometry x="280" y="250" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="CLI" placeholders="1" link="https://nasdanika-demos.github.io/cli/" id="kd7l9Baw1o88pqz8fdFP-1">
@@ -468,9 +468,14 @@
             <mxGeometry x="100" y="190" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Wireframes" placeholders="1" link="https://github.com/Nasdanika-Demos/wireframes" id="U7sr5beH_m-MIwdGMMBI-1">
+        <object label="Wireframes" placeholders="1" link="https://github.com/Nasdanika-Demos/wireframes" id="9K7pNXzq7drxCFFR-YVy-1">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" vertex="1" parent="O1JD6lxALoep1QyESPxM-1">
+            <mxGeometry x="370" y="250" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Patagonia&lt;div&gt;Trip&lt;/div&gt;" placeholders="1" link="https://nasdanika-demos.github.io/patagonia-trip/" id="U7sr5beH_m-MIwdGMMBI-1">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" parent="O1JD6lxALoep1QyESPxM-1" vertex="1">
-            <mxGeometry x="280" y="250" width="80" height="40" as="geometry" />
+            <mxGeometry x="190" y="250" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="AI" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;  icon: /images/ai.svg&#xa;doc-ref: readme.md&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;        comparator: label&#xa;" id="ai">
