@@ -32,7 +32,7 @@ The below diagram shows relationships between the above interfaces including the
 
 ## Page and element links
 
-Nasdanika Drawio API extends the concept of linking to pages to cross-document linking to pages and page elements by name or ID.
+Nasdanika Drawio API extends the concept of linking to pages to cross-document linking to pages and page elements by name, ID, or [SpEL](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions) expression.
 Link targets (pages or elements) are available via ``getLinkTarget()`` method.
 
 Drawio page links have the following format: ``data:page/id,<page id>`` with ``page/id`` being the "media type" and ``<page id>`` being the "data" of a [Data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs).
@@ -42,6 +42,7 @@ Nasdanika Drawio API extends it to additional media types:
 * ``page/name``
 * ``element/id``
 * ``element/name``
+* ``spel`` - Uses a SpEL expression to evaluate the link target in the context of the current element. Format: ``data:spel,<expression>``
 
 The data (selector) format has the following format: 
 

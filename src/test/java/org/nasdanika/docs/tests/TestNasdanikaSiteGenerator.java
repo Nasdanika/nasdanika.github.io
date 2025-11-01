@@ -65,6 +65,5 @@ public class TestNasdanikaSiteGenerator {
 			System.out.println(element);
 		}
 	}
-	
-	
+		
 }

@@ -1073,11 +1073,11 @@ In the below example children in the [Sample Family](https://family.models.nasda
 
 ```yaml
 container:
- self: 
-members:
- argument-type: Person
- comparator: 
-flow: label
+  self: 
+    members:
+      argument-type: Person
+      comparator: 
+        flow: label
 ```
 
 If the value is a map, then it may have the following keys:
@@ -1089,13 +1089,13 @@ The below snippet shows the Internet Banking System Container diagram comparator
 
 ```yaml
 container:
- self: 
-elements:
- path: 1
- comparator: 
-flow: 
-fallback: label
- condition: id != 'send-email'
+  self: 
+    elements:
+      path: 1
+      comparator: 
+        flow: 
+          fallback: label
+          condition: id != 'send-email'
 ```
 
 The condition specifies that a connection with ``sent-mail`` ID shall not be traversed.
@@ -1103,6 +1103,43 @@ The condition specifies that a connection with ``sent-mail`` ID shall not be tra
 #### reverse-flow
 
 Same as ``flow`` but with target nodes being smaller than source nodes.
+
+### enumerate
+
+Sorts model elements using enumerate value.
+Elements without enumerate value are considered equal to any other elements including those
+with enumerate value. 
+This is done to allow chaining with, say, flow comparator. 
+As a result, this comparator will violate the transitivity requirement if some elements don't have enumerate value. 
+Therefore, it shall be chained with other comparators. For example, flow and then position or label.
+     
+Enumerate value is treated as path of dot-separated values and two enumerate values are compared
+element-by-element with elements containing only digits parsed and compared as integers.
+For example, ``20`` would be greater than ``3``, ``1.1.1`` would be greater than ``1.1`` and smaller than ``2.5.6`` or ``3``.
+Numbers are considered smaller than strings ``1.12`` is smaller than ``1.a``
+ 
+Practical use - ordering connections emanating from the same node. Say, excursions from the same location.  
+If those excursions have multiple segments, then this comparator can be chained with the flow comparator
+and possibly terminated by the position or label comparator just in case.
+
+Example:
+
+```yaml
+container:
+  self: 
+    elements:
+      path: 1
+      comparator: 
+        enumerate:
+          fallback:          
+            flow: 
+              fallback: label
+              condition: id != 'send-email'
+```
+
+### reverse-enumerate
+
+Reversed ``position`` comparator.
 
 ### expression
 
