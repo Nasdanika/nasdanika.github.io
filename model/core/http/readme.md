@@ -550,4 +550,26 @@ server.dispose();
 server.onDispose().block();
 ```
 
+## SerpapiConnector
 
+``SerpapiConnector`` class uses [SerpApi](https://serpapi.com/) Google search to find pages.
+Then it retrieves them, extracts main content (content of the ``main`` element, configurable) and the converts the main content to Markdown.
+Search result includes SerpApi data, page content, main content and markdown main content. 
+The primary purpose of this class it to provide grounding for LLMs and AI agents with information that matters (main content) and in a format which is semantically structured.
+
+Example:
+
+```java
+String apiKey = System.getenv("SERPER_KEY");
+String query = "What is a kernel function in microsoft semantic kernel";
+
+SerpapiConnector serpApiConnector = new SerpapiConnector(apiKey, "learn.microsoft.com/en-us/semantic-kernel");
+Flux<SearchResult> results = serpApiConnector.search(query, 10, 0);
+List<SearchResult> resultList = results.collectList().block();
+for (SearchResult result: resultList) {
+    System.out.println("===");
+    System.out.println(result.title());
+    System.out.println();
+    System.out.println(result.markdownMainContent());
+}
+```

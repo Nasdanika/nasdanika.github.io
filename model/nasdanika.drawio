@@ -1,6 +1,6 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.7 Chrome/138.0.7204.251 Electron/37.7.1 Safari/537.36" version="28.2.7">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.8 Chrome/140.0.7339.240 Electron/38.4.0 Safari/537.36" version="28.2.8">
   <diagram id="HQOKvbAvWCf9tJ4usP6P" name="Nasdanika">
-    <mxGraphModel dx="1408" dy="1923" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+    <mxGraphModel dx="3346" dy="3021" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
       <root>
         <object label="" mapping="type: Action&#xa;page-element: true&#xa;doc-ref: nasdanika.md&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;configuration-ref: root-action.yml" id="0">
           <mxCell />
@@ -183,7 +183,7 @@
             <mxGeometry x="190" y="230" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
-        <object label="Source&lt;div&gt;Engineering&lt;/div&gt;" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="source-engineering">
+        <object label="Semantic&lt;div&gt;Kernel&lt;/div&gt;" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="semantic-kernel">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="100" y="280" width="80" height="40" as="geometry" />
           </mxCell>
@@ -290,7 +290,7 @@
         </object>
         <object label="SQL" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="sql">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
-            <mxGeometry x="190" y="280" width="80" height="40" as="geometry" />
+            <mxGeometry x="280" y="280" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Compare" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="compare">
@@ -301,6 +301,11 @@
         <object label="Process" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="process">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
             <mxGeometry x="370" y="230" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Source&lt;div&gt;Engineering&lt;/div&gt;" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="source-engineering">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="models">
+            <mxGeometry x="190" y="280" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Practices" placeholders="1" base-uri="%id%/" doc-ref="readme.md" mapping="type: Action&#xa;configuration:&#xa;  location: %base-uri%index.html&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;        comparator: right-down&#xa;doc-ref: readme.md" id="practices">
@@ -469,7 +474,7 @@
           </mxCell>
         </object>
         <object label="Wireframes" placeholders="1" link="https://github.com/Nasdanika-Demos/wireframes" id="9K7pNXzq7drxCFFR-YVy-1">
-          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" vertex="1" parent="O1JD6lxALoep1QyESPxM-1">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;" parent="O1JD6lxALoep1QyESPxM-1" vertex="1">
             <mxGeometry x="370" y="250" width="80" height="40" as="geometry" />
           </mxCell>
         </object>

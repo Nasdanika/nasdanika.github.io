@@ -4,7 +4,7 @@ Nasdanika Command Line Interface (CLI) is a suite of Nasdanika capabilities pack
 
 ## Prerequisites
 
-To run Nasdanika CLI you'd need Java 17+.
+To run Nasdanika CLI you'd need Java 21+.
 To build from sources you'd also need Maven.
 
 ## Installation
