@@ -114,10 +114,10 @@ A pass-through connection is depicted below.
 ./core/graph/pass-through-processing.drawio
 ```
 
-Graph element processors are wired together with handlers and endpoints:
+Graph element processors are wired together with [Synapses](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/Synapse.html) which accept a **handler** and provide an **endpoint** completion stage:
 
-* A handler is a java object provided by a processor for receiving interactions from other processors via endpoints.
-* An endpoint is a java object provided to a processor for interacting with other processors.
+* A handler is a java object provided by calling ``Synapse.setHandler()`` method receiving interactions via endpoints.
+* An endpoint is a java object provided by ``Synapse.getEndpoint()`` for interacting with a handler.
 
 An endpoint may be of the same type as a handler or a handler may be used as an endpoint. 
 This might be the case if processing is performed sequentially in a single JVM.
@@ -228,12 +228,21 @@ Note that a package containing reflective factories and processors shall be open
 Processors created by the above factories are introspected for the following annotations:
 
 * All processors:
+    * [ChildEndpoint](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ChildEndpoint.html) - field or method to inject a matching child endpoint wired to the child's parent handler.
+    * [ChildEndpoints](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ChildEndpoints.html) - field or method to inject a map of children to their endpoints completion stages.
+    * [ChildHandler](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ChildHandler.html) - field or method to obtain a handler for a child wired to child's parent endpoint.
+    * [ChildHandlerConsumers](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ChildHandlerConsumers.html) - field or method to inject a map of children to ``java.util.function.Consumer``s of handlers. 
     * [ChildProcessor](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ChildProcessor.html) - field a method to inject processor or config of element's child matching the selector expression.
     * [ChildProcessors](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ChildProcessors.html) - field or method to inject a map of children elements to their processor info.
+    * [ClientEndpoint](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ClientEndpoint.html) - field or method to inject a matching client endpoint.
+    * [ClientHandler](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ClientHandler.html) - field or method to obtain a handler for a client.
+    * [ParentEndpoint](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ParentEndpoint.html) - field or method into which a parent endpoint is injected. Parent endpoint allows the child processor to interact with the parent's processor child handler.
+    * [ParentHandler](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ParentHandler.html) - field or method from which the parent handler is obtained.    
     * [ParentProcessor](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ParentProcessor.html) - field or method to inject processor or config of element's parent.
     * [ProcessorElement](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/ProcessorElement.html) - field or method to inject the graph element.
     * [Registry](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/Registry.html) - field or method to inject the registry - a map of graph elements to their info.
-    * [RegistryEntry](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/RegistryEntry.html) - field or method to inject a matching registry entry.
+    * [RegistryEntry](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/RegistryEntry.html) - field or method to inject a matching registry entry's processor, info or synapse.
+    
 * Node processors:
     * [IncomingEndpoint](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/IncomingEndpoint.html) - field or method to inject a matching incoming endpoint.
     * [IncomingEndpoints](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/processor/IncomingEndpoints.html) - field or method to inject a map of incoming connections to their endpoints completion stages.
