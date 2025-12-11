@@ -1,4 +1,4 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.8 Chrome/140.0.7339.240 Electron/38.4.0 Safari/537.36" version="28.2.8">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
   <diagram id="HQOKvbAvWCf9tJ4usP6P" name="Nasdanika">
     <mxGraphModel dx="3346" dy="3021" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
       <root>
@@ -185,7 +185,7 @@
         </object>
         <object label="Semantic&lt;div&gt;Kernel&lt;/div&gt;" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="semantic-kernel">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
-            <mxGeometry x="100" y="280" width="80" height="40" as="geometry" />
+            <mxGeometry x="190" y="280" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Java" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://java.models.nasdanika.org" id="java-model">
@@ -210,7 +210,7 @@
         </object>
         <object label="Rules" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="rules">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
-            <mxGeometry x="10" y="280" width="80" height="40" as="geometry" />
+            <mxGeometry x="100" y="280" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Azure" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="azure">
@@ -290,7 +290,7 @@
         </object>
         <object label="SQL" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="sql">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
-            <mxGeometry x="280" y="280" width="80" height="40" as="geometry" />
+            <mxGeometry x="370" y="280" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Compare" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="compare">
@@ -304,8 +304,13 @@
           </mxCell>
         </object>
         <object label="Source&lt;div&gt;Engineering&lt;/div&gt;" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="source-engineering">
+          <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="models" vertex="1">
+            <mxGeometry x="280" y="280" width="80" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Resume" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="resume">
           <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="models">
-            <mxGeometry x="190" y="280" width="80" height="40" as="geometry" />
+            <mxGeometry x="10" y="280" width="80" height="40" as="geometry" />
           </mxCell>
         </object>
         <object label="Practices" placeholders="1" base-uri="%id%/" doc-ref="readme.md" mapping="type: Action&#xa;configuration:&#xa;  location: %base-uri%index.html&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;        comparator: right-down&#xa;doc-ref: readme.md" id="practices">
