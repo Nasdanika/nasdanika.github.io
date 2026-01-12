@@ -8,7 +8,17 @@ Resources:
 * [Semantic Mapping Medium Story](https://medium.com/nasdanika/semantic-mapping-3ccbef5d6c70) provides a high-level overview focusing more on the WHAT and the WHY while this page focuses more on the HOW.
 * Most code snippets below are taken from the [semantic mapping demo](https://nasdanika-demos.github.io/semantic-mapping/index.html).
 
+Below is an AI-generated overview video
+
+<div class="embed-responsive embed-responsive-16by9">
+    <iframe src="https://www.youtube.com/embed/fXv-4q-6uBw?si=Pi6U5BSfqcBXWxcG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+
+## Table of Contents
+
 [TOC levels=6]
+
 
 ## EMF Ecore
 
