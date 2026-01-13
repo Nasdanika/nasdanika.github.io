@@ -101,6 +101,14 @@ command pipeline can be used to generate documentation web sites from Drawio dia
 * [Visual Communication Continuum](https://medium.com/nasdanika/visual-communication-continuum-4946f44ba853) - a Medium story which provides an overview of the approach and compares it with [semantic mapping](../mapping/index.html)
 * [Semantic Mapping](https://medium.com/nasdanika/semantic-mapping-3ccbef5d6c70) - a medium story focusing on Semantic Mapping
 
+### Overview video
+
+Below is an AI-generated overview video:
+
+<div class="embed-responsive embed-responsive-16by9">
+    <iframe src="https://www.youtube.com/embed/8kkJAwrgnKM?si=q1sIWeCm141ShYDW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Executable diagrams
 
 With Nasdanika Drawio API and other products you can make your diagrams executable as explained in the following sections.
