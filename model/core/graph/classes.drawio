@@ -1,0 +1,93 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.0 Chrome/140.0.7339.249 Electron/38.7.2 Safari/537.36" version="29.3.0">
+  <diagram id="Ly-4iOIysEdwdJdt6LdU" name="Page-1">
+    <mxGraphModel dx="1934" dy="1589" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="mv7BDmivkfo0FzVvXW7u-1" edge="1" parent="1" source="HkdYnn8kueRe9c6gts7R-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="HkdYnn8kueRe9c6gts7R-7" value="&lt;i&gt;Children&lt;/i&gt;">
+          <mxGeometry relative="1" y="30" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="820" y="300" />
+              <mxPoint x="820" y="320" />
+            </Array>
+            <mxPoint x="980" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="Element" link="https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/Element.html" id="HkdYnn8kueRe9c6gts7R-7">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=2" vertex="1">
+            <mxGeometry height="40" width="80" x="720" y="290" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="HkdYnn8kueRe9c6gts7R-72" edge="1" parent="1" source="HkdYnn8kueRe9c6gts7R-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=block;endFill=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="HkdYnn8kueRe9c6gts7R-7">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="360" />
+              <mxPoint x="760" y="360" />
+            </Array>
+            <mxPoint x="750" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="Node" link="https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/Node.html" tooltip="A node can be connected to other nodes with connections.&#xa;A node may contain other nodes and connections." id="HkdYnn8kueRe9c6gts7R-9">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1">
+            <mxGeometry height="40" width="80" x="570" y="380" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Connection" link="https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/Connection.html" tooltip="A connection between two nodes" id="HkdYnn8kueRe9c6gts7R-10">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1">
+            <mxGeometry height="40" width="80" x="890" y="380" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="HkdYnn8kueRe9c6gts7R-18" edge="1" parent="1" source="HkdYnn8kueRe9c6gts7R-9" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" target="HkdYnn8kueRe9c6gts7R-10" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="710" y="420" as="sourcePoint" />
+            <mxPoint x="530" y="780" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HkdYnn8kueRe9c6gts7R-19" connectable="0" parent="HkdYnn8kueRe9c6gts7R-18" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" value="source 0..1" vertex="1">
+          <mxGeometry relative="1" x="-1" as="geometry">
+            <mxPoint x="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HkdYnn8kueRe9c6gts7R-20" connectable="0" parent="HkdYnn8kueRe9c6gts7R-18" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" value="outgoingConnections *" vertex="1">
+          <mxGeometry relative="1" x="1" as="geometry">
+            <mxPoint x="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HkdYnn8kueRe9c6gts7R-73" edge="1" parent="1" source="HkdYnn8kueRe9c6gts7R-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=block;endFill=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="HkdYnn8kueRe9c6gts7R-7">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="920" y="360" />
+              <mxPoint x="760" y="360" />
+            </Array>
+            <mxPoint x="650" y="410" as="sourcePoint" />
+            <mxPoint x="770" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HkdYnn8kueRe9c6gts7R-75" edge="1" parent="1" source="HkdYnn8kueRe9c6gts7R-9" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;exitX=1;exitY=0.75;exitDx=0;exitDy=0;" target="HkdYnn8kueRe9c6gts7R-10" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="770" y="410" />
+              <mxPoint x="770" y="410" />
+            </Array>
+            <mxPoint x="660" y="400" as="sourcePoint" />
+            <mxPoint x="900" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HkdYnn8kueRe9c6gts7R-76" connectable="0" parent="HkdYnn8kueRe9c6gts7R-75" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" value="target 0..1" vertex="1">
+          <mxGeometry relative="1" x="-1" as="geometry">
+            <mxPoint x="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HkdYnn8kueRe9c6gts7R-77" connectable="0" parent="HkdYnn8kueRe9c6gts7R-75" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" value="incomingConnections *" vertex="1">
+          <mxGeometry relative="1" x="1" as="geometry">
+            <mxPoint x="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4vb5zpgg8UrsaR13MMUW-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=#666666;fillColor=#f5f5f5;align=center;verticalAlign=middle;rounded=0;fontColor=#333333;" value="Containment is implemented with &lt;b&gt;accept()&lt;/b&gt; method" vertex="1">
+          <mxGeometry height="50" width="140" x="890" y="285" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

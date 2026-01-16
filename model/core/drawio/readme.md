@@ -24,6 +24,9 @@ The below diagram shows relationships between the above interfaces including the
 ./core/drawio/classes.drawio
 ```
 
+Drawio ``Element``, ``Node`` and ``Connection`` interfaces extend their Graph namesakes. Therefore, any diagram is a graph and, as such, can be made executable by creating graph processors.
+Need to do some non-trivial processing? Draw it, document it, then create processors.
+
 [Util](https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/Util.html) provides utility methods such as ``layout()`` and methods to navigate and query documents and their elements.
 
 * [Sources](https://github.com/Nasdanika/core/tree/master/drawio) 

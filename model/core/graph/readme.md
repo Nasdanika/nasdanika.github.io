@@ -37,9 +37,13 @@ Examples of such graphs:
 
 ## Graph API
 
+```drawio-resource
+./core/graph/classes.drawio
+```
+
 The graph API has 3 interfaces:
 
-* [Element](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/Element.html) - super-interface for Connection and Node below. Elements may contain other elements. Containment is implemented with ``<T> T accept(BiFunction<? super Element, Map<? extends Element, T>, T> visitor)``, which can be thought of as a hierarchical bottom-up [reduce](https://docs.oracle.com/javase/tutorial/collections/streams/reduction.html) - the visitor function is invoked with an element being visited as its first argument and a map of element's children to results returned by the visitor as the second argument. For leaf elements the second argument may be either an empty map or null. Depending on the map type used by implementations they may also need to implement ``equals()`` and ``hashCode()``.
+* [Element](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/Element.html) is a super-interface for Connection and Node below. Elements may contain other elements. Containment is implemented with ``<T> T accept(BiFunction<? super Element, Map<? extends Element, T>, T> visitor)``, which can be thought of as a hierarchical bottom-up [reduce](https://docs.oracle.com/javase/tutorial/collections/streams/reduction.html) - the visitor function is invoked with an element being visited as its first argument and a map of element's children to results returned by the visitor as the second argument. For leaf elements the second argument may be either an empty map or null. Depending on the map type used by implementations they may also need to implement ``equals()`` and ``hashCode()``.
 * [Node](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/Node.html) extends Element and may have incoming and outgoing connections.
 * [Connection](https://javadoc.io/doc/org.nasdanika.core/graph/latest/org.nasdanika.graph/org/nasdanika/graph/Connection.html) extends Element and has source and target nodes.
 
