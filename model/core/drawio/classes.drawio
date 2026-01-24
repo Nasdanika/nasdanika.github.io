@@ -52,15 +52,16 @@
             <mxGeometry height="40" width="80" x="600" y="200" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="HkdYnn8kueRe9c6gts7R-72" edge="1" parent="1" source="HkdYnn8kueRe9c6gts7R-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=block;endFill=0;" target="HkdYnn8kueRe9c6gts7R-6">
+        <mxCell id="HkdYnn8kueRe9c6gts7R-72" edge="1" parent="1" source="3S2mzIEmkNXa2c_BUX3y-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=block;endFill=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="600" y="360" />
-              <mxPoint x="750" y="360" />
+              <mxPoint x="520" y="370" />
+              <mxPoint x="760" y="370" />
             </Array>
+            <mxPoint x="760" y="320" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <UserObject label="Node" link="https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/Node.html" tooltip="A node can be connected to other nodes with connections.&#xa;A node may contain other nodes and connections." id="HkdYnn8kueRe9c6gts7R-9">
+        <UserObject label="Connectable" link="https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/Connectable.html" tooltip="A connectable can be connected to other &#xa;connectables with connections.&#xa;" id="HkdYnn8kueRe9c6gts7R-9">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1">
             <mxGeometry height="40" width="80" x="560" y="400" as="geometry" />
           </mxCell>
@@ -141,19 +142,22 @@
             <mxPoint x="-3" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="HkdYnn8kueRe9c6gts7R-73" edge="1" parent="1" source="HkdYnn8kueRe9c6gts7R-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=block;endFill=0;" target="HkdYnn8kueRe9c6gts7R-6">
+        <mxCell id="HkdYnn8kueRe9c6gts7R-73" edge="1" parent="1" source="HkdYnn8kueRe9c6gts7R-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=block;endFill=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="HkdYnn8kueRe9c6gts7R-6">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="920" y="360" />
-              <mxPoint x="770" y="360" />
+              <mxPoint x="920" y="370" />
+              <mxPoint x="760" y="370" />
             </Array>
             <mxPoint x="650" y="410" as="sourcePoint" />
-            <mxPoint x="770" y="330" as="targetPoint" />
+            <mxPoint x="840" y="330" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="HkdYnn8kueRe9c6gts7R-74" edge="1" parent="1" source="HkdYnn8kueRe9c6gts7R-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=block;endFill=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="HkdYnn8kueRe9c6gts7R-5">
+        <mxCell id="HkdYnn8kueRe9c6gts7R-74" edge="1" parent="1" source="3S2mzIEmkNXa2c_BUX3y-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=block;endFill=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.25;exitY=0;exitDx=0;exitDy=0;" target="HkdYnn8kueRe9c6gts7R-5">
           <mxGeometry relative="1" as="geometry">
-            <Array as="points" />
+            <Array as="points">
+              <mxPoint x="500" y="350" />
+              <mxPoint x="640" y="350" />
+            </Array>
             <mxPoint x="600" y="360" as="sourcePoint" />
             <mxPoint x="470" y="340" as="targetPoint" />
           </mxGeometry>
@@ -251,8 +255,8 @@
         <mxCell id="amjMeJWWiZx3OYlnt_bU-6" edge="1" parent="1" source="amjMeJWWiZx3OYlnt_bU-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="HkdYnn8kueRe9c6gts7R-6">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="280" y="460" />
-              <mxPoint x="970" y="460" />
+              <mxPoint x="280" y="530" />
+              <mxPoint x="970" y="530" />
               <mxPoint x="970" y="300" />
             </Array>
           </mxGeometry>
@@ -274,9 +278,6 @@
             <mxPoint x="-3" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="amjMeJWWiZx3OYlnt_bU-7" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" value="*" vertex="1">
-          <mxGeometry height="10" width="20" x="403" y="404" as="geometry" />
-        </mxCell>
         <mxCell id="amjMeJWWiZx3OYlnt_bU-8" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" value="*" vertex="1">
           <mxGeometry height="10" width="20" x="801" y="312" as="geometry" />
         </mxCell>
@@ -293,6 +294,41 @@
         </mxCell>
         <mxCell id="I5wwQAHqrQvuLUtJiKU9-4" connectable="0" parent="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" value="linkTarget 0..1" vertex="1">
           <mxGeometry x="510" y="146" as="geometry" />
+        </mxCell>
+        <UserObject label="Node" link="https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/Node.html" tooltip="Being a layer, a node may contain other nodes and connections." id="3S2mzIEmkNXa2c_BUX3y-1">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1">
+            <mxGeometry height="40" width="80" x="480" y="480" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="ConnectionPoint" link="https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/ConnectionPoint.html" tooltip="" id="3S2mzIEmkNXa2c_BUX3y-2">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1">
+            <mxGeometry height="40" width="110" x="640" y="480" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="3S2mzIEmkNXa2c_BUX3y-3" edge="1" parent="1" source="3S2mzIEmkNXa2c_BUX3y-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=block;endFill=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" target="HkdYnn8kueRe9c6gts7R-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+            <mxPoint x="530" y="560" as="sourcePoint" />
+            <mxPoint x="650" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3S2mzIEmkNXa2c_BUX3y-4" edge="1" parent="1" source="3S2mzIEmkNXa2c_BUX3y-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=block;endFill=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="HkdYnn8kueRe9c6gts7R-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+            <mxPoint x="530" y="710" as="sourcePoint" />
+            <mxPoint x="650" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YVWlaXpKLEY3YZf-UhFH-1" edge="1" parent="1" source="3S2mzIEmkNXa2c_BUX3y-1" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;startArrow=diamondThin;startFill=1;" target="3S2mzIEmkNXa2c_BUX3y-2" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="310" y="710" as="sourcePoint" />
+            <mxPoint x="350" y="710" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YVWlaXpKLEY3YZf-UhFH-2" connectable="0" parent="YVWlaXpKLEY3YZf-UhFH-1" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" value="*" vertex="1">
+          <mxGeometry relative="1" x="1" as="geometry">
+            <mxPoint x="-3" as="offset" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
