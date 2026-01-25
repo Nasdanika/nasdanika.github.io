@@ -17,7 +17,7 @@ The module provides the following interfaces representing elements of a diagram 
 * [Layer](https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/Layer.html) - a diagram may have one or more layers. Layers contain Nodes and Connections.
 * [Node](https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/Node.html) - a node can be connected to other nodes with connections. A node may contain other nodes and connections.
 * [ConnectionPoint](https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/ConnectionPoint.html) - Points on a node (ports) where connections exit and enter. For more details about connection points see [Connection Points, functionality and customization](https://drawio-app.com/blog/connection-points-functionality-and-customization-in-project-management/)
-* [Connection](https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/Connection.html) - a connection between two nodes. 
+* [Connection](https://javadoc.io/doc/org.nasdanika.core/drawio/latest/org.nasdanika.drawio/org/nasdanika/drawio/Connection.html) - a connection between two connectables - nodes or connection points. 
 
 The below diagram shows relationships between the above interfaces including their super-interfaces:
 
