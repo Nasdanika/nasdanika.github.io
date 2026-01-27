@@ -74,8 +74,24 @@ It leverages the full Nasdanika stack — models, capabilities, processors, sema
 
 In other words: **Draw what you want to happen, and agents will do it.**
 
+## Getting started
+
+You can start by defining a metamodel and notation or notations which fit your needs using the resources below.
+You can also start adopting the [Visual schema](https://nasdanika-demos.github.io/illustrations/visual-schema/index.html) to define data structures
+and generating documentation from it. 
+You may use tags to define agents' bounded contexts. 
+
 ## Resources
+
+### Medium stories
 
 * [The Pillars of Nasdanika](https://medium.com/nasdanika/pillars-of-nasdanika-d9c4acff1137)
 * [Nasdanika 2025+](https://medium.com/nasdanika/nasdanika-2025-9b3be3cb6ef3)
 * [Model-based HR... as code](https://medium.com/nasdanika/model-based-hr-as-code-270f7052c6c5)
+
+### CrewAI metamodel and demos
+
+* [Metamodel](https://crew-ai.models.nasdanika.org/)
+* Demos
+    * [Agents as nodes](https://nasdanika-demos.github.io/latest-ai-development/)
+    * [Agents as process swimlanes](https://nasdanika-demos.github.io/latest-ai-development-swimlanes/) - more compact, aligns to process modeling - not AI-specific.
