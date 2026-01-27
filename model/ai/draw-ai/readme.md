@@ -8,13 +8,21 @@ This approach builds on a core insight running through the Nasdanika ecosystem: 
 They capture intent, context, and semantics in a form that both humans and AI agents can understand and act upon. 
 
 
-> Nasdanika Draw.AI makes diagrams of Agentic AI systems executable. 
-> Not above the glass. 
-> Not below the glass. 
-> It is the glass.
-
-
 [TOC levels=6]
+
+## The Semantic Membrane
+
+Nasdanika Draw.AI isn’t a diagramming tool - there is a number of general-purpose diagramming tools available.  
+It isn’t an AI framework or runtime, although it might be.  
+It’s the semantic membrane between them — the thing that turns diagrams into executable systems.
+
+![Nasdanika Draw.AI](/images/semantic-membrane.png)
+
+> Not above the glass. 
+>
+> Not below the glass. 
+>
+> It is the glass.
 
 ## Why This Matters
 
