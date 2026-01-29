@@ -89,6 +89,8 @@ You can also start adopting the [Visual schema](https://nasdanika-demos.github.i
 and generating documentation from it. 
 You may use tags to define agents' bounded contexts. 
 
+For Web UI you may use [Functional wireframes](https://medium.com/nasdanika/web-ui-wireframes-in-draw-io-documentation-html-generation-4241c8d04d86).
+
 ## Resources
 
 ### Medium stories
