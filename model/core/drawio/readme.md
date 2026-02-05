@@ -89,9 +89,405 @@ Example: ``$style:fillColor``
 
 ### $spel
 
-Evaluates a [Spring Expression Langauge](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions) (SpEL) expression.
+Evaluates a [Spring Expression Language](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions) (SpEL) expression.
 
 Example: ``$spel:style["fillColor"]``
+
+## Selectors
+
+The `List<ModelElement<?>> ModelElement.select(String selector)` method allows to traverse and query the diagram model structure using a path-based selector syntax. 
+
+It takes a path-based selector string that specifies which related elements to retrieve and returns a list of model elements matching the specified selector criteria.
+
+Selectors support a path-based syntax using forward slashes (`/`) to traverse relationships. 
+Multiple segments can be chained together to navigate through the model graph.
+
+### Basic Selectors
+
+| Selector | Description | Example |
+|----------|-------------|---------|
+| `..` | Parent element | `element.select("..")` |
+| `child` | Direct children | `element.select("child")` |
+| `link-target` | Element or page linked via the link property | `element.select("link-target")` |
+| `incoming-connection` | Incoming connections (for nodes) | `node.select("incoming-connection")` |
+| `outgoing-connection` | Outgoing connections (for nodes) | `node.select("outgoing-connection")` |
+| `source` | Source node (for connections) | `connection.select("source")` |
+| `target` | Target node (for connections) | `connection.select("target")` |
+
+### Qualified Selectors
+
+Selectors can be qualified with filters using square brackets `[...]`:
+
+#### Filter by ID
+```
+selector[element-id]
+```
+Returns only elements with the specified ID.
+
+#### Filter by Property
+```
+selector[property-name=property-value]
+```
+Returns only elements where the specified property equals the given value.
+
+### Path Composition
+
+Selectors can be chained using `/` to traverse multiple relationships:
+
+```
+segment1/segment2/segment3
+```
+
+### Examples
+
+#### Navigate to Parent
+
+```java
+// Get the parent element
+ModelElement<?> parent = element.select("..").getFirst();
+```
+
+#### Get Child Elements
+
+```java
+// Get all direct children
+List<ModelElement<?>> allChildren = element.select("child");
+
+// Get a specific child by ID
+ModelElement<?> specificChild = element.select("child[bob]").getFirst();
+
+// Get a child by property value
+ModelElement<?> childByAlias = element.select("child[alias=bobby]").getFirst();
+```
+
+#### Working with Connections (Node Context)
+
+```java
+// Assuming we have a Node instance
+Node bob = // ... get node instance
+
+// Get all incoming connections
+List<ModelElement<?>> incomingConnections = bob.select("incoming-connection");
+
+// Get a specific incoming connection by ID
+ModelElement<?> specificConnection = bob.select("incoming-connection[alice-to-bob]").getFirst();
+
+// Get an incoming connection filtered by property
+ModelElement<?> secretConnection = bob.select("incoming-connection[classification=top-secret]").getFirst();
+
+// Get all outgoing connections
+List<ModelElement<?>> outgoingConnections = bob.select("outgoing-connection");
+
+// Get a specific outgoing connection by ID
+ModelElement<?> outConnection = bob.select("outgoing-connection[alice-to-bob]").getFirst();
+```
+
+### Navigate Through Connections
+
+```java
+Node bob = // ... get node instance
+
+// Navigate from a node to the source of an incoming connection
+ModelElement<?> sourceNode = bob.select("incoming-connection/source").getFirst();
+
+// Navigate from a node to the target of an outgoing connection
+ModelElement<?> targetNode = bob.select("outgoing-connection/target").getFirst();
+```
+
+### Complex Path Traversal
+
+```java
+Node alice = // ... get node instance
+
+// Navigate from Alice through an outgoing connection to Bob, then to Bob's parent
+ModelElement<?> bobsHouse = alice.select("outgoing-connection/target/..").getFirst();
+```
+
+### Working with Connection Source/Target (Connection Context)
+
+```java
+Connection connection = // ... get connection instance
+
+// Get the source node of a connection
+Node source = (Node) connection.select("source").getFirst();
+
+// Get the target node of a connection
+Node target = (Node) connection.select("target").getFirst();
+```
+
+### Reference Table
+
+#### For All Model Elements
+
+| Selector | Returns | Notes |
+|----------|---------|-------|
+| `..` | Parent element | Returns the containing element |
+| `child` | All children | Direct child elements |
+| `child[id]` | Child by ID | Single child with specified ID |
+| `child[prop=value]` | Children by property | Children matching property criteria |
+| `link-target` | Linked target | Element or page referenced by link property |
+
+#### For Nodes
+
+| Selector | Returns | Notes |
+|----------|---------|-------|
+| `incoming-connection` | All incoming connections | Connections where this node is the target |
+| `incoming-connection[id]` | Specific incoming connection | By connection ID |
+| `incoming-connection[prop=value]` | Filtered incoming connections | By connection property |
+| `outgoing-connection` | All outgoing connections | Connections where this node is the source |
+| `outgoing-connection[id]` | Specific outgoing connection | By connection ID |
+| `outgoing-connection[prop=value]` | Filtered outgoing connections | By connection property |
+
+#### For Connections
+
+| Selector | Returns | Notes |
+|----------|---------|-------|
+| `source` | Source node | The node where the connection originates |
+| `target` | Target node | The node where the connection terminates |
+
+### Implementation Notes
+
+- The `select()` method traverses paths recursively, evaluating each segment from left to right
+- Returns an empty list if no elements match the criteria
+- Filters in square brackets support exact matching only (no wildcards or regex)
+- Property names and values in filters are case-sensitive
+- The method is implemented differently for different element types (Node, Connection, etc.) to provide type-specific navigation
+
+### Error Handling
+
+The method returns an empty list when:
+- No elements match the selector criteria
+- An invalid selector segment is provided
+- A relationship doesn't exist (e.g., selecting `incoming-connection` on an element that isn't a Node)
+
+## Property paths
+
+Property paths provide a way to access properties of related model elements without explicitly navigating through the model hierarchy. 
+A property path combines the navigation capabilities of selectors with property access, allowing you to traverse relationships and retrieve property values in a single expression.
+
+### Syntax
+
+```
+selector/property-name
+```
+
+A property path consists of:
+- **Selector** - A navigation expression that identifies related elements 
+- **Forward slash** (`/`) - Separates the selector from the property name
+- **Property name** - The name of the property to retrieve from the selected element
+
+### Reference
+
+| Property Path | Description | Example Value |
+|---------------|-------------|---------------|
+| `../property-name` | Property of parent element | `"parent-id"` |
+| `child/property-name` | Property of first child | `"child-value"` |
+| `child[id]/property-name` | Property of child with specific ID | `"specific-value"` |
+| `child[prop=value]/property-name` | Property of child matching criteria | `"filtered-value"` |
+| `incoming-connection/property-name` | Property of incoming connection | `"connection-value"` |
+| `outgoing-connection/property-name` | Property of outgoing connection | `"connection-value"` |
+| `incoming-connection/source/property-name` | Property of connection source | `"source-value"` |
+| `outgoing-connection/target/property-name` | Property of connection target | `"target-value"` |
+
+
+## Style interfaces
+
+The style interfaces provide a type-safe, fluent API for working with Draw.io element styles. 
+Since Draw.io styles are stored as key-value pairs, all style interfaces extend `Map<String, String>`, allowing direct manipulation of style properties while also providing convenient typed methods for commonly used style attributes.
+
+### Style Hierarchy
+
+```
+Style (extends Map<String,String>)
+  │
+  ├── LineStyle
+  │     │
+  │     ├── ConnectionStyle  (for edges/connections)
+  │     │
+  │     └── NodeStyle        (for shapes/vertices)
+```
+
+### Style
+**Package:** `org.nasdanika.drawio.style`
+
+The base style interface that all other style interfaces extend. Provides common styling properties applicable to all element types.
+
+**Key methods:**
+
+- `opacity()` / `opacity(String)` / `opacity(int)` - Element opacity
+- `rounded()` / `rounded(boolean)` - Rounded corners
+- `shadow()` / `shadow(boolean)` - Drop shadow effect
+- `enumerate()` / `enumerate(boolean)` - Element enumeration flag
+- `enumerateValue()` / `enumerateValue(String)` - Custom enumeration value
+
+### LineStyle
+**Package:** `org.nasdanika.drawio.style`  
+**Extends:** `Style`
+
+Provides line-related styling properties used for borders and edges. Applicable to both nodes (borders) and connections (edge lines).
+
+**Key methods:**
+
+- `color()` / `color(String)` - Line/stroke color
+- `width()` / `width(String)` - Line width
+- `dashed()` / `dashed(String)` - Dashed line pattern
+
+### ConnectionStyle
+**Package:** `org.nasdanika.drawio.style`  
+**Extends:** `LineStyle`
+
+Specialized styling for connections (edges) between nodes.
+
+**Key methods:**
+
+- `startArrow()` / `startArrow(String)` / `startArrow(Arrow)` - Arrow at connection start
+- `endArrow()` / `endArrow(String)` / `endArrow(Arrow)` - Arrow at connection end
+- `startFill()` / `startFill(boolean)` - Fill start arrow
+- `endFill()` / `endFill(boolean)` - Fill end arrow
+- `edgeStyle()` / `edgeStyle(String)` - Edge routing style (e.g., "orthogonalEdgeStyle")
+
+### NodeStyle
+**Package:** `org.nasdanika.drawio.style`  
+**Extends:** `LineStyle`
+
+Specialized styling for nodes (shapes/vertices).
+
+**Key methods:**
+
+- `backgroundColor()` / `backgroundColor(String)` - Fill color
+- `shape()` / `shape(String)` - Shape type
+- `verticalAlign()` / `verticalAlign(String)` - Vertical text alignment
+- `align()` / `align(String)` - Horizontal text alignment
+- `fontSize()` / `fontSize(String)` - Font size
+- `fontColor()` / `fontColor(String)` - Font color
+- `fontStyle()` / `fontStyle(String)` - Font style attributes
+- `labelBackgroundColor()` / `labelBackgroundColor(String)` - Label background
+- `labelBorderColor()` / `labelBorderColor(String)` - Label border
+- `rotation()` / `rotation(String)` - Element rotation angle
+- `container()` / `container(boolean)` - Container flag
+- `collapsible()` / `collapsible(boolean)` - Collapsible container flag
+
+### Important Notes
+
+#### Not Exhaustive
+The style interfaces are **not exhaustive** and contain only a subset of all styles supported by Draw.io. 
+They focus on commonly used style properties that are frequently needed in code.
+
+#### As-Needed Extension
+These interfaces will be extended on an **as-needed basis** as additional style properties are required. 
+If you need a style property not currently available through the typed methods, you can always use the `Map` interface directly:
+
+```java
+// Using typed method (if available)
+nodeStyle.backgroundColor("#dae8fc");
+
+// Using Map interface directly (for any property)
+nodeStyle.put("fillColor", "#dae8fc");
+nodeStyle.put("gradientColor", "#7ea6e0");
+nodeStyle.put("gradientDirection", "east");
+```
+
+### Fluent API
+All setter methods return the style interface itself, enabling fluent method chaining:
+
+```java
+connectionStyle
+    .edgeStyle("orthogonalEdgeStyle")
+    .rounded(true)
+    .dashed("1")
+    .width("2")
+    .color("#0077ff")
+    .endArrow("classic")
+    .endFill(true);
+```
+
+### Examples
+
+#### Styling a Node
+
+```java
+Node node = layer.createNode();
+node.setLabel("My Node");
+
+NodeStyle style = node.getStyle();
+style
+    .backgroundColor("#f5f5f5")
+    .shape("rectangle")
+    .rounded(true)
+    .shadow(true)
+    .fontSize("14")
+    .fontColor("#333333")
+    .color("#666666")      // Border color
+    .width("2");           // Border width
+```
+
+#### Styling a Connection
+
+```java
+Connection connection = layer.createConnection(source, target);
+connection.setLabel("My Connection");
+
+ConnectionStyle style = connection.getStyle();
+style
+    .edgeStyle("orthogonalEdgeStyle")
+    .color("#0077ff")
+    .width("2")
+    .dashed("1")
+    .rounded(true)
+    .endArrow("classic")
+    .endFill(true)
+    .startArrow("oval")
+    .startFill(false);
+```
+
+#### Direct Map Access for Additional Properties
+
+```java
+NodeStyle style = node.getStyle();
+
+// Use typed methods where available
+style.backgroundColor("#dae8fc");
+style.rounded(true);
+
+// Use Map interface for properties without typed methods
+style.put("gradientColor", "#7ea6e0");
+style.put("gradientDirection", "east");
+style.put("swimlane", "1");
+style.put("whiteSpace", "wrap");
+```
+
+#### Reading Style Properties
+
+```java
+// Using typed getters
+String color = nodeStyle.color();
+boolean isRounded = nodeStyle.rounded();
+String bgColor = nodeStyle.backgroundColor();
+
+// Using Map interface
+String gradientColor = nodeStyle.get("gradientColor");
+String customProperty = nodeStyle.get("myCustomStyle");
+```
+
+## Auto-layout
+
+The `Util` class provides automatic layout algorithms to arrange diagram elements so they don't overlap. 
+These methods are useful when programmatically creating diagrams or importing data from external sources where node positions are not predefined.
+
+* `layout(Root root, int gridSize)` - a simple layout method that arranges top-level nodes on all layers to prevent overlapping. This method analyzes connections between nodes to determine their relationships and positions them accordingly. Elements with more outgoing connections are typically positioned before (above) elements with more incoming connections, creating a natural flow direction in the diagram. The method is not designed to provide great auto-layouts, just starting point layouts for humans to manually layout further.
+* `layout(Collection<Node> nodes, Point offset, Function<Boolean, Supplier<Point>> offsetGeneratorProvider)` - an advanced layout method that provides more control over the layout process. It computes optimal positions for a collection of nodes and returns a map of their calculated rectangles. The method automatically updates the node geometries.
+* `forceLayout(Root root, double layoutWidth, double layoutHeight)` - Force-directed layout using the Fruchterman-Reingold algorithm from JGraphT. The algorithm treats the graph as a physical system where nodes repel each other while connections act as springs pulling connected nodes together. This method is particularly effective for visualizing graph structures with complex interconnections.
+* `layout(Collection<Node> nodes, LayoutAlgorithm2D<Node, Connection> layout, LayoutModel2D<Node> layoutModel)` - Generic layout method that works with any [JGraphT Layout Algorithms](https://jgrapht.org/javadoc/org.jgrapht.core/org/jgrapht/alg/drawing/package-summary.html).
+
+For more sophisticated auto-layout capabilities including hierarchical layouts, layered layouts, and advanced graph visualization algorithms, consider using the [Eclipse Layout Kernel (ELK)](https://eclipse.dev/elk/) via [Nasdanika Draw.io - ELK Integration](https://elk.models.nasdanika.org/)
+
+ELK provides:
+- Multiple layout algorithms (layered, force, radial, box, etc.)
+- Hierarchical layout with containment
+- Port constraints and placement
+- Edge routing algorithms
+- Layout configuration and fine-tuning options
+- Support for complex graph structures
 
 ## Generating documentation sites
 
