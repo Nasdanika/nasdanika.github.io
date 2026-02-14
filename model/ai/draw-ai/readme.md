@@ -7,8 +7,18 @@ and the system interprets, executes, or generates agentic code for a specific ru
 This approach builds on a core insight running through the Nasdanika ecosystem: diagrams, models, and metamodels are **executable knowledge structures**.
 They capture intent, context, and semantics in a form that both humans and AI agents can understand and act upon. 
 
+## Overview video
 
-[TOC levels=6]
+Below is an AI-generated overview video:
+
+<div class="embed-responsive embed-responsive-16by9">
+    <iframe src="https://youtu.be/xZ7bG9hUR2E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+## Quick Start
+
+* [Innovation Canvas](https://nasdanika-innovation-canvases.github.io/draw-ai/)
+* [Template Repository](https://nasdanika-templates.github.io/draw-ai/)
 
 ## The Semantic Membrane
 
