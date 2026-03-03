@@ -10,7 +10,7 @@
         </object>
         <object label="Core" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;  icon: /images/earth.svg&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;        comparator: label&#xa;doc-ref: readme.md&#xa;" id="core">
           <mxCell parent="1" style="swimlane;whiteSpace=wrap;html=1;collapsible=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1">
-            <mxGeometry height="180" width="550" x="100" y="910" as="geometry" />
+            <mxGeometry height="180" width="550" x="100" y="960" as="geometry" />
           </mxCell>
         </object>
         <object label="Common" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;doc-ref: readme.md" id="common">
@@ -95,7 +95,7 @@
         </object>
         <object label="HTML" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;  icon: /images/html.svg&#xa;doc-ref: readme.md&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;        comparator: label&#xa;" id="html">
           <mxCell parent="1" style="swimlane;whiteSpace=wrap;html=1;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1">
-            <mxGeometry height="130" width="550" x="100" y="770" as="geometry" />
+            <mxGeometry height="130" width="550" x="100" y="820" as="geometry" />
           </mxCell>
         </object>
         <object label="JsTree" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;doc-ref: readme.md" id="jstree">
@@ -135,7 +135,7 @@
         </object>
         <object label="Models" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;doc-ref: readme.md&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;        comparator: label&#xa;" id="models">
           <mxCell parent="1" style="swimlane;whiteSpace=wrap;html=1;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1">
-            <mxGeometry height="378" width="550" x="100" y="382" as="geometry" />
+            <mxGeometry height="428" width="550" x="100" y="382" as="geometry" />
           </mxCell>
         </object>
         <object label="GitLab" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="gitlab">
@@ -344,6 +344,11 @@
           </mxCell>
         </object>
         <object label="UAF" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://uaf.models.nasdanika.org/uaf/index.html" id="uaf">
+          <mxCell parent="models" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1">
+            <mxGeometry height="40" width="80" x="10" y="378" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Terraform" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://%id%.models.nasdanika.org" id="terraform">
           <mxCell parent="models" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1">
             <mxGeometry height="40" width="80" x="460" y="328" as="geometry" />
           </mxCell>
