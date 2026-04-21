@@ -143,6 +143,6 @@ public class MyCapabilityFactory extends ServiceCapabilityFactory<Void, MyCapabi
 
 ## Observability presentation
 
-<div class="embed-responsive embed-responsive-16by9">
+<div style="max-width: 720px" class="embed-responsive embed-responsive-16by9">
   <iframe class="embed-responsive-item" src="https://www.slideshare.net/slideshow/embed_code/key/tde1Rtnv15d7af?hostedIn=slideshare&page=upload" allowfullscreen></iframe>
 </div>

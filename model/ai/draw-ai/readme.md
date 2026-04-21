@@ -11,7 +11,7 @@ They capture intent, context, and semantics in a form that both humans and AI ag
 
 Below is an AI-generated overview video:
 
-<div class="embed-responsive embed-responsive-16by9">
+<div style="max-width: 720px" class="embed-responsive embed-responsive-16by9">
     <iframe src="https://www.youtube.com/embed/N1d8Q57yxYc?si=TqTkb-3nJeBg9LAo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
