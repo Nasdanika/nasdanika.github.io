@@ -43,15 +43,17 @@ Organizations are typically driven to modernize by intersecting pressures:
 
 ## The Fallacy of Code-First Modernization
 
-The most common, and perhaps most dangerous, approach to legacy modernization is jumping straight into writing new code. 
+The most common, and perhaps most dangerous, approach to legacy modernization is jumping straight into writing new code.
+Sun Tzu observed that "strategy without tactics is the slowest route to victory. Tactics without strategy is the noise before defeat." 
+In the context of software engineering, jumping directly into a legacy codebase is pure tactics devoid of strategy.
 
 When an engineering team encounters a monolithic application or an undocumented integration flow, the instinct is to start rebuilding it node-by-node in a modern language. 
-This is "hero engineering." While a brilliant engineer might successfully brute-force the migration of a single asset, this approach is fundamentally unscalable. 
+This is “hero engineering.” While a brilliant engineer might successfully brute-force the migration of a single asset, this approach is fundamentally unscalable.
 
-Code-first modernization treats the process as a syntax translation problem rather than a systemic architectural problem.
-Because the original intent of the legacy system is lost, translating it directly simply means manually rewriting technical debt into a newer syntax.
-It relies entirely on an individual developer's working memory and localized assumptions, ensuring the new system will eventually suffer the exact same fate as the legacy system it replaced.
-
+Code-first modernization treats the process as a syntax translation problem rather than a systemic architectural problem. 
+Because the original intent of the legacy system is lost, translating it directly simply means manually rewriting technical debt into a newer syntax. 
+It relies entirely on an individual developer’s working memory and localized assumptions, ensuring the new system will eventually suffer the exact same fate as the legacy
+system it replaced - proving that tactical coding without an architectural strategy is, ultimately, just the noise before defeat.
 
 ## The "GenAI Magic Wand" Fallacy
 
