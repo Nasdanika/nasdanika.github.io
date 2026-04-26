@@ -89,48 +89,62 @@ If software development is defined as the **incremental binding of decisions to 
 Jumping directly to code bypasses this entirely. 
 To achieve scalable, enterprise-grade modernization, this practice utilizes a Model-Driven, AI-assisted methodology built on the following lifecycle:
 
-1. **Establish the Metamodel:** We do not begin by writing code; we begin by eliciting a metamodel that accurately represents the domain and structure of the legacy system.
-2. **Ingest and Populate:** We parse the heterogeneous legacy artifacts (e.g., resolving the cross-references between XML configurations and Java bytecodes) to automatically populate the metamodel, building an accurate graph of the system's actual topology.
-3. **Enrich and Recover Intent:** With the structure mapped, we provide hooks to reattach lost intent. This allows architects to bind business rules, descriptions, and dynamic execution traces directly to the model elements. 
-4. **Visualize for Human-AI Consensus:** We generate visual representations (such as auto-laid out Draw.io diagrams) directly from the enriched model. This provides a shared, human-readable canvas where architects can reason about the logic, while simultaneously providing a rigidly bounded, deterministic context for Agentic AI to understand the system without hallucinating.
-5. **Transform and Generate:** Only after the decisions are bound, visualized, and enriched do we move to code. We utilize model transformation pipelines and GenAI-assisted code generation (strictly governed by the context of the metamodel) to output the modernized execution graph. 
+1. [Analysis](analysis.html)
+    * **Establish the Metamodel:** We do not begin by writing code; we begin by eliciting a metamodel that accurately represents the domain and structure of the legacy system.
+    * **Ingest and Populate:** We parse the heterogeneous legacy artifacts (e.g., resolving the cross-references between XML configurations and Java bytecodes) to automatically populate the metamodel, building an accurate graph of the system's actual topology.
+    * **Enrich and Recover Intent:** With the structure mapped, we provide hooks to reattach lost intent. This allows architects to bind business rules, descriptions, and dynamic execution traces directly to the model elements. 
+    * **Visualize for Human-AI Consensus:** We generate visual representations (such as auto-laid out Draw.io diagrams) directly from the enriched model. This provides a shared, human-readable canvas where architects can reason about the logic, while simultaneously providing a rigidly bounded, deterministic context for Agentic AI to understand the system without hallucinating.
+2. Execution - only after the decisions are bound, visualized, and enriched do we move to code. 
+    * [Direct Semantic Execution](direct-semantic-execution.html) (DSE) - runtime processors operating on top of the semantic model (not legacy artifacts) 
+    * [Model Transformation and Generation](transformation-and-generation.html) - We utilize model transformation pipelines and GenAI-assisted code generation (strictly governed by the context of the metamodel) to output the modernized execution graph.
 
 By treating modernization as a modeling and binding problem first, we ensure that the resulting system is not only modern, but structurally sound and fully documented by design.
-
-Here is a new section designed to sit immediately after your **"The Methodology: Incremental Binding & Semantic Models"** breakdown. It naturally expands the scope of the methodology, proving that the underlying architecture is universal enough to handle everything from static PDFs to bleeding-edge agent frameworks.
-
-***
+In the execution phase DSE and Transformation/Generation can be used at the same time and in any combination.
 
 ## Beyond Legacy Code: Intent Elicitation and "Agentization"
 
-Because this methodology is fundamentally rooted in **intent elicitation** rather than mere syntax translation, 
-its utility extends far beyond legacy software codebases. 
-The process of unbinding decisions, mapping their topology, and visualizing their flow applies equally to non-software artifacts
+Because this methodology is fundamentally rooted in **intent elicitation** rather than mere syntax translation, its utility extends far beyond legacy software codebases.
+The process of unbinding decisions, mapping their topology, and visualizing their flow applies equally to non-software artifacts, organizational transitions, 
 and greenfield architectural design.
 
 ### Modeling Business Procedures
 
-In many enterprises, the "legacy system" is not a compiled application, but a brittle, human-driven business procedure documented in massive PDFs, SharePoint wikis, or fragmented spreadsheets.
-These artifacts suffer from the exact same traceability and intent-loss issues as undocumented code. 
+In many enterprises, the "legacy system" is not a compiled application, but a brittle, human-driven business procedure documented in massive PDFs, 
+SharePoint wikis, or fragmented spreadsheets.
+These artifacts suffer from the exact same traceability and intent-loss issues as undocumented code.
 
-By applying this model-driven methodology to business procedures, we can extract the procedural logic
-(the inputs, conditions, and required outputs) and populate the same semantic model.
+By applying this model-driven methodology to business procedures, we can extract the procedural logic (the inputs, conditions, and required outputs) 
+and populate the same semantic model.
+
 This transforms static, text-heavy operating procedures into visual, executable graphs.
-It allows business analysts and enterprise architects to visually debug human workflows with the same rigor used
-for software integration pipelines.
+It allows business analysts and enterprise architects to visually debug human workflows with the same rigor used for software integration pipelines.
 
-GenAI can be used to elicit intent from unsructured documents into a structured model governed by a metamodel.
+GenAI can be used to elicit intent from unstructured documents into a structured model governed by a metamodel.
 It can, as well, be used to elicit the initial metamodel.
+
+### Business Acquisition as Enterprise Modernization
+
+At a macro level, business acquisition is structurally identical to system modernization.
+When an enterprise acquires a company, the objective is to "graft" the existing business into the parent organization.
+This requires preserving the unique operational intent - the core value proposition and specialized capabilities that justified the acquisition in the first place
+- while cleanly migrating shared, commodity functions such as HR and accounting.
+
+This challenge applies to organizations of all scales. 
+In mom-and-pop shops, the operational "legacy" is often completely unwritten, residing entirely within the owners' heads. 
+In massive corporate mergers, that legacy intent is scattered across the minds of Subject Matter Experts (SMEs) and buried in disparate documents, 
+frequently getting lost during the transition. 
+By applying model-driven intent elicitation to an acquisition, architects can capture and map the organizational and procedural topology of the acquired business.
+This ensures the critical, unique business logic is explicitly understood, modeled, and preserved rather than destroyed during integration.
 
 ### The Isomorphism of Integration Flows and Agentic AI
 
 When we abstract software architecture to a topological level, a fascinating symmetry emerges between legacy
-enterprise middleware and modern Generative AI frameworks. 
+enterprise middleware and modern Generative AI frameworks.
 
 Legacy Service Component Architecture (SCA) and integration flows (e.g., moving data through a pipeline of transformers and routers)
 are structurally identical to modern "Agentic AI" flows.
 Both are rooted in classic systems engineering paradigms, such as the PMBOK® process model (Inputs → Tools & Techniques → Outputs)
-or the IDEF0 functional modeling standard (Inputs, Controls, Outputs, Mechanisms). 
+or the IDEF0 functional modeling standard (Inputs, Controls, Outputs, Mechanisms).
 
 Consider the current industry excitement around "Agent Skills".
 In modern AI frameworks, developers equip autonomous agents with specific capabilities—such as API access, Python interpreters,
@@ -144,7 +158,7 @@ to an input to produce a defined output based on defined constraints.
 ### Greenfield Development and "Agentization"
 
 Because an Agentic flow is essentially a modernized integration flow, this model-driven approach serves as the perfect
-scaffolding for greenfield application development and the **"agentization"** of existing processes. 
+scaffolding for greenfield application development and the **agentization** of existing processes.
 
 Jumping straight into writing Python scripts for AI agents is just as dangerous as code-first legacy modernization; it creates brittle, unmanageable AI spaghetti code.
 Instead, architects can use the visual semantic model to design the greenfield process first:
