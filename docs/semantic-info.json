@@ -1,6 +1,6 @@
 [
     {
-        "identifiers": ["uuid:787cd78d-45d8-425a-90fc-3a13ddad1e18"],
+        "identifiers": ["uuid:852291b9-e8f5-4a29-9c71-de311c66d24f"],
         "name": "Nasdanika",
         "icon": "https://docs.nasdanika.org/images/nasdanika-logo.png",
         "location": "index.html",
@@ -12,9 +12,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:787cd78d-45d8-425a-90fc-3a13ddad1e18"]
+            "identifiers": ["uuid:852291b9-e8f5-4a29-9c71-de311c66d24f"]
         },
-        "identifiers": ["uuid:15533c81-b7ef-4f12-8f70-2d78c5a3f708"],
+        "identifiers": ["uuid:197aa0e2-8259-4b54-9a80-52b0c95ce917"],
         "type": {
             "name": "Action",
             "ns-uri": "ecore://app.models.nasdanika.org"
@@ -23,9 +23,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:15533c81-b7ef-4f12-8f70-2d78c5a3f708"]
+            "identifiers": ["uuid:197aa0e2-8259-4b54-9a80-52b0c95ce917"]
         },
-        "identifiers": ["uuid:25cbf331-fb6e-4f2c-a5dd-e285494c585d"],
+        "identifiers": ["uuid:85f26c2d-042b-4a10-a068-f62fe33a0b9c"],
         "name": "Knowledge",
         "icon": "/images/open-book.svg",
         "location": "https://github.com/Nasdanika-Knowledge",
@@ -37,9 +37,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:25cbf331-fb6e-4f2c-a5dd-e285494c585d"]
+            "identifiers": ["uuid:85f26c2d-042b-4a10-a068-f62fe33a0b9c"]
         },
-        "identifiers": ["uuid:aaf425db-0b84-4b68-8599-0519b611b6c9"],
+        "identifiers": ["uuid:140ab97f-f315-41c5-a9ff-3950da550831"],
         "name": "Beyond Diagrams",
         "icon": "fas fa-book",
         "location": "https://leanpub.com/beyond-diagrams",
@@ -51,9 +51,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:15533c81-b7ef-4f12-8f70-2d78c5a3f708"]
+            "identifiers": ["uuid:197aa0e2-8259-4b54-9a80-52b0c95ce917"]
         },
-        "identifiers": ["uuid:d8adb65a-d3b9-401f-9b4a-37c397b81bef"],
+        "identifiers": ["uuid:0b0cf685-d2ed-48bc-a83e-13a9aeeef712"],
         "name": "Practices",
         "icon": "/images/best-practice.svg",
         "location": "practices/index.html",
@@ -65,9 +65,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:d8adb65a-d3b9-401f-9b4a-37c397b81bef"]
+            "identifiers": ["uuid:0b0cf685-d2ed-48bc-a83e-13a9aeeef712"]
         },
-        "identifiers": ["uuid:019b30a4-acd0-475f-a45a-d72f5d1807eb"],
+        "identifiers": ["uuid:b45b47b3-45d5-4f39-b996-684e9639d616"],
         "name": "Legacy Modernization",
         "icon": "/images/legacy-modernization.svg",
         "location": "practices/legacy-modernization/index.html",
@@ -79,9 +79,51 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:d8adb65a-d3b9-401f-9b4a-37c397b81bef"]
+            "identifiers": ["uuid:b45b47b3-45d5-4f39-b996-684e9639d616"]
         },
-        "identifiers": ["uuid:af1b640d-1567-4ed7-b7b8-186165676cef"],
+        "identifiers": ["uuid:e2db5faa-1b01-4b0d-ac6d-2fbc1c1cbd21"],
+        "name": "Analysis",
+        "icon": "/images/gaps.svg",
+        "location": "practices/legacy-modernization/analysis.html",
+        "type": {
+            "name": "Action",
+            "ns-uri": "ecore://app.models.nasdanika.org"
+        }
+    },
+    {
+        "container": {
+            "reference": "children",
+            "identifiers": ["uuid:b45b47b3-45d5-4f39-b996-684e9639d616"]
+        },
+        "identifiers": ["uuid:486c86da-dd47-4a2b-a71f-41cb91bce615"],
+        "name": "Direct Semantic Execution (DSE)",
+        "icon": "/images/process.svg",
+        "location": "practices/legacy-modernization/direct-semantic-execution.html",
+        "type": {
+            "name": "Action",
+            "ns-uri": "ecore://app.models.nasdanika.org"
+        }
+    },
+    {
+        "container": {
+            "reference": "children",
+            "identifiers": ["uuid:b45b47b3-45d5-4f39-b996-684e9639d616"]
+        },
+        "identifiers": ["uuid:7d34fa63-1eb4-4254-b29c-c7deb7aa5d40"],
+        "name": "Model Transformation and Generation",
+        "icon": "/images/data-pipeline.svg",
+        "location": "practices/legacy-modernization/transformation-and-generation.html",
+        "type": {
+            "name": "Action",
+            "ns-uri": "ecore://app.models.nasdanika.org"
+        }
+    },
+    {
+        "container": {
+            "reference": "children",
+            "identifiers": ["uuid:0b0cf685-d2ed-48bc-a83e-13a9aeeef712"]
+        },
+        "identifiers": ["uuid:e950a035-08cb-40ae-b3a0-f09f7b339e79"],
         "name": "Analysis, Visualization & Generation",
         "location": "practices/generic/index.html",
         "type": {
@@ -92,9 +134,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:d8adb65a-d3b9-401f-9b4a-37c397b81bef"]
+            "identifiers": ["uuid:0b0cf685-d2ed-48bc-a83e-13a9aeeef712"]
         },
-        "identifiers": ["uuid:cbb4fb24-91ea-4965-ba9a-081c10d6c7be"],
+        "identifiers": ["uuid:ae3bec81-3be1-4834-8ee4-f222ec29cc00"],
         "name": "Java Analysis, Visualization & Generation",
         "location": "practices/java/index.html",
         "type": {
@@ -105,9 +147,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:d8adb65a-d3b9-401f-9b4a-37c397b81bef"]
+            "identifiers": ["uuid:0b0cf685-d2ed-48bc-a83e-13a9aeeef712"]
         },
-        "identifiers": ["uuid:9dafd372-9ca0-4f52-b745-2c74fa2b7cac"],
+        "identifiers": ["uuid:3a8c808a-2fbe-4543-9129-0d30ade775e0"],
         "name": "JUnit Tests Generation",
         "location": "practices/junit/index.html",
         "type": {
@@ -118,9 +160,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:15533c81-b7ef-4f12-8f70-2d78c5a3f708"]
+            "identifiers": ["uuid:197aa0e2-8259-4b54-9a80-52b0c95ce917"]
         },
-        "identifiers": ["uuid:68defd74-4b29-4589-bb7f-539bfbc443bb"],
+        "identifiers": ["uuid:7a7c1112-e901-4572-8f0d-ab786340525d"],
         "name": "CLI",
         "icon": "/images/command-line.svg",
         "location": "nsd-cli/index.html",
@@ -132,7 +174,7 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:68defd74-4b29-4589-bb7f-539bfbc443bb"]
+            "identifiers": ["uuid:7a7c1112-e901-4572-8f0d-ab786340525d"]
         },
         "identifiers": ["uuid:a16a98da-d665-46b1-9186-3bc0540c998b"],
         "name": "nsd",
@@ -4830,9 +4872,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:15533c81-b7ef-4f12-8f70-2d78c5a3f708"]
+            "identifiers": ["uuid:197aa0e2-8259-4b54-9a80-52b0c95ce917"]
         },
-        "identifiers": ["uuid:8eb9fe36-e1ca-465e-8269-7dd94c1ab40f"],
+        "identifiers": ["uuid:d3dd3ee6-af7f-4cb3-8f38-e13e4f2fa355"],
         "name": "AI",
         "icon": "/images/ai.svg",
         "location": "ai/index.html",
@@ -4844,9 +4886,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:8eb9fe36-e1ca-465e-8269-7dd94c1ab40f"]
+            "identifiers": ["uuid:d3dd3ee6-af7f-4cb3-8f38-e13e4f2fa355"]
         },
-        "identifiers": ["uuid:1654dbff-8015-4d8a-9c38-3d427be195ff"],
+        "identifiers": ["uuid:93832b41-5022-4cf6-b257-9b97f94eb8b2"],
         "name": "CLI",
         "icon": "/images/command-line.svg",
         "location": "ai/ai-cli/index.html",
@@ -4858,9 +4900,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:8eb9fe36-e1ca-465e-8269-7dd94c1ab40f"]
+            "identifiers": ["uuid:d3dd3ee6-af7f-4cb3-8f38-e13e4f2fa355"]
         },
-        "identifiers": ["uuid:b6d41af5-c830-4174-9682-83971f7c5c26"],
+        "identifiers": ["uuid:57184adf-1206-4588-aeca-65f39eb4b92d"],
         "name": "Core",
         "icon": "/images/geology.svg",
         "location": "ai/ai-core/index.html",
@@ -4872,9 +4914,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:8eb9fe36-e1ca-465e-8269-7dd94c1ab40f"]
+            "identifiers": ["uuid:d3dd3ee6-af7f-4cb3-8f38-e13e4f2fa355"]
         },
-        "identifiers": ["uuid:4d061d74-5227-4edb-b645-7baf746905f7"],
+        "identifiers": ["uuid:32170664-7eae-4da6-96fd-9bc65c2e8e33"],
         "name": "Drawio",
         "icon": "/images/drawio.svg",
         "location": "ai/ai-drawio/index.html",
@@ -4886,9 +4928,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:8eb9fe36-e1ca-465e-8269-7dd94c1ab40f"]
+            "identifiers": ["uuid:d3dd3ee6-af7f-4cb3-8f38-e13e4f2fa355"]
         },
-        "identifiers": ["uuid:214f1bb7-2c0b-494f-9f0a-31dd3c1bc703"],
+        "identifiers": ["uuid:c70be8ce-5ed3-459a-b1bd-440af7ab7888"],
         "name": "EMF",
         "icon": "/images/diagram.svg",
         "location": "ai/ai-emf/index.html",
@@ -4900,9 +4942,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:8eb9fe36-e1ca-465e-8269-7dd94c1ab40f"]
+            "identifiers": ["uuid:d3dd3ee6-af7f-4cb3-8f38-e13e4f2fa355"]
         },
-        "identifiers": ["uuid:1672960f-8559-4db7-8c4d-5e9e91f2d4e3"],
+        "identifiers": ["uuid:4d350a56-86e7-4c2a-8d47-705c7dc652a3"],
         "name": "HTTP",
         "icon": "/images/http.svg",
         "location": "ai/ai-http/index.html",
@@ -4914,9 +4956,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:8eb9fe36-e1ca-465e-8269-7dd94c1ab40f"]
+            "identifiers": ["uuid:d3dd3ee6-af7f-4cb3-8f38-e13e4f2fa355"]
         },
-        "identifiers": ["uuid:a755a721-42e1-4ee5-9a76-0647836e3545"],
+        "identifiers": ["uuid:b0cb6c7d-55f7-46d5-adee-954c82ca1d3d"],
         "name": "MCP",
         "icon": "/images/mcp.png",
         "location": "ai/mcp/index.html",
@@ -4928,9 +4970,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:8eb9fe36-e1ca-465e-8269-7dd94c1ab40f"]
+            "identifiers": ["uuid:d3dd3ee6-af7f-4cb3-8f38-e13e4f2fa355"]
         },
-        "identifiers": ["uuid:1acbfc1e-2b0c-42b2-9bcd-3f8852a94230"],
+        "identifiers": ["uuid:1ea9b915-1e28-4120-9295-e04150f9064c"],
         "name": "Math",
         "icon": "/images/math.svg",
         "location": "ai/ai-math/index.html",
@@ -4942,9 +4984,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:8eb9fe36-e1ca-465e-8269-7dd94c1ab40f"]
+            "identifiers": ["uuid:d3dd3ee6-af7f-4cb3-8f38-e13e4f2fa355"]
         },
-        "identifiers": ["uuid:1cb0f2bf-13fe-41bd-8815-9763e5431611"],
+        "identifiers": ["uuid:abc64fe5-11bc-4af8-9340-5ab859d1babf"],
         "name": "Nasdanika Draw.AI",
         "icon": "/images/nasdanika-draw-ai.png",
         "location": "ai/draw-ai/index.html",
@@ -4956,9 +4998,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:8eb9fe36-e1ca-465e-8269-7dd94c1ab40f"]
+            "identifiers": ["uuid:d3dd3ee6-af7f-4cb3-8f38-e13e4f2fa355"]
         },
-        "identifiers": ["uuid:aed746ee-3bfd-4f87-9efe-4e31f5fbb00f"],
+        "identifiers": ["uuid:4e6f2c2e-fcb0-426f-9411-8f38bc53527a"],
         "name": "Ollama",
         "icon": "/images/ollama.png",
         "location": "ai/ollama/index.html",
@@ -4970,9 +5012,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:8eb9fe36-e1ca-465e-8269-7dd94c1ab40f"]
+            "identifiers": ["uuid:d3dd3ee6-af7f-4cb3-8f38-e13e4f2fa355"]
         },
-        "identifiers": ["uuid:e11e93f5-d927-4194-ae1f-8bbf978538e3"],
+        "identifiers": ["uuid:23daed57-aab3-4165-88c7-d0c063425df2"],
         "name": "OpenAI",
         "icon": "/images/chat-gpt.svg",
         "location": "ai/open-ai/index.html",
@@ -4984,9 +5026,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:8eb9fe36-e1ca-465e-8269-7dd94c1ab40f"]
+            "identifiers": ["uuid:d3dd3ee6-af7f-4cb3-8f38-e13e4f2fa355"]
         },
-        "identifiers": ["uuid:e7354dad-1f6b-4884-b335-244619e33db6"],
+        "identifiers": ["uuid:449510c0-04f6-4c59-96f2-26931cae512c"],
         "name": "Smile",
         "location": "ai/smile/index.html",
         "type": {
@@ -4997,9 +5039,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:15533c81-b7ef-4f12-8f70-2d78c5a3f708"]
+            "identifiers": ["uuid:197aa0e2-8259-4b54-9a80-52b0c95ce917"]
         },
-        "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"],
+        "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"],
         "name": "Models",
         "location": "models/index.html",
         "type": {
@@ -5010,9 +5052,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:ee7081ae-cb53-429b-9eb9-39d7973b5de9"],
+        "identifiers": ["uuid:704aa330-0940-4fd7-94f8-75d487a86273"],
         "name": "A2a",
         "location": "https://a2a.models.nasdanika.org/index.html",
         "type": {
@@ -5023,9 +5065,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:eba3fcda-ac97-4cf5-9d8c-938dc83488e2"],
+        "identifiers": ["uuid:f99aeabb-6ad8-4b52-a1a6-e27cd297f9e8"],
         "name": "App",
         "location": "https://html-app.models.nasdanika.org/index.html",
         "type": {
@@ -5036,9 +5078,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:1b459017-9db8-4172-a5ce-e5e4a0e4ecb6"],
+        "identifiers": ["uuid:557c71cd-59c0-4ac2-9ee7-6dd27de40fe1"],
         "name": "Architecture",
         "location": "https://architecture.models.nasdanika.org/index.html",
         "type": {
@@ -5049,9 +5091,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:48af81e6-bc2d-48df-bf99-2386998f61f9"],
+        "identifiers": ["uuid:d7c91bfd-bf21-4d0a-aff7-0290e8883022"],
         "name": "Azure",
         "location": "https://azure.models.nasdanika.org",
         "type": {
@@ -5062,9 +5104,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:88e90c56-bad3-4af2-b676-34383c3b5c1e"],
+        "identifiers": ["uuid:bcb0929c-0ad5-4700-a031-d9e55441f5db"],
         "name": "BW5",
         "location": "https://github.com/Nasdanika-Models/bw5/",
         "type": {
@@ -5075,9 +5117,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:10db1f9f-adb7-41e9-bb02-4eef880f7e36"],
+        "identifiers": ["uuid:8beb678c-a7b2-4fbf-a4e4-739df170f135"],
         "name": "Bank",
         "location": "https://bank.models.nasdanika.org",
         "type": {
@@ -5088,9 +5130,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:636516cb-4025-4104-be6f-833828f336fa"],
+        "identifiers": ["uuid:13f3383d-b85b-4f4a-afa3-80b4aed231fe"],
         "name": "Bootstrap",
         "location": "https://bootstrap.models.nasdanika.org",
         "type": {
@@ -5101,9 +5143,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:5333f8d2-6fac-475a-a308-d90a5a6e9b0a"],
+        "identifiers": ["uuid:82aba673-cad9-4370-a64e-e9ec46db0ec0"],
         "name": "Capability",
         "location": "https://capability.models.nasdanika.org",
         "type": {
@@ -5114,9 +5156,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:d30a3019-e57b-4aab-af12-63b0764e13d3"],
+        "identifiers": ["uuid:1f84f24a-9f4f-4890-82e8-f9a293929caf"],
         "name": "Change",
         "location": "https://change.models.nasdanika.org",
         "type": {
@@ -5127,9 +5169,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:a5947b09-494f-4efc-b28d-76f9662a93d7"],
+        "identifiers": ["uuid:e7abfd32-0459-42ff-8dec-3d592de31bc0"],
         "name": "Compare",
         "location": "https://compare.models.nasdanika.org",
         "type": {
@@ -5140,9 +5182,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:d5514de2-50e6-45d8-9731-9f37b666f5c1"],
+        "identifiers": ["uuid:a5fb56f0-d066-4707-9c4c-cd1fbc38ba09"],
         "name": "Coverage",
         "location": "https://coverage.models.nasdanika.org",
         "type": {
@@ -5153,9 +5195,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:940e02a1-5245-46ba-92f6-86dd1238a02c"],
+        "identifiers": ["uuid:b6205cc5-aed6-4889-92f6-862d908db01e"],
         "name": "CrewAI",
         "location": "https://crew-ai.models.nasdanika.org",
         "type": {
@@ -5166,9 +5208,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:e838fef6-2b1e-4429-8dac-592b7a987a08"],
+        "identifiers": ["uuid:edc497ce-38a3-4625-86cf-47e7982dc676"],
         "name": "Decision Analysis",
         "location": "https://mcda.models.nasdanika.org",
         "type": {
@@ -5179,9 +5221,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:f9983621-60c7-40e3-8ba0-5a3672d992fd"],
+        "identifiers": ["uuid:18d01149-3d8c-4d2d-8493-8f3b729b7f0a"],
         "name": "ECharts Graph",
         "location": "https://echarts.models.nasdanika.org/graph",
         "type": {
@@ -5192,9 +5234,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:41bc61fd-b558-419a-8b07-dd9b9ff4166d"],
+        "identifiers": ["uuid:eca4624c-99ff-4dcf-b11d-a4d4a468e9b8"],
         "name": "Eclipse Layout Kernel",
         "location": "https://elk.models.nasdanika.org",
         "type": {
@@ -5205,9 +5247,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:bea26759-2754-4ab8-aabe-f091399fb351"],
+        "identifiers": ["uuid:034b94ea-1305-4b6c-8e90-de372bc4cd38"],
         "name": "Ecore",
         "location": "https://ecore.models.nasdanika.org",
         "type": {
@@ -5218,9 +5260,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:f1446c19-3ad9-4ad5-8fc1-51915b39cf2f"],
+        "identifiers": ["uuid:a21578b0-4fea-47f1-92ff-8097c3ba62c9"],
         "name": "Enterprise",
         "location": "https://enterprise.models.nasdanika.org",
         "type": {
@@ -5231,9 +5273,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:18ed3264-3dab-4f07-b69c-13a08bfc3212"],
+        "identifiers": ["uuid:d8add43a-6cc7-4b32-8ee4-8103ce4f68bd"],
         "name": "Excel",
         "location": "https://excel.models.nasdanika.org",
         "type": {
@@ -5244,9 +5286,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:9c75811f-cb0e-4493-a3f6-7b216e14530a"],
+        "identifiers": ["uuid:316e8589-8371-4e3a-8fe6-06ab25673347"],
         "name": "Family",
         "location": "https://family.models.nasdanika.org",
         "type": {
@@ -5257,9 +5299,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:63830adb-40ea-4104-862f-0df2150f1236"],
+        "identifiers": ["uuid:3357f273-edd9-47ee-a52e-e1bcf1bf4b14"],
         "name": "Flow",
         "location": "https://flow.models.nasdanika.org",
         "type": {
@@ -5270,9 +5312,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:9ee74402-d1ec-4b61-8fca-a23be60a716c"],
+        "identifiers": ["uuid:91dce5b2-92fd-43e2-8912-c0f881ea6c18"],
         "name": "Function Flow",
         "location": "https://function-flow.models.nasdanika.org",
         "type": {
@@ -5283,9 +5325,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:535b82d4-d395-4203-b088-0ee392df9b8f"],
+        "identifiers": ["uuid:88c3efbb-f03d-4df0-8c71-19f9a6420f39"],
         "name": "Genmodel",
         "location": "https://genmodel.models.nasdanika.org",
         "type": {
@@ -5296,9 +5338,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:dfa89a81-877c-4a9f-87a9-a71399983f96"],
+        "identifiers": ["uuid:2c0ede8c-5d05-4a8f-9da0-a9afbd1fda53"],
         "name": "Git",
         "location": "https://git.models.nasdanika.org",
         "type": {
@@ -5309,9 +5351,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:e49baf99-e4c5-41f0-89bb-6c748f908e94"],
+        "identifiers": ["uuid:733dd97d-b7c0-4cc4-abdc-fd762b9788b3"],
         "name": "GitLab",
         "location": "https://gitlab.models.nasdanika.org",
         "type": {
@@ -5322,9 +5364,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:1858829f-908f-4b01-806f-3097e9666c9c"],
+        "identifiers": ["uuid:8b2cbb91-a8f0-43a7-8bca-e7d267097bd6"],
         "name": "Graph",
         "location": "https://graph.models.nasdanika.org",
         "type": {
@@ -5335,9 +5377,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:26b58b21-32ec-490f-8155-2883b8124690"],
+        "identifiers": ["uuid:cefb98ae-e819-4090-abbe-3c8d417e76d9"],
         "name": "HTML",
         "location": "https://html.models.nasdanika.org",
         "type": {
@@ -5348,9 +5390,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:d352dcaa-76be-46cd-8304-9c5b3c44a402"],
+        "identifiers": ["uuid:d3577368-1da8-432a-a8f4-086f1d276be6"],
         "name": "Java",
         "location": "https://java.models.nasdanika.org",
         "type": {
@@ -5361,9 +5403,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:12594229-6e49-4bb3-8e09-57a901d53991"],
+        "identifiers": ["uuid:32e62313-24ff-4d0d-8c9a-66134117ba28"],
         "name": "Jira",
         "location": "https://jira.models.nasdanika.org",
         "type": {
@@ -5374,9 +5416,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:18885876-6dac-4623-9ea9-b1258ec6357d"],
+        "identifiers": ["uuid:56856835-8250-4638-a2d2-d0a4df01ba64"],
         "name": "Kubernetes",
         "location": "https://kubernetes.models.nasdanika.org",
         "type": {
@@ -5387,9 +5429,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:79006275-51a8-41c9-a376-66596747e17c"],
+        "identifiers": ["uuid:28385191-416e-4c29-9d35-07e88f7ce591"],
         "name": "Maven",
         "location": "https://maven.models.nasdanika.org",
         "type": {
@@ -5400,9 +5442,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:ef80128a-5512-40b2-9183-e80c26fb9b64"],
+        "identifiers": ["uuid:fa191f79-b5b3-4428-8739-8dcf0a49e6aa"],
         "name": "Nature",
         "location": "https://nature.models.nasdanika.org",
         "type": {
@@ -5413,9 +5455,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:f3e2fe38-9552-4860-a432-39974d0f4b85"],
+        "identifiers": ["uuid:8abb862a-3821-4c5c-80d6-cf775494f88c"],
         "name": "PDF",
         "location": "https://pdf.models.nasdanika.org",
         "type": {
@@ -5426,9 +5468,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:02713f48-4f1b-42dd-be16-fc21c3e2e2d7"],
+        "identifiers": ["uuid:d906cafd-b56d-4bc6-bffc-6b26e758e34c"],
         "name": "Party",
         "location": "https://party.models.nasdanika.org",
         "type": {
@@ -5439,9 +5481,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:68011c14-98d8-40bb-b6ce-431481d24b96"],
+        "identifiers": ["uuid:4bcf5826-528d-4aca-a79e-b50be4028e09"],
         "name": "Process",
         "location": "https://process.models.nasdanika.org",
         "type": {
@@ -5452,9 +5494,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:babf0174-01e7-4bde-8daa-68b74d29a5d1"],
+        "identifiers": ["uuid:adf8f268-7fa3-4db6-8f6c-53d463acac6d"],
         "name": "Python",
         "location": "https://python.models.nasdanika.org",
         "type": {
@@ -5465,9 +5507,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:15687298-02bb-4421-b617-841f073794a3"],
+        "identifiers": ["uuid:a7e89623-0212-4e85-9d57-6bfdb430482e"],
         "name": "Resume",
         "location": "https://resume.models.nasdanika.org",
         "type": {
@@ -5478,9 +5520,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:d32a751a-e98a-448e-ae56-ceab915f7019"],
+        "identifiers": ["uuid:163635a6-df41-4e3c-b7d8-e4a7efe91e7f"],
         "name": "Risk",
         "location": "https://risk.models.nasdanika.org",
         "type": {
@@ -5491,9 +5533,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:ee6133c1-9cd7-4258-b4ad-d3eb2c042b40"],
+        "identifiers": ["uuid:5d5ef67b-d451-4c5d-bda5-bf679c7d4ddc"],
         "name": "Rules",
         "location": "https://rules.models.nasdanika.org",
         "type": {
@@ -5504,9 +5546,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:bc4a88c3-d83c-4256-8b89-20e28a6a339f"],
+        "identifiers": ["uuid:ae2081fe-d2fb-4c2c-8601-e7b89f1303c9"],
         "name": "SQL",
         "location": "https://sql.models.nasdanika.org",
         "type": {
@@ -5517,9 +5559,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:edbd18c5-7c95-48b3-8f68-d446622598be"],
+        "identifiers": ["uuid:a17e414f-e7e6-4952-a6b9-6912aee39a60"],
         "name": "Semantic Kernel",
         "location": "https://semantic-kernel.models.nasdanika.org",
         "type": {
@@ -5530,9 +5572,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:963c3e38-6fa8-4cc2-bc58-32f88a398abf"],
+        "identifiers": ["uuid:baa1862a-7864-430f-a0d0-d2b3de720577"],
         "name": "Source Engineering",
         "location": "https://source-engineering.models.nasdanika.org",
         "type": {
@@ -5543,9 +5585,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:156f0f47-96a8-4773-a2ce-f72473151518"],
+        "identifiers": ["uuid:034a173b-df4b-4596-afcd-3da5989d25c0"],
         "name": "SysML",
         "location": "https://uaf.models.nasdanika.org/sysml/index.html",
         "type": {
@@ -5556,9 +5598,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:61071cf1-1323-4544-ac38-2a28a95c1574"],
+        "identifiers": ["uuid:46b341de-b31d-48f2-8506-2248317a7c3b"],
         "name": "Terraform",
         "location": "https://terraform.models.nasdanika.org",
         "type": {
@@ -5569,9 +5611,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:ea5e5b6a-2aa2-49e5-aefb-2f93144aa8f2"],
+        "identifiers": ["uuid:a6865933-68c5-48b7-8823-52dc16665210"],
         "name": "Trading",
         "location": "https://trading.models.nasdanika.org",
         "type": {
@@ -5582,9 +5624,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:1d2b7808-4b3b-4353-ae31-aae8c150c91a"],
+        "identifiers": ["uuid:1b9da8ab-d8c8-45a9-bef6-b763ed03c69f"],
         "name": "UAF",
         "location": "https://uaf.models.nasdanika.org/uaf/index.html",
         "type": {
@@ -5595,9 +5637,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:31744943-60b7-4ad4-83ba-25c54bcea7ee"],
+        "identifiers": ["uuid:c91cebe1-4b7f-44eb-baa1-6784724f3eb8"],
         "name": "XML Schema",
         "location": "https://xsd.models.nasdanika.org/index.html",
         "type": {
@@ -5608,9 +5650,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c85c5c05-53ba-4280-a705-4c63c3e6fa1f"]
+            "identifiers": ["uuid:7641364f-031b-4872-8a92-2d28d7936bc9"]
         },
-        "identifiers": ["uuid:3c169273-99c8-4e28-9127-0752547fa3d1"],
+        "identifiers": ["uuid:97bd5ce4-781e-42a9-9e7c-0d166e160871"],
         "name": "Xcore",
         "location": "https://xcore.models.nasdanika.org/index.html",
         "type": {
@@ -5621,9 +5663,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:15533c81-b7ef-4f12-8f70-2d78c5a3f708"]
+            "identifiers": ["uuid:197aa0e2-8259-4b54-9a80-52b0c95ce917"]
         },
-        "identifiers": ["uuid:c71835ad-e9ac-4860-a976-cfa550188100"],
+        "identifiers": ["uuid:5e7d5a99-1a41-4620-b9fe-f935b3587737"],
         "name": "HTML",
         "icon": "/images/html.svg",
         "location": "html/index.html",
@@ -5635,9 +5677,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c71835ad-e9ac-4860-a976-cfa550188100"]
+            "identifiers": ["uuid:5e7d5a99-1a41-4620-b9fe-f935b3587737"]
         },
-        "identifiers": ["uuid:07550449-5d02-4747-9e76-719ee90c99d0"],
+        "identifiers": ["uuid:a87b28be-73f8-4b69-8a7d-ca862c678e62"],
         "name": "3D Force Graph",
         "location": "html/3d-force-graph/index.html",
         "type": {
@@ -5648,9 +5690,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c71835ad-e9ac-4860-a976-cfa550188100"]
+            "identifiers": ["uuid:5e7d5a99-1a41-4620-b9fe-f935b3587737"]
         },
-        "identifiers": ["uuid:cec6334c-377e-46eb-a66a-8f65f6676e28"],
+        "identifiers": ["uuid:f93f3328-fd28-4f88-bda4-1e459a4b9b0c"],
         "name": "AlpineJS",
         "icon": "/images/html/Alpine.js.svg",
         "location": "html/alpine-js/index.html",
@@ -5662,9 +5704,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c71835ad-e9ac-4860-a976-cfa550188100"]
+            "identifiers": ["uuid:5e7d5a99-1a41-4620-b9fe-f935b3587737"]
         },
-        "identifiers": ["uuid:41e7d978-d0a4-463d-bbd1-81b1404e9d3b"],
+        "identifiers": ["uuid:2c3c778d-47d1-45c8-b4a7-6cc5ab99e6be"],
         "name": "Bootstrap",
         "icon": "/images/html/Bootstrap.svg",
         "location": "html/bootstrap/index.html",
@@ -5676,9 +5718,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c71835ad-e9ac-4860-a976-cfa550188100"]
+            "identifiers": ["uuid:5e7d5a99-1a41-4620-b9fe-f935b3587737"]
         },
-        "identifiers": ["uuid:755115e6-2260-493b-81b1-ad6e604d2f33"],
+        "identifiers": ["uuid:84bf5edb-9ca9-4b3b-a409-2cec3d9aff1c"],
         "name": "Graph",
         "location": "html/html-graph/index.html",
         "type": {
@@ -5689,9 +5731,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c71835ad-e9ac-4860-a976-cfa550188100"]
+            "identifiers": ["uuid:5e7d5a99-1a41-4620-b9fe-f935b3587737"]
         },
-        "identifiers": ["uuid:c4989c20-1fb5-48e7-b14b-bcd16d6a98ad"],
+        "identifiers": ["uuid:61d96eea-0405-435f-a3f1-572ed3782924"],
         "name": "HTML",
         "icon": "/images/html.svg",
         "location": "html/html/index.html",
@@ -5703,9 +5745,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c71835ad-e9ac-4860-a976-cfa550188100"]
+            "identifiers": ["uuid:5e7d5a99-1a41-4620-b9fe-f935b3587737"]
         },
-        "identifiers": ["uuid:1d9ef9ec-145e-4467-9b9f-d1aeff59f1db"],
+        "identifiers": ["uuid:75bd3388-37cf-40ba-a5c7-950e3ce24e01"],
         "name": "HTTP",
         "icon": "/images/http.svg",
         "location": "html/html-http/index.html",
@@ -5717,9 +5759,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:c71835ad-e9ac-4860-a976-cfa550188100"]
+            "identifiers": ["uuid:5e7d5a99-1a41-4620-b9fe-f935b3587737"]
         },
-        "identifiers": ["uuid:ba0072a3-292f-4a26-98ea-37f54e40b1ee"],
+        "identifiers": ["uuid:1c52b943-e384-4b62-b7d4-1c5b5537aee4"],
         "name": "JsTree",
         "location": "html/jstree/index.html",
         "type": {
@@ -5730,9 +5772,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:15533c81-b7ef-4f12-8f70-2d78c5a3f708"]
+            "identifiers": ["uuid:197aa0e2-8259-4b54-9a80-52b0c95ce917"]
         },
-        "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"],
+        "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"],
         "name": "Core",
         "icon": "/images/earth.svg",
         "location": "core/index.html",
@@ -5744,9 +5786,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:b6919ac4-b35b-43e8-b659-66611913f61b"],
+        "identifiers": ["uuid:95c935d5-e9f3-4bf1-828a-aa8813097d80"],
         "name": "CLI",
         "icon": "/images/command-line.svg",
         "location": "core/cli/index.html",
@@ -5758,9 +5800,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:53e4385d-0138-4ddf-bf79-fa0ce4d07c8e"],
+        "identifiers": ["uuid:32824a31-7ef2-4599-8c32-a237b95b0340"],
         "name": "Capability",
         "location": "core/capability/index.html",
         "type": {
@@ -5771,9 +5813,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:cca00a2e-b2ea-4c91-8176-23cf949b7d04"],
+        "identifiers": ["uuid:02e526ab-7de9-4a1a-8371-76273d6c6d0b"],
         "name": "Common",
         "location": "core/common/index.html",
         "type": {
@@ -5784,9 +5826,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:4a6200c7-3ea6-4dee-821e-a4c88328b7e7"],
+        "identifiers": ["uuid:222e564a-6344-4191-9280-ba5ca4be361d"],
         "name": "Diagram",
         "location": "core/diagram/index.html",
         "type": {
@@ -5797,9 +5839,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:7c406157-9f9e-4dfc-afd8-a716d958e98f"],
+        "identifiers": ["uuid:dd978c37-f85e-4604-919f-e76652a49b88"],
         "name": "Drawio",
         "location": "core/drawio/index.html",
         "type": {
@@ -5810,9 +5852,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:0e3b6642-5582-4dd8-a865-feb1c123163c"],
+        "identifiers": ["uuid:9cd926f7-c76a-49e5-8cb4-c0a764124393"],
         "name": "ECharts",
         "description": "A collection of classes on top of\nECharts Java to simplify chart creation",
         "location": "core/core-echarts/index.html",
@@ -5824,9 +5866,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:fe5999e4-e5ef-4861-b85d-f6dcab22aa8c"],
+        "identifiers": ["uuid:1f9b4a82-7909-4c62-b603-0d4467cffc1d"],
         "name": "EMF",
         "location": "core/emf/index.html",
         "type": {
@@ -5837,9 +5879,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:ca8dff5a-daa2-4c15-ac3d-ac4221e22361"],
+        "identifiers": ["uuid:9e024d25-6255-4f01-bb0d-d25ebf6c45c7"],
         "name": "Exec",
         "location": "core/exec/index.html",
         "type": {
@@ -5850,9 +5892,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:28c3175a-cc3b-49dc-b347-c272c3193642"],
+        "identifiers": ["uuid:e46889eb-9ff9-4fad-8503-21a532d5b62f"],
         "name": "Graph",
         "icon": "/images/data-flow.svg",
         "location": "core/graph/index.html",
@@ -5864,9 +5906,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:734b74f1-79ab-41b5-9408-690c29c98bde"],
+        "identifiers": ["uuid:321124ed-e206-434d-b821-f56a2b5ec6b4"],
         "name": "HTTP",
         "icon": "/images/http.svg",
         "location": "core/http/index.html",
@@ -5878,9 +5920,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:7e9e9618-e326-42e1-964c-661b2f750b13"],
+        "identifiers": ["uuid:86276031-8912-40d0-9c2a-8542636a298a"],
         "name": "Mapping",
         "icon": "/images/mapping.svg",
         "location": "core/mapping/index.html",
@@ -5892,9 +5934,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:7e4aacd4-be3e-4eb0-9b75-c3599b91c10e"],
+        "identifiers": ["uuid:e2d616c9-eb2b-4e21-9d2e-873ec946a043"],
         "name": "Maven",
         "location": "core/maven/index.html",
         "type": {
@@ -5905,9 +5947,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:04647c98-a653-49c9-9435-cc65a5d1ac6a"],
+        "identifiers": ["uuid:2e638fc5-3b82-48aa-906f-e1b391dba064"],
         "name": "Ncore",
         "location": "https://ncore.models.nasdanika.org/",
         "type": {
@@ -5918,9 +5960,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:75b83809-7e14-4dbf-b160-9225da304c6e"],
+        "identifiers": ["uuid:786d1e56-2796-46b4-a298-34c35754ed94"],
         "name": "Persistence",
         "location": "core/persistence/index.html",
         "type": {
@@ -5931,9 +5973,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:8f1b5e0e-968f-441d-82e3-95c455222727"],
+        "identifiers": ["uuid:3581bcbe-f1a3-4a94-b722-c261cc24e9d2"],
         "name": "Resources",
         "location": "core/resources/index.html",
         "type": {
@@ -5944,9 +5986,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:6e9d3d68-91e1-432d-a36d-58671add6b42"]
+            "identifiers": ["uuid:636746ab-d44a-4792-b884-e2465729bfb1"]
         },
-        "identifiers": ["uuid:adb297a9-00b9-476e-becd-5ede14b573df"],
+        "identifiers": ["uuid:047f752c-d196-4107-9eab-3e683ef2b211"],
         "name": "Telemetry",
         "icon": "/images/OpenTelemetry.svg",
         "location": "core/telemetry/index.html",
@@ -5958,9 +6000,9 @@
     {
         "container": {
             "reference": "children",
-            "identifiers": ["uuid:787cd78d-45d8-425a-90fc-3a13ddad1e18"]
+            "identifiers": ["uuid:852291b9-e8f5-4a29-9c71-de311c66d24f"]
         },
-        "identifiers": ["uuid:8aadc11b-aa26-4cd7-9f11-89b6d3e45634"],
+        "identifiers": ["uuid:82d72305-9016-476b-986e-a611d1ac81c3"],
         "name": "Search",
         "icon": "fas fa-search",
         "location": "search.html",
@@ -5972,9 +6014,9 @@
     {
         "container": {
             "reference": "navigation",
-            "identifiers": ["uuid:787cd78d-45d8-425a-90fc-3a13ddad1e18"]
+            "identifiers": ["uuid:852291b9-e8f5-4a29-9c71-de311c66d24f"]
         },
-        "identifiers": ["uuid:efcaac83-d5db-4e96-9b4c-f5a0aa69d048"],
+        "identifiers": ["uuid:df8639b6-bf55-4813-b3ef-e14137e75648"],
         "name": "Source",
         "icon": "fab fa-github",
         "location": "https://github.com/Nasdanika/nasdanika.github.io/",

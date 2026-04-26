@@ -1,0 +1,30 @@
+type: Action
+configuration:
+  location: ${base-uri}index.html
+  icon: /images/legacy-modernization.svg
+  children:
+    - Action:
+        location: analysis.html
+        icon: /images/gaps.svg
+        text: Analysis
+        content:
+          content.Markdown:
+            source:
+              exec.content.Resource: analysis.md  
+    - Action:
+        location: direct-semantic-execution.html
+        icon: /images/process.svg
+        text: Direct Semantic Execution (DSE)
+        content:
+          content.Markdown:
+            source:
+              exec.content.Resource: direct-semantic-execution.md  
+    - Action:
+        location: transformation-and-generation.html
+        icon: /images/data-pipeline.svg
+        text: Model Transformation and Generation
+        content:
+          content.Markdown:
+            source:
+              exec.content.Resource: transformation-and-generation.md  
+doc-ref: readme.md
