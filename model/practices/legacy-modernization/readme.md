@@ -1,105 +1,84 @@
-As the urgency to retire aging infrastructure and escape legacy vendor ecosystems accelerates, 
-organizations are realizing that manual rewrites cannot scale to meet the demand. 
-To safely and efficiently transition these critical workloads, modernization must be treated as an exercise in architectural recovery.
-This practice outlines a model-driven methodology that extracts the underlying logic of legacy systems into formal semantic models.
 
-By elevating undocumented code into a structured model, we create a shared, deterministic workspace. 
-This enables a powerful collaboration: human architects can visually debate and refine the recovered business intent, 
-while Generative AI can reliably utilize the model's topology to accelerate code generation without losing architectural coherence.
+Modernizing legacy enterprise systems is a process of *binding decisions* under risk, resource, and time constraints.
+The decision space is large - there is no single best approach. 
+Different points in the space match different combinations of legacy technology, target state, available expertise, deadline, and tolerance for disruption.
 
----
+This practice provides a structured approach to navigating that decision space.
+It assumes the modernization team operates in a real enterprise environment with limited resources, hard deadlines, and stakeholders whose concerns differ.
 
-[TOC levels=6]
+## Stakeholders and concerns
 
+Modernization is rarely a single-stakeholder activity.
+The practice begins by identifying stakeholders and capturing their concerns, because their concerns drive design choices.
+The starter set worth carrying into any modernization engagement:
 
----
+- **Business subject-matter experts** own the processes the legacy system implements. Concern: continuity of business logic and intent preservation through modernization.
+- **Operations and on-call engineers** support the legacy system in production. Concern: production observability, troubleshooting access, post-modernization runbook continuity.
+- **The modernization team** executes the work. Concern: deterministic translation, model-validated transformations, automated regression coverage.
+- **Security and compliance** owns control posture. Concern: control gaps during transition, audit trail through modernization, equivalence of compliance posture.
+- **Target-state architects** own the destination. Concern: alignment with target reference architecture, minimum bespoke surface area.
+- **Delivery management** owns timeline and budget. Concern: time-to-value, visible progress, predictable milestones.
 
+Different stakeholders weight different concerns. 
+Conflicts between concerns are common and material — for example, "fastest delivery" (delivery management) often conflicts with "most modern target architecture" (target-state architects). 
+The practice surfaces these conflicts as explicit trade-offs rather than burying them in technical decisions.
 
-## Definitions
+This stakeholder framing is one application of the [Nasdanika Product Management model](https://product-management.models.nasdanika.org/) — modernization is treated as a product, with personas, concerns, and capabilities mapped formally rather than discussed informally.
 
-Before establishing a modernization methodology, we must clearly define the domains we are operating within. Modernization is rarely a one-to-one translation problem; it is an exercise in architectural recovery and realignment. 
+## The decision space
 
-### Legacy
+Software development is the process of binding decisions. 
+Legacy modernization is the same process applied to existing decisions that have already been bound — by previous teams, in previous languages, against previous business requirements.
 
-In the context of this practice, **Legacy** refers to software artifacts—whether currently functional in production, non-functional, or no longer compilable—where the original architectural and business intent has been partially or completely lost. 
-Legacy systems are essentially graveyards of bound decisions. 
+The decision space for modernization spans several axes:
 
-Common profiles of legacy environments include:
+- *Approach axis*: rehost, replatform, repurchase, refactor, retire, retain (the industry-standard 6Rs).
+- *Phasing axis*: big-bang versus incremental cutover.
+- *Coupling axis*: tight integration with the surrounding system versus clean isolation.
+- *Risk-time-cost axis*: trade-offs between speed, risk reduction, and total cost.
 
-* **Orphaned In-House Technology:** Proprietary JSON or XML-based workflows and orchestration frameworks where the original engineering team has long since departed. Documentation either never existed, or was lost during enterprise platform migrations (e.g., migrating knowledge bases from Lotus Notes to SharePoint), leaving behind untrustworthy or fragmented records.
-* **Aging Vendor Frameworks:** Solutions built on early-generation enterprise standards, such as heavy XML-configured Spring, J2EE, or legacy Spring Integration pipelines. 
+Different points in this space match different problems. 
+There is no universally correct answer. 
+The practice provides a framework for making the choice explicitly rather than defaulting to whatever the team is comfortable with.
 
-**The Traceability Challenge:** The primary difficulty in navigating legacy systems is establishing traceability across highly heterogeneous environments. A single business transaction might traverse a proprietary XML configuration file that references a specific Java class, which in turn reflects upon another module. Without a runtime environment or original documentation, these implicit cross-references are invisible to standard analysis tools.
+A common failure mode in enterprise modernization: decisions are made in review meetings where participants without deep familiarity with the legacy system or its constraints provide generalized guidance. 
+Generic recommendations that ignore actual constraints can hurt more than they help. 
+The complexity of legacy modernization decisions exceeds what informal debate-based decision-making can resolve well. 
+The practice recommends structured decision analysis ([Nasdanika MCDA model](https://mcda.models.nasdanika.org/)) for non-trivial choices, with criteria, alternatives, and trade-offs surfaced explicitly.
 
-### Modernization
+## Two-phase approach
 
-**Modernization** is the strategic migration of these legacy artifacts to modern, scalable technologies and architectures. 
+This practice recommends a two-phase approach for most legacy modernization with hard deadlines:
 
-Organizations are typically driven to modernize by intersecting pressures:
+**Phase 1 — Direct Semantic Execution (DSE)**, also known as *rehosting* or *lift-and-shift*. Load existing legacy artifacts AS-IS into a model. Build a runtime engine that executes the model directly. The legacy system's semantics are preserved exactly, with no behavior translation. This phase removes the dependency on the legacy vendor's runtime while preserving the legacy semantics. Risk is minimized because behavior preservation is mechanical rather than interpretive.
 
-* **Operational Risk:** Older technologies reach End-of-Life (EOL), lose security support, or simply cannot scale to meet the throughput demands of modern enterprise workloads.
-* **Financial Overhead:** Escaping the heavy, recurring licensing fees associated with outdated commercial off-the-shelf (COTS) vendor solutions.
-* **Talent Attrition:** It is increasingly difficult and expensive to recruit engineers willing to learn and maintain obsolete technology. Top-tier engineering talent expects to work with modern stacks to remain marketable and engaged; legacy maintenance directly contributes to talent drain.
+**Phase 2 — Model Transformation and Generation**, also known as *replatforming* or *forward engineering*. Once Phase 1 is delivered and the legacy runtime dependency is removed, transform the model gradually into more modern forms — typically through code generation to a target runtime. Phase 2 is incremental and per-deployment-unit, removing the need for a single large rewrite.
 
-## The Fallacy of Code-First Modernization
+The phasing is deliberate. Phase 1 buys time and removes external dependencies. 
+Phase 2 modernizes the runtime under conditions that are no longer time-constrained.
 
-The most common, and perhaps most dangerous, approach to legacy modernization is jumping straight into writing new code.
-Sun Tzu observed that "strategy without tactics is the slowest route to victory. Tactics without strategy is the noise before defeat." 
-In the context of software engineering, jumping directly into a legacy codebase is pure tactics devoid of strategy.
+Phase 1 alone is a defensible end state for systems whose business logic is stable and whose target architecture is "off the legacy vendor's stack" rather than "on a specific modern platform." 
+Many systems benefit from delivering Phase 1 and never executing Phase 2.
 
-When an engineering team encounters a monolithic application or an undocumented integration flow, the instinct is to start rebuilding it node-by-node in a modern language. 
-This is “hero engineering.” While a brilliant engineer might successfully brute-force the migration of a single asset, this approach is fundamentally unscalable.
+## Practice pages
 
-Code-first modernization treats the process as a syntax translation problem rather than a systemic architectural problem. 
-Because the original intent of the legacy system is lost, translating it directly simply means manually rewriting technical debt into a newer syntax. 
-It relies entirely on an individual developer’s working memory and localized assumptions, ensuring the new system will eventually suffer the exact same fate as the legacy
-system it replaced - proving that tactical coding without an architectural strategy is, ultimately, just the noise before defeat.
+- **[Analysis](analysis.html)** — Understanding the legacy system, its stakeholders, its artifacts, and its execution model. Establishes the foundation for choices in subsequent phases.
+- **[Direct Semantic Execution](direct-semantic-execution.html)** — Loading and executing legacy artifacts AS-IS via a model-driven runtime engine.
+- **[Model Transformation and Generation](transformation-and-generation.html)** — Generating modern runtime artifacts from the legacy model, gradually and per-deployment-unit.
 
-## The "GenAI Magic Wand" Fallacy
+## Underlying models and capabilities
 
-With the advent of Large Language Models (LLMs), a new subset of the code-first fallacy has emerged: the belief that GenAI can magically ingest legacy codebases and output modern equivalents. 
-This approach treats modernization as a massive linguistic translation task, relying on the surface fluency of AI to untangle decades of technical debt. 
+The practice composes several Nasdanika models and capabilities:
 
-However, recent research into the architectural limits of LLMs ([Zhang, 2025, arXiv:2507.10624](https://arxiv.org/abs/2507.10624)) exposes why this inevitably fails.
-The study identifies a fundamental limitation known as **"computational split-brain syndrome"** - a persistent, geometric dissociation between *comprehension* and *competence* within neural architectures. 
-
-While an LLM might flawlessly analyze a snippet of legacy XML or explain the logic of a proprietary JVM monolith (comprehension),
-it systematically fails at the exact symbolic computation, cross-referencing, and structural consistency required to reliably rebuild
-the entire pipeline (competence).
-When forced to execute multi-step modernization transformations across heterogeneous environments, LLMs function as powerful pattern-matching engines, not principled reasoning engines.
-They hallucinate structural connections that do not exist because they lack the internal scaffolding for logical execution.
-
-### The Semantic Prerequisite for AI
-
-This research highlights exactly why we cannot simply feed legacy text to an AI and expect enterprise-grade code in return.
-If LLMs inherently lack the architectural scaffolding for compositional reasoning, the architecture must provide that scaffolding externally.
-
-This is the exact purpose of the model. By first parsing the legacy artifacts and binding them into a formal model
-governed by a metamodel, we eliminate the need for the AI to perform raw symbolic reasoning across disconnected text files. 
-
-Instead of asking an agent to guess the architecture, we provide it with a deterministic topology.
-The metamodel acts as a semantic firewall - bridging the gap between the AI's linguistic fluency and the rigid competence required for execution. 
-It ensures that GenAI-assisted code generation is constrained to a well-defined context, 
-making the AI a highly effective tool for localized generation rather than a liability in global architectural design.
-
-## The Methodology: Incremental Binding & Semantic Models
-
-If software development is defined as the **incremental binding of decisions to make them executable**, then legacy modernization is the process of safely *unbinding* those decisions, recovering their intent, and systematically rebinding them to a modern architecture.
-
-Jumping directly to code bypasses this entirely. 
-To achieve scalable, enterprise-grade modernization, this practice utilizes a Model-Driven, AI-assisted methodology built on the following lifecycle:
-
-1. [Analysis](analysis.html)
-    * **Establish the Metamodel:** We do not begin by writing code; we begin by eliciting a metamodel that accurately represents the domain and structure of the legacy system.
-    * **Ingest and Populate:** We parse the heterogeneous legacy artifacts (e.g., resolving the cross-references between XML configurations and Java bytecodes) to automatically populate the metamodel, building an accurate graph of the system's actual topology.
-    * **Enrich and Recover Intent:** With the structure mapped, we provide hooks to reattach lost intent. This allows architects to bind business rules, descriptions, and dynamic execution traces directly to the model elements. 
-    * **Visualize for Human-AI Consensus:** We generate visual representations (such as auto-laid out Draw.io diagrams) directly from the enriched model. This provides a shared, human-readable canvas where architects can reason about the logic, while simultaneously providing a rigidly bounded, deterministic context for Agentic AI to understand the system without hallucinating.
-2. Execution - only after the decisions are bound, visualized, and enriched do we move to code. 
-    * [Direct Semantic Execution](direct-semantic-execution.html) (DSE) - runtime processors operating on top of the semantic model (not legacy artifacts) 
-    * [Model Transformation and Generation](transformation-and-generation.html) - We utilize model transformation pipelines and GenAI-assisted code generation (strictly governed by the context of the metamodel) to output the modernized execution graph.
-
-By treating modernization as a modeling and binding problem first, we ensure that the resulting system is not only modern, but structurally sound and fully documented by design.
-In the execution phase DSE and Transformation/Generation can be used at the same time and in any combination.
+- **[OpGraph](https://op-graph.models.nasdanika.org/)** — generalized workflow execution model. Provides nodes, calls, transitions, jobs, tokens, transactions. Applicable to most XML-driven workflow engines and many other execution-graph systems.
+- **[Product Management](https://product-management.models.nasdanika.org/)** — personas, concerns, and capabilities for modernization-as-product.
+- **[MCDA](https://mcda.models.nasdanika.org/)** — Multiple Criteria Decision Analysis for non-trivial choices.
+- **[Enterprise architecture model](https://enterprise.models.nasdanika.org/)** — for documenting the legacy system in its surrounding context.
+- **[C4 model](https://c4.models.nasdanika.org/)** — for architectural views (system, container, component, code).
+- **[Capability framework](https://docs.nasdanika.org/core/capability/index.html)** — for pluggable processor and generator implementations.
+- **[Maven URI Handler](https://docs.nasdanika.org/core/maven/index.html#uri-handler)** and the GitLab URI Handler — for federated model loading across repositories.
+- **Documentation generator** — produces HTML documentation from Ecore models, with cross-reference resolution and search.
+- **Model-based telemetry** — observability emitted with traces tagged by model element URI, supporting unified troubleshooting across models and runtime.
 
 ## Beyond Legacy Code: Intent Elicitation and "Agentization"
 
