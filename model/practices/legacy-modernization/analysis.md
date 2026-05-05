@@ -128,6 +128,40 @@ Many XML-driven workflow engines map cleanly onto OpGraph concepts:
 Mapping the legacy execution model onto OpGraph is itself an analysis activity. 
 Concepts that don't map cleanly indicate either gaps in the metamodel (worth extending OpGraph for) or characteristics of the legacy engine that warrant explicit documentation as one-off semantics.
 
+### Faults versus errors
+
+Many legacy workflow and integration engines distinguish *faults* from *errors* as separate first-class concepts, and the distinction is load-bearing for the workflow's behavior. 
+Capture it explicitly during analysis.
+
+**Errors** are technical failures: a network timeout, an out-of-memory condition, an unparseable message, a database connection drop.
+Technical resources are not operational. 
+Errors typically propagate to the engine's error-handling subsystem — retries, dead letters, escalations — and are not part of the workflow's normal control flow.
+
+**Faults** are business-level outcomes that prevent an activity from completing successfully.
+The technical resources are operational; the business logic has determined that the activity cannot succeed.
+Examples: an invalid account, a rejected payment, an unauthorized request, a record not found.
+Faults are similar in spirit to JUnit's `fail()` - execution stops along the success path because of an asserted condition, not because of a system failure.
+
+Where the distinction exists, faults typically have three characteristics:
+
+- **They carry payload.** Data describing why the fault occurred, used by downstream activities or for logging.
+- **They route via dedicated transitions.** A fault transition is part of the workflow definition, distinct from normal-path transitions and from error-handling logic.
+- **They are recoverable.** The workflow continues along the fault transition rather than aborting; downstream activities operate on the fault payload.
+
+A naive modernization that maps both faults and errors onto a single mechanism - typically Java exceptions caught at a single boundary - loses the routing semantics and the payload distinction. 
+The modernized system technically completes execution but the workflow's intended behavior diverges from the legacy.
+
+Document fault semantics:
+
+- **Fault catalog** — which faults can be raised by which elements, and what payload each carries.
+- **Fault routing** — which transitions handle which fault types, and what state they expect.
+- **Distinction from errors** — clearly separated in the documentation, even when the legacy engine's vocabulary blurs them.
+
+The regression test corpus must include fault-path executions for every fault type.
+Fault paths are easy to under-test because typical production traffic exercises the success path; deliberate fault scenarios must be constructed during analysis. This is the single most common gap in modernization regression coverage.
+
+OpGraph currently does not have a concept of a fault - it might be added in the future similar to input and output.
+
 ## Establish baseline test corpus
 
 During analysis, begin capturing representative production traffic for use as a regression baseline in subsequent phases.

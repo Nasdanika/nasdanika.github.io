@@ -53,6 +53,27 @@ With validation that includes syntactic checking, the generated code is of highe
 This is also the right way to leverage AI in modernization — well-framed tasks with clearly defined interfaces, not unstructured exposure to large bodies of legacy code. 
 Asking an AI to "modernize this legacy project" produces nothing useful; asking it to "implement this Ecore operation with this signature, preserving the behavior described in this source model" produces high-quality results when the validation harness is sound.
 
+## Preserving fault semantics
+
+Where the legacy system distinguishes faults from technical errors (see [Analysis: Faults versus errors](analysis.html#faults-versus-errors)), the target metamodel must preserve the distinction. 
+
+Several target-runtime idioms apply, depending on the destination:
+
+- **Typed exception hierarchies** with each fault type as a checked or unchecked exception class. Suitable for Java targets where exception-based control flow is idiomatic. The throwing operation declares the fault types it can raise; the calling operation catches by type and routes accordingly.
+- **Sealed result types** - for example `Result<Success, FaultA, FaultB>` - for targets where exception-as-control-flow is discouraged. Functional and Kotlin-flavored targets often prefer this pattern; it makes fault paths visible in operation signatures rather than hidden in `throws` clauses.
+- **Either or sum types** for targets in functional or hybrid languages.
+- **Explicit return values with discriminated outcomes** for targets that prefer pattern matching over exceptions.
+
+Whichever idiom the target runtime uses, the routing semantics must be preserved: a fault must activate the same downstream activities the legacy fault transition would have activated, with the same payload structure intact.
+
+The choice of idiom is a target-architecture decision, not a transformation decision. 
+Once the target idiom is set, the transformation produces operation signatures and bodies consistent with it. 
+The fault catalog from the analysis phase becomes the input to the idiom mapping - each documented fault type gets a corresponding exception class, sealed result variant, or sum-type case.
+
+Equivalence testing must explicitly cover fault paths. 
+Fault-path equivalence is the single most common gap in modernization regression coverage, because typical production traffic under-exercises fault paths and the corpus must be deliberately constructed to include them. 
+The fault-path test cases built during analysis are reused directly here.
+
 ## Per-deployment-unit migration
 
 Phase 2 is not a single transformation event; it is a series of per-deployment-unit transformations. 

@@ -121,6 +121,23 @@ Synchronous iteration follows the same pattern with `Iterator<E>` instead of `Fl
 
 `Accumulator` may have synchronous and asynchronous methods, or separate sync/async flavors, depending on whether the reduction itself can benefit from backpressure.
 
+### Fault handling
+
+Faults - business-level outcomes that prevent an activity from completing - are first-class control flow in many legacy workflow engines (see [Analysis: Faults versus errors](analysis.html#faults-versus-errors)). 
+The DSE engine must preserve the distinction between faults and technical errors; a naive collapse of the two loses the workflow's intended routing semantics.
+
+The runtime representation: a fault is an exception with payload. 
+The exception type identifies the fault category; the payload carries the data the legacy system would have routed alongside a fault transition. 
+The engine catches faults at activity boundaries and routes execution along the fault transition appropriate to the fault type, passing the payload as input to the target activity. 
+Technical errors propagate to a separate error-handling layer (retries, dead letters, escalation) and do not activate fault transitions.
+
+Implementation considerations:
+
+- **Model fault types as first-class elements** in the metamodel, not as opaque strings. The capability framework can then dispatch fault transitions by type the same way it dispatches activity processors by element type.
+- **Preserve payload typing.** Where the legacy system carries structured fault payload, the DSE engine should preserve that structure rather than collapsing it to a string. The downstream activities that handle the fault may depend on field-level access to the payload.
+- **Fault transitions activate the same processor pipeline** as normal-path transitions. The only difference is the routing decision at the source activity - the downstream side is unchanged. This keeps the processor model orthogonal to the fault model.
+- **Distinguish fault propagation from error propagation in telemetry.** A fault is a normal-path business outcome and should be visible as such; conflating it with an error in dashboards trains operators to ignore signals that matter.
+
 ### Capability-based processor creation
 
 Decouple processor creation from the engine via the [Nasdanika Capability framework](https://docs.nasdanika.org/core/capability/index.html).
