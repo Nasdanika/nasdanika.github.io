@@ -46,6 +46,25 @@ Generic recommendations that ignore actual constraints can hurt more than they h
 The complexity of legacy modernization decisions exceeds what informal debate-based decision-making can resolve well. 
 The practice recommends structured decision analysis ([Nasdanika MCDA model](https://mcda.models.nasdanika.org/)) for non-trivial choices, with criteria, alternatives, and trade-offs surfaced explicitly.
 
+## Per-unit selection and parallel approaches
+
+Modernization choices apply at the deployment-unit level, not at the system level.
+A system being modernized typically contains many deployment units of varying complexity, business risk, documentation quality, and team familiarity.
+The right approach for one unit may differ from the right approach for another.
+
+Two principles follow:
+
+**Select per unit.** After the architecture is documented, evaluate each deployment unit against its own constraints.
+A high-technical-complexity unit (custom retry logic, distributed transaction coordination) with low business-logic complexity may be a poor candidate for rewrite but a good candidate for rehosting. 
+A low-technical-complexity unit (a thin REST adapter) with stable, well-understood logic may be a fine candidate for rewrite.
+Documentation quality and team familiarity with both source and target shift the calculus further.
+
+**Run multiple approaches in parallel where resources allow.** When the team includes engineers familiar with the target framework and engineers familiar with the source platform, both can work concurrently on different units. 
+This serves two purposes: it matches each engineer's strengths to appropriate work, and it hedges project-level risk. 
+If one approach fails for a particular unit, the other approach is available as a fallback that the team has already practiced on adjacent units.
+
+The selection itself is a decision that benefits from structured analysis ([Nasdanika MCDA model](https://mcda.models.nasdanika.org/)) - alternatives, criteria, weights, and trade-offs explicitly surfaced rather than chosen by team comfort or visibility.
+
 ## Two-phase approach
 
 This practice recommends a two-phase approach for most legacy modernization with hard deadlines:

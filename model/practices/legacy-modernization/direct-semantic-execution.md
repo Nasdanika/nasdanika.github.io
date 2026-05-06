@@ -35,6 +35,29 @@ DSE is not a final state for most systems; it is a *bridge* state that removes v
 creates conditions for incremental modernization.
 Senior architects who object to DSE on grounds of long-term debt are usually objecting to it as a final state, which it is not.
 
+## Bounded scope: implement what is used, not what exists
+
+A common misconception about clean-room reengineering is that it requires re-implementing the entire legacy runtime. 
+It does not. The DSE engine implements only the subset of the legacy runtime that the system being modernized actually uses.
+
+Concretely:
+
+- A legacy product may offer dozens of ways to work with JMS messaging; the system may use one or two of them. Only one or two processors need implementations.
+- A workflow engine may support a wide range of transaction modes; the system may use only one or two. Only those modes need preservation.
+- A messaging primitive may have many advanced features; the system may use basic JMS settings. Only the basic settings need engine support.
+
+This bounded scope is what makes DSE feasible inside a hard deadline. 
+The unbounded version - re-implementing every feature the legacy vendor ever shipped - is genuinely infeasible. 
+The bounded version - re-implementing what's actually used - is bounded engineering with a deterministic completion criterion.
+
+The analysis-phase artifact inventory drives this scoping: count activity types in use, enumerate the parameter sets that appear in production, 
+document the transaction modes the system depends on. 
+Each count becomes a concrete chunk of engineering work with a clear scope.
+
+This bounded scope also clarifies risk versus rewrite alternatives. 
+Rewriting 1000 processes containing 5,000 activity instances is materially riskier than implementing 50 activity processors and validating each against its 100-or-so usages in the existing process definitions. 
+The math favors implementing fewer things deeply over translating more things shallowly.
+
 ## Engine architecture
 
 A DSE runtime engine consists of several layers, separated by responsibility.

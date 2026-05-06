@@ -30,6 +30,27 @@ A typical analysis-phase output: a stakeholder-concern matrix showing which capa
 Conflicts between concerns appear as cells where two stakeholders' concerns pull in opposing directions; 
 surface these conflicts explicitly rather than deferring them.
 
+## Document the target tech stack
+
+Before evaluating modernization approaches, document the target tech stack explicitly. 
+*"Azure"* or *"AWS"* is not a tech stack — it is a platform. 
+*"Cloud-native"* is a slogan. 
+The decisions that drive modernization choices live at a finer granularity:
+
+- **Runtime environment** — JVM version, container runtime, serverless platform, traditional middleware.
+- **Application framework** — Spring Boot, Quarkus, Micronaut, Vert.x, plain Java EE, none.
+- **Messaging substrate** — JMS provider, Kafka, cloud-native eventing, HTTP-only.
+- **Persistence layer** — relational engine, NoSQL family, ORM choices, transaction model.
+- **Deployment topology** — Kubernetes, managed PaaS, VMs, edge.
+- **Observability stack** — telemetry collectors, dashboards, alerting destinations.
+
+The target tech stack constrains modernization choices materially. 
+A target of "Spring Boot on AKS" implies different Phase 1 and Phase 2 strategies than a target of "Quarkus on a managed PaaS" or "JVM-on-bare-metal with no application framework."
+If the target is undefined, the modernization choices are undefined.
+
+Where the target is genuinely undecided at modernization start, surface it as a *decision required before architecture work proceeds*. 
+Continuing without a target produces architectures that lock in choices implicitly and become hard to change later.
+
 ## Document the system context
 
 Document the system in its surrounding context. 
@@ -189,6 +210,35 @@ For non-trivial choices, structured decision analysis using the [Nasdanika MCDA 
 Decisions can be ordered by *cost of delay* — how much value is unlocked by making the decision now versus deferring it.
 Decisions blocking other decisions should be made first; decisions that block external teams (and therefore have long resolution lead times) should be surfaced earliest. 
 Decisions requiring involvement of external teams or parties should be well-formulated, backed by research, and traceable to what they unblock.
+
+## Distinguish technical risk from business risk
+
+Modernization decisions involve two materially different risk categories that are routinely conflated, sometimes in ways that produce the wrong choice.
+
+**Technical risk** is the risk of getting the implementation wrong. 
+A miscalculated thread pool size, an incorrect transaction boundary, a missed retry case. 
+Technical failures produce technical symptoms - slow performance, dropped messages, incorrect timeouts. 
+Technical risk is generally recoverable: the implementation can be patched, refined, and re-deployed with no permanent damage to the business outside the duration of the failure.
+
+**Business risk** is the risk of getting the business logic wrong. 
+A miscomputed fee, a customer seeing another customer's account, a payment routed to the wrong recipient, a regulatory disclosure omitted. 
+Business failures produce business consequences — financial losses, regulatory penalties, customer harm, reputational damage, potential legal liability. 
+Business risk is often not recoverable in the same way: a customer-data breach can't be unbreached.
+
+The distinction matters because different modernization approaches concentrate risk in different categories:
+
+- **Rehosting (DSE)** preserves business logic mechanically. Technical risk is concentrated in the runtime engine, where failures are typically recoverable. Business logic remains as it was.
+- **Rewriting** translates business logic into new code, often by people who don't deeply understand the original semantics. Technical risk in the new framework may be lower for teams already familiar with it, but business risk increases substantially because every translated piece of logic is an opportunity for divergence from the original.
+
+Engineers' risk perception is often skewed toward technical risk in domains they're unfamiliar with, and skewed away from business risk in domains they don't deeply understand.
+A SpringBoot-fluent team rewriting BW activities will overweight the runtime risk they avoid and underweight the business-logic risk they take on.
+Surfacing the distinction explicitly during analysis helps the decision-makers weight risks by their actual consequences rather than by which risks feel most immediate to the team.
+
+The mainframe/COBOL precedent is the canonical example: rewrite is technically possible but business-risk concentration makes it a recurring source of catastrophic project failures. Many mainframe systems remain in production decades after their planned replacement because the business-risk math never favors the rewrite.
+The same logic applies to long-lived enterprise integration platforms.
+
+The persona/concern framework helps surface these risk preferences explicitly: business stakeholders typically weight business risk highest; engineers typically weight technical risk highest; compliance and security typically weight regulatory and audit risk highest.
+Capturing these weights before approach selection makes the trade-off visible rather than implicit.
 
 ## Architecture documentation
 
