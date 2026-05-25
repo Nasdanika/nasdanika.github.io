@@ -181,7 +181,7 @@ Document fault semantics:
 The regression test corpus must include fault-path executions for every fault type.
 Fault paths are easy to under-test because typical production traffic exercises the success path; deliberate fault scenarios must be constructed during analysis. This is the single most common gap in modernization regression coverage.
 
-OpGraph currently does not have a concept of a fault - it might be added in the future similar to input and output.
+In OpGraph [faults](https://op-graph.models.nasdanika.org/references/eClassifiers/Supplier/references/eStructuralFeatures/faults/index.html) are part of the metamodel.
 
 ## Establish baseline test corpus
 
