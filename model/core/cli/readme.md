@@ -300,3 +300,76 @@ then add the following plugin definition to ``pom.xml``:
 ```
 
 Change the final name to your CLI name. E.g. ``my-company-cli``.
+
+## Commands as grammar
+
+Most CLI frameworks treat commands as a fixed catalog.
+At build time, the developer enumerates commands and sub-commands; at runtime, the user invokes named commands with known options.
+The vocabulary is closed. New operations require code changes to the central tool.
+Picocli - the library most Java CLIs build on, including this one underneath - operates this way by default.
+
+The Nasdanika CLI treats commands grammatically. Commands compose into *pipelines* the way words compose into sentences.
+A pipeline like `model html-app site` reads as a sentence: load the model, qualify it through the html-app renderer, produce a site.
+Each command consumes the previous command's output and produces input for the next.
+The pipeline is the syntax; the typed data flowing through it is the grammar's payload.
+Unix pipes operate on the same principle - `cat foo | grep bar | sort` is grammatical CLI composition - but Unix pipes pass text streams, where Nasdanika pipelines pass typed objects.
+Same composition, more structural integrity.
+
+The vocabulary grows by federation rather than by enumeration.
+New commands become available simply by adding their containing modules to the CLI assembly.
+The capability framework discovers the new commands at startup and exposes them in the grammar without any change to the core CLI.
+A consumer who adds the AsciiDoc module gets `asciidoc` commands; a consumer who adds the product management model gets PM-specific commands;
+a consumer who adds both can compose them.
+The composition is the unit of expression, not the individual commands.
+
+What this earns is that operations the CLI's authors did not enumerate become naturally expressible by the consumer who needs them.
+A user composing `model validate html-app site --strict` is producing a sentence whose authors did not have to write it as a discrete command;
+the grammar makes the composition valid, the type-checking on the pipe boundaries makes it safe, and the auto-discovery makes the constituent words available.
+
+Whorf's observation - that language shapes the way we think, and determines what we can think about - applies to command vocabularies as much as to natural languages.
+A CLI whose command tree is fixed at build time flattens an expressible space into a finite list of named operations.
+A CLI whose command vocabulary grows by federation lets users articulate operations the central tool's authors did not enumerate.
+The same grammatical move appears in other parts of the Nasdanika stack, including the federated capability model that the [product management framework](https://product-management.models.nasdanika.org/) is built on - different layers, same underlying property.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Good parallel — the same Whorfian point lands cleanly on the CLI because the CLI is also a *generative grammar over auto-discovered vocabulary*, and the auto-discovery is the move that distinguishes it from Picocli's fixed command tree. One small adjustment from the PM-model framing: capabilities had a clean verb/adjective distinction (functional vs non-functional roles); CLI commands are predominantly verbs (actions) that chain into pipelines, so the framing is more *sentence composition* than *noun-phrase modification*. The Whorfian point survives the adjustment; the linguistic vocabulary needs to shift slightly.
+
+**Draft section for the CLI home page:**
+
+
+**A few specific choices and where you may want to adjust:**
+
+The section is written as standalone — a reader who has not seen the PM model can still get the point, with one sentence near the end gesturing at the broader pattern. If the section is positioned alongside other introductory CLI content, that one sentence can be expanded into a paragraph; if the CLI page is its own front door without nearby cross-references, the current sentence is enough.
+
+I kept the Unix-pipes comparison because it lands instantly with the audience and clarifies the distinction (typed vs textual) in a few words. If the comparison feels too elementary for your reader, drop the sentence — the rest of the section stands without it.
+
+The internal cross-reference to the PM model is light (*"different layers, same underlying property"*) — strong enough that a reader who knows the PM model recognizes the parallel, weak enough that a reader who does not is not distracted. If you want to make the cross-reference explicit, change the line to *"The same grammatical move appears in the Nasdanika [product management model](https://product-management.models.nasdanika.org/), where capabilities — rather than commands — compose into expressions of consumer need."*
+
+The Whorf quote is woven into prose rather than placed as an epigraph. The CLI page is a reference document; an epigraph would feel out of place. The same quote in the JVM-languages LinkedIn post is presented as an opening epigraph because that piece is opinion content; the CLI page is documentation, so prose integration fits its register better.
+
+The Picocli mention is direct because Picocli is the underlying library and many readers will recognize the contrast. If you want to avoid naming Picocli specifically — some readers may use Picocli directly elsewhere and feel it is being unfavorably compared — generalize to *"most Java CLI frameworks"* and let the informed reader infer.
+
+**One related thought.** This section now exists in three places in your portfolio: the PM model docs (capabilities as grammar), the CLI docs (commands as grammar), and the upcoming Medium piece (Markdown as grammar / internal DSLs). The three together form a thesis — *"Nasdanika treats every layer of the stack as a host for grammatical composition over auto-discovered vocabularies."* That thesis is worth being explicit about somewhere — probably the book, possibly a short Medium piece in its own right. The three sections cite each other; the thesis-level statement names what they have in common. When you eventually write that piece, the framing already exists; you would just be making the recursive structure visible. *"The grammar of Nasdanika"* or *"How Nasdanika composes"* would be candidate titles.
