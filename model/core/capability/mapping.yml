@@ -1,0 +1,12 @@
+type: Action
+configuration:
+  location: ${base-uri}index.html
+  children:
+    - Action:
+        location: resource-contents-filters.html
+        text: Resource Contents Filters
+        content:
+          content.Markdown:
+            source:
+              exec.content.Resource: resource-contents-filters.md  
+doc-ref: readme.md

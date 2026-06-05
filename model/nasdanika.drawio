@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36">
   <diagram id="HQOKvbAvWCf9tJ4usP6P" name="Nasdanika">
-    <mxGraphModel dx="1569" dy="3007" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+    <mxGraphModel dx="3334" dy="3021" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
       <root>
         <object label="" mapping="type: Action&#xa;page-element: true&#xa;doc-ref: nasdanika.md&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;configuration-ref: root-action.yml" id="0">
           <mxCell />
@@ -63,7 +63,7 @@
             <mxGeometry height="40" width="80" x="460" y="80" as="geometry" />
           </mxCell>
         </object>
-        <object label="Capability" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;doc-ref: readme.md" id="capability">
+        <object label="Capability" placeholders="1" base-uri="%id%/" mapping-ref="mapping.yml" id="capability">
           <mxCell parent="core" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1">
             <mxGeometry height="40" width="80" x="10" y="30" as="geometry" />
           </mxCell>
