@@ -20,17 +20,17 @@
         </object>
         <object label="Resources" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;doc-ref: readme.md" id="resources">
           <mxCell parent="core" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1">
-            <mxGeometry height="40" width="80" x="190" y="130" as="geometry" />
+            <mxGeometry height="40" width="80" x="280" y="130" as="geometry" />
           </mxCell>
         </object>
         <object label="Persistence" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;doc-ref: readme.md" id="persistence">
           <mxCell parent="core" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1">
-            <mxGeometry height="40" width="80" x="100" y="130" as="geometry" />
+            <mxGeometry height="40" width="80" x="190" y="130" as="geometry" />
           </mxCell>
         </object>
         <object label="Ncore" placeholders="1" mapping="type: Link&#xa;configuration:&#xa;  location: https://ncore.models.nasdanika.org/&#xa;" id="ncore">
           <mxCell parent="core" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1">
-            <mxGeometry height="40" width="80" x="10" y="130" as="geometry" />
+            <mxGeometry height="40" width="80" x="100" y="130" as="geometry" />
           </mxCell>
         </object>
         <object label="Diagram" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;doc-ref: readme.md" id="diagram">
@@ -60,7 +60,7 @@
         </object>
         <object label="Maven" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;doc-ref: readme.md" id="maven">
           <mxCell parent="core" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1">
-            <mxGeometry height="40" width="80" x="460" y="80" as="geometry" />
+            <mxGeometry height="40" width="80" x="10" y="130" as="geometry" />
           </mxCell>
         </object>
         <object label="Capability" placeholders="1" base-uri="%id%/" mapping-ref="mapping.yml" id="capability">
@@ -75,22 +75,27 @@
         </object>
         <object label="HTTP" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;  icon: /images/http.svg&#xa;doc-ref: readme.md" id="http">
           <mxCell parent="core" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1">
-            <mxGeometry height="40" width="80" x="280" y="80" as="geometry" />
+            <mxGeometry height="40" width="80" x="370" y="80" as="geometry" />
           </mxCell>
         </object>
         <object label="Mapping" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;  icon: /images/mapping.svg&#xa;doc-ref: readme.md" id="mapping">
           <mxCell parent="core" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1">
-            <mxGeometry height="40" width="80" x="370" y="80" as="geometry" />
+            <mxGeometry height="40" width="80" x="460" y="80" as="geometry" />
           </mxCell>
         </object>
         <object label="Telemetry" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;  icon: /images/OpenTelemetry.svg&#xa;doc-ref: readme.md" id="telemetry">
           <mxCell parent="core" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1">
-            <mxGeometry height="40" width="80" x="280" y="130" as="geometry" />
+            <mxGeometry height="40" width="80" x="370" y="130" as="geometry" />
           </mxCell>
         </object>
         <object label="ECharts" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;doc-ref: readme.md" tooltip="A collection of classes on top of&#xa;ECharts Java to simplify chart creation" id="core-echarts">
           <mxCell parent="core" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1">
             <mxGeometry height="40" width="80" x="460" y="30" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="Groovy" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;  icon: /images/groovy.svg&#xa;doc-ref: readme.md" id="groovy">
+          <mxCell parent="core" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1">
+            <mxGeometry height="40" width="80" x="280" y="80" as="geometry" />
           </mxCell>
         </object>
         <object label="HTML" placeholders="1" base-uri="%id%/" mapping="type: Action&#xa;configuration:&#xa;  location: %id%/index.html&#xa;  icon: /images/html.svg&#xa;doc-ref: readme.md&#xa;features:&#xa;  container:&#xa;    self: &#xa;      children:&#xa;        path: 1&#xa;        comparator: label&#xa;" id="html">
