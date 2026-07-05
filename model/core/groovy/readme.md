@@ -493,8 +493,7 @@ public class EcoreResourceContentsHandler extends DslResourceContentsHandler {
 }
 ```
 
-The base constructor that takes `EPackage...` wraps them in an
-[`EPackageResolver`](src/main/java/org/nasdanika/groovy/EPackageResolver.java)
+The base constructor that takes `EPackage...` wraps them in an `EPackageResolver`
 bound to the resource's `ResourceSet`. The resolver is what turns those packages
 into:
 
@@ -587,7 +586,7 @@ Key points when adapting for your own qualifier:
 
 Capability factories are discovered through `ServiceLoader`. Add your factory to
 the `provides CapabilityFactory with …` clause in
-[`module-info.java`](src/main/java/module-info.java):
+`module-info.java`:
 
 ```java
 provides CapabilityFactory with
