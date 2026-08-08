@@ -78,6 +78,11 @@ If a call name matches a **structural feature** of the current element instead, 
 (`name 'x'`, `eType 'EString'`, `eSuperTypes namedElement`).
 Feature dispatch is tried before type dispatch.
 
+A handful of names are **built-in keywords** - `ref`, `dsl`, `onSave`, `loadResource`, `eObject` at the top level,
+and `global`, `proxy`, `loadResource`, `eObject` inside a builder closure.
+They win over both kinds of dispatch, so a metamodel class or feature of the same name does not shadow them;
+see [§1.10](#110-loading-other-resources) for the escape hatches that reach the shadowed name.
+
 ```groovy
 ePackage {
     name 'test'                       // feature dispatch: sets EPackage.name
@@ -364,7 +369,128 @@ Another resource can then resolve `urn:test/Person`, and within a script a
 > the assignment form `global = value` (which routes through property
 > dispatch, not the method).
 
-#### 1.10 Script return value
+#### 1.10 Loading other resources
+
+`loadResource '<uri>'` loads another resource and returns the EMF `Resource`. This is what turns a
+script from a *transcription* of a model into a **derivation** of one: iterate a Draw.io diagram and
+emit an architecture model, read a spreadsheet and emit a backlog, walk one metamodel and project it
+onto another.
+
+```groovy
+def diagram = loadResource('payments.drawio')     // an org.eclipse.emf.ecore.resource.Resource
+```
+
+Two properties make it work with the rest of the platform:
+
+- **The URI is resolved against the script's own URI** when it is relative, so a sibling file is just
+  its name - `loadResource 'payments.drawio'`. Absolute URIs (`file:`, `classpath://`, `http://`, or any
+  custom scheme) are used as given.
+- **Loading goes through the script resource's `ResourceSet`**, so every registered URI handler,
+  resource factory and contents handler applies - including other DSL scripts, so one `.groovy` model
+  can build on another. A resource already loaded in that set is returned as-is rather than re-read,
+  and everything ends up in one resource set, which is what makes the loaded elements directly
+  referenceable (below).
+
+`loadResource` is available both at the top level and inside a builder closure, so you can load
+data where you need it:
+
+```groovy
+architecture {
+    name 'Payments'
+
+    loadResource('payments.drawio').contents.each { page ->
+        // ... build children from the diagram
+    }
+}
+```
+
+Failures are reported as exceptions tagged with the script line, like any other DSL error
+([§1.12](#112-error-diagnostics)).
+
+##### Iterating over a loaded resource
+
+The returned object is a plain EMF `Resource`, so Groovy's collection methods work over its contents
+directly:
+
+| Expression | What it iterates |
+|------------|------------------|
+| `resource.contents` | the root elements only |
+| `resource.allContents` | every element, depth-first (a `TreeIterator` - `each`, `collect`, `findAll` all work on it) |
+| `element.eAllContents()` | everything below one element |
+| `resource.getEObject('<fragment>')` | a single element by URI fragment |
+
+Filter by type with `instanceof` when the metamodel's Java interfaces are on the classpath, or by
+`eClass().name` when they are not (a dynamic metamodel):
+
+```groovy
+def diagram = loadResource('payments.drawio')
+
+architecture {
+    name 'Payments'
+
+    // Every node in the diagram becomes a component:
+    diagram.allContents
+           .findAll { it.eClass().name == 'Node' }
+           .each { n ->
+        component {
+            name n.label                       // property access maps to the EMF getter
+            description n.tooltip
+        }
+    }
+}
+```
+
+Because the whole model is available while the script runs, you can also aggregate before emitting -
+group nodes by layer, count connections, skip elements that carry a marker property - which is the
+point of deriving a model rather than transcribing one.
+
+##### Referencing loaded elements
+
+Elements of a loaded resource are ordinary `EObject`s, so they can be handed straight to a reference
+feature - the first form in [§1.7](#17-references-and-name-resolution):
+
+```groovy
+def catalog = loadResource('catalog.xmi')
+
+product {
+    name 'Checkout'
+    category catalog.getEObject('//@categories.2')     // an EObject from another resource
+}
+```
+
+A `#`-bearing selector or `ref('<uri>')` reaches into another resource by URI instead
+([§1.9](#19-global-objects-and-cross-resource-references)).
+
+> **Containment is exclusive.** Adding a loaded element to a *containment* feature would **move** it
+> out of the resource it came from. The builder refuses to do that silently: it either wraps the
+> element in a `*Reference` type when the metamodel has one, or reports that the attachment would
+> relocate it. Use a non-containment reference, or copy the element with `EcoreUtil.copy(...)` if you
+> really want an independent duplicate in your model.
+
+##### Name collisions: `loadResource` as a class or feature name
+
+`loadResource` is a **built-in keyword**, and keywords beat metamodel names. The rule is the same one
+`global` follows ([§1.9](#19-global-objects-and-cross-resource-references)), applied consistently at
+both levels:
+
+| Where | What wins | How to get at the shadowed name |
+|-------|-----------|---------------------------------|
+| Top level | The keywords `loadResource`, `ref`, `dsl`, `onSave`, `eObject` win over entry points derived from metamodel class names. | Instantiate the class by name: `eObject('LoadResource') { … }`. |
+| Inside a builder closure | The real builder methods `loadResource`, `global`, `proxy`, `eObject` win over feature and type dispatch. | For a **feature** named `loadResource`, use the assignment form `loadResource = 'value'` (and the plain read form to read it); for a **class** named `LoadResource`, use `eObject('LoadResource') { … }`. |
+
+```groovy
+node {
+    name 'n'
+    loadResource = 'just a string'          // sets the FEATURE named loadResource
+    loadResource 'sibling.xmi'              // calls the KEYWORD - loads a resource
+}
+```
+
+Custom bindings contributed by a metamodel binding (`bindings()`, [§2.1](#21-the-handler--factory-pair))
+are installed last and override even the keywords, so a binding that deliberately redefines
+`loadResource` still wins.
+
+#### 1.11 Script return value
 
 The contents of the resulting resource come from what the script produces, in
 this order:
@@ -384,7 +510,7 @@ expression *is* the value. To emit several roots, return a list literal:
 ]
 ```
 
-#### 1.11 Error diagnostics
+#### 1.12 Error diagnostics
 
 Build and resolution failures are tagged with their source location (URI and
 line) before being rethrown as a `DslException`. Deferred reference failures -
@@ -393,7 +519,7 @@ the line the reference was authored on, even though resolution runs after the
 script finishes. The reported column is always `-1` (the Groovy runtime does not
 expose it).
 
-#### 1.12 Saving DSL resources
+#### 1.13 Saving DSL resources
 
 By default a Groovy DSL resource is **read-only**: it loads a `.groovy` script into an EMF model,
 but saving it throws `UnsupportedOperationException`. This is the right default because the script -
