@@ -94,7 +94,8 @@ ePackage {
 ```
 
 When a child type would be ambiguous (it fits more than one containment feature) or the feature is typed by an abstract class, name the concrete type
-explicitly, e.g. `eClassifiers('EClass') { name 'Company' }`.
+explicitly, e.g. `eClassifiers('EClass') { name 'Company' }` - unless the metamodel binding supplies a default type for that reference,
+see [§1.8](#18-creating-elements-from-a-value---the-short-form).
 
 #### 1.4 Setting attributes - the three call forms
 
@@ -272,7 +273,72 @@ eType "./MyLocalType"     // resolve as a path step, not as a metamodel classifi
 and is the way to instantiate a type whose simple name is ambiguous, or to be
 explicit about which package a type comes from.
 
-#### 1.8 Global objects and cross-resource references
+#### 1.8 Creating elements from a value - the short form
+
+The previous section is about references that *point at* an element that already exists somewhere.
+A **containment** reference is the other case: its value is an element the script has to **build**.
+Besides the closure forms, such a reference can also accept a plain **value** and let the metamodel
+binding turn it into an element.
+
+The binding decides this per reference, through `Resolver.create(eReference, value)`
+([§2.5](#25-custom-resolvers-beyond-a-fixed-epackage-list)). Say a resolver knows that an `evaluator`
+reference typed by an abstract `Evaluator` defaults to a `SpelEvaluator` carrying the value in its
+`expression` attribute. One hook then buys all four authoring forms:
+
+| Form | Result |
+|------|--------|
+| `evaluator 'a.b.c'` | **short form** - a `SpelEvaluator` with `expression = 'a.b.c'` |
+| `evaluator('a.b.c') { documentation 'why' }` | the same, then the closure configures it |
+| `evaluator { expression 'a.b.c' }` | the resolver's default type, configured by the closure |
+| `evaluator('GroovyEvaluator') { script '…' }` | an explicitly named type, configured by the closure |
+
+So the terse form scales up to the full one - name a different implementation, add documentation, set
+further attributes - without a second keyword, and without the metamodel giving up its abstract
+reference types.
+
+```groovy
+rule {
+    name 'no-nulls'
+    evaluator 'order.total > 0'                 // short: default type, value -> its default feature
+}
+
+rule {
+    name 'in-window'
+    evaluator('order.date > start') {           // same short value, plus configuration
+        documentation 'Orders inside the promo window'
+    }
+}
+```
+
+##### Without a resolver hook
+
+The default `create` implementation covers the one case where the metamodel leaves no choice to make:
+**a closure with no value on a reference typed by a concrete class**. `note { text 'hi' }` instantiates
+the reference's own type, which is why the plain `feature { … }` form works everywhere with no binding
+code at all.
+
+Everything else is declined, which means the behaviour described elsewhere in this guide is unchanged:
+
+- a string keeps its meaning as a **selector** ([§1.7](#17-references-and-name-resolution));
+- a closure on a reference typed by an **abstract** class reports that a concrete type must be named,
+  e.g. `eClassifiers('EClass') { … }`;
+- any other value is rejected - `Cannot use java.lang.Integer as a reference for evaluator: it is
+  neither an element nor a selector, and the resolver created no element from it`.
+
+##### Precedence
+
+Creation is tried **before** a value is read as a selector, and a value is treated as a **type name**
+before it is offered for creation. Two consequences worth knowing:
+
+- a reference whose resolver creates elements from strings can no longer take a path/URI selector
+  string - it is a value reference now, and that is the point;
+- an unknown type token is reported as such once the resolver has also declined it:
+  `Unknown type '42' for Rule.evaluators, and the resolver created no element from it`.
+
+An element created this way is attached to the reference as-is. It is never wrapped in a `*Reference`
+wrapper type - it was created *for* this reference rather than resolved from elsewhere.
+
+#### 1.9 Global objects and cross-resource references
 
 `global '<uri>'` registers the current element under a URI so it can be
 referenced from other resources in the same resource set:
@@ -298,7 +364,7 @@ Another resource can then resolve `urn:test/Person`, and within a script a
 > the assignment form `global = value` (which routes through property
 > dispatch, not the method).
 
-#### 1.9 Script return value
+#### 1.10 Script return value
 
 The contents of the resulting resource come from what the script produces, in
 this order:
@@ -318,7 +384,7 @@ expression *is* the value. To emit several roots, return a list literal:
 ]
 ```
 
-#### 1.10 Error diagnostics
+#### 1.11 Error diagnostics
 
 Build and resolution failures are tagged with their source location (URI and
 line) before being rethrown as a `DslException`. Deferred reference failures -
@@ -327,7 +393,7 @@ the line the reference was authored on, even though resolution runs after the
 script finishes. The reported column is always `-1` (the Groovy runtime does not
 expose it).
 
-#### 1.11 Saving DSL resources
+#### 1.12 Saving DSL resources
 
 By default a Groovy DSL resource is **read-only**: it loads a `.groovy` script into an EMF model,
 but saving it throws `UnsupportedOperationException`. This is the right default because the script -
@@ -463,8 +529,10 @@ Two classes work together per metamodel:
   resolver) to the generic base. The base does everything else: resolve the
   upstream source handler to a `CompiledScript`, build a `DslContext`, install
   the entry points into the script bindings, evaluate, resolve deferred
-  references and normalise the result to `EObject[]`. The resolver may provide custom 
-  bindings by overrriding `bindings()` method.
+  references and normalise the result to `EObject[]`. The handler may provide custom
+  bindings by overrriding the `bindings()` method, a short value form for references by overriding
+  `create()`, and source-location tracking by overriding `mark()` - see
+  [§2.5](#25-custom-resolvers-beyond-a-fixed-epackage-list).
 
 - A **`ServiceCapabilityFactory`** that decides *which file qualifier* this
   handler serves, requests the upstream `.groovy` source handler, and wires the
@@ -626,6 +694,49 @@ A `Resolver` must provide:
 | `candidates(base, featureType, targetType)` | Concrete subtypes usable as reference *wrapper* types (for the containment-reference policy). |
 | `names()` | Map of decapitalised name → `EClass` for the **unambiguous** classes to install as entry-point keywords. |
 | `global(id, element)` / `get(id)` | Register / look up globally addressable objects. |
+
+Two more methods have defaults, so implement them only when you want the behaviour:
+
+| Method | Responsibility |
+|--------|----------------|
+| `create(eReference, value)` | Build the element a reference should hold from an authored value, or - with `value == null` - from the reference's default type. This is what gives a reference the short form of [§1.8](#18-creating-elements-from-a-value---the-short-form). Return `null` to decline. The default implementation instantiates the reference type when it is concrete and `value` is `null`, and declines otherwise. |
+| `mark(eObject, feature, line, col)` | Record where an object or a feature value was authored (`feature == null` when the object itself was created). The default is a no-op; override to hyperlink diagnostics or navigate back to source. Columns are always `-1` - the Groovy runtime does not expose them. |
+
+A typical `create` override switches on the reference type and initialises one feature from the value:
+
+```java
+@Override
+public EObject create(EReference eReference, Object value) {
+    if (RulesPackage.Literals.EVALUATOR.isSuperTypeOf(eReference.getEReferenceType())) {
+        SpelEvaluator evaluator = RulesFactory.eINSTANCE.createSpelEvaluator();   // the default type
+        if (value != null) {
+            evaluator.setExpression(value.toString());
+        }
+        return evaluator;
+    }
+    // Keep the default for every other reference. Use `super.create(...)` when subclassing
+    // EPackageResolver, or `Resolver.super.create(...)` when implementing Resolver directly.
+    return super.create(eReference, value);
+}
+```
+
+Both methods are also exposed as protected hooks on `DslResourceContentsHandler`, so a handler bound to
+a fixed `EPackage` list can override them without writing a resolver:
+
+```java
+public class RulesResourceContentsHandler extends DslResourceContentsHandler {
+
+    public RulesResourceContentsHandler(Resource resource,
+            ResourceContentsHandler<CompiledScript> sourceHandler) {
+        super(resource, sourceHandler, RulesPackage.eINSTANCE);
+    }
+
+    @Override
+    protected EObject create(EReference eReference, Object value) {
+        // ... as above; returning null falls back to the resolver's default
+    }
+}
+```
 
 The provided `EPackageResolver` (extending `AbstractResolver`,
 which implements `global`/`get` against a `NasdanikaResourceSet`) is a complete
